@@ -45,6 +45,7 @@ public class AdminList extends AdministrationSectionExt {
 	public Map<String, String> getLinks() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
 		map.put("/module/legacyui/manage.form", "legacyui.manage");
+		map.put("/module/legacyui/index.htm", "legacyui.adminui");
 		return map;
 	}
 	
