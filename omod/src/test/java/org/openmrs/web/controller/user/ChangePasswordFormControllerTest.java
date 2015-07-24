@@ -20,6 +20,7 @@ import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.openmrs.web.user.UserProperties;
 import org.springframework.mock.web.MockHttpSession;
@@ -31,7 +32,7 @@ import org.springframework.validation.ObjectError;
  * Test the different aspects of
  * {@link org.openmrs.web.controller.user.ChangePasswordFormController}
  */
-public class ChangePasswordFormControllerTest extends BaseWebContextSensitiveTest {
+public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	/**
 	 * @see ChangePasswordFormController#formBackingObject()

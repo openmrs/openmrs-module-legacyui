@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.openmrs.Role;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.openmrs.web.test.WebTestHelper;
 import org.openmrs.web.test.WebTestHelper.Response;
@@ -26,7 +27,7 @@ import org.springframework.test.annotation.NotTransactional;
 /**`
  * Tests {@link RoleFormController}.
  */
-public class RoleFormControllerTest extends BaseWebContextSensitiveTest {
+public class RoleFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	@Autowired
 	WebTestHelper wth;

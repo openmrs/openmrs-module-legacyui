@@ -34,6 +34,14 @@
 	<property name="order"><value>99</value></property>
 		<property name="mappings">
 			<props>
+				<prop key="admin/patients/patient.form">patientForm</prop>
+				<prop key="admin/patients/mergePatients.form">mergePatientsForm</prop>
+				
+				<prop key="admin/patients/tribe.list">tribeList</prop>
+								
+				<prop key="admin/patients/patientIdentifierType.list">patientIdentifierTypeList</prop>
+				<prop key="admin/patients/patientIdentifierType.form">patientIdentifierTypeForm</prop>
+			
 				<prop key="admin/users/role.list">roleList</prop>
 				<prop key="admin/users/role.form">roleForm</prop>
 				<prop key="admin/users/alert.list">alertList</prop>
@@ -43,6 +51,49 @@
  			</props>
 		</property>
 	</bean>	
+
+	<!-- ** Patient ** -->
+	<bean id="patientForm" class="org.openmrs.web.controller.patient.PatientFormController">
+		<property name="commandName"><value>patient</value></property>
+		<property name="formView"><value>/module/legacyui/admin/patients/patientForm</value></property>
+		<property name="successView"><value>patient.form</value></property>
+	</bean>
+	<!-- ** /Patient ** -->
+		
+	<bean id="tribeList" class="org.openmrs.web.controller.patient.TribeFormController">
+		<property name="commandName"><value>tribeForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/patients/tribeList</value></property>
+		<property name="successView"><value>tribe.list</value></property>
+	</bean>
+
+	<!-- **  Patient Identifier Type   ** -->
+	<bean id="patientIdentifierTypeList"
+		class="org.openmrs.web.controller.patient.PatientIdentifierTypeListController">
+		<property name="commandName"><value>patientIdentifierTypeList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/patients/patientIdentifierTypeList</value></property>
+		<property name="successView"><value>patientIdentifierType.list</value></property>
+	</bean>
+	<bean id="patientIdentifierTypeForm"
+		class="org.openmrs.web.controller.patient.PatientIdentifierTypeFormController">
+		<property name="commandName"><value>patientIdentifierType</value></property>
+		<property name="validator">
+			<ref bean="patientIdentifierTypeValidator" />
+		</property>
+		<property name="formView"><value>/module/legacyui/admin/patients/patientIdentifierTypeForm</value></property>
+		<property name="successView"><value>patientIdentifierType.list</value></property>
+	</bean>
+	<!-- ** /Patient Identifier Type   ** -->
+
+	<!-- ** Merge Patient ** -->
+	<bean id="mergePatientsForm"
+		class="org.openmrs.web.controller.patient.MergePatientsFormController">
+		<property name="commandName"><value>patient1</value></property>
+		<property name="formView"><value>/module/legacyui/admin/patients/mergePatientsForm</value></property>
+		<property name="successView"><value>mergePatients.form</value></property>
+	</bean>
+	<!-- ** /Merge Patient ** -->
+
+	<!-- ====== /Patient Sector ====== -->
 
 	<!-- =========================== -->
 	<!-- ======  User Sector  ====== -->

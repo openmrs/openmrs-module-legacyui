@@ -15,13 +15,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.Role;
 import org.openmrs.User;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.springframework.ui.ModelMap;
 
 /**
  * Tests the controller behind the /admin/users/users.list page
  */
-public class UserListControllerTest extends BaseWebContextSensitiveTest {
+public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	/**
 	 * @see UserListController#displayUsers(ModelMap,String,String,Role,Boolean)

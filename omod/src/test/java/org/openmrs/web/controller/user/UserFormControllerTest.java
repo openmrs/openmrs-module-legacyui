@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.openmrs.PersonName;
 import org.openmrs.User;
 import org.openmrs.test.Verifies;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
@@ -24,7 +25,7 @@ import org.springframework.web.context.request.WebRequest;
 /**
  * Tests the {@link oldUserFormController} class.
  */
-public class UserFormControllerTest extends BaseWebContextSensitiveTest {
+public class UserFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	/**
 	 * @see UserFormController#handleSubmission(WebRequest,HttpSession,String,String,String,null,User,BindingResult)
