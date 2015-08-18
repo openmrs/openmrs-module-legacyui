@@ -48,6 +48,8 @@
 				<prop key="admin/users/alert.form">alertForm</prop>
 				<prop key="admin/users/privilege.list">privilegeList</prop>
 				<prop key="admin/users/privilege.form">privilegeForm</prop>
+				
+				<prop key="admin/person/addPerson.htm">addPerson</prop>
  			</props>
 		</property>
 	</bean>	
@@ -149,5 +151,14 @@
 	<!--  ** /Alert ** -->
 
 	<!-- ====== /User Sector ====== -->
+		
+		<!-- ** Add Person ** -->
+	<!--  Used for finding duplicate patients / users -->
+	<bean id="addPerson" class="org.openmrs.web.controller.person.AddPersonController">
+		<property name="commandName"><value>people</value></property>
+		<property name="formView"><value>/module/legacyui/admin/person/addPerson</value></property>
+		<property name="successView"><value>admin/person/newPerson.form</value></property>
+	</bean>
+	<!-- ** /Add Person ** -->
 		
 </beans>
