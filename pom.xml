@@ -22,11 +22,11 @@
 	</organization>
 
 	<scm>
-		<connection>scm:svn:https://svn.openmrs.org/openmrs-modules/legacyui/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.openmrs.org/openmrs-modules/legacyui/trunk/</developerConnection>
-		<url>https://svn.openmrs.org/openmrs-modules/legacyui/trunk/</url>
+		<connection>scm:git:https://github.com/openmrs/openmrs-module-legacyui</connection>
+		<developerConnection>scm:git:https://github.com/openmrs/openmrs-module-legacyui</developerConnection>
+		<url>https://github.com/openmrs/openmrs-module-legacyui</url>
 	</scm>
-
+	
 	<modules>
 		<module>api</module>
 		<module>omod</module>
