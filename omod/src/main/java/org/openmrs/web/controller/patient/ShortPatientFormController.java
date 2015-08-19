@@ -66,7 +66,7 @@ public class ShortPatientFormController {
 	
 	private static final String SHORT_PATIENT_FORM_URL = "/admin/patients/shortPatientForm";
 	
-	private static final String FIND_PATIENT_PAGE = "findPatient";
+	private static final String FIND_PATIENT_PAGE = "/module/legacyui/findPatient";
 	
 	private static final String PATIENT_DASHBOARD_URL = "/patientDashboard.form";
 	
@@ -74,7 +74,8 @@ public class ShortPatientFormController {
 	PatientValidator patientValidator;
 	
 	@RequestMapping(method = RequestMethod.GET, value = SHORT_PATIENT_FORM_URL)
-	public void showForm() {
+	public String showForm() {
+		return "/module/legacyui/admin/patients/shortPatientForm";
 	}
 	
 	@ModelAttribute("patientModel")
@@ -271,7 +272,7 @@ public class ShortPatientFormController {
 			
 		}
 		
-		return "module/legacyui/findPatient";
+		return FIND_PATIENT_PAGE;
 	}
 	
 	/**
