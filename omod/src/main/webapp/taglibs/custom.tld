@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+  <tlibversion>1.0.1</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>custom</shortname>
+  <info>The PAGE custom tag library contains tags which can be used to
+      access all the information about the PageContext for a JSP page.Tags are provided to access information in "page" scoped attributes.</info>
+
+  <tag>
+    <name>helloworld</name>
+    <tagclass>org.openmrs.web.taglib.HelloWorldTag</tagclass>
+    <bodycontent>empty</bodycontent>
+  </tag>
+
+</taglib>
