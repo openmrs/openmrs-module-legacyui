@@ -8,8 +8,8 @@
 	<packaging>pom</packaging>
 	<name>Legacy UI Module</name>
 	<description>The legacy user interface for OpenMRS 1.9 is chiefly comprised of administrative functions and the patient dashboard. Apparently, a new and more contemporary UI was introduced via a UI framework and the legacy UI was kept around for administrative functions that were not yet implemented in the new UI. To retire the Legacy UI as planned, it is required to move the implementations and modules that still rely on it in order to maintain backwards compatibility. The main idea behind this project is to move legacy UI functions into a module that these implementations can install until they are able to migrate away from it. Since most of the implementations of OpenMRS around the world are running OpenMRS 1.9, there will be dozens (if not hundreds) of implementations around the world thankful for this module.</description>
-	<url>https://wiki.openmrs.org/display/docs/Legacy+UI+Module+Module</url>
-	
+	<url>https://wiki.openmrs.org/x/8g8zBQ</url>
+
 	<developers>
 		<developer>
 			<name>Tharunya</name>
@@ -35,6 +35,7 @@
 	<properties>
 		<openMRSVersion>1.12.0-SNAPSHOT</openMRSVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javaCompilerVersion>1.8</javaCompilerVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -107,8 +108,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
-						<target>1.6</target>
-						<source>1.6</source>
+						<target>${javaCompilerVersion}</target>
+						<source>${javaCompilerVersion}</source>
+                        <encoding>${project.build.sourceEncoding}</encoding>
 					</configuration>
 				</plugin>
 				<plugin>
