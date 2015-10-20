@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
-<%@ taglib prefix="custom" uri="../taglibs/custom.tld" %>
 
 <openmrs:require privilege="View Administration Functions" otherwise="/login.htm" redirect="/admin/index.htm" />
 
@@ -27,7 +26,7 @@
 </style>
 
 <h2><openmrs:message code="admin.header"/></h2>
-<custom:helloworld />
+
 <table border="0" width="93%">
 	<tbody>
 	<tr>
