@@ -14,6 +14,7 @@ import org.openmrs.PersonName;
 import org.openmrs.User;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ModelMap;
@@ -26,6 +27,9 @@ import org.springframework.web.context.request.WebRequest;
  */
 public class UserFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
+	@Autowired
+	private UserFormController controller;
+	
 	/**
 	 * @see UserFormController#handleSubmission(WebRequest,HttpSession,String,String,String,null,User,BindingResult)
 	 * 
@@ -33,7 +37,6 @@ public class UserFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	@Test
 	@Verifies(value = "should work for an example", method = "handleSubmission(WebRequest,HttpSession,String,String,String,null,User,BindingResult)")
 	public void handleSubmission_shouldWorkForAnExample() throws Exception {
-		UserFormController controller = new UserFormController();
 		WebRequest request = new ServletWebRequest(new MockHttpServletRequest());
 		User user = controller.formBackingObject(request, null);
 		user.addName(new PersonName("This", "is", "Test"));
