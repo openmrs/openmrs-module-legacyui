@@ -51,6 +51,9 @@
 				
 				<prop key="admin/person/addPerson.htm">addPerson</prop>
 				
+				<prop key="**/*.portlet">portletController</prop>
+				<prop key="**/*.htm">springController</prop>
+				
 				<!--
 				<prop key="admin/person/person.form">personForm</prop>
 				<prop key="admin/person/relationshipType.list">relationshipTypeList</prop>
@@ -129,9 +132,7 @@
 				<prop key="**/patientVisits.portlet">patientVisitsPortletController</prop>
 				<prop key="**/personFormEntry.portlet">personFormEntryPortletController</prop>
 
-				<prop key="**/*.portlet">portletController</prop>
 				<prop key="**/*.field">fieldGenController</prop>
-				<prop key="**/*.htm">springController</prop>
 
 				<prop key="admin/visits/visitType.list">visitTypeList</prop>
 				<prop key="admin/visits/visitType.form">visitTypeForm</prop>
@@ -139,6 +140,13 @@
 				<prop key="admin/visits/visitAttributeType.form">visitAttributeTypeForm</prop>
 				<prop key="admin/provider/providerAttributeType.list">providerAttributeTypeList</prop>
 				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>	
+				-->
+				
+				<!-- The four below come from openmrs_static_content-servlet.xml
+				<prop key="**/openmrsmessages.js">jstlContentController</prop>
+				<prop key="**/drugOrder.js">jstlContentController</prop>
+				<prop key="**/*.js">staticContentController</prop>
+				<prop key="**/*">staticContentController</prop>
 				-->
  			</props>
 		</property>
@@ -251,9 +259,11 @@
 	</bean>
 	<!-- ** /Add Person ** -->
 	
+	<bean id="portletController" class="org.openmrs.web.controller.PortletController" />
+	<bean id="springController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+	
 	<!--
 	<bean id="fieldGenController" class="org.openmrs.web.controller.FieldGenController" />
-	<bean id="portletController" class="org.openmrs.web.controller.PortletController" />
 	<bean id="globalPropertyPortletController" class="org.openmrs.web.controller.GlobalPropertyPortletController" />
 	<bean id="patientProgramsPortletController" class="org.openmrs.web.controller.PatientProgramsPortletController" />
 	<bean id="personRelationshipsPortletController" class="org.openmrs.web.controller.PersonRelationshipsPortletController" />
@@ -262,7 +272,6 @@
 	<bean id="personFormEntryPortletController" class="org.openmrs.web.controller.PersonFormEntryPortletController" />
 	<bean id="addressLayoutPortletController" class="org.openmrs.web.controller.layout.AddressLayoutPortletController" />
 	<bean id="nameLayoutPortletController" class="org.openmrs.web.controller.layout.NameLayoutPortletController" />
-	<bean id="springController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
 
 	<bean id="schedulerListController"
 		class="org.openmrs.scheduler.web.controller.SchedulerListController">
@@ -933,5 +942,18 @@
 	</bean>
 	
 	-->
-		
+	
+	<!--  These two beans below were removed from: openmrs_static_content-servlet.xml
+	<bean id="staticContentController" class="org.openmrs.web.controller.PseudoStaticContentController">
+		<property name="interpretJstl"><value>false</value></property>
+		<property name="rewrites">
+			<ref local="urlRewrites"/>
+		</property>
+	</bean>
+	
+	<bean id="jstlContentController" class="org.openmrs.web.controller.PseudoStaticContentController">
+		<property name="interpretJstl"><value>true</value></property>
+	</bean>
+	-->
+	
 </beans>
