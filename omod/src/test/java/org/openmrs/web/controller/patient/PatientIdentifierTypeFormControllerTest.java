@@ -9,19 +9,17 @@
  */
 package org.openmrs.web.controller.patient;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.controller.person.PersonAttributeTypeFormController;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Tests the {@link PatientIdentifierTypeFormController}

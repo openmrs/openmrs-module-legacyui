@@ -83,7 +83,7 @@ public class AlertFormController extends SimpleFormController {
 				throw new APIAuthenticationException("Must be logged in as user with alerts privileges");
 			}
 			
-			Context.addProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+			Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 			
 			UserService us = Context.getUserService();
 			
@@ -153,7 +153,7 @@ public class AlertFormController extends SimpleFormController {
 			errors.reject(e.getMessage());
 		}
 		finally {
-			Context.removeProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 		}
 		
 		return super.processFormSubmission(request, reponse, alert, errors);

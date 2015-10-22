@@ -80,7 +80,6 @@ public class PatientIdentifierTypeFormController extends SimpleFormController {
 			//to save the patient identifier type
 			try {
 				if (request.getParameter("save") != null) {
-					identifierType.setCheckDigit(identifierType.hasValidator());
 					ps.savePatientIdentifierType(identifierType);
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "PatientIdentifierType.saved");
 					toReturn = new ModelAndView(new RedirectView(getSuccessView()));

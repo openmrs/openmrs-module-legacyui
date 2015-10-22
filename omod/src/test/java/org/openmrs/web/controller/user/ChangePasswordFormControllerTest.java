@@ -21,7 +21,6 @@ import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.openmrs.web.user.UserProperties;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.validation.BindException;
@@ -33,6 +32,8 @@ import org.springframework.validation.ObjectError;
  * {@link org.openmrs.web.controller.user.ChangePasswordFormController}
  */
 public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensitiveTest {
+	
+	private final String oldPassword = "test";
 	
 	/**
 	 * @see ChangePasswordFormController#formBackingObject()
@@ -55,7 +56,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		String result = controller.handleSubmission(new MockHttpSession(), "password", "differentPassword", "", "", "",
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "password", "differentPassword", "", "", "",
 		    Context.getAuthenticatedUser(), errors);
 		
 		assertTrue(errors.hasErrors());
@@ -71,7 +72,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		String result = controller.handleSubmission(new MockHttpSession(), "Passw0rd", "Passw0rd", "", "", "", Context
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "Passw0rd", "Passw0rd", "", "", "", Context
 		        .getAuthenticatedUser(), errors);
 		
 		assertTrue(!errors.hasErrors());
@@ -88,7 +89,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		String result = controller.handleSubmission(new MockHttpSession(), "", "", "", "", "", Context
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "", "", "", "", "", Context
 		        .getAuthenticatedUser(), errors);
 		
 		assertTrue(errors.hasErrors());
@@ -104,7 +105,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		String result = controller.handleSubmission(new MockHttpSession(), "password", "password", "", "", "", Context
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "password", "password", "", "", "", Context
 		        .getAuthenticatedUser(), errors);
 		
 		assertTrue(errors.hasErrors());
@@ -120,7 +121,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		String result = controller.handleSubmission(new MockHttpSession(), "Passw0rd", "Passw0rd", "", "answer", "answer",
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "Passw0rd", "Passw0rd", "", "answer", "answer",
 		    Context.getAuthenticatedUser(), errors);
 		
 		assertTrue(errors.hasErrors());
@@ -136,7 +137,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		String result = controller.handleSubmission(new MockHttpSession(), "Passw0rd", "Passw0rd", "question", "answer",
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "Passw0rd", "Passw0rd", "question", "answer",
 		    "confirmanswer", Context.getAuthenticatedUser(), errors);
 		
 		assertTrue(errors.hasErrors());
@@ -152,7 +153,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		String result = controller.handleSubmission(new MockHttpSession(), "Passw0rd", "Passw0rd", "question", "", "",
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "Passw0rd", "Passw0rd", "question", "", "",
 		    Context.getAuthenticatedUser(), errors);
 		
 		assertTrue(errors.hasErrors());
@@ -168,7 +169,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		String result = controller.handleSubmission(new MockHttpSession(), "Passw0rd", "Passw0rd", "question", "answer",
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "Passw0rd", "Passw0rd", "question", "answer",
 		    "answer", Context.getAuthenticatedUser(), errors);
 		
 		assertTrue(!errors.hasErrors());
@@ -185,12 +186,12 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		new UserProperties(user.getUserProperties()).setSupposedToChangePassword(true);
 		
 		UserService us = Context.getUserService();
-		us.saveUser(user, "Openmr5xy");
+		us.saveUser(user);
 		
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		controller.handleSubmission(new MockHttpSession(), "Passw0rd", "Passw0rd", "", "", "", Context
+		controller.handleSubmission(new MockHttpSession(), oldPassword, "Passw0rd", "Passw0rd", "", "", "", Context
 		        .getAuthenticatedUser(), errors);
 		
 		User modifiedUser = us.getUser(user.getId());
@@ -207,12 +208,12 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		new UserProperties(user.getUserProperties()).setSupposedToChangePassword(true);
 		
 		UserService us = Context.getUserService();
-		us.saveUser(user, "Openmr5xy");
+		us.saveUser(user);
 		
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		controller.handleSubmission(new MockHttpSession(), "Passw0rd", "Pasw0rd", "", "", "",
+		controller.handleSubmission(new MockHttpSession(), oldPassword, "Passw0rd", "Pasw0rd", "", "", "",
 		    Context.getAuthenticatedUser(), errors);
 		
 		User modifiedUser = us.getUser(user.getId());
@@ -228,7 +229,7 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		errors.addError(new ObjectError("Test", "Test Error"));
-		String result = controller.handleSubmission(new MockHttpSession(), "password", "differentPassword", "", "", "",
+		String result = controller.handleSubmission(new MockHttpSession(), oldPassword, "password", "differentPassword", "", "", "",
 		    Context.getAuthenticatedUser(), errors);
 		assertEquals("/module/legacyui/admin/users/changePasswordForm", result);
 	}
@@ -243,12 +244,12 @@ public class ChangePasswordFormControllerTest extends BaseModuleWebContextSensit
 		new UserProperties(user.getUserProperties()).setSupposedToChangePassword(true);
 		
 		UserService us = Context.getUserService();
-		us.saveUser(user, "Openmr5xy");
+		us.saveUser(user);
 		
 		ChangePasswordFormController controller = new ChangePasswordFormController();
 		BindException errors = new BindException(controller.formBackingObject(), "user");
 		
-		controller.handleSubmission(new MockHttpSession(), "Passw0rd", "Passw0rd", "test_question", "test_answer",
+		controller.handleSubmission(new MockHttpSession(), oldPassword, "Passw0rd", "Passw0rd", "test_question", "test_answer",
 		    "test_answer", Context.getAuthenticatedUser(), errors);
 		
 		User modifiedUser = us.getUser(user.getId());

@@ -14,7 +14,6 @@ import org.openmrs.PersonName;
 import org.openmrs.User;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ModelMap;
@@ -39,7 +38,7 @@ public class UserFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		User user = controller.formBackingObject(request, null);
 		user.addName(new PersonName("This", "is", "Test"));
 		user.getPerson().setGender("F");
-		controller.handleSubmission(request, new MockHttpSession(), new ModelMap(), "Save User", "pass123", "pass123", null,
+		controller.handleSubmission(request, new MockHttpSession(), new ModelMap(), "", "Save User", "pass123", "pass123", null,
 		    null, null, new String[0], "true", user, new BindException(user, "user"));
 	}
 	
