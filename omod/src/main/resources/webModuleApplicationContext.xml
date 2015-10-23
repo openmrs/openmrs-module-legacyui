@@ -53,6 +53,9 @@
 				
 				<prop key="**/*.portlet">portletController</prop>
 				<prop key="**/*.htm">springController</prop>
+
+                <prop key="admin/modules/module.list">moduleListController</prop>
+                <prop key="admin/modules/moduleProperties.form">modulePropertiesFormController</prop>
 				
 				<!--
 				<prop key="admin/person/person.form">personForm</prop>
@@ -117,9 +120,6 @@
 				<prop key="admin/maintenance/globalProps.form">globalPropertyController</prop>
 				<prop key="admin/maintenance/serverLog.form">serverLogController</prop>
 				<prop key="admin/maintenance/implementationid.form">implementationIdFormController</prop>
-				
-				<prop key="admin/modules/module.list">moduleListController</prop>
-				<prop key="admin/modules/moduleProperties.form">modulePropertiesFormController</prop>
 				
 				<prop key="forgotPassword.form">forgotPasswordForm</prop>
 
@@ -246,6 +246,19 @@
 		<property name="formView"><value>/module/legacyui/admin/users/alertForm</value></property>
 		<property name="successView"><value>alert.list</value></property>
 	</bean>
+
+    <bean id="moduleListController"
+          class="org.openmrs.module.web.controller.ModuleListController">
+        <property name="commandName"><value>moduleList</value></property>
+        <property name="formView"><value>/module/legacyui/admin/modules/moduleList</value></property>
+        <property name="successView"><value>module.list</value></property>
+    </bean>
+    <bean id="modulePropertiesFormController"
+          class="org.openmrs.module.web.controller.ModulePropertiesFormController">
+        <property name="commandName"><value>moduleProperties</value></property>
+        <property name="formView"><value>/module/legacyui/admin/modules/modulePropertiesForm</value></property>
+        <property name="successView"><value>moduleProperties.form</value></property>
+    </bean>
 	<!--  ** /Alert ** -->
 
 	<!-- ====== /User Sector ====== -->
@@ -637,19 +650,6 @@
 		<property name="commandName"><value>implId</value></property>
 		<property name="formView"><value>/admin/maintenance/implementationIdForm</value></property>
 		<property name="successView"><value>implementationid.form</value></property>
-	</bean>
-	
-	<bean id="moduleListController"
-		class="org.openmrs.module.web.controller.ModuleListController">
-		<property name="commandName"><value>moduleList</value></property>
-		<property name="formView"><value>/admin/modules/moduleList</value></property>
-		<property name="successView"><value>module.list</value></property>
-	</bean>
-	<bean id="modulePropertiesFormController"
-		class="org.openmrs.module.web.controller.ModulePropertiesFormController">
-		<property name="commandName"><value>moduleProperties</value></property>
-		<property name="formView"><value>/admin/modules/modulePropertiesForm</value></property>
-		<property name="successView"><value>moduleProperties.form</value></property>
 	</bean>
 	
 	<bean id="forgotPasswordForm"
