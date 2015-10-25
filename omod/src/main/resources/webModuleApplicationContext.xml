@@ -131,16 +131,19 @@
 				<prop key="**/patientEncounters.portlet">patientEncountersPortletController</prop>
 				<prop key="**/patientVisits.portlet">patientVisitsPortletController</prop>
 				<prop key="**/personFormEntry.portlet">personFormEntryPortletController</prop>
+				-->
 
 				<prop key="**/*.field">fieldGenController</prop>
 
+				<!--
 				<prop key="admin/visits/visitType.list">visitTypeList</prop>
 				<prop key="admin/visits/visitType.form">visitTypeForm</prop>
 				<prop key="admin/visits/visitAttributeType.list">visitAttributeTypeList</prop>
 				<prop key="admin/visits/visitAttributeType.form">visitAttributeTypeForm</prop>
+				-->
+				
 				<prop key="admin/provider/providerAttributeType.list">providerAttributeTypeList</prop>
 				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>	
-				-->
 				
 				<!-- The four below come from openmrs_static_content-servlet.xml
 				<prop key="**/openmrsmessages.js">jstlContentController</prop>
@@ -275,8 +278,9 @@
 	<bean id="portletController" class="org.openmrs.web.controller.PortletController" />
 	<bean id="springController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
 	
-	<!--
+	
 	<bean id="fieldGenController" class="org.openmrs.web.controller.FieldGenController" />
+	<!--
 	<bean id="globalPropertyPortletController" class="org.openmrs.web.controller.GlobalPropertyPortletController" />
 	<bean id="patientProgramsPortletController" class="org.openmrs.web.controller.PatientProgramsPortletController" />
 	<bean id="personRelationshipsPortletController" class="org.openmrs.web.controller.PersonRelationshipsPortletController" />
@@ -692,11 +696,12 @@
 		<property name="formView"><value>/admin/visits/visitAttributeTypeForm</value></property>
 		<property name="successView"><value>visitAttributeType.list</value></property>
 	</bean>
-
+	-->
+	
 	<bean id="providerAttributeTypeList"
 		class="org.openmrs.web.controller.provider.ProviderAttributeTypeListController">
 		<property name="commandName"><value>providerAttributeTypeList</value></property>
-		<property name="formView"><value>/admin/provider/providerAttributeTypeList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/provider/providerAttributeTypeList</value></property>
 		<property name="successView"><value>providerAttributeType.list</value></property>
 	</bean>
 
@@ -706,10 +711,9 @@
 		<property name="validator">
 			<ref bean="providerAttributeTypeValidator" />
 		</property>
-		<property name="formView"><value>/admin/provider/providerAttributeTypeForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/provider/providerAttributeTypeForm</value></property>
 		<property name="successView"><value>providerAttributeType.list</value></property>
 	</bean>	
-	-->
 	
 	<!-- NAME LAYOUT SUPPORT -->
 	
