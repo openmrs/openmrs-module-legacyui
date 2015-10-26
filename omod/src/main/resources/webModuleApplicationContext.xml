@@ -72,8 +72,12 @@
 				<prop key="admin/encounters/encounterType.form">encounterTypeForm</prop>
 				<prop key="admin/encounters/encounterDisplay.list">encounterDisplayController</prop>
 
+				-->
+				
 				<prop key="admin/locations/location.list">locationList</prop>
 				<prop key="admin/locations/location.form">locationForm</prop>
+				
+				<!-- 
 
 				<prop key="dictionary/concept.form">conceptForm</prop>
 				<prop key="dictionary/conceptStats.form">conceptStatsForm</prop>
@@ -378,9 +382,11 @@
 		<property name="successView"><value>encounterType.list</value></property>
 	</bean>
 
+	-->
+	
 	<bean id="locationList" class="org.openmrs.web.controller.encounter.LocationListController">
 		<property name="commandName"><value>locationList</value></property>
-		<property name="formView"><value>/admin/locations/locationList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/locations/locationList</value></property>
 		<property name="successView"><value>location.list</value></property>
 	</bean>
 
@@ -389,9 +395,11 @@
 		<property name="validator">
 			<ref bean="locationValidator" />
 		</property>
-		<property name="formView"><value>/admin/locations/locationForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/locations/locationForm</value></property>
 		<property name="successView"><value>location.list</value></property>
 	</bean>
+	
+	<!--
 
 	<bean id="encounterDisplayController"
 		class="org.openmrs.web.controller.encounter.EncounterDisplayController" />
