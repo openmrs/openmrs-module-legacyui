@@ -123,11 +123,11 @@ public class OptionsFormController extends SimpleFormController {
 			UserService us = Context.getUserService();
 			User user = null;
 			try {
-				Context.addProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+				Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 				user = us.getUser(loginUser.getUserId());
 			}
 			finally {
-				Context.removeProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+				Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 			}
 			
 			OptionsForm opts = (OptionsForm) obj;
@@ -193,7 +193,6 @@ public class OptionsFormController extends SimpleFormController {
 			if (!"".equals(opts.getSecretQuestionPassword())) {
 				if (!errors.hasErrors()) {
 					try {
-						user.setSecretQuestion(opts.getSecretQuestionNew());
 						us.changeQuestionAnswer(opts.getSecretQuestionPassword(), opts.getSecretQuestionNew(), opts
 						        .getSecretAnswerNew());
 					}
@@ -220,13 +219,13 @@ public class OptionsFormController extends SimpleFormController {
 			
 			if (opts.getUsername().length() > 0 && !errors.hasErrors()) {
 				try {
-					Context.addProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+					Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 					if (us.hasDuplicateUsername(user)) {
 						errors.rejectValue("username", "error.username.taken");
 					}
 				}
 				finally {
-					Context.removeProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+					Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				}
 			}
 			
@@ -268,9 +267,9 @@ public class OptionsFormController extends SimpleFormController {
 				
 				try {
 					Context.addProxyPrivilege(PrivilegeConstants.EDIT_USERS);
-					Context.addProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+					Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 					
-					us.saveUser(user, null);
+					us.saveUser(user);
 					//trigger updating of the javascript file cache
 					PseudoStaticContentController.invalidateCachedResources(properties);
 					// update login user object so that the new name is visible
@@ -279,7 +278,7 @@ public class OptionsFormController extends SimpleFormController {
 				}
 				finally {
 					Context.removeProxyPrivilege(PrivilegeConstants.EDIT_USERS);
-					Context.removeProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+					Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				}
 				
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "options.saved");
@@ -312,8 +311,6 @@ public class OptionsFormController extends SimpleFormController {
 			opts.setShowRetiredMessage(new Boolean(props.get(OpenmrsConstants.USER_PROPERTY_SHOW_RETIRED)));
 			opts.setVerbose(new Boolean(props.get(OpenmrsConstants.USER_PROPERTY_SHOW_VERBOSE)));
 			opts.setUsername(user.getUsername());
-			opts.setSecretQuestionNew(user.getSecretQuestion());
-			opts.setSecretQuestionCopy(user.getSecretQuestion());
 			
 			PersonName personName;
 			if (user.getPersonName() != null) {

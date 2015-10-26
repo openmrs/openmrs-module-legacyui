@@ -141,7 +141,7 @@ public class SchedulerFormController extends SimpleFormController {
 		        && (task.getTaskInstance() == null || !task.getTaskInstance().isExecuting())) {
 			Context.getSchedulerService().rescheduleTask(task);
 		}
-		Context.getSchedulerService().saveTask(task);
+		Context.getSchedulerService().saveTaskDefinition(task);
 		
 		view = getSuccessView();
 		

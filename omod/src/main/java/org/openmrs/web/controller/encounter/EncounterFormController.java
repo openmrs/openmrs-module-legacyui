@@ -106,8 +106,8 @@ public class EncounterFormController extends SimpleFormController {
 		
 		try {
 			if (Context.isAuthenticated()) {
-				Context.addProxyPrivilege(PrivilegeConstants.VIEW_USERS);
-				Context.addProxyPrivilege(PrivilegeConstants.VIEW_PATIENTS);
+				Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
+				Context.addProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
 				
 				if (encounter.getEncounterId() == null && StringUtils.hasText(request.getParameter("patientId"))) {
 					encounter.setPatient(Context.getPatientService().getPatient(
@@ -159,8 +159,8 @@ public class EncounterFormController extends SimpleFormController {
 			}
 		}
 		finally {
-			Context.removeProxyPrivilege(PrivilegeConstants.VIEW_USERS);
-			Context.removeProxyPrivilege(PrivilegeConstants.VIEW_PATIENTS);
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
 		}
 		
 		return super.processFormSubmission(request, reponse, encounter, errors);
@@ -185,8 +185,8 @@ public class EncounterFormController extends SimpleFormController {
 		String view = getFormView();
 		
 		try {
-			Context.addProxyPrivilege(PrivilegeConstants.VIEW_USERS);
-			Context.addProxyPrivilege(PrivilegeConstants.VIEW_PATIENTS);
+			Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
+			Context.addProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
 			
 			if (Context.isAuthenticated()) {
 				Encounter encounter = (Encounter) obj;
@@ -234,8 +234,8 @@ public class EncounterFormController extends SimpleFormController {
 			return showForm(request, response, errors);
 		}
 		finally {
-			Context.removeProxyPrivilege(PrivilegeConstants.VIEW_USERS);
-			Context.removeProxyPrivilege(PrivilegeConstants.VIEW_PATIENTS);
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
 		}
 		
 		return new ModelAndView(new RedirectView(view));

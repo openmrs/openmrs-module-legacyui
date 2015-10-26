@@ -60,7 +60,7 @@ public class WorkflowFormController extends SimpleFormController {
 			ProgramWorkflowService ps = Context.getProgramWorkflowService();
 			String programWorkflowId = request.getParameter("programWorkflowId");
 			if (programWorkflowId != null) {
-				wf = ps.getWorkflow(Integer.valueOf(programWorkflowId));
+				//wf = ps.getWorkflow(Integer.valueOf(programWorkflowId));
 			}
 			
 			if (wf == null) {
@@ -113,7 +113,7 @@ public class WorkflowFormController extends SimpleFormController {
 				for (Map.Entry<Integer, ProgramWorkflowState> remove : toRemove.entrySet()) {
 					try {
 						wf.removeState(remove.getValue());
-						Context.getProgramWorkflowService().updateWorkflow(wf);
+						//Context.getProgramWorkflowService().updateWorkflow(wf);
 						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Workflow.saved");
 						log.debug("removed " + remove);
 					}
@@ -169,7 +169,7 @@ public class WorkflowFormController extends SimpleFormController {
 					}
 				}
 				try {
-					Context.getProgramWorkflowService().updateWorkflow(wf);
+					//Context.getProgramWorkflowService().updateWorkflow(wf);
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Workflow.saved");
 				}
 				catch (APIException e) {
@@ -182,7 +182,7 @@ public class WorkflowFormController extends SimpleFormController {
 						s.setRetired(true);
 					}
 				}
-				Context.getProgramWorkflowService().updateWorkflow(wf);
+				//Context.getProgramWorkflowService().updateWorkflow(wf);
 			}
 		}
 		view = getSuccessView();

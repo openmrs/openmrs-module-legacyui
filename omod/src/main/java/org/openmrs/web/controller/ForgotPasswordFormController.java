@@ -113,7 +113,7 @@ public class ForgotPasswordFormController extends SimpleFormController {
 				User user = null;
 				
 				try {
-					Context.addProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+					Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 					
 					// only search if they actually put in a username
 					if (username != null && username.length() > 0) {
@@ -121,14 +121,14 @@ public class ForgotPasswordFormController extends SimpleFormController {
 					}
 				}
 				finally {
-					Context.removeProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+					Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				}
 				
-				if (user == null || StringUtils.isEmpty(user.getSecretQuestion())) {
+				if (user == null /*|| StringUtils.isEmpty(user.getSecretQuestion())*/) {
 					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.question.empty");
 				} else {
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.question.fill");
-					request.setAttribute("secretQuestion", user.getSecretQuestion());
+					//request.setAttribute("secretQuestion", user.getSecretQuestion());
 					
 					// reset the forgotPasswordAttempts because they have a right user.
 					// they will now have 5 more chances to get the question right
@@ -141,17 +141,17 @@ public class ForgotPasswordFormController extends SimpleFormController {
 				User user = null;
 				
 				try {
-					Context.addProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+					Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 					user = Context.getUserService().getUserByUsername(username);
 				}
 				finally {
-					Context.removeProxyPrivilege(PrivilegeConstants.VIEW_USERS);
+					Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				}
 				
 				// check the secret question again in case the user got here "illegally"
-				if (user == null || StringUtils.isEmpty(user.getSecretQuestion())) {
+				if (user == null /*|| StringUtils.isEmpty(user.getSecretQuestion())*/) {
 					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.question.empty");
-				} else if (user.getSecretQuestion() != null && Context.getUserService().isSecretAnswer(user, secretAnswer)) {
+				} else if (/*user.getSecretQuestion() != null &&*/ Context.getUserService().isSecretAnswer(user, secretAnswer)) {
 					
 					StringBuilder randomPassword = new StringBuilder();
 					for (int i = 0; i < 8; i++) {
@@ -160,7 +160,7 @@ public class ForgotPasswordFormController extends SimpleFormController {
 					
 					try {
 						Context.addProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
-						Context.getUserService().changePassword(user, randomPassword.toString());
+						//Context.getUserService().changePassword(user, randomPassword.toString());
 					}
 					finally {
 						Context.removeProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
@@ -174,7 +174,7 @@ public class ForgotPasswordFormController extends SimpleFormController {
 				} else {
 					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.answer.invalid");
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.question.fill");
-					request.setAttribute("secretQuestion", user.getSecretQuestion());
+					//request.setAttribute("secretQuestion", user.getSecretQuestion());
 				}
 			}
 		}

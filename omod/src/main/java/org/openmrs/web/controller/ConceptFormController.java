@@ -369,16 +369,16 @@ public class ConceptFormController extends SimpleFormController {
 		map.put("tags", cs.getAllConceptNameTags());
 		
 		//get complete class and datatype lists
-		if (Context.hasPrivilege(PrivilegeConstants.VIEW_CONCEPT_CLASSES)) {
+		if (Context.hasPrivilege(PrivilegeConstants.GET_CONCEPT_CLASSES)) {
 			map.put("classes", cs.getAllConceptClasses());
 		}
-		if (Context.hasPrivilege(PrivilegeConstants.VIEW_CONCEPT_DATATYPES)) {
+		if (Context.hasPrivilege(PrivilegeConstants.GET_CONCEPT_DATATYPES)) {
 			map.put("datatypes", cs.getAllConceptDatatypes());
 		}
 		
 		String conceptId = request.getParameter("conceptId");
 		boolean dataTypeReadOnly = false;
-		if (Context.hasPrivilege(PrivilegeConstants.VIEW_OBS)) {
+		if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
 			try {
 				Concept concept = cs.getConcept(Integer.valueOf(conceptId));
 				dataTypeReadOnly = cs.hasAnyObservation(concept);
@@ -439,7 +439,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		public Double hiNormal;
 		
-		public boolean precise = false;
+		public boolean allowDecimal = false;
 		
 		public Integer displayPrecision;
 		
@@ -498,7 +498,7 @@ public class ConceptFormController extends SimpleFormController {
 				this.hiCritical = cn.getHiCritical();
 				this.lowNormal = cn.getLowNormal();
 				this.hiNormal = cn.getHiNormal();
-				this.precise = cn.getPrecise();
+				this.allowDecimal = cn.getAllowDecimal();
 				this.displayPrecision = cn.getDisplayPrecision();
 				this.units = cn.getUnits();
 			} else if (concept instanceof ConceptComplex) {
@@ -640,7 +640,7 @@ public class ConceptFormController extends SimpleFormController {
 				cn.setLowCritical(lowCritical);
 				cn.setHiNormal(hiNormal);
 				cn.setLowNormal(lowNormal);
-				cn.setPrecise(precise);
+				cn.setAllowDecimal(allowDecimal);
 				cn.setDisplayPrecision(displayPrecision);
 				cn.setUnits(units);
 				
@@ -855,17 +855,17 @@ public class ConceptFormController extends SimpleFormController {
 		}
 		
 		/**
-		 * @return the precise
+		 * @return the allowDecimal
 		 */
-		public boolean isPrecise() {
-			return precise;
+		public boolean isAllowDecimal() {
+			return allowDecimal;
 		}
 		
 		/**
-		 * @param precise the precise to set
+		 * @param allowDecimal the allowDecimal to set
 		 */
-		public void setPrecise(boolean precise) {
-			this.precise = precise;
+		public void setAllowDecimal(boolean allowDecimal) {
+			this.allowDecimal = allowDecimal;
 		}
 		
 		/**
