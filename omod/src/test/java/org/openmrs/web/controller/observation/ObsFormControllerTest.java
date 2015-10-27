@@ -21,7 +21,7 @@ import org.openmrs.Obs;
 import org.openmrs.Person;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -30,7 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Test the methods on the {@link org.openmrs.web.controller.observation.ObsFormController}
  */
-public class ObsFormControllerTest extends BaseWebContextSensitiveTest {
+public class ObsFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	/**
 	 * Tests that an "encounterId" parameter sets the obs.encounter attribute on an empty obs
