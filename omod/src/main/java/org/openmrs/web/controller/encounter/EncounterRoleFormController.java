@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +40,16 @@ import static org.springframework.util.StringUtils.hasText;
  */
 
 @Controller
-@RequestMapping("/admin/encounters")
 public class EncounterRoleFormController {
 	
 	/**
 	 * Logger for this class and subclasses
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
+	
+	public static final String MODULE_PATH = "/module/legacyui/";
+	
+	public static final String ENCOUNTERS_PATH = "admin/encounters/";
 	
 	/**
 	 * @param session       HttpSession for the user
@@ -56,7 +60,7 @@ public class EncounterRoleFormController {
 	 * @should raise an error if validation of encounter role fails
 	 * @should edit and save an existing encounter
 	 */
-	@RequestMapping(value = "/encounterRole.form", method = RequestMethod.POST, params = "saveEncounterRole")
+	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.POST, params = "saveEncounterRole")
 	public String save(HttpSession session, @ModelAttribute("encounterRole") EncounterRole encounterRole,
 	        BindingResult errors) throws Exception {
 		new EncounterRoleValidator().validate(encounterRole, errors);
@@ -78,7 +82,7 @@ public class EncounterRoleFormController {
 	 * @should retire an existing encounter
 	 * @should raise an error if retire reason is not filled
 	 */
-	@RequestMapping(value = "/encounterRole.form", method = RequestMethod.POST, params = "retire")
+	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.POST, params = "retire")
 	public String retire(HttpSession session, @ModelAttribute("encounterRole") EncounterRole encounterRole,
 	        BindingResult errors) throws Exception {
 		new EncounterRoleValidator().validate(encounterRole, errors);
@@ -102,7 +106,7 @@ public class EncounterRoleFormController {
 	 * @throws Exception
 	 * @should unretire an existing encounter
 	 */
-	@RequestMapping(value = "/encounterRole.form", method = RequestMethod.POST, params = "unretire")
+	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.POST, params = "unretire")
 	public String unretire(HttpSession session, @ModelAttribute("encounterRole") EncounterRole encounterRole,
 	        BindingResult errors) throws Exception {
 		new EncounterRoleValidator().validate(encounterRole, errors);
@@ -124,7 +128,7 @@ public class EncounterRoleFormController {
 	 * @should raise an error if retire reason is not filled
 	 * @should purge an existing encounter
 	 */
-	@RequestMapping(value = "/encounterRole.form", method = RequestMethod.POST, params = "purge")
+	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.POST, params = "purge")
 	public String purge(HttpSession session, @ModelAttribute("encounterRole") EncounterRole encounterRole,
 	        BindingResult errors) throws Exception {
 		new EncounterRoleValidator().validate(encounterRole, errors);
@@ -147,9 +151,9 @@ public class EncounterRoleFormController {
 		return encounterRole;
 	}
 	
-	@RequestMapping(value = "/encounterRole.form", method = RequestMethod.GET)
+	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.GET)
 	public String showForm() {
-		return "admin/encounters/encounterRoleForm";
+		return MODULE_PATH + ENCOUNTERS_PATH + "encounterRoleForm";
 	}
 	
 	/**
@@ -157,7 +161,7 @@ public class EncounterRoleFormController {
 	 * @return logical view for the encounter list
 	 * @should add list of encounter role objects to the model
 	 */
-	@RequestMapping(value = "/encounterRole.list", method = RequestMethod.GET)
+	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.list", method = RequestMethod.GET)
 	public String getEncounterList(ModelMap modelMap) {
 		List<EncounterRole> encounterRoles = new ArrayList<EncounterRole>();
 		if (Context.isAuthenticated()) {
@@ -165,7 +169,7 @@ public class EncounterRoleFormController {
 			encounterRoles = encounterService.getAllEncounterRoles(true);
 		}
 		modelMap.addAttribute("encounterRoles", encounterRoles);
-		return "admin/encounters/encounterRoleList";
+		return MODULE_PATH + ENCOUNTERS_PATH + "encounterRoleList";
 	}
 	
 	private String showEncounterList() {

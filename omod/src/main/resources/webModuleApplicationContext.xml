@@ -66,13 +66,12 @@
 				<prop key="admin/person/relationshipTypeViews.form">relationshipTypeViewForm</prop>
 				<prop key="admin/person/personAttributeType.form">personAttributeTypeForm</prop>
 				<prop key="admin/observations/personObs.form">personObsForm</prop>
-
+				-->
+				
 				<prop key="admin/encounters/encounter.form">encounterForm</prop>
 				<prop key="admin/encounters/encounterType.list">encounterTypeList</prop>
 				<prop key="admin/encounters/encounterType.form">encounterTypeForm</prop>
 				<prop key="admin/encounters/encounterDisplay.list">encounterDisplayController</prop>
-
-				-->
 				
 				<prop key="admin/locations/location.list">locationList</prop>
 				<prop key="admin/locations/location.form">locationForm</prop>
@@ -353,17 +352,18 @@
 		<property name="successView"><value>personAttributeType.list</value></property>
 		<property name="validator"><ref bean="personAttributeTypeValidator" /></property>
 	</bean>
-
+	-->
+	
 	<bean id="encounterForm" class="org.openmrs.web.controller.encounter.EncounterFormController">
 		<property name="commandName"><value>encounter</value></property>
-		<property name="formView"><value>/admin/encounters/encounterForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/encounters/encounterForm</value></property>
 		<property name="successView"><value>encounter.form</value></property>
 	</bean>
 
 	<bean id="encounterTypeList"
 		class="org.openmrs.web.controller.encounter.EncounterTypeListController">
 		<property name="commandName"><value>encounterTypeList</value></property>
-		<property name="formView"><value>/admin/encounters/encounterTypeList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/encounters/encounterTypeList</value></property>
 		<property name="successView"><value>encounterType.list</value></property>
 	</bean>
 
@@ -373,11 +373,11 @@
 		<property name="validator">
 			<ref bean="encounterTypeValidator" />
 		</property>
-		<property name="formView"><value>/admin/encounters/encounterTypeForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/encounters/encounterTypeForm</value></property>
 		<property name="successView"><value>encounterType.list</value></property>
 	</bean>
 
-	-->
+	
 	
 	<bean id="locationList" class="org.openmrs.web.controller.encounter.LocationListController">
 		<property name="commandName"><value>locationList</value></property>
@@ -394,11 +394,10 @@
 		<property name="successView"><value>location.list</value></property>
 	</bean>
 	
-	<!--
-
 	<bean id="encounterDisplayController"
 		class="org.openmrs.web.controller.encounter.EncounterDisplayController" />
-
+	
+	<!--
 	<bean id="conceptFormValidator" class="org.openmrs.web.controller.ConceptFormValidator" />
 	<bean id="conceptForm" class="org.openmrs.web.controller.ConceptFormController">
 		<property name="commandName"><value>command</value></property>
