@@ -56,6 +56,8 @@
 
                 <prop key="admin/modules/module.list">moduleListController</prop>
                 <prop key="admin/modules/moduleProperties.form">modulePropertiesFormController</prop>
+
+                <prop key="admin/observations/obs.form">obsForm</prop>
 				
 				<!--
 				<prop key="admin/person/person.form">personForm</prop>
@@ -63,8 +65,6 @@
 				<prop key="admin/person/relationshipType.form">relationshipTypeForm</prop>
 				<prop key="admin/person/relationshipTypeViews.form">relationshipTypeViewForm</prop>
 				<prop key="admin/person/personAttributeType.form">personAttributeTypeForm</prop>
-
-				<prop key="admin/observations/obs.form">obsForm</prop>
 				<prop key="admin/observations/personObs.form">personObsForm</prop>
 
 				<prop key="admin/encounters/encounter.form">encounterForm</prop>
@@ -307,15 +307,6 @@
 		<property name="successView"><value>scheduler.list</value></property>
 		<property name="validator">
 			<ref bean="taskValidator"/>
-		</property>
-	</bean>
-
-	<bean id="obsForm" class="org.openmrs.web.controller.observation.ObsFormController">
-		<property name="commandName"><value>obs</value></property>
-		<property name="formView"><value>/admin/observations/obsForm</value></property>
-		<property name="successView"><value>../encounters/encounter.form</value></property>
-		<property name="validator">
-			<ref bean="obsValidator" />
 		</property>
 	</bean>
 	
@@ -705,6 +696,15 @@
 		<property name="successView"><value>visitAttributeType.list</value></property>
 	</bean>
 	-->
+
+    <bean id="obsForm" class="org.openmrs.web.controller.observation.ObsFormController">
+        <property name="commandName"><value>obs</value></property>
+        <property name="formView"><value>/module/legacyui/admin/observations/obsForm</value></property>
+        <property name="successView"><value>../encounters/encounter.form</value></property>
+        <property name="validator">
+            <ref bean="obsValidator" />
+        </property>
+    </bean>
 	
 	<bean id="providerAttributeTypeList"
 		class="org.openmrs.web.controller.provider.ProviderAttributeTypeListController">
