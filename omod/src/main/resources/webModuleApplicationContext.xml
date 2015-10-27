@@ -106,14 +106,14 @@
 				<prop key="admin/scheduler/scheduler.form">schedulerFormController</prop>
 
 				<prop key="remotecommunication/postHl7.form">postHl7FormController</prop>
-				
+
 				<prop key="admin/programs/program.list">programList</prop>
 				<prop key="admin/programs/program.form">programForm</prop>
 				<prop key="admin/programs/conversion.list">stateConversionList</prop>
 				<prop key="admin/programs/conversion.form">stateConversionForm</prop>
 				<prop key="admin/programs/workflow.form">workflowFormController</prop>
 				<prop key="admin/programs/patientProgram.form">patientProgramFormController</prop>
-				
+
 				<prop key="admin/maintenance/globalProps.form">globalPropertyController</prop>
 				<prop key="admin/maintenance/serverLog.form">serverLogController</prop>
 				<prop key="admin/maintenance/implementationid.form">implementationIdFormController</prop>
@@ -526,7 +526,7 @@
 
 	<bean id="programList" class="org.openmrs.web.controller.program.ProgramListController">
 		<property name="commandName"><value>programList</value></property>
-		<property name="formView"><value>/admin/programs/programList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/programs/programList</value></property>
 		<property name="successView"><value>program.list</value></property>
 	</bean>
 	<bean id="programForm" class="org.openmrs.web.controller.program.ProgramFormController">
@@ -534,9 +534,10 @@
 		<property name="validator">
 			<ref bean="programValidator" />
 		</property>
-		<property name="formView"><value>/admin/programs/programForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/programs/programForm</value></property>
 		<property name="successView"><value>program.list</value></property>
 	</bean>
+ 
 	<bean id="patientProgramFormController"
 		class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
 		<property name="methodNameResolver">
@@ -546,17 +547,18 @@
 			<bean class="org.openmrs.web.controller.program.PatientProgramFormController" />
 		</property>
 	</bean>
+
 	<bean id="workflowFormController"
 		class="org.openmrs.web.controller.program.WorkflowFormController">
 		<property name="commandName"><value>workflow</value></property>
-		<property name="formView"><value>/admin/programs/workflowForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/programs/workflowForm</value></property>
 		<property name="successView"><value>program.list</value></property>
 	</bean>
 
 	<bean id="stateConversionList"
 		class="org.openmrs.web.controller.program.StateConversionListController">
 		<property name="commandName"><value>stateConversionList</value></property>
-		<property name="formView"><value>/admin/programs/conversionList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/programs/conversionList</value></property>
 		<property name="successView"><value>conversion.list</value></property>
 	</bean>
 	<bean id="stateConversionForm"
@@ -565,7 +567,7 @@
 		<property name="validator">
 			<ref bean="stateConversionValidator" />
 		</property>
-		<property name="formView"><value>/admin/programs/conversionForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/programs/conversionForm</value></property>
 		<property name="successView"><value>conversion.list</value></property>
 	</bean>
 
