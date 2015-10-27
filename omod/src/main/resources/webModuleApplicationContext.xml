@@ -108,10 +108,12 @@
 				<prop key="admin/forms/fieldType.form">fieldTypeForm</prop>
 				<prop key="admin/forms/fieldType.list">fieldTypeList</prop>
 				<prop key="admin/forms/auditField.form">auditFieldController</prop>
+				-->
 				
 				<prop key="admin/scheduler/scheduler.list">schedulerListController</prop>
 				<prop key="admin/scheduler/scheduler.form">schedulerFormController</prop>
 
+				<!--
 				<prop key="remotecommunication/postHl7.form">postHl7FormController</prop>
 				
 				<prop key="admin/programs/program.list">programList</prop>
@@ -293,23 +295,25 @@
 	<bean id="personFormEntryPortletController" class="org.openmrs.web.controller.PersonFormEntryPortletController" />
 	<bean id="addressLayoutPortletController" class="org.openmrs.web.controller.layout.AddressLayoutPortletController" />
 	<bean id="nameLayoutPortletController" class="org.openmrs.web.controller.layout.NameLayoutPortletController" />
+	-->
 
 	<bean id="schedulerListController"
 		class="org.openmrs.scheduler.web.controller.SchedulerListController">
 		<property name="commandName"><value>taskList</value></property>
-		<property name="formView"><value>/admin/scheduler/schedulerList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/scheduler/schedulerList</value></property>
 		<property name="successView"><value>scheduler.list</value></property>
 	</bean>
 	
 	<bean id="schedulerFormController" class="org.openmrs.scheduler.web.controller.SchedulerFormController">
 		<property name="commandName"><value>task</value></property>
-		<property name="formView"><value>/admin/scheduler/schedulerForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/scheduler/schedulerForm</value></property>
 		<property name="successView"><value>scheduler.list</value></property>
 		<property name="validator">
 			<ref bean="taskValidator"/>
 		</property>
 	</bean>
 	
+	<!--
 	<bean id="personObsForm" class="org.openmrs.web.controller.observation.PersonObsFormController">
 		<property name="commandName"><value>command</value></property>
 		<property name="formView"><value>/admin/observations/personObsForm</value></property>
