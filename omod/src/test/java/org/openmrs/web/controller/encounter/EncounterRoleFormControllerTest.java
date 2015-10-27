@@ -146,7 +146,7 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		executeDataSet(ENC_INITIAL_DATA_XML);
 		EncounterRoleFormController controller = new EncounterRoleFormController();
 		String viewName = controller.getEncounterList(modelMap);
-		Assert.assertEquals("admin/encounters/encounterRoleList", viewName);
+		Assert.assertEquals("/module/legacyui/admin/encounters/encounterRoleList", viewName);
 		Assert.assertEquals(3, ((List) modelMap.get("encounterRoles")).size());
 	}
 	
