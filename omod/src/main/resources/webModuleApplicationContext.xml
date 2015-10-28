@@ -606,19 +606,19 @@
 	<bean id="globalPropertyController"
 		class="org.openmrs.web.controller.maintenance.GlobalPropertyController">
 		<property name="commandName"><value>globalProps</value></property>
-		<property name="formView"><value>/admin/maintenance/globalPropsForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/maintenance/globalPropsForm</value></property>
 		<property name="successView"><value>globalProps.form</value></property>
 	</bean>
 	<bean id="serverLogController"
 		class="org.openmrs.web.controller.maintenance.ServerLogController">
 		<property name="commandName"><value>logLines</value></property>
-		<property name="formView"><value>/admin/maintenance/serverLog</value></property>
+		<property name="formView"><value>/module/legacyui/admin/maintenance/serverLog</value></property>
 		<property name="successView"><value>serverLog.form</value></property>
 	</bean>
 	<bean id="implementationIdFormController"
 		class="org.openmrs.web.controller.maintenance.ImplementationIdFormController">
 		<property name="commandName"><value>implId</value></property>
-		<property name="formView"><value>/admin/maintenance/implementationIdForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/maintenance/implementationIdForm</value></property>
 		<property name="successView"><value>implementationid.form</value></property>
 	</bean>
 	

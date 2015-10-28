@@ -27,6 +27,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.Task;
 import org.openmrs.scheduler.TaskDefinition;
+import org.openmrs.scheduler.web.controller.TaskHelper;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;

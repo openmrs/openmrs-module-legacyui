@@ -17,29 +17,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * This backs the maintenance/databaseChangesInfo.jsp page that lists off all changes that have been
- * run by liquibase
+ * This backs the maintenance/databaseChangesInfo.jsp page that lists off all
+ * changes that have been run by liquibase
  * 
  * @see DatabaseUpdater
  */
 @Controller
 public class DatabaseChangesInfoController {
-	
+
 	/**
-	 * Called for GET requests only on the databaseChangesInfo page. POST page requests are invalid
-	 * and ignored.
+	 * Called for GET requests only on the databaseChangesInfo page. POST page
+	 * requests are invalid and ignored.
 	 * 
-	 * @param model the key value pair that will be accessible from the jsp page
-	 * @throws Exception if there is trouble getting the database changes from liquibase
+	 * @param model
+	 *            the key value pair that will be accessible from the jsp page
+	 * @throws Exception
+	 *             if there is trouble getting the database changes from
+	 *             liquibase
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/admin/maintenance/databaseChangesInfo")
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/databaseChangesInfo")
 	public String showPage(ModelMap model) throws Exception {
-		model.addAttribute("databaseChanges", DatabaseUpdater.getDatabaseChanges());
-		model.addAttribute("updateLogFile", OpenmrsUtil.getApplicationDataDirectory()
-		        + DatabaseUpdater.DATABASE_UPDATES_LOG_FILE);
-		
-		// where Spring can find the jsp.  /WEB-INF/view is prepended, and ".jsp" is appended
-		return "/admin/maintenance/databaseChangesInfo";
+		model.addAttribute("databaseChanges",
+				DatabaseUpdater.getDatabaseChanges());
+		model.addAttribute("updateLogFile",
+				OpenmrsUtil.getApplicationDataDirectory()
+						+ DatabaseUpdater.DATABASE_UPDATES_LOG_FILE);
+
+		// where Spring can find the jsp. /WEB-INF/view is prepended, and ".jsp"
+		// is appended
+		return "/module/legacyui/admin/maintenance/databaseChangesInfo";
 	}
-	
+
 }

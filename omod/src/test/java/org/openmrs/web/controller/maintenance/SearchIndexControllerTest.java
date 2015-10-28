@@ -42,7 +42,7 @@ public class SearchIndexControllerTest  extends BaseModuleWebContextSensitiveTes
     @Test
     public void showPage_shouldReturnTheSearchIndexView() throws Exception {
         String viewName = controller.showPage();
-        assertEquals("admin/maintenance/searchIndex", viewName);
+        assertEquals("/module/legacyui/admin/maintenance/searchIndex", viewName);
     }
 
     /**
