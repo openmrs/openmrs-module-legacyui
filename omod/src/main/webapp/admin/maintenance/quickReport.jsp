@@ -44,7 +44,7 @@
 
 </script>
 
-<form method="get" action="${pageContext.request.contextPath}/quickReportServlet">
+<form method="get" action="${pageContext.request.contextPath}/moduleServlet/legacyui/quickReportServlet">
 	<table border="0" cellspacing="2" cellpadding="2" id="reportOptions">
 		<tr id="reportType">
 			<td><openmrs:message code="QuickReport.type"/></td>

@@ -279,8 +279,48 @@
 				DWRProviderService.findProvider(String phrase, boolean includeVoided, Integer start, Integer length);
 			]]>
 		</signatures>
-	  	
 	</dwr>
+	
+	<servlet>
+		<servlet-name>showGraphServlet</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.ShowGraphServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>displayChartServlet</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.DisplayChartServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>loginServlet</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.LoginServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>logoutServlet</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.LogoutServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>hl7InQueueProcessorServlet</servlet-name>
+		<servlet-class>org.openmrs.hl7.web.HL7InQueueProcessorServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>downloadDictionaryServlet</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.DownloadDictionaryServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>quickReportServlet</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.QuickReportServlet</servlet-class>
+	</servlet>
+	<servlet>
+        <servlet-name>complexObsServlet</servlet-name>
+        <servlet-class>org.openmrs.web.servlet.ComplexObsServlet</servlet-class>
+    </servlet>
+    <servlet>
+		<servlet-name>sampleFlowsheetServlet</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.SampleFlowsheetServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>conceptRedirectServlet</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.ConceptRedirectServlet</servlet-class>
+	</servlet>
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.parent.artifactId}. -->

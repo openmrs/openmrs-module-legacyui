@@ -30,7 +30,7 @@ public class WebHandlerUtils {
 	 *         done by the ComplexObsServlet)
 	 */
 	public static String getHyperlink(Obs obs, String view) {
-		return "/" + WebConstants.WEBAPP_NAME + "/complexObsServlet?obsId=" + obs.getObsId() + "&view=" + view;
+		return "/" + WebConstants.WEBAPP_NAME + "/moduleServlet/legacyui/complexObsServlet?obsId=" + obs.getObsId() + "&view=" + view;
 	}
 	
 }
