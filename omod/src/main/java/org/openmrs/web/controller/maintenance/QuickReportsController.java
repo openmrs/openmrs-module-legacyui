@@ -24,32 +24,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Display the current users logged in the system.
+ * Display the quick reports in the system.
  *
- * @see CurrentUsers
- * @see LoginServlet
  * @see org.openmrs.web.SessionListener
  */
 @Controller
-public class CurrentUsersController {
+public class QuickReportsController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
+	public static final String QUICK_REPORTS_PATH = "admin/maintenance/quickReport";
+	public static final String QUICK_REPORTS_VIEW_PATH = "/module/legacyui/admin/maintenance/quickReport";
+	
 	/**
-	 * Lists current users.
+	 * Lists quick reports.
 	 *
 	 * @param request
 	 * @param modelMap
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/currentUsers.list")
-	public String listCurrentUsers(HttpServletRequest request, ModelMap modelMap) {
-		log.debug("List current users");
-		if (!Context.hasPrivilege(PrivilegeConstants.GET_USERS)) {
-			throw new APIAuthenticationException("Privilege required: " + PrivilegeConstants.GET_USERS);
-		}
-		
-		modelMap.put("currentUsers", CurrentUsers.getCurrentUsernames(request.getSession()));
-		return "/module/legacyui/admin/maintenance/currentUsers";
+	@RequestMapping(method = RequestMethod.GET, value = QUICK_REPORTS_PATH)
+	public String showQuickReports(HttpServletRequest request, ModelMap modelMap) {
+		log.debug("Lists quick reports");
+		return QUICK_REPORTS_VIEW_PATH;
 	}
 	
 }

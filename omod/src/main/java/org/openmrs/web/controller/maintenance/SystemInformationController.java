@@ -16,31 +16,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * This backs the maintenance/systemInfo.jsp page that lists off all the system information.
+ * This backs the maintenance/systemInfo.jsp page that lists off all the system
+ * information.
  */
 @Controller
 public class SystemInformationController {
-	
+
 	/**
 	 * Default constructor used by spring MVC
 	 */
 	public SystemInformationController() {
 	}
-	
+
 	/**
 	 * Called for GET requests only on the systemInfo page.
 	 * 
-	 * @param model map
+	 * @param model
+	 *            map
 	 * @should add openmrs information attribute to the model map
 	 * @should add java runtime information attribute to the model map
 	 * @should add database information attribute to the model map
 	 * @should add memory information attribute to the model map
 	 * @should add module information attribute to the model map
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/admin/maintenance/systemInfo")
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/systemInfo")
 	public String showPage(ModelMap model) {
-		model.addAttribute("systemInfo", Context.getAdministrationService().getSystemInformation());
-		return "/admin/maintenance/systemInfo";
+		model.addAttribute("systemInfo", Context.getAdministrationService()
+				.getSystemInformation());
+		return "/module/legacyui/admin/maintenance/systemInfo";
 	}
-	
+
 }

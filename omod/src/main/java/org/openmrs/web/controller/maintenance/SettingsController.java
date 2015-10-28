@@ -45,7 +45,8 @@ public class SettingsController {
 	
 	protected final Logger log = Logger.getLogger(getClass());
 	
-	public static final String SETTINGS_PATH = "/admin/maintenance/settings";
+	public static final String SETTINGS_PATH = "admin/maintenance/settings";
+	public static final String SETTINGS_VIEW_PATH = "/module/legacyui/admin/maintenance/settings";
 	
 	public static final String SETTINGS_FORM = "settingsForm";
 	
@@ -54,7 +55,8 @@ public class SettingsController {
 	public static final String SECTIONS = "sections";
 	
 	@RequestMapping(value = SETTINGS_PATH, method = RequestMethod.GET)
-	public void showSettings() {
+	public String showSettings() {
+		return SETTINGS_VIEW_PATH;
 	}
 	
 	@RequestMapping(value = SETTINGS_PATH, method = RequestMethod.POST)

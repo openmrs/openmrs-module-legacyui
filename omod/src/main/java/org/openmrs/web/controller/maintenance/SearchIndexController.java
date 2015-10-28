@@ -9,6 +9,9 @@
  */
 package org.openmrs.web.controller.maintenance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
@@ -17,45 +20,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 /**
  * A controller for the search index
  */
 @Controller
 public class SearchIndexController {
 
-    protected final Log log = LogFactory.getLog(getClass());
+	protected final Log log = LogFactory.getLog(getClass());
 
-    /**
-     * @should return the search index view
-     * @return the searchIndex view
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/searchIndex")
-    public String showPage() {
-        return "admin/maintenance/searchIndex";
-    }
+	/**
+	 * @should return the search index view
+	 * @return the searchIndex view
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/searchIndex")
+	public String showPage() {
+		return "/module/legacyui/admin/maintenance/searchIndex";
+	}
 
+	/**
+	 * @should return true for success if the update does not fail
+	 * @should return false for success if a RuntimeException is thrown
+	 * @return a marker indicating success
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/rebuildSearchIndex")
+	public @ResponseBody Map<String, Object> rebuildSearchIndex() {
+		boolean success = true;
+		Map<String, Object> results = new HashMap<String, Object>();
+		log.debug("rebuilding search index");
+		try {
+			Context.updateSearchIndex();
+		} catch (RuntimeException e) {
+			success = false;
+		}
 
-    /**
-     * @should return true for success if the update does not fail
-     * @should return false for success if a RuntimeException is thrown
-     * @return a marker indicating success
-     */
-    @RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/rebuildSearchIndex")
-    public @ResponseBody Map<String, Object> rebuildSearchIndex() {
-        boolean success = true;
-        Map<String, Object> results = new HashMap<String, Object>();
-        log.debug("rebuilding search index");
-        try {
-            Context.updateSearchIndex();
-        } catch (RuntimeException e) {
-            success = false;
-        }
-
-        results.put("success", success);
-        return results;
-    }
+		results.put("success", success);
+		return results;
+	}
 }
