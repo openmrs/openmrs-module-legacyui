@@ -60,7 +60,7 @@ public class SettingsController {
 	}
 	
 	@RequestMapping(value = SETTINGS_PATH, method = RequestMethod.POST)
-	public void updateSettings(@ModelAttribute(SETTINGS_FORM) SettingsForm settingsForm, Errors errors,
+	public String updateSettings(@ModelAttribute(SETTINGS_FORM) SettingsForm settingsForm, Errors errors,
 	        HttpServletRequest request, HttpSession session) {
 		
 		List<GlobalProperty> toSave = new ArrayList<GlobalProperty>();
@@ -113,7 +113,7 @@ public class SettingsController {
 			
 			OpenmrsUtil.setupLogAppenders();
 		}
-		
+		return SETTINGS_VIEW_PATH;
 	}
 	
 	@ModelAttribute(SECTIONS)
