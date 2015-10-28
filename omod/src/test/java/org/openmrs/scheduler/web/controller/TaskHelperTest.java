@@ -9,6 +9,10 @@
  */
 package org.openmrs.scheduler.web.controller;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeoutException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,13 +20,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeoutException;
-
-public class TaskHelperTest extends BaseWebContextSensitiveTest {
+public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 	
 	private static final String INITIAL_SCHEDULER_TASK_CONFIG_XML = "org/openmrs/web/include/TaskHelperTest.xml";
 	
