@@ -471,19 +471,19 @@
 
 	<bean id="formList" class="org.openmrs.web.controller.form.FormListController">
 		<property name="commandName"><value>formList</value></property>
-		<property name="formView"><value>/admin/forms/formList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/forms/formList</value></property>
 		<property name="successView"><value>form.list</value></property>
 	</bean>
 
 	<bean id="formSchemaDesignForm" class="org.openmrs.web.controller.form.FormFormController">
 		<property name="commandName"><value>form</value></property>
-		<property name="formView"><value>/admin/forms/formSchemaDesignForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/forms/formSchemaDesignForm</value></property>
 		<property name="successView"><value>form.list</value></property>
 	</bean>
 
 	<bean id="formEditForm" class="org.openmrs.web.controller.form.FormFormController">
 		<property name="commandName"><value>form</value></property>
-		<property name="formView"><value>/admin/forms/formEditForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/forms/formEditForm</value></property>
 		<property name="validator">
 			<ref bean="formEditValidator" />
 		</property>
@@ -492,7 +492,7 @@
 
 	<bean id="fieldList" class="org.openmrs.web.controller.form.FieldListController">
 		<property name="commandName"><value>fieldList</value></property>
-		<property name="formView"><value>/admin/forms/fieldList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/forms/fieldList</value></property>
 		<property name="successView"><value>field.list</value></property>
 	</bean>
 
@@ -501,17 +501,17 @@
 		<property name="validator">
 			<ref bean="fieldValidator" />
 		</property>
-		<property name="formView"><value>/admin/forms/fieldForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/forms/fieldForm</value></property>
 		<property name="successView"><value>field.list</value></property>
 	</bean>
 	<bean id="auditFieldController" class="org.openmrs.web.controller.form.AuditFieldController">
-		<property name="formView"><value>/admin/forms/auditFieldForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/forms/auditFieldForm</value></property>
 		<property name="successView"><value>auditField.form</value></property>
 	</bean>
 
 	<bean id="fieldTypeList" class="org.openmrs.web.controller.form.FieldTypeListController">
 		<property name="commandName"><value>fieldTypeList</value></property>
-		<property name="formView"><value>/admin/forms/fieldTypeList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/forms/fieldTypeList</value></property>
 		<property name="successView"><value>fieldType.list</value></property>
 	</bean>
 
@@ -520,7 +520,7 @@
 		<property name="validator">
 			<ref bean="fieldTypeValidator" />
 		</property>
-		<property name="formView"><value>/admin/forms/fieldTypeForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/forms/fieldTypeForm</value></property>
 		<property name="successView"><value>fieldType.list</value></property>
 	</bean>
 
