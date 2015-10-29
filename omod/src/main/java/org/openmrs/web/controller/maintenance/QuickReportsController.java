@@ -30,12 +30,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class QuickReportsController {
-	
+
 	protected final Log log = LogFactory.getLog(getClass());
-	
+
 	public static final String QUICK_REPORTS_PATH = "admin/maintenance/quickReport";
 	public static final String QUICK_REPORTS_VIEW_PATH = "/module/legacyui/admin/maintenance/quickReport";
-	
+
 	/**
 	 * Lists quick reports.
 	 *
@@ -47,5 +47,5 @@ public class QuickReportsController {
 		log.debug("Lists quick reports");
 		return QUICK_REPORTS_VIEW_PATH;
 	}
-	
+
 }

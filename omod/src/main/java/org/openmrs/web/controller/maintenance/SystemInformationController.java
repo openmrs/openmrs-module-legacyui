@@ -41,8 +41,7 @@ public class SystemInformationController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/systemInfo")
 	public String showPage(ModelMap model) {
-		model.addAttribute("systemInfo", Context.getAdministrationService()
-				.getSystemInformation());
+		model.addAttribute("systemInfo", Context.getAdministrationService().getSystemInformation());
 		return "/module/legacyui/admin/maintenance/systemInfo";
 	}
 

@@ -32,9 +32,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class CurrentUsersController {
-	
+
 	protected final Log log = LogFactory.getLog(getClass());
-	
+
 	/**
 	 * Lists current users.
 	 *
@@ -47,9 +47,9 @@ public class CurrentUsersController {
 		if (!Context.hasPrivilege(PrivilegeConstants.GET_USERS)) {
 			throw new APIAuthenticationException("Privilege required: " + PrivilegeConstants.GET_USERS);
 		}
-		
+
 		modelMap.put("currentUsers", CurrentUsers.getCurrentUsernames(request.getSession()));
 		return "/module/legacyui/admin/maintenance/currentUsers";
 	}
-	
+
 }
