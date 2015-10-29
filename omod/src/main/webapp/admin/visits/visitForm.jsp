@@ -327,7 +327,7 @@ $j(document).ready( function() {
 <br/>
 
 <input type="submit" value='<openmrs:message code="general.save" />' /></td>
-<c:set var="cancelUrl" value="${pageContext.request.contextPath}/admin" scope="page"></c:set>
+<c:set var="cancelUrl" value="${pageContext.request.contextPath}/admin/index.htm" scope="page"></c:set>
 <c:if test="${not empty param.patientId}">
 	<c:set var="cancelUrl" value="${pageContext.request.contextPath}/patientDashboard.form?patientId=${param.patientId}" />
 </c:if>

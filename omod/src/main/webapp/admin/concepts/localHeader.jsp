@@ -1,10 +1,10 @@
 <ul id="menu">
 	<li class="first">
-		<a href="${pageContext.request.contextPath}/admin"><openmrs:message code="admin.title.short"/></a>
+		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Manage Concepts,View Concepts">
 		<li <c:if test='<%= request.getRequestURI().contains("concepts/index") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/dictionary">
+			<a href="${pageContext.request.contextPath}/dictionary/index.htm">
 				<openmrs:message code="Concept.manage"/>
 			</a>
 		</li>

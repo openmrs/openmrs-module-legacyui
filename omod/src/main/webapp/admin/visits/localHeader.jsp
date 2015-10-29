@@ -1,6 +1,6 @@
 <ul id="menu">
 	<li class="first">
-		<a href="${pageContext.request.contextPath}/admin"><openmrs:message code="admin.title.short"/></a>
+		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Manage Visit Types,View Visit Types">
 		<li <c:if test='<%= request.getRequestURI().contains("visits/visitTypeList.jsp") %>'>class="active"</c:if>>
