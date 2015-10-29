@@ -681,7 +681,6 @@
 	<!-- NAME LAYOUT SUPPORT -->
 	
 	<!-- specialTokens ordered so that the subset string 'familyName' is after 'familyName*'-->
-	<!--
 	<bean id="nameSupport" class="org.openmrs.layout.name.NameSupport">
 		<property name="defaultLayoutFormat"><value>short</value></property>
 		<property name="layoutTemplates">
@@ -849,7 +848,7 @@
 		</property>
 	</bean>
 	
-	<bean id="nameSupportWeb" class="org.openmrs.layout.web.name.NameSupport" parent="nameSupport">
+	<bean id="nameSupportWeb" class="org.openmrs.layout.name.NameSupport" parent="nameSupport">
 			<property name="layoutTemplates">
 			<list>
 				<ref bean="nameTemplateSpainWeb" />
@@ -861,15 +860,15 @@
 		</property>
 	</bean>
 	
-	<bean id="nameTemplateSpainWeb" class="org.openmrs.layout.web.name.NameTemplate" parent="nameTemplateSpain" />
+	<bean id="nameTemplateSpainWeb" class="org.openmrs.layout.name.NameTemplate" parent="nameTemplateSpain" />
 	
-	<bean id="nameTemplateLatinAmericaWeb" class="org.openmrs.layout.web.name.NameTemplate" parent="nameTemplateLatinAmerica" />
+	<bean id="nameTemplateLatinAmericaWeb" class="org.openmrs.layout.name.NameTemplate" parent="nameTemplateLatinAmerica" />
 	
-	<bean id="nameTemplateGivenFamilyWeb" class="org.openmrs.layout.web.name.NameTemplate" parent="nameTemplateGivenFamily" />
+	<bean id="nameTemplateGivenFamilyWeb" class="org.openmrs.layout.name.NameTemplate" parent="nameTemplateGivenFamily" />
 	
-	<bean id="nameTemplateShortWeb" class="org.openmrs.layout.web.name.NameTemplate" parent="nameTemplateShort" />
+	<bean id="nameTemplateShortWeb" class="org.openmrs.layout.name.NameTemplate" parent="nameTemplateShort" />
 	
-	<bean id="nameTemplateLongWeb" class="org.openmrs.layout.web.name.NameTemplate" parent="nameTemplateLong" />
+	<bean id="nameTemplateLongWeb" class="org.openmrs.layout.name.NameTemplate" parent="nameTemplateLong" />
 	
     <bean parent="obsServiceTarget" >
         <property name="handlers">
@@ -907,8 +906,6 @@
 	        </list>
 	    </property>
 	</bean>
-	
-	-->
 	
 	<bean id="parentTheme" class="org.openmrs.web.StaticThemeSource">
 		<property name="themeName"><value>/themes/defaults</value></property>
