@@ -6,7 +6,7 @@
        xmlns:jee="http://www.springframework.org/schema/jee"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:util="http://www.springframework.org/schema/util" 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
   		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
   		    http://www.springframework.org/schema/context
@@ -129,11 +129,11 @@
 				
 				<prop key="admin/provider/providerAttributeType.list">providerAttributeTypeList</prop>
 				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>	
-				
+
  			</props>
 		</property>
 	</bean>	
-
+ 	 
 	<!-- ** Patient ** -->
 	<bean id="patientForm" class="org.openmrs.web.controller.patient.PatientFormController">
 		<property name="commandName"><value>patient</value></property>
@@ -372,17 +372,17 @@
 		<property name="validator">
 			<ref bean="conceptFormValidator" />
 		</property>
-		<property name="formView"><value>/dictionary/conceptForm</value></property>
+		<property name="formView"><value>/module/legacyui/dictionary/conceptForm</value></property>
 		<property name="successView"><value>concept.form</value></property>
 	</bean>
 	<bean id="conceptStatsForm" class="org.openmrs.web.controller.ConceptStatsFormController">
 		<property name="commandName"><value>concept</value></property>
-		<property name="formView"><value>/dictionary/conceptStatsForm</value></property>
+		<property name="formView"><value>/module/legacyui/dictionary/conceptStatsForm</value></property>
 		<property name="successView"><value>conceptStats.form</value></property>
 	</bean>
 	<bean id="conceptView" class="org.openmrs.web.controller.ConceptFormController">
 		<property name="commandName"><value>command</value></property>
-		<property name="formView"><value>/dictionary/concept</value></property>
+		<property name="formView"><value>/module/legacyui/dictionary/concept</value></property>
 		<property name="successView"><value>concept.htm</value></property>
 	</bean>
 
