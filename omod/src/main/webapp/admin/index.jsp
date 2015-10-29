@@ -1,10 +1,10 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="View Administration Functions" otherwise="/login.htm" redirect="/admin/index.htm" />
 
 <openmrs:message var="pageTitle" code="admin.titlebar" scope="page"/>
 <openmrs:message var="pageTitle" code="admin.title" scope="page"/>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 
 <style>
 	.adminMenuList #menu li {
@@ -177,4 +177,4 @@
 	</tbody>
 </table>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

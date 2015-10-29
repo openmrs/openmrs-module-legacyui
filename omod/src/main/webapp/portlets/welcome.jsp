@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <openmrs:globalProperty var="applicationName" key="application.name" defaultValue="OpenMRS"/>
 <c:choose>
 	<c:when test="${model.authenticatedUser != null}">
