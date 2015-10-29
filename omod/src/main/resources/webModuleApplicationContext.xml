@@ -21,17 +21,9 @@
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<!-- Add here beans related to the web context -->
-
-	 
-	<!-- Annotation based controllers -->
-	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-	
-<!-- The default place to look for controllers that have annotations -->
-	<context:component-scan base-package="org.openmrs.web.controller" />
 	
 	<bean id="legacyUiUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-	
-	<property name="order"><value>99</value></property>
+		<property name="order"><value>55</value></property>
 		<property name="mappings">
 			<props>
 				<prop key="admin/patients/patient.form">patientForm</prop>
