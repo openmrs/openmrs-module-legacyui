@@ -1,8 +1,8 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Concept Reference Terms" otherwise="/login.htm" redirect="/admin/concepts/conceptReferenceTerms.htm" />
 
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
 <openmrs:htmlInclude file="/dwr/interface/DWRConceptService.js"/>
@@ -46,4 +46,4 @@
 	</div>
 </div>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

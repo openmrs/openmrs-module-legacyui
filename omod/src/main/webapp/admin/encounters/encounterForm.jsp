@@ -1,13 +1,13 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="View Encounters" otherwise="/login.htm" redirect="/admin/encounters/encounter.form" />
 
 <c:choose>
 <c:when test="${param.inPopup}">
-<%@ include file="/WEB-INF/template/headerMinimal.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/headerMinimal.jsp" %>
 </c:when>
 <c:otherwise>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 </c:otherwise>
 </c:choose>
@@ -577,4 +577,4 @@
 	
 </c:if>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

@@ -1,8 +1,8 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Forms" otherwise="/login.htm" redirect="/admin/forms/auditField.form" />
 
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
 <script language="javascript">
@@ -17,4 +17,4 @@
         <input type="submit" value="<openmrs:message code="FormField.auditButton"/>" onclick="return warningMessage();" />
 </form>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>                                                     
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>                                                     

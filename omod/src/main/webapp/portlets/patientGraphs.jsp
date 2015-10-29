@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <openmrs:htmlInclude file="/scripts/flot/jquery.flot.js" />
 <openmrs:htmlInclude file="/scripts/flot/jquery.flot.multiple.threshold.js"/> 
 

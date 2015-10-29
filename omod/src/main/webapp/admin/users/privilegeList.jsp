@@ -1,9 +1,9 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Privileges" otherwise="/login.htm" redirect="/admin/users/privilege.list" />
 <openmrs:message var="pageTitle" code="Privilege.manage.titlebar" scope="page"/>	
 	
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
 <h2><openmrs:message code="Privilege.manage.title"/></h2>
@@ -41,4 +41,4 @@
 	<input type="submit" value="<openmrs:message code="Privilege.delete"/>">
 </form>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

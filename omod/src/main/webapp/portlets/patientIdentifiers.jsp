@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <%--
 showIfSet=true/false (defaults to true)
 	Whether or not to show important ids that are set

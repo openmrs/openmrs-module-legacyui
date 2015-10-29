@@ -1,9 +1,9 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Alerts" otherwise="/login.htm" redirect="/admin/users/alert.list" />
 <openmrs:message var="pageTitle" code="Alert.manage.titlebar" scope="page"/>
 <openmrs:message var="pageTitle" code="Alert.manage.title" scope="page"/>	
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
 <h2><openmrs:message code="Alert.manage.header"/></h2>	
@@ -51,4 +51,4 @@
 	<input type="submit" value="<openmrs:message code="Alert.expire"/>">
 </form>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="View Patients" otherwise="/login.htm" redirect="/patientDashboard.form" />
 
@@ -12,7 +12,7 @@
 <c:if test="${!enablePatientName}">
 	<openmrs:message var="pageTitle" code="patientDashboard.title" scope="page"/>
 </c:if>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 
 <%-- Files from encounter and graph portlets being included near header to improve page loading speed
      If those tabs/portlets are no longer using them, they should be removed from here --%>
@@ -250,4 +250,4 @@
 	
 </div>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

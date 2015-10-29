@@ -1,8 +1,8 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Locations" otherwise="/login.htm" redirect="/admin/locations/location.form" />
 <openmrs:message var="pageTitle" code="location.title" scope="page"/>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
 <h2><openmrs:message code="Location.title"/></h2>
@@ -157,4 +157,4 @@
 
 <openmrs:extensionPoint pointId="org.openmrs.admin.locations.locationForm.footer" type="html" parameters="locationId=${location.locationId}" />
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

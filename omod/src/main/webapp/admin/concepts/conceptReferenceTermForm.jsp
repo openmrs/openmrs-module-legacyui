@@ -1,10 +1,10 @@
 <%@page import="java.util.Locale" %>
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Concept Reference Terms" otherwise="/login.htm"
                  redirect="/admin/concepts/conceptReferenceTerm.form"/>
 
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 <openmrs:htmlInclude file="/scripts/calendar/calendar.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRConceptService.js" />
@@ -422,4 +422,4 @@ $j(document).ready( function() {
 </table>
 </c:if>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

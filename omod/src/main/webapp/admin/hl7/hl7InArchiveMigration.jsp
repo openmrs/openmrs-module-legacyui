@@ -1,9 +1,9 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp"%>
 
 <openmrs:require privilege="Manage HL7 Messages" 
 	otherwise="/login.htm" redirect="/admin/hl7/hl7InArchiveMigration.htm" />
 
-<%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
 <openmrs:htmlInclude file="/scripts/hl7_in_archive.js"/>
@@ -76,4 +76,4 @@
 	<span id="migration_status" style="display:none">${migration_status}</span>
 </div>
 
-<%@ include file="/WEB-INF/template/footer.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp"%>

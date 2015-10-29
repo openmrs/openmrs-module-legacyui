@@ -1,8 +1,8 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp"%>
 
 <openmrs:require privilege="Edit Concepts" otherwise="/login.htm" redirect="/admin/concepts/conceptDrug.list" />
 
-<%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
 <openmrs:htmlInclude file="/scripts/dojoConfig.js" />
@@ -49,4 +49,4 @@
 <br />
 <br />
 
-<%@ include file="/WEB-INF/template/footer.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp"%>

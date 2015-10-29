@@ -1,9 +1,9 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Address Templates" otherwise="/login.htm"
                  redirect="/admin/locations/addressTemplate.form"/>
 
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 <%
 	pageContext.setAttribute("addrTmpl", session.getAttribute(WebConstants.OPENMRS_ADDR_TMPL));
@@ -51,4 +51,4 @@
 
 <openmrs:extensionPoint pointId="org.openmrs.admin.locations.addressTemplateList.footer" type="html"/>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

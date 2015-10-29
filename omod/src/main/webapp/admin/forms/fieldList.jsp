@@ -1,8 +1,8 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp"%>
 
 <openmrs:require privilege="View Forms" otherwise="/login.htm" redirect="/admin/forms/field.list" />
 
-<%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
 <openmrs:htmlInclude file="/scripts/dojo/dojo.js" />
@@ -41,4 +41,4 @@
 	</div>
 </div>
 
-<%@ include file="/WEB-INF/template/footer.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp"%>

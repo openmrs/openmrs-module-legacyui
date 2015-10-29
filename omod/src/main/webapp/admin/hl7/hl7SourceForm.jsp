@@ -1,8 +1,8 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Update HL7 Source" otherwise="/login.htm" redirect="/admin/hl7/hl7Source.form" />
 
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 <script type="text/javascript">
 
@@ -90,4 +90,4 @@
 
 <openmrs:extensionPoint pointId="org.openmrs.admin.hl7.hl7SourceForm.footer" type="html" parameters="id=${hl7Source.id}" />
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

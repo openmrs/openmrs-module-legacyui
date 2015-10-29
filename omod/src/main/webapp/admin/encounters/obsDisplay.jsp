@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <c:set var="obsList" value="${requestScope.obsList}" />
 <c:set var="field" value="${requestScope.field}" />
 <c:set var="level" value="${requestScope.level}" />

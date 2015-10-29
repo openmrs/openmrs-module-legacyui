@@ -1,10 +1,10 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp"%>
 
 <openmrs:require privilege="Edit Users" otherwise="/login.htm"
 	redirect="/admin/users/users.list" />
 <openmrs:message var="pageTitle" code="User.manage.titlebar" scope="page" />
 
-<%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
 <style type="text/css">
@@ -133,4 +133,4 @@
   document.forms[0].elements[0].focus();
 </script>
 
-<%@ include file="/WEB-INF/template/footer.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp"%>

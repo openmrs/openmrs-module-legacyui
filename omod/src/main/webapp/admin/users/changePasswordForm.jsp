@@ -1,7 +1,7 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:htmlInclude file="/scripts/validation.js" />
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 
 	<c:if test="${user.retired}">
 		<div id="userFormRetired" class="retiredMessage">
@@ -73,4 +73,4 @@
 	 document.forms[0].elements[0].focus();
 	</script>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

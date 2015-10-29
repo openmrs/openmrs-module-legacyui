@@ -1,9 +1,9 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp"%>
 
 <openmrs:require privilege="View HL7 Inbound Archive"
 	otherwise="/login.htm" redirect="/admin/hl7/hl7InArchives.htm" />
 
-<%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
 <openmrs:htmlInclude file="/scripts/jquery/highlight/jquery.highlight-3.js" />
@@ -106,4 +106,4 @@
 	<tbody></tbody>
 </table>
 
-<%@ include file="/WEB-INF/template/footer.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp"%>

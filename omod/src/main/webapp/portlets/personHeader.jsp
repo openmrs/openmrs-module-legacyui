@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <div id="personHeader" class="boxHeader">
 	<div id="patientHeaderPatientName"><c:out value="${model.person.personName}" /></div>

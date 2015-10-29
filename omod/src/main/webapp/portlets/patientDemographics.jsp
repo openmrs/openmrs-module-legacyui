@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <div class="boxHeader${model.patientVariation}"><openmrs:message code="Patient.title"/></div>
 <div class="box${model.patientVariation}">

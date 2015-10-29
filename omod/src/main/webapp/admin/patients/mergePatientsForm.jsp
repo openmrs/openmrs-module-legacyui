@@ -1,13 +1,13 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Edit Patients" otherwise="/login.htm" redirect="/admin/patients/mergePatients.form"/>
 
 <c:choose>
 <c:when test="${modalMode}">
-<%@ include file="/WEB-INF/template/headerMinimal.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/headerMinimal.jsp" %>
 </c:when>
 <c:otherwise>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 </c:otherwise>
 </c:choose>
@@ -800,9 +800,9 @@ function toggleUnvoidedOrderErrorMessage(prefPatientId){
 
 <c:choose>
 <c:when test="${modalMode}">
-<%@ include file="/WEB-INF/template/footerMinimal.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footerMinimal.jsp" %>
 </c:when>
 <c:otherwise>
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>
 </c:otherwise>
 </c:choose>
