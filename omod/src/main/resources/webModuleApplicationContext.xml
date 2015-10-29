@@ -52,7 +52,6 @@
 				<prop key="admin/person/addPerson.htm">addPerson</prop>
 				
 				<prop key="**/*.portlet">portletController</prop>
-				<prop key="**/*.htm">springController</prop>
 
                 <prop key="admin/modules/module.list">moduleListController</prop>
                 <prop key="admin/modules/moduleProperties.form">modulePropertiesFormController</prop>
@@ -264,8 +263,6 @@
 	<!-- ** /Add Person ** -->
 	
 	<bean id="portletController" class="org.openmrs.web.controller.PortletController" />
-	<bean id="springController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
-	
 	
 	<bean id="fieldGenController" class="org.openmrs.web.controller.FieldGenController" />
 
