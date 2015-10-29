@@ -26,6 +26,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.ProgramWorkflowEditor;
 import org.openmrs.propertyeditor.ProgramWorkflowStateEditor;
+import org.openmrs.validator.StateConversionValidator;
 import org.openmrs.web.WebConstants;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
