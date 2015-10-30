@@ -47,7 +47,7 @@ public class Hl7InQueueListController {
 	@RequestMapping("/admin/hl7/hl7InQueuePending.htm")
 	public String listPendingHL7s(ModelMap modelMap) {
 		modelMap.addAttribute("messageState", HL7Constants.HL7_STATUS_PENDING);
-		return "/admin/hl7/hl7InQueueList";
+		return "/module/legacyui/admin/hl7/hl7InQueueList";
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class Hl7InQueueListController {
 	@RequestMapping("/admin/hl7/hl7InQueueHeld.htm")
 	public String listSuspendedHL7s(ModelMap modelMap) {
 		modelMap.addAttribute("messageState", HL7Constants.HL7_STATUS_DELETED);
-		return "/admin/hl7/hl7OnHoldList";
+		return "module/legacyui/admin/hl7/hl7OnHoldList";
 	}
 	
 	/**

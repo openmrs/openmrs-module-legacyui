@@ -44,7 +44,7 @@ public class Hl7InErrorListController {
 	 */
 	@RequestMapping("/admin/hl7/hl7InError.htm")
 	public String listErrorHL7s() {
-		return "/admin/hl7/hl7InErrorList";
+		return "/module/legacyui/admin/hl7/hl7InErrorList";
 	}
 	
 	/**

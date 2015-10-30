@@ -584,7 +584,7 @@
 
 	<bean id="hl7SourceList" class="org.openmrs.web.controller.hl7.Hl7SourceListController">
 		<property name="commandName"><value>hl7SourceList</value></property>
-		<property name="formView"><value>/admin/hl7/hl7SourceList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/hl7/hl7SourceList</value></property>
 		<property name="successView"><value>hl7Source.list</value></property>
 		
 	</bean>
@@ -595,7 +595,7 @@
 		<property name="validator">
 			<ref bean="hl7SourceValidator" />
 		</property>
-		<property name="formView"><value>/admin/hl7/hl7SourceForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/hl7/hl7SourceForm</value></property>
 		<property name="successView"><value>hl7Source.list</value></property>
 	</bean>
         
