@@ -145,7 +145,7 @@
 				</div>
 			</openmrs:hasPrivilege>
 			
-<!-- 			<openmrs:extensionPoint pointId="org.openmrs.admin.list" type="html" requiredClass="org.openmrs.module.web.extension.AdministrationSectionExt">
+ 			<openmrs:extensionPoint pointId="org.openmrs.admin.list" type="html" requiredClass="org.openmrs.module.web.extension.AdministrationSectionExt">
 				<openmrs:hasPrivilege privilege="${extension.requiredPrivilege}">
 					<c:catch var="ex">
 						<div class="adminMenuList">
@@ -169,7 +169,7 @@
 						</div>
 					</c:if>
 				</openmrs:hasPrivilege>
-			</openmrs:extensionPoint> -->
+			</openmrs:extensionPoint>
 			
 		</td>
 			
