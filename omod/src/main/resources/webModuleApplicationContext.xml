@@ -291,7 +291,7 @@
 
 	<bean id="personForm" class="org.openmrs.web.controller.person.PersonFormController">
 		<property name="commandName"><value>person</value></property>
-		<property name="formView"><value>/admin/person/personForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/person/personForm</value></property>
 		<property name="successView"><value>person.form</value></property>
 		<property name="validator"><ref bean="personValidator" /></property>
 	</bean>
@@ -299,26 +299,26 @@
 	<bean id="relationshipTypeList"
 		class="org.openmrs.web.controller.person.RelationshipTypeListController">
 		<property name="commandName"><value>relationshipTypeList</value></property>
-		<property name="formView"><value>/admin/person/relationshipTypeList</value></property>
+		<property name="formView"><value>/module/legacyui/admin/person/relationshipTypeList</value></property>
 		<property name="successView"><value>relationshipType.list</value></property>
 	</bean>
 	<bean id="relationshipTypeForm"
 		class="org.openmrs.web.controller.person.RelationshipTypeFormController">
 		<property name="commandName"><value>relationshipType</value></property>
-		<property name="formView"><value>/admin/person/relationshipTypeForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/person/relationshipTypeForm</value></property>
 		<property name="successView"><value>relationshipType.list</value></property>
 	</bean>
 	<bean id="relationshipTypeViewForm"
 		class="org.openmrs.web.controller.person.RelationshipTypeViewFormController">
 		<property name="commandName"><value>relationshipTypeList</value></property>
-		<property name="formView"><value>/admin/person/relationshipTypeViewForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/person/relationshipTypeViewForm</value></property>
 		<property name="successView"><value>relationshipType.list</value></property>
 	</bean>
 
 	<bean id="personAttributeTypeForm"
 		class="org.openmrs.web.controller.person.PersonAttributeTypeFormController">
 		<property name="commandName"><value>personAttributeType</value></property>
-		<property name="formView"><value>/admin/person/personAttributeTypeForm</value></property>
+		<property name="formView"><value>/module/legacyui/admin/person/personAttributeTypeForm</value></property>
 		<property name="successView"><value>personAttributeType.list</value></property>
 		<property name="validator"><ref bean="personAttributeTypeValidator" /></property>
 	</bean>
