@@ -944,7 +944,7 @@
 	</bean>
 	
 	<bean id="parentTheme" class="org.openmrs.web.StaticThemeSource">
-		<property name="themeName"><value>/themes/defaults</value></property>
+		<property name="themeName"><value>themes/defaults</value></property>
 	</bean>
 	
 	<!-- Specify the default OpenMRS look and feel. -->
@@ -952,7 +952,7 @@
 		class="org.springframework.ui.context.support.ResourceBundleThemeSource">
 		<property name="parentThemeSource"><ref bean="parentTheme"/></property>
 		<property name="basenamePrefix">
-			<value>/themes/</value>
+			<value>themes/</value>
 		</property>
 	</bean>
 	
