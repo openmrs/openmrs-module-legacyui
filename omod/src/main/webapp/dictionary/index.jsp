@@ -1,8 +1,8 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:message var="pageTitle" code="dictionary.titlebar" scope="page"/>
 <openmrs:message var="pageTitle" code="dictionary.title" scope="page"/>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 
 <openmrs:require privilege="View Concepts" otherwise="/login.htm"
 	redirect="/dictionary/index.htm" />
@@ -108,4 +108,4 @@
 
 <openmrs:extensionPoint pointId="org.openmrs.dictionary.index" type="html" />
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

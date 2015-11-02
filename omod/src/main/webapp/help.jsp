@@ -1,7 +1,7 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:message var="pageTitle" code="help.title" scope="page"/>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 
 <h2><openmrs:message code="help.title"/></h2>
 
@@ -48,4 +48,4 @@
 <openmrs:extensionPoint pointId="org.openmrs.help" type="html" />
 
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

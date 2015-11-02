@@ -1,10 +1,10 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <openmrs:require privilege="View People" otherwise="/login.htm" redirect="/personDashboard.form" />
 
 <c:set var="OPENMRS_VIEWING_PERSON_ID" scope="request" value="${person.personId}"/>
 
 <openmrs:message var="pageTitle" code="personDashboard.title" scope="page"/>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <openmrs:htmlInclude file="/scripts/calendar/calendar.js" />
 
 <c:if test="${person.patient}">
@@ -27,4 +27,4 @@
 	</div>
 </openmrs:hasPrivilege>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

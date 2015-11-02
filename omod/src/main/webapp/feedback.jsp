@@ -1,7 +1,7 @@
-<%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp"%>
 
 <openmrs:message var="pageTitle" code="feedback.title" scope="page"/>
-<%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp"%>
 
 <script type="text/javascript" src='<%= request.getContextPath() %>/dwr/interface/DWRMessageService.js'></script>
 <script type="text/javascript" src='<%= request.getContextPath() %>/dwr/engine.js'></script>
@@ -74,4 +74,4 @@ document.getElementById("feedbackNote").style.display = "none";
 
 </script>
 
-<%@ include file="/WEB-INF/template/footer.jsp"%>
+<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp"%>
