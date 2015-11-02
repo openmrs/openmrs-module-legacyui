@@ -77,7 +77,7 @@ public class PersonAttributeTypeListController {
 		
 		modelMap.addAttribute("personAttributeTypeList", attributeTypeList);
 		
-		return "/admin/person/personAttributeTypeList";
+		return "/module/legacyui/admin/person/personAttributeTypeList";
 	}
 	
 	/**
