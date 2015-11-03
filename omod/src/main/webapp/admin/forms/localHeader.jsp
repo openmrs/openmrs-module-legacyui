@@ -2,7 +2,7 @@
 
 <ul id="menu">
 	<li class="first">
-		<a href="${pageContext.request.contextPath}/admin"><openmrs:message code="admin.title.short"/></a>
+		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="<%= PrivilegeConstants.MANAGE_FORMS %>">
 		<li <c:if test='<%= request.getRequestURI().contains("forms/form") %>'>class="active"</c:if>>

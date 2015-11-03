@@ -1,7 +1,7 @@
 <%@page import="org.openmrs.api.context.Context"%>
 <ul id="menu">
 	<li class="first">
-		<a href="${pageContext.request.contextPath}/admin"><openmrs:message code="admin.title.short"/></a>
+		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Add HL7 Source,View HL7 Source,Update HL7 Source,Purge HL7 Source">
 		<li <c:if test='<%= request.getRequestURI().contains("hl7Source") %>'>class="active"</c:if>>

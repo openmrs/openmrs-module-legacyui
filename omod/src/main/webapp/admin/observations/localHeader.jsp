@@ -1,10 +1,10 @@
 <ul id="menu">
 	<li class="first">
-		<a href="${pageContext.request.contextPath}/admin"><openmrs:message code="admin.title.short"/></a>
+		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Add Observations,Edit Observations,Delete Observations,View Observations">
 		<li <c:if test='<%= request.getRequestURI().contains("observations/index") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/admin/observations/">
+			<a href="${pageContext.request.contextPath}/admin/observations/index.htm">
 				<openmrs:message code="Obs.manage"/>
 			</a>
 		</li>

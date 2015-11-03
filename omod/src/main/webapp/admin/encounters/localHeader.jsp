@@ -1,6 +1,6 @@
 <ul id="menu">
 	<li class="first">
-		<a href="${pageContext.request.contextPath}/admin"><openmrs:message code="admin.title.short"/></a>
+		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Add Encounters,Edit Encounters,Delete Encounters,View Encounters">
 		<li <c:if test='<%= request.getRequestURI().contains("encounters/index") %>'>class="active"</c:if>>

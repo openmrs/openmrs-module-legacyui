@@ -1,10 +1,10 @@
 <ul id="menu">
 	<li class="first">
-		<a href="${pageContext.request.contextPath}/admin"><openmrs:message code="admin.title.short"/></a>
+		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Add Patients,Edit Patients,Delete Patients,View Patients">
 		<li <c:if test='<%= request.getRequestURI().contains("patients/index") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/admin/patients/">
+			<a href="${pageContext.request.contextPath}/admin/patients/index.htm">
 				<openmrs:message code="Patient.manage"/>
 			</a>
 		</li>

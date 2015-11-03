@@ -19,7 +19,7 @@
 	
 	<openmrs:hasPrivilege privilege="View Concepts">
 		<li id="dictionaryNavLink">
-			<a href="${pageContext.request.contextPath}/dictionary"><openmrs:message code="Navigation.dictionary"/></a>
+			<a href="${pageContext.request.contextPath}/dictionary/index.htm"><openmrs:message code="Navigation.dictionary"/></a>
 		</li>
 	</openmrs:hasPrivilege>
 	
@@ -34,7 +34,7 @@
 
 	<openmrs:hasPrivilege privilege="View Administration Functions">
 		<li id="administrationNavLink">
-			<a href="${pageContext.request.contextPath}/admin"><openmrs:message code="Navigation.administration"/></a>
+			<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="Navigation.administration"/></a>
 		</li>
 	</openmrs:hasPrivilege>
 	

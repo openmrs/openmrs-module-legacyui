@@ -57,7 +57,7 @@ public class ConceptRedirectServlet extends HttpServlet {
 		}
 		
 		// redirect to the search screen if there wasn't any path info
-		response.sendRedirect(contextPath + "/dictionary");
+		response.sendRedirect(contextPath + "/dictionary/index.htm");
 	}
 	
 }
