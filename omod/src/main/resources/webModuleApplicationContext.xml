@@ -994,4 +994,6 @@
 		<property name="paramName"><value>lang</value></property>
 	</bean>
 	
+	<bean class="org.openmrs.web.LegacyuiServletContextAware" />
+	
 </beans>
