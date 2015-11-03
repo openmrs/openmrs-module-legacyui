@@ -19,9 +19,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.ServletContextAware;
 
-public class LegacyuiServletContextAware implements ServletContextAware {
+public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 
-	private static Log log = LogFactory.getLog(LegacyuiServletContextAware.class);
+	private static Log log = LogFactory.getLog(CopyLegacyUiContentToWebInf.class);
 	
 	@Override
 	public void setServletContext(ServletContext servletContext) {

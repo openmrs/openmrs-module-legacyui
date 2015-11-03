@@ -994,6 +994,6 @@
 		<property name="paramName"><value>lang</value></property>
 	</bean>
 	
-	<bean class="org.openmrs.web.LegacyuiServletContextAware" />
+	<bean class="org.openmrs.web.CopyLegacyUiContentToWebInf" />
 	
 </beans>
