@@ -1004,4 +1004,6 @@
 	
 	<bean class="org.openmrs.web.CopyLegacyUiContentToWebInf" />
 	
+	<bean class="org.openmrs.web.RegisterDwrServlet" />
+	
 </beans>
