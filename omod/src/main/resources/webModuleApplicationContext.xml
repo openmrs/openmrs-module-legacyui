@@ -78,6 +78,7 @@
 				<prop key="admin/concepts/conceptSource.form">conceptSourceForm</prop>
 				<prop key="admin/concepts/conceptDrug.list">conceptDrugList</prop>
 				<prop key="admin/concepts/conceptDrug.form">conceptDrugForm</prop>
+				<prop key="admin/concepts/conceptDatatype.list">conceptDatatypeList</prop>
 				<prop key="admin/concepts/conceptProposal.list">conceptProposalList</prop>
 				<prop key="admin/concepts/conceptProposal.form">conceptProposalForm</prop>
 				<prop key="admin/concepts/proposeConcept.form">proposeConceptForm</prop>
@@ -440,6 +441,13 @@
 		</property>
 		<property name="formView"><value>/admin/concepts/conceptClassForm</value></property>
 		<property name="successView"><value>conceptClass.list</value></property>
+	</bean>
+	
+	<bean id="conceptDatatypeList"
+		class="org.openmrs.web.controller.concept.ConceptDatatypeListController">
+		<property name="commandName"><value>conceptDatatypeList</value></property>
+		<property name="formView"><value>/admin/concepts/conceptDatatypeList</value></property>
+		<property name="successView"><value>conceptDatatype.list</value></property>
 	</bean>
 
 	<bean id="conceptProposalList"

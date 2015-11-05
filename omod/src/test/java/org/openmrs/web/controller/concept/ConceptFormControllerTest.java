@@ -33,7 +33,6 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		Mockito.when(concept.getLowNormal()).thenReturn(3.1);
 		Mockito.when(concept.getHiNormal()).thenReturn(3.9);
 		
-		Mockito.when(concept.getAllowDecimal()).thenReturn(Boolean.TRUE);
 		Mockito.when(concept.getDisplayPrecision()).thenReturn(42);
 		
 		Mockito.when(concept.getUnits()).thenReturn("ml");
@@ -53,7 +52,6 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		org.junit.Assert.assertEquals(Double.valueOf(3.1), conceptFormBackingObject.getLowNormal());
 		org.junit.Assert.assertEquals(Double.valueOf(3.9), conceptFormBackingObject.getHiNormal());
 		
-		org.junit.Assert.assertTrue(conceptFormBackingObject.isAllowDecimal());
 		org.junit.Assert.assertEquals(Integer.valueOf(42), conceptFormBackingObject.getDisplayPrecision());
 		
 		org.junit.Assert.assertEquals("ml", conceptFormBackingObject.getUnits());

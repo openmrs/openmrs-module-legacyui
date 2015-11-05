@@ -9,6 +9,8 @@
  */
 package org.openmrs.web.controller.concept;
 
+import java.net.BindException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +23,6 @@ import org.openmrs.test.Verifies;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.validation.BindException;
 
 /**
  * Tests the {@link ConceptSourceFormController}

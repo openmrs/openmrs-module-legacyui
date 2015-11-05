@@ -26,16 +26,13 @@
 		<c:forEach var="conceptDatatype" items="${conceptDatatypeList}">
 			<tr> 
 				<%-- <td valign="top"><input type="checkbox" name="conceptDatatypeId" value="${conceptDatatype.conceptDatatypeId}"></td> --%>
-				<td valign="top"><a href="conceptDatatype.form?conceptDatatypeId=${conceptDatatype.conceptDatatypeId}">
-					   ${conceptDatatype.name}
-					</a>
+				<td valign="top"> ${conceptDatatype.name}
 				</td>
 				<td valign="top">${conceptDatatype.description}</td>
 			</tr>
 		</c:forEach>
 	</table>
 	<openmrs:extensionPoint pointId="org.openmrs.admin.concepts.conceptDatatypeList.inForm" type="html" />
-	<%--  <input type="submit" value="<openmrs:message code="ConceptDatatype.delete"/>" name="action"> --%>
 </form>
 
 <openmrs:extensionPoint pointId="org.openmrs.admin.concepts.conceptDatatypeList.footer" type="html" />
