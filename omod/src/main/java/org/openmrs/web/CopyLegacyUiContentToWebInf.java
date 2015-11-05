@@ -30,7 +30,7 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 		
 		try {
 			//copy jsp
-			File destDir = new File(basePath + "/WEB-INF/view".replace("/", File.separator));
+			File destDir = new File(basePath + "/WEB-INF".replace("/", File.separator));
 			File srcDir = new File(basePath + "/WEB-INF/view/module/legacyui".replace("/", File.separator));
 			FileUtils.copyDirectory(srcDir, destDir);
 			
