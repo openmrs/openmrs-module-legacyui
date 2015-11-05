@@ -46,7 +46,7 @@ public class Hl7InArchiveListController {
 	 */
 	@RequestMapping("/admin/hl7/hl7InArchives.htm")
 	public String listArchivedHL7s(ModelMap modelMap) {
-		return "/admin/hl7/hl7InArchiveList";
+		return "module/legacyui/admin/hl7/hl7InArchiveList";
 	}
 	
 	/**

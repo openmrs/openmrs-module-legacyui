@@ -26,7 +26,7 @@
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="View HL7 Inbound Messages">
 		<li <c:if test='<%= request.getRequestURI().contains("hl7InError") %>'>class="active"</c:if>>
-			<a href="${pageContext.request.contextPath}/admin/hl7/hl7InErrorList.htm">
+			<a href="${pageContext.request.contextPath}/admin/hl7/hl7InError.htm">
 				<openmrs:message code="Hl7inError.title"/>
 			</a>
 		</li>

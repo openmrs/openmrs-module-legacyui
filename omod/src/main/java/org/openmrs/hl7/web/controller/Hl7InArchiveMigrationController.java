@@ -31,7 +31,7 @@ public class Hl7InArchiveMigrationController {
 	public ModelAndView renderMigratePage() {
 		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("admin/hl7/hl7InArchiveMigration");
+		modelAndView.setViewName("/module/legacyui/admin/hl7/hl7InArchiveMigration");
 		modelAndView.addObject("time_out", HL7Constants.THREAD_SLEEP_PERIOD);
 		modelAndView.addObject("hl7_archives_dir", HL7Util.getHl7ArchivesDirectory().getAbsolutePath());
 		modelAndView.addObject("migration_status", Hl7InArchivesMigrateThread.getTransferStatus().toString());
