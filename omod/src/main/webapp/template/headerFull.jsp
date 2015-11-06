@@ -105,7 +105,7 @@
 						<a href='${pageContext.request.contextPath}/moduleServlet/legacyui/logoutServlet'><openmrs:message code="header.logout" /></a>
 					</span>
 					<span>
-						<a href="${pageContext.request.contextPath}/module/legacyui/options.form"><openmrs:message code="Navigation.options"/></a>
+						<a href="${pageContext.request.contextPath}/options.form"><openmrs:message code="Navigation.options"/></a>
 					</span>
 				</c:if>
 				<c:if test="${authenticatedUser == null}">

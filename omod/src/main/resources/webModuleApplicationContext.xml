@@ -613,7 +613,7 @@
 	<bean id="optionsForm" class="org.openmrs.web.controller.OptionsFormController">
 		<property name="commandName"><value>opts</value></property>
 		<property name="commandClass"><value>org.openmrs.web.OptionsForm</value></property>
-		<property name="formView"><value>/optionsForm</value></property>
+		<property name="formView"><value>/module/legacyui/optionsForm</value></property>
 		<property name="successView"><value>options.form</value></property>
 	</bean>
 	<bean id="personDashboardForm"

@@ -40,7 +40,7 @@ public class UserListController {
 	 * @should get users with a given role
 	 * @should include disabled users if requested
 	 */
-	@RequestMapping(value = "/users/users")
+	@RequestMapping(value = "/admin/users/users")
 	public String displayUsers(ModelMap model, @RequestParam(value = "action", required = false) String action,
 	        @RequestParam(value = "name", required = false) String name,
 	        @RequestParam(value = "role", required = false) Role role,
