@@ -333,6 +333,10 @@
 		<filter-name>dwrFilter</filter-name> 
 		<url-pattern>/dwr/*</url-pattern> 
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>dwrFilter</filter-name> 
+		<url-pattern>/ms/call/plaincall/*</url-pattern> 
+	</filter-mapping>
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with ${project.parent.artifactId}. -->

@@ -34,6 +34,7 @@ public class DwrFilter implements Filter {
 		
 		String uri = ((HttpServletRequest)req).getRequestURI();
 		uri = uri.replace("/dwr/", "/ms/legacyui/dwr-invoker/");
+		uri = uri.replace("/ms/call/plaincall/", "/ms/legacyui/dwr-invoker/call/plaincall/");
 		uri = uri.replace("/" + WebConstants.WEBAPP_NAME, "");
 		
 		req.getRequestDispatcher(uri).forward(req, res);
