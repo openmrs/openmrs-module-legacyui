@@ -34,22 +34,14 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 		
 		try {
 			List<File> toIgnore = new ArrayList<>();
-			//copy error handler
-			File destFile = new File(basePath + "/errorhandler.jsp".replace("/", File.separator));
-			File errorSrcFile = new File(basePath + MODULE_ROOT_DIR + "/errorhandler.jsp".replace("/", File.separator));
-			FileUtils.copyFile(errorSrcFile, destFile);
-			toIgnore.add(errorSrcFile);
-			
-			destFile = new File(basePath + "/index.jsp".replace("/", File.separator));
-			File indexSrcFile = new File(basePath + MODULE_ROOT_DIR + "/index.jsp".replace("/", File.separator));
-			FileUtils.copyFile(indexSrcFile, destFile);
-			toIgnore.add(indexSrcFile);
-			
-			destFile = new File(basePath + "/memoryUsage.jsp".replace("/", File.separator));
-			File memoryUsageSrcFile = new File(basePath + MODULE_ROOT_DIR + "/memoryUsage.jsp".replace("/", File.separator));
-			FileUtils.copyFile(memoryUsageSrcFile, destFile);
-			toIgnore.add(memoryUsageSrcFile);
-			
+			String[] jspsToCopy = { "errorhandler", "index", "memoryUsage" };
+			//copy these files to root of the webapp
+			for (String jsp : jspsToCopy) {
+				File dest = new File(basePath + "/" + jsp + ".jsp".replace("/", File.separator));
+				File src = new File(basePath + MODULE_ROOT_DIR + "/" + jsp + ".jsp".replace("/", File.separator));
+				FileUtils.copyFile(src, dest);
+				toIgnore.add(src);
+			}
 			//Copy only the jsps under webapp to /WEB-INF/view
 			File destDir = new File(basePath + "/WEB-INF/view".replace("/", File.separator));
 			File srcDir = new File(basePath + MODULE_ROOT_DIR.replace("/", File.separator));
@@ -62,7 +54,7 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 			FileUtils.copyDirectory(srcDir, destDir);
 			
 			//copy openmrs.js
-			destFile = new File(basePath + "/openmrs.js".replace("/", File.separator));
+			File destFile = new File(basePath + "/openmrs.js".replace("/", File.separator));
 			File srcFile = new File(basePath + MODULE_ROOT_DIR
 			        + "/resources/scripts/openmrs.js".replace("/", File.separator));
 			FileUtils.copyFile(srcFile, destFile);
@@ -77,11 +69,24 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 			srcDir = new File(basePath + MODULE_ROOT_DIR + "/resources/css".replace("/", File.separator));
 			FileUtils.copyDirectory(srcDir, destDir);
 			
-			//copy the directories except for the files(JSPs) in the src
+			//Later we need to ignore everything in resources folder
+			toIgnore.add(new File(basePath + MODULE_ROOT_DIR + "/resources"));
+			
+			//copy these directories to WEB-INF/view
+			String[] directoriesToCopy = { "fieldGen", "portlets", "remotecommunication" };
+			for (String dir : directoriesToCopy) {
+				File dest = new File(basePath + "/WEB-INF/view/" + dir.replace("/", File.separator));
+				File src = new File(basePath + MODULE_ROOT_DIR + "/" + dir.replace("/", File.separator));
+				FileUtils.copyDirectory(src, dest);
+				toIgnore.add(src);
+			}
+			
+			//copy all other un copied folders
 			destDir = new File(basePath + "/WEB-INF".replace("/", File.separator));
 			srcDir = new File(basePath + MODULE_ROOT_DIR.replace("/", File.separator));
 			final File src = srcDir;
-			FileUtils.copyDirectory(src, destDir, toCopy -> toCopy.isDirectory() || !toCopy.getParentFile().equals(src));
+			FileUtils.copyDirectory(src, destDir, toCopy -> !toIgnore.contains(toCopy)
+			        && (toCopy.isDirectory() || !toCopy.getParentFile().equals(src)));
 		}
 		catch (IOException ex) {
 			log.error("Failed to copy legacy ui files", ex);
