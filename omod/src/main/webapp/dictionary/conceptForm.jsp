@@ -26,7 +26,7 @@
 <openmrs:htmlInclude file="/dwr/util.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRConceptService.js" />
 
-<openmrs:htmlInclude file="/dictionary/conceptForm.js" />
+<openmrs:htmlInclude file="/moduleResources/legacyui/scripts/dictionary/conceptForm.js" />
 <openmrs:htmlInclude file="/scripts/jquery/autocomplete/OpenmrsAutoComplete.js" />
 
 
