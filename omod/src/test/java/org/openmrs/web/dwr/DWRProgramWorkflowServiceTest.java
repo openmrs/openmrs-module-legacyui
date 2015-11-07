@@ -24,9 +24,9 @@ import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 
-public class DWRProgramWorkflowServiceTest extends BaseWebContextSensitiveTest {
+public class DWRProgramWorkflowServiceTest extends BaseModuleWebContextSensitiveTest {
 	
 	private DWRProgramWorkflowService dwrProgramWorkflowService;
 	
