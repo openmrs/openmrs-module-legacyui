@@ -21,7 +21,7 @@
 	xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">
 	<head>
 		<openmrs:htmlInclude file="/moduleResources/legacyui/scripts/openmrs.js" />
-		<openmrs:htmlInclude file="/moduleResources/legacyui/scripts/openmrsmessages.js" appendLocale="true" />
+		<openmrs:htmlInclude file="/scripts/openmrsmessages.js" appendLocale="true" />
 		<openmrs:htmlInclude file="/moduleResources/legacyui/css/openmrs.css" />
 		<link href="<openmrs:contextPath/><spring:theme code='stylesheet' />" type="text/css" rel="stylesheet" />
 		<openmrs:htmlInclude file="/moduleResources/legacyui/css/style.css" />

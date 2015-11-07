@@ -221,6 +221,20 @@
 				<include method="findProviderCountAndProvider"/>
 				<include method="findProvider"/>
 			</create>
+
+            <create creator="new" javascript="DWRProgramWorkflowService">
+                <param name="class" value="org.openmrs.web.dwr.DWRProgramWorkflowService"/>
+                <include method="getPatientProgram"/>
+                <include method="getPatientStates"/>
+                <include method="updatePatientProgram"/>
+                <include method="deletePatientProgram"/>
+                <include method="getPossibleNextStates"/>
+                <include method="changeToState"/>
+                <include method="voidLastState"/>
+                <include method="getWorkflowsByProgram"/>
+                <include method="getStatesByWorkflow"/>
+                <include method="getPossibleOutcomes" />
+            </create>
 					
 		</allow>
 		
