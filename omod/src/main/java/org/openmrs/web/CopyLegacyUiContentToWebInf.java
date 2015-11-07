@@ -73,7 +73,7 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 			toIgnore.add(new File(basePath + MODULE_ROOT_DIR + "/resources"));
 			
 			//copy these directories to WEB-INF/view
-			String[] directoriesToCopy = { "fieldGen", "portlets", "remotecommunication" };
+			String[] directoriesToCopy = { "fieldGen", "portlets", "remotecommunication", "dictionary" };
 			for (String dir : directoriesToCopy) {
 				File dest = new File(basePath + "/WEB-INF/view/" + dir.replace("/", File.separator));
 				File src = new File(basePath + MODULE_ROOT_DIR + "/" + dir.replace("/", File.separator));
