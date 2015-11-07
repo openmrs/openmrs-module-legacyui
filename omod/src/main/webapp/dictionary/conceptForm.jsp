@@ -190,7 +190,7 @@
 </form>
 
 <br/><br/>
-<c:if test="${command.concept.retired}">
+<c:if test="${command.concept.isRetired()}">
 	<div class="retiredMessage">
 	<div><openmrs:message code="Concept.retiredMessage"/></div>
     <div>  <c:if test="${command.concept.retiredBy.personName != null}">  <openmrs:message code="general.byPerson"/> <c:out value="${command.concept.retiredBy.personName}" /> </c:if> <c:if test="${command.concept.dateRetired != null}"> <openmrs:message code="general.onDate"/>  <openmrs:formatDate date="${command.concept.dateRetired}" type="long" /> </c:if> <c:if test="${command.concept.retireReason!=''}"> - <c:out value="${command.concept.retireReason}" /> </c:if> </div>
@@ -591,7 +591,7 @@
 				<tr>
 					<th><openmrs:message code="ConceptNumeric.allowDecimal"/></th>
 					<td colspan="2">
-						<spring:bind path="command.precise">
+						<spring:bind path="command.allowDecimal">
 							<input type="hidden" name="_${status.expression}" value=""/>
 							<input type="checkbox" id="allow_decimal_checkbox" name="${status.expression}" <c:if test="${status.value}">checked="checked"</c:if>/>
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
@@ -872,7 +872,7 @@
 <br/>
 
 <openmrs:hasPrivilege privilege="Manage Concepts">
-	<c:if test="${command.concept.conceptId!=null && command.concept.retired==false }">
+	<c:if test="${command.concept.conceptId!=null && command.concept.isRetired()==false }">
 	<form action="" method="post">
 		<fieldset>
 			<h4><openmrs:message code="general.retire"/> <openmrs:message code="Concept"/></h4>

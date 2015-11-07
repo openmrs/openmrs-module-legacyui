@@ -106,7 +106,7 @@
 
 <c:if test="${command.concept.conceptId != null}">
 
-	<c:if test="${command.concept.retired}">
+	<c:if test="${command.concept.isRetired()}">
 	<div class="retiredMessage">
 	<div><openmrs:message code="Concept.retiredMessage"/> </div>
 	<div>  <c:if test="${command.concept.retiredBy.personName != null}">  <openmrs:message code="general.byPerson"/> <c:out value="${command.concept.retiredBy.personName}" /> </c:if> <c:if test="${command.concept.dateRetired != null}"> <openmrs:message code="general.onDate"/>  <openmrs:formatDate date="${command.concept.dateRetired}" type="long" /> </c:if> <c:if test="${command.concept.retireReason!=''}"> - <c:out value="${command.concept.retireReason}" /> </c:if> </div>
@@ -274,14 +274,14 @@
 						<tr>
 							<th><openmrs:message code="ConceptNumeric.allowDecimal"/></th>
 							<td colspan="2">
-								<spring:bind path="command.concept.precise">
+								<spring:bind path="command.concept.allowDecimal">
 									<c:if test="${status.value}">Yes</c:if>
 									<c:if test="${!status.value}">No</c:if>
 								</spring:bind>
 							</td>
 						</tr>
 						<tr>
-							<c:if test="${command.concept.precise}">
+							<c:if test="${command.concept.allowDecimal}">
 								<th><openmrs:message code="ConceptNumeric.displayPrecision"/></th>
 								<td colspan="2">
 									<spring:bind path="command.concept.displayPrecision">
