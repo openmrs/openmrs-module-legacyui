@@ -33,7 +33,7 @@ public class DisplayChartTag extends BodyTagSupport {
 	 */
 	private final Log log = LogFactory.getLog(DisplayChartTag.class);
 	
-	public static final String SERVLET_NAME = "displayChartServlet";
+	public static final String SERVLET_NAME = "ms/legacyui/displayChartServlet";
 	
 	public static final String CHART_KEY = "chartKey";
 	
