@@ -48,6 +48,11 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 			FileUtils.copyDirectory(srcDir, destDir,
 			    toCopy -> toCopy.getName().endsWith(".jsp") && !toIgnore.contains(toCopy));
 			
+			//copy the admin folder
+			destDir = new File(basePath + "/WEB-INF/view/admin".replace("/", File.separator));
+			srcDir = new File(basePath + MODULE_ROOT_DIR + "/admin".replace("/", File.separator));
+			FileUtils.copyDirectory(srcDir, destDir);
+			
 			//copy scripts
 			destDir = new File(basePath + "/WEB-INF/view/scripts".replace("/", File.separator));
 			srcDir = new File(basePath + MODULE_ROOT_DIR + "/resources/scripts".replace("/", File.separator));
