@@ -106,7 +106,7 @@
 
 <c:if test="${command.concept.conceptId != null}">
 
-	<c:if test="${command.concept.isRetired()}">
+	<c:if test="${command.concept.retired}">
 	<div class="retiredMessage">
 	<div><openmrs:message code="Concept.retiredMessage"/> </div>
 	<div>  <c:if test="${command.concept.retiredBy.personName != null}">  <openmrs:message code="general.byPerson"/> <c:out value="${command.concept.retiredBy.personName}" /> </c:if> <c:if test="${command.concept.dateRetired != null}"> <openmrs:message code="general.onDate"/>  <openmrs:formatDate date="${command.concept.dateRetired}" type="long" /> </c:if> <c:if test="${command.concept.retireReason!=''}"> - <c:out value="${command.concept.retireReason}" /> </c:if> </div>

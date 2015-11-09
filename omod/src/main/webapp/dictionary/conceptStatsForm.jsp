@@ -74,7 +74,7 @@
 </form>
 
 <br/><br/>
-<c:if test="${concept.isRetired()}">
+<c:if test="${concept.retired}">
 	<div class="retiredMessage"><div><openmrs:message code="Concept.retiredMessage"/></div></div>
 </c:if>
 
