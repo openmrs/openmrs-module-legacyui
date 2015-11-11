@@ -182,7 +182,7 @@
         <c:forEach items="${conceptIds}" var="conceptId">
             <td class="patientRecentObsConfigured">
                 <openmrs:concept conceptId="${conceptId}" var="c" nameVar="n" numericVar="num" shortestNameVar="sn">
-                    <span title="${n.description}">${sn}:</span>
+                    <span title="${c.description}">${sn}:</span>
                 </openmrs:concept>
                 <openmrs_tag:mostRecentObs
                     observations="${model.patientObs}" concept="${conceptId}"
