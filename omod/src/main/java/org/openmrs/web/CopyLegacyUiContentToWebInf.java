@@ -77,6 +77,12 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 			//Later we need to ignore everything in resources folder
 			toIgnore.add(new File(basePath + MODULE_ROOT_DIR + "/resources"));
 			
+			//copy tags
+			destDir = new File(basePath + "/WEB-INF/tags");
+			srcDir = new File(basePath + "/WEB-INF/tags/module/legacyui".replace("/", File.separator));
+			FileUtils.copyDirectory(srcDir, destDir);
+			toIgnore.add(srcDir);
+			
 			//copy these directories to WEB-INF/view
 			String[] directoriesToCopy = { "fieldGen", "portlets", "remotecommunication", "dictionary" };
 			for (String dir : directoriesToCopy) {
