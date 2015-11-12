@@ -34,7 +34,9 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 		
 		try {
 			List<File> toIgnore = new ArrayList<>();
-			String[] jspsToCopy = { "errorhandler", "index", "memoryUsage" };
+			toIgnore.add(new File(basePath + "/index.jsp".replace("/", File.separator)));
+
+			String[] jspsToCopy = { "errorhandler", "memoryUsage" };
 			//copy these files to root of the webapp
 			for (String jsp : jspsToCopy) {
 				File dest = new File(basePath + "/" + jsp + ".jsp".replace("/", File.separator));
@@ -47,11 +49,6 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 			File srcDir = new File(basePath + MODULE_ROOT_DIR.replace("/", File.separator));
 			FileUtils.copyDirectory(srcDir, destDir,
 			    toCopy -> toCopy.getName().endsWith(".jsp") && !toIgnore.contains(toCopy));
-			
-			//copy the admin folder
-			destDir = new File(basePath + "/WEB-INF/view/admin".replace("/", File.separator));
-			srcDir = new File(basePath + MODULE_ROOT_DIR + "/admin".replace("/", File.separator));
-			FileUtils.copyDirectory(srcDir, destDir);
 			
 			//copy scripts
 			destDir = new File(basePath + "/WEB-INF/view/scripts".replace("/", File.separator));
