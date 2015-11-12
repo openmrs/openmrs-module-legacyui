@@ -35,7 +35,7 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 		try {
 			List<File> toIgnore = new ArrayList<>();
 			toIgnore.add(new File(basePath + "/index.jsp".replace("/", File.separator)));
-
+			
 			String[] jspsToCopy = { "errorhandler", "memoryUsage" };
 			//copy these files to root of the webapp
 			for (String jsp : jspsToCopy) {
@@ -72,25 +72,24 @@ public class CopyLegacyUiContentToWebInf implements ServletContextAware {
 			FileUtils.copyDirectory(srcDir, destDir);
 			
 			//Later we need to ignore everything in resources folder
-			toIgnore.add(new File(basePath + MODULE_ROOT_DIR + "/resources"));
+			toIgnore.add(new File(basePath + MODULE_ROOT_DIR + "/resources".replace("/", File.separator)));
 			
 			//copy tags
-			destDir = new File(basePath + "/WEB-INF/tags");
+			destDir = new File(basePath + "/WEB-INF/tags".replace("/", File.separator));
 			srcDir = new File(basePath + "/WEB-INF/tags/module/legacyui".replace("/", File.separator));
 			FileUtils.copyDirectory(srcDir, destDir);
-			toIgnore.add(srcDir);
 			
-			//copy these directories to WEB-INF/view
-			String[] directoriesToCopy = { "fieldGen", "portlets", "remotecommunication", "dictionary" };
+			//copy these directories to WEB-INF
+			String[] directoriesToCopy = { "taglibs", "template" };
 			for (String dir : directoriesToCopy) {
-				File dest = new File(basePath + "/WEB-INF/view/" + dir.replace("/", File.separator));
+				File dest = new File(basePath + "/WEB-INF/" + dir.replace("/", File.separator));
 				File src = new File(basePath + MODULE_ROOT_DIR + "/" + dir.replace("/", File.separator));
 				FileUtils.copyDirectory(src, dest);
 				toIgnore.add(src);
 			}
 			
-			//copy all other un copied folders
-			destDir = new File(basePath + "/WEB-INF".replace("/", File.separator));
+			//copy all other un copied folders to WEB-INF/view
+			destDir = new File(basePath + "/WEB-INF/view".replace("/", File.separator));
 			srcDir = new File(basePath + MODULE_ROOT_DIR.replace("/", File.separator));
 			final File src = srcDir;
 			FileUtils.copyDirectory(src, destDir, toCopy -> !toIgnore.contains(toCopy)
