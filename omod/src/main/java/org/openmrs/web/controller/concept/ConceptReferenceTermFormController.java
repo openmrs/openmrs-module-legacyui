@@ -60,8 +60,7 @@ public class ConceptReferenceTermFormController {
 	}
 	
 	@ModelAttribute("conceptReferenceTermModel")
-	public ConceptReferenceTermModel getConceptReferenceTermFormModel(
-	        @RequestParam(value = "conceptReferenceTermId", required = false) Integer conceptReferenceTermId) {
+	public ConceptReferenceTermModel getConceptReferenceTermFormModel(@RequestParam(value = "conceptReferenceTermId", required = false) Integer conceptReferenceTermId) {
 		
 		ConceptReferenceTerm conceptReferenceTerm = null;
 		if (conceptReferenceTermId != null) {
@@ -76,8 +75,7 @@ public class ConceptReferenceTermFormController {
 	
 	@SuppressWarnings("unchecked")
 	@ModelAttribute("referenceTermMappingsToThisTerm")
-	public List<ConceptReferenceTermMap> getConceptMappingsToThisTerm(
-	        @ModelAttribute ConceptReferenceTerm conceptReferenceTerm) {
+	public List<ConceptReferenceTermMap> getConceptMappingsToThisTerm(@ModelAttribute ConceptReferenceTerm conceptReferenceTerm) {
 		if (conceptReferenceTerm.getConceptReferenceTermId() != null) {
 			return Context.getConceptService().getReferenceTermMappingsTo(conceptReferenceTerm);
 		}
@@ -95,8 +93,8 @@ public class ConceptReferenceTermFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = CONCEPT_REFERENCE_TERM_FORM_URL)
 	public String saveConceptReferenceTerm(WebRequest request,
-	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
-	        BindingResult result) {
+	                                       @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
+	                                       BindingResult result) {
 		
 		ConceptReferenceTerm conceptReferenceTerm = conceptReferenceTermModel.getConceptReferenceTerm();
 		// add all the term maps
@@ -178,8 +176,8 @@ public class ConceptReferenceTermFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/retireConceptReferenceTerm")
 	public String retireConceptReferenceTerm(WebRequest request,
-	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
-	        @RequestParam(required = false, value = "retireReason") String retireReason) {
+	                                         @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
+	                                         @RequestParam(required = false, value = "retireReason") String retireReason) {
 		
 		if (!StringUtils.hasText(retireReason)) {
 			retireReason = Context.getMessageSourceService().getMessage("general.default.retireReason");
@@ -191,15 +189,15 @@ public class ConceptReferenceTermFormController {
 			if (log.isDebugEnabled()) {
 				log.debug("Retired concept reference term with id: " + conceptReferenceTerm.getId());
 			}
-			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-			    "ConceptReferenceTerm.retired"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+			    Context.getMessageSourceService().getMessage("ConceptReferenceTerm.retired"), WebRequest.SCOPE_SESSION);
 			
 			return "redirect:" + FIND_CONCEPT_REFERENCE_TERM_URL;
 		}
 		catch (APIException e) {
 			log.error("Error occurred while retiring concept reference term", e);
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "ConceptReferenceTerm.retire.error"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("ConceptReferenceTerm.retire.error"), WebRequest.SCOPE_SESSION);
 		}
 		
 		//an error occurred
@@ -216,7 +214,7 @@ public class ConceptReferenceTermFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/unretireConceptReferenceTerm")
 	public String unretireConceptReferenceTerm(WebRequest request,
-	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
+	                                           @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
 		
 		try {
 			ConceptReferenceTerm conceptReferenceTerm = conceptReferenceTermModel.getConceptReferenceTerm();
@@ -224,16 +222,17 @@ public class ConceptReferenceTermFormController {
 			if (log.isDebugEnabled()) {
 				log.debug("Unretired concept reference term with id: " + conceptReferenceTerm.getId());
 			}
-			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-			    "ConceptReferenceTerm.unretired"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+			    Context.getMessageSourceService().getMessage("ConceptReferenceTerm.unretired"), WebRequest.SCOPE_SESSION);
 			
 			return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + ".form?conceptReferenceTermId="
 			        + conceptReferenceTerm.getConceptReferenceTermId();
 		}
 		catch (APIException e) {
 			log.error("Error occurred while unretiring concept reference term", e);
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "ConceptReferenceTerm.unretire.error"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("ConceptReferenceTerm.unretire.error"),
+			    WebRequest.SCOPE_SESSION);
 		}
 		
 		//an error occurred, show the form
@@ -249,21 +248,21 @@ public class ConceptReferenceTermFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/purgeConceptReferenceTerm")
 	public String purgeTerm(WebRequest request,
-	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
+	                        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
 		Integer id = conceptReferenceTermModel.getConceptReferenceTerm().getId();
 		try {
 			Context.getConceptService().purgeConceptReferenceTerm(conceptReferenceTermModel.getConceptReferenceTerm());
 			if (log.isDebugEnabled()) {
 				log.debug("Purged concept reference term with id: " + id);
 			}
-			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-			    "ConceptReferenceTerm.purged"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+			    Context.getMessageSourceService().getMessage("ConceptReferenceTerm.purged"), WebRequest.SCOPE_SESSION);
 			return "redirect:" + FIND_CONCEPT_REFERENCE_TERM_URL;
 		}
 		catch (APIException e) {
 			log.warn("Error occurred while attempting to purge concept reference term", e);
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "ConceptReferenceTerm.purge.error"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("ConceptReferenceTerm.purge.error"), WebRequest.SCOPE_SESSION);
 		}
 		
 		//send the user back to form
