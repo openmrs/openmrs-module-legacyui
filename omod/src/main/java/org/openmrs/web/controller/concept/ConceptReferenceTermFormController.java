@@ -51,6 +51,10 @@ public class ConceptReferenceTermFormController {
 	
 	private static final String FIND_CONCEPT_REFERENCE_TERM_URL = "/admin/concepts/conceptReferenceTerms.htm";
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/admin/concepts/conceptReferenceTerms")
+	public void showConceptReferenceTermIndexPage() {
+	}
+	
 	/**
 	 * Processes requests to display the form
 	 */
