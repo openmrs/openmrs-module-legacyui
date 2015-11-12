@@ -80,7 +80,7 @@
 	</td>
 </tr>
 
-<openmrs:forEachDisplayAttributeType personType="" displayType="all" var="attrType">
+<openmrs:forEachDisplayAttributeType personType="" displayType="viewing" var="attrType">
 	<c:set var="authorized" value="false" />
 	<c:choose>
 		<c:when test="${not empty attrType.editPrivilege}">
