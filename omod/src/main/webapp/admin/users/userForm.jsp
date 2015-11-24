@@ -193,7 +193,7 @@
 				<c:if test="${modifyPasswords == true}">
 					<tr>
 						<td><openmrs:message code="User.secretQuestion" /></td>
-						<td><input type="text" name="secretQuestion" size="50" value="${user.secretQuestion}" /> <i><openmrs:message code="general.optional"/></i></td>
+						<td><input type="text" name="secretQuestion" size="50" value="${secretQuestion}" /> <i><openmrs:message code="general.optional"/></i></td>
 					</tr>
 					<tr>
 						<td><openmrs:message code="User.secretAnswer" /></td>

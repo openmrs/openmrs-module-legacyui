@@ -9,9 +9,14 @@
  */
 package org.openmrs.web;
 
+import java.util.EnumSet;
+
+import javax.servlet.FilterRegistration.Dynamic;
+import javax.servlet.DispatcherType;
 import javax.servlet.ServletContext;
 
 import org.directwebremoting.servlet.EfficientShutdownServletContextAttributeListener;
+import org.openmrs.module.web.filter.ForcePasswordChangeFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
@@ -31,6 +36,11 @@ public class LegacyUiServletContextSetup implements ServletContextAware {
 		 * EfficientShutdownServletContextListener since the latter implements ServletContextListener,
 		 * which is not supported by ServletContext.addListener.
 		*/
-		servletContext.addListener(EfficientShutdownServletContextAttributeListener.class); 
+		servletContext.addListener(EfficientShutdownServletContextAttributeListener.class);
+		
+		Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", ForcePasswordChangeFilter.class);
+		filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
+		filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
+		filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
 	}
 }

@@ -22,8 +22,13 @@
 	<form id="thisChangePasswordForm" method="post" action="changePassword.form" autocomplete="off">
 		<table>
 			<tr>
+				<td><openmrs:message code="options.login.password.old" /></td>
+				<td><input type="password" name="oldPassword" value="" autocomplete="off" /></td>
+			</tr>
+			<tr>
 				<td><openmrs:message code="options.login.password.new" /></td>
-				<td><input type="password" name="password" value="" autocomplete="off"/>
+				<td>
+					<input type="password" name="password" value="" autocomplete="off"/>
 					<openmrs:globalProperty key="security.passwordMinimumLength" var="passwordMinimumLength" />
 					<openmrs:globalProperty key="security.passwordRequiresUpperAndLowerCase" var="shouldHaveUpperAndLowerCases" />
 					<openmrs:globalProperty key="security.passwordRequiresDigit" var="shouldHaveDigit" />

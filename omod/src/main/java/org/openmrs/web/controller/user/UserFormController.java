@@ -57,6 +57,9 @@ public class UserFormController {
 	@Autowired
 	private UserValidator userValidator;
 	
+	@Autowired
+	private UserService userService;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Role.class, new RoleEditor());
@@ -118,6 +121,8 @@ public class UserFormController {
 		
 		if (!isNewUser(user)) {
 			model.addAttribute("changePassword", new UserProperties(user.getUserProperties()).isSupposedToChangePassword());
+			
+			model.addAttribute("secretQuestion", userService.getSecretQuestion(user));
 		}
 		
 		// not using the default view name because I'm converting from an existing form
