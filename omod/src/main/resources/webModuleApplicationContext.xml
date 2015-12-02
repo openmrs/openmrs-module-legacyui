@@ -136,9 +136,14 @@
 
  			</props>
 		</property>
-	</bean>	
+	</bean>
 
- 	<!-- index pages - begin -->  
+    <!-- Pages with no controllers - begin -->
+
+    <!-- findPatient -->
+    <mvc:view-controller view-name="module/legacyui/findPatient" path="findPatient.htm"/>
+
+    <!-- index pages - begin -->
 	
 	<!-- admin -->
 	<mvc:view-controller view-name="module/legacyui/admin/index" path="admin/index.htm"/>				
@@ -150,14 +155,17 @@
 	<mvc:view-controller view-name="module/legacyui/admin/patients/index" path="patients/index.htm"/>				
 	
 	<!-- encounters -->
-	<mvc:view-controller view-name="module/legacyui/admin/encounters/index" path="encounters/index.htm"/>				
-	
+	<mvc:view-controller view-name="module/legacyui/admin/encounters/index" path="encounters/index.htm"/>
+
 	<!-- observations -->
 	<mvc:view-controller view-name="module/legacyui/admin/observations/index" path="observations/index.htm"/>				
 
- 	<!-- index pages - end -->  
+ 	<!-- index pages - end -->
+
+    <!-- Pages with no controllers - end -->
  	 
 	<!-- ** Patient ** -->
+
 	<bean id="patientForm" class="org.openmrs.web.controller.patient.PatientFormController">
 		<property name="commandName"><value>patient</value></property>
 		<property name="formView"><value>/module/legacyui/admin/patients/patientForm</value></property>
