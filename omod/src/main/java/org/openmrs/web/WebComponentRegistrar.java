@@ -9,25 +9,44 @@
  */
 package org.openmrs.web;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration.Dynamic;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+import org.directwebremoting.servlet.EfficientShutdownServletContextAttributeListener;
+import org.openmrs.module.web.filter.ForcePasswordChangeFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
 @Component
 public class WebComponentRegistrar implements ServletContextAware {
-
-    @Override
-    public void setServletContext(ServletContext servletContext) {
-        ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
-        addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet");
-    }
-
-    private void addMappings(ServletRegistration reg, String... mappings) {
-        for (String mapping : mappings) {
-            reg.addMapping(mapping);
-        }
-    }
-
+	
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
+		addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet");
+		
+		Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", ForcePasswordChangeFilter.class);
+		filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
+		filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
+		filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+		
+		servletContext.addListener(SessionListener.class);
+		/*
+		 * EfficientShutdownServletContextAttributeListener is used instead of
+		 * EfficientShutdownServletContextListener since the latter implements ServletContextListener,
+		 * which is not supported by ServletContext.addListener.
+		*/
+		servletContext.addListener(EfficientShutdownServletContextAttributeListener.class);
+	}
+	
+	private void addMappings(ServletRegistration reg, String... mappings) {
+		for (String mapping : mappings) {
+			reg.addMapping(mapping);
+		}
+	}
+	
 }
