@@ -26,21 +26,21 @@ public class WebComponentRegistrar implements ServletContextAware {
 	
 	@Override
 	public void setServletContext(ServletContext servletContext) {
+		
 		ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
 		addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet");
-		
-		Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", ForcePasswordChangeFilter.class);
+		Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", new ForcePasswordChangeFilter());
 		filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
 		filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
 		filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
 		
-		servletContext.addListener(SessionListener.class);
+		servletContext.addListener(new SessionListener());
 		/*
 		 * EfficientShutdownServletContextAttributeListener is used instead of
 		 * EfficientShutdownServletContextListener since the latter implements ServletContextListener,
 		 * which is not supported by ServletContext.addListener.
 		*/
-		servletContext.addListener(EfficientShutdownServletContextAttributeListener.class);
+		servletContext.addListener(new EfficientShutdownServletContextAttributeListener());
 	}
 	
 	private void addMappings(ServletRegistration reg, String... mappings) {
