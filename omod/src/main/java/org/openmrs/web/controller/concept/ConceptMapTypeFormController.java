@@ -58,13 +58,11 @@ public class ConceptMapTypeFormController {
 	 * Processes requests to display a list of the current concept map types in the database
 	 *
 	 * @param model the {@link ModelMap} object
-	 * @param request the {@link WebRequest} object
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = CONCEPT_MAP_TYPE_LIST_URL)
-	public void showConceptMapTypeList(ModelMap model, WebRequest request) {
+	public void showConceptMapTypeList(ModelMap model) {
 		ConceptService conceptService = Context.getConceptService();
-		List<ConceptMapType> conceptMapTypeList = null;
-		conceptMapTypeList = conceptService.getConceptMapTypes(true, true);
+		List<ConceptMapType> conceptMapTypeList = conceptService.getConceptMapTypes(true, true);
 		
 		model.addAttribute("conceptMapTypeList", conceptMapTypeList);
 	}

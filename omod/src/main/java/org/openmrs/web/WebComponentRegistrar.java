@@ -29,6 +29,9 @@ public class WebComponentRegistrar implements ServletContextAware {
 		
 		ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
 		addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet");
+		
+		addMappings(servletContext.getServletRegistration("jsp"), "*.withjstl");
+		
 		Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", new ForcePasswordChangeFilter());
 		filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
 		filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
