@@ -158,7 +158,10 @@
 	<mvc:view-controller view-name="module/legacyui/admin/encounters/index" path="encounters/index.htm"/>
 
 	<!-- observations -->
-	<mvc:view-controller view-name="module/legacyui/admin/observations/index" path="observations/index.htm"/>				
+	<mvc:view-controller view-name="module/legacyui/admin/observations/index" path="observations/index.htm"/>
+
+    <!-- help -->
+    <mvc:view-controller view-name="module/legacyui/help" path="help.htm"/>
 
  	<!-- index pages - end -->
 

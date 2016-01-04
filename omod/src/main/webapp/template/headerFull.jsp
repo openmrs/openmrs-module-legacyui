@@ -113,13 +113,13 @@
 						<openmrs:message code="header.logged.out"/>
 					</span>
 					<span id="userLogIn">
-						<a href='${pageContext.request.contextPath}/module/legacyui/login.htm'><openmrs:message code="header.login"/></a>
+						<a href='${pageContext.request.contextPath}/login.htm'><openmrs:message code="header.login"/></a>
 					</span>
 				</c:if>
 			</openmrs:authentication>
 
 			<span id="userHelp">
-				<a href='<%= request.getContextPath() %>/module/legacyui/help.htm'><openmrs:message code="header.help"/></a>
+				<a href='<%= request.getContextPath() %>/help.htm'><openmrs:message code="header.help"/></a>
 			</span>
 			<openmrs:extensionPoint pointId="org.openmrs.headerFull.userBar" type="html">
 				<openmrs:hasPrivilege privilege="${extension.requiredPrivilege}">
