@@ -15,8 +15,6 @@ import org.openmrs.customdatatype.datatype.BaseMetadataDatatype;
 
 /**
  * This is a superclass for FieldGenDatatypeHandlers for OpenmrsMetadata
- * 
- * @since 1.12
  */
 public abstract class BaseMetadataFieldGenDatatypeHandler<DT extends BaseMetadataDatatype<T>, T extends OpenmrsMetadata> extends SerializingFieldGenDatatypeHandler<DT, T> {
 	
