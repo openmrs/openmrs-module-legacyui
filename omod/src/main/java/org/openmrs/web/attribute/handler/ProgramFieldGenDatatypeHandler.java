@@ -13,12 +13,13 @@ import java.util.Map;
 
 import org.openmrs.Program;
 import org.openmrs.customdatatype.datatype.ProgramDatatype;
+import org.springframework.stereotype.Component;
 
 /**
  * Handler for the Program custom datatype
  *
- * @Component
  */
+@Component
 public class ProgramFieldGenDatatypeHandler extends BaseMetadataFieldGenDatatypeHandler<ProgramDatatype, Program> {
 	
 	/**
