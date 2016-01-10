@@ -80,7 +80,7 @@
 
 <h2><openmrs:message code="dictionary.title" /></h2>
 
-<a href="<%= request.getContextPath() %>/downloadDictionary.csv"><openmrs:message code="dictionary.download.link"/></a> <openmrs:message code="dictionary.download.description"/><br />
+<a href="<%= request.getContextPath() %>/moduleServlet/legacyui/downloadDictionaryServlet"><openmrs:message code="dictionary.download.link"/></a> <openmrs:message code="dictionary.download.description"/><br />
 <br />
 
 <openmrs:hasPrivilege privilege="Manage Concepts">
