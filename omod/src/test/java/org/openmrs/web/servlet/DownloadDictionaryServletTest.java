@@ -95,7 +95,7 @@ public class DownloadDictionaryServletTest extends BaseModuleWebContextSensitive
 	
 	private String runServletWithConcepts(Concept... concepts) throws Exception {
 		DownloadDictionaryServlet downloadServlet = new DownloadDictionaryServlet();
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/downloadDictionary.csv");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/moduleServlet/legacyui/downloadDictionaryServlet");
 		request.setContextPath("/somecontextpath");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		
