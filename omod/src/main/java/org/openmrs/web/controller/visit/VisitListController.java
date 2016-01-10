@@ -18,7 +18,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.directwebremoting.util.Logger;
+import org.apache.log4j.Logger;
 import org.openmrs.Encounter;
 import org.openmrs.Form;
 import org.openmrs.Patient;
