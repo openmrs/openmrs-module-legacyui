@@ -96,6 +96,43 @@
             <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
+        
+		<dependency>
+ 			<groupId>javax.servlet</groupId>
+ 			<artifactId>jsp-api</artifactId>
+ 			<version>2.0</version>
+ 			<scope>provided</scope>
+ 		</dependency>
+ 			
+ 		<dependency>
+ 			<groupId>javax.servlet</groupId>
+ 			<artifactId>jstl</artifactId>
+ 			<version>1.1.2</version>
+ 		</dependency>
+ 		
+ 		<dependency>
+ 			<groupId>taglibs</groupId>
+ 			<artifactId>request</artifactId>
+ 			<version>1.0.1</version>
+ 		</dependency>
+ 
+ 		<dependency>
+ 			<groupId>taglibs</groupId>
+ 			<artifactId>standard</artifactId>
+ 			<version>1.1.2</version>
+ 		</dependency>
+ 
+ 		<dependency>
+ 			<groupId>jfree</groupId>
+ 			<artifactId>jfreechart</artifactId>
+ 			<version>1.0.12</version>
+ 		</dependency>
+ 		
+ 		<dependency>
+ 			<groupId>taglibs</groupId>
+ 			<artifactId>page</artifactId>
+ 			<version>1.0.1</version>
+ 		</dependency>
 
 	</dependencies>
 
