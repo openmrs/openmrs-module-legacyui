@@ -9,12 +9,6 @@
  */
 package org.openmrs.web.controller.patient;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -32,6 +26,12 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * This class validates a Short Patient Model object in the {@link ShortPatientFormController}.
@@ -89,12 +89,14 @@ public class ShortPatientFormValidator implements Validator {
 			if (OpenmrsUtil.nullSafeEquals(possibleDuplicate.getId(), personName.getId())) {
 				continue;
 			}
-			
-			if (OpenmrsUtil.nullSafeEqualsIgnoreCase(possibleDuplicate.getGivenName(), personName.getGivenName())
-			        && OpenmrsUtil.nullSafeEqualsIgnoreCase(possibleDuplicate.getMiddleName(), personName.getMiddleName())
-			        && OpenmrsUtil.nullSafeEqualsIgnoreCase(possibleDuplicate.getFamilyName(), personName.getFamilyName())) {
-				errors.reject("Patient.duplicateName", new Object[] { personName.getFullName() }, personName.getFullName()
-				        + " is a duplicate name for the same patient");
+
+			if (!possibleDuplicate.isVoided()) {
+				if (OpenmrsUtil.nullSafeEqualsIgnoreCase(possibleDuplicate.getGivenName(), personName.getGivenName())
+						&& OpenmrsUtil.nullSafeEqualsIgnoreCase(possibleDuplicate.getMiddleName(), personName.getMiddleName())
+						&& OpenmrsUtil.nullSafeEqualsIgnoreCase(possibleDuplicate.getFamilyName(), personName.getFamilyName())) {
+					errors.reject("Patient.duplicateName", new Object[]{personName.getFullName()}, personName.getFullName()
+							+ " is a duplicate name for the same patient");
+				}
 			}
 		}
 		
