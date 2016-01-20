@@ -18,6 +18,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.Concept;
+import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptName;
 import org.openmrs.GlobalProperty;
 import org.openmrs.User;
@@ -212,14 +213,17 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		
 		Concept answer1 = Context.getConceptService().getConcept(7);
 		answer1.addName(new ConceptName("TAK", new Locale("pl")));
+		answer1.addDescription(new ConceptDescription("some description", Context.getLocale()));
 		Context.getConceptService().saveConcept(answer1);
 		
 		Concept answer2 = Context.getConceptService().getConcept(8);
 		answer2.addName(new ConceptName("T", new Locale("en")));
+		answer2.addDescription(new ConceptDescription("some description", Context.getLocale()));
 		Context.getConceptService().saveConcept(answer2);
 		
 		Concept answer3 = Context.getConceptService().getConcept(22);
 		answer3.addName(new ConceptName("T", new Locale("es")));
+		answer3.addDescription(new ConceptDescription("some description", Context.getLocale()));
 		Context.getConceptService().saveConcept(answer3);
 		
 		updateSearchIndex();

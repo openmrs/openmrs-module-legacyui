@@ -22,6 +22,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.openmrs.Concept;
+import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptProposal;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.ObsService;
@@ -50,6 +51,8 @@ public class ConceptProposalFormControllerTest extends BaseModuleWebContextSensi
 		ConceptProposal cp = cs.getConceptProposal(conceptproposalId);
 		Concept obsConcept = cp.getObsConcept();
 		Concept conceptToMap = cs.getConcept(5);
+		conceptToMap.addDescription(new ConceptDescription("some description",Context.getLocale()));
+		obsConcept.addDescription(new ConceptDescription("some description",Context.getLocale()));
 		Locale locale = Locale.ENGLISH;
 		//sanity checks
 		Assert.assertFalse(conceptToMap.hasName(cp.getOriginalText(), locale));
@@ -74,7 +77,7 @@ public class ConceptProposalFormControllerTest extends BaseModuleWebContextSensi
 		request.addParameter("conceptNamelocale", locale.toString());
 		request.addParameter("action", "");
 		request.addParameter("actionToTake", "saveAsSynonym");
-		
+
 		HttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = controller.handleRequest(request, response);
 		assertNotNull(mav);
