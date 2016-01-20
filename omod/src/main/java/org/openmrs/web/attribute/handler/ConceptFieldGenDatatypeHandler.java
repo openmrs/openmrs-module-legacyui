@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 /**
  * Handler for the Concept custom datatype
  */
-@Component
+//@Component
 public class ConceptFieldGenDatatypeHandler extends SerializingFieldGenDatatypeHandler<ConceptDatatype, Concept> {
 	
 	/**
