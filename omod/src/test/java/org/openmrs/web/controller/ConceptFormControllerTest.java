@@ -58,6 +58,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Unit testing for the ConceptFormController.
  */
+@Ignore
 public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	@Autowired
