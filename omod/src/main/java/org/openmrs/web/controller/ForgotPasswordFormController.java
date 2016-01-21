@@ -9,8 +9,10 @@
  */
 package org.openmrs.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -18,9 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.StringUtils;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.PrivilegeConstants;
@@ -68,7 +70,7 @@ public class ForgotPasswordFormController extends SimpleFormController {
 	 *      org.springframework.validation.BindException)
 	 */
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
-	        BindException errors) throws Exception {
+	                                BindException errors) throws Exception {
 		
 		HttpSession httpSession = request.getSession();
 		
@@ -119,22 +121,26 @@ public class ForgotPasswordFormController extends SimpleFormController {
 					if (username != null && username.length() > 0) {
 						user = Context.getUserService().getUserByUsername(username);
 					}
-				}
-				finally {
+				} finally {
 					Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				}
 				
-				if (user == null /*|| StringUtils.isEmpty(user.getSecretQuestion())*/) {
-					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.question.empty");
-				} else {
+				if (user == null) {
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.question.fill");
-					//request.setAttribute("secretQuestion", user.getSecretQuestion());
-					
-					// reset the forgotPasswordAttempts because they have a right user.
-					// they will now have 5 more chances to get the question right
-					forgotPasswordAttempts = 0;
+					request.setAttribute("secretQuestion", getRandomFakeSecretQuestion(username));
+				} else {
+					String secretQuestion = Context.getUserService().getSecretQuestion(user);
+					if (secretQuestion == null || secretQuestion.equals("")) {
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.question.empty");
+					} else {
+						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.question.fill");
+						request.setAttribute("secretQuestion", secretQuestion);
+						
+						// reset the forgotPasswordAttempts because they have a right user.
+						// they will now have 5 more chances to get the question right
+						forgotPasswordAttempts = 0;
+					}
 				}
-				
 			} else {
 				// if they've filled in the username and entered their secret answer
 				
@@ -143,45 +149,78 @@ public class ForgotPasswordFormController extends SimpleFormController {
 				try {
 					Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 					user = Context.getUserService().getUserByUsername(username);
-				}
-				finally {
+				} finally {
 					Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				}
 				
 				// check the secret question again in case the user got here "illegally"
-				if (user == null /*|| StringUtils.isEmpty(user.getSecretQuestion())*/) {
-					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.question.empty");
-				} else if (/*user.getSecretQuestion() != null &&*/ Context.getUserService().isSecretAnswer(user, secretAnswer)) {
-					
-					StringBuilder randomPassword = new StringBuilder();
-					for (int i = 0; i < 8; i++) {
-						randomPassword.append(String.valueOf((Math.random() * (127 - 48) + 48)));
-					}
-					
-					try {
-						Context.addProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
-						//Context.getUserService().changePassword(user, randomPassword.toString());
-					}
-					finally {
-						Context.removeProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
-					}
-					
-					httpSession.setAttribute("resetPassword", randomPassword);
-					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.password.reset");
-					Context.authenticate(username, randomPassword.toString());
-					httpSession.setAttribute("loginAttempts", 0);
-					return new ModelAndView(new RedirectView(request.getContextPath() + "/options.form#Change Login Info"));
-				} else {
+				if (user == null) {
 					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.answer.invalid");
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.question.fill");
-					//request.setAttribute("secretQuestion", user.getSecretQuestion());
+					request.setAttribute("secretQuestion", getRandomFakeSecretQuestion(username));
+				} else {
+					String secretQuestion = Context.getUserService().getSecretQuestion(user);
+					if (secretQuestion == null || secretQuestion.equals("")) {
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.question.empty");
+					} else if (secretQuestion != null && Context.getUserService().isSecretAnswer(user, secretAnswer)) {
+						
+						String randomPassword = getRandomPassword();
+						
+						try {
+							Context.addProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
+							Context.getUserService().changePassword(user, randomPassword);
+						} finally {
+							Context.removeProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
+						}
+						
+						httpSession.setAttribute("resetPassword", randomPassword);
+						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.password.reset");
+						Context.authenticate(username, randomPassword);
+						httpSession.setAttribute("loginAttempts", 0);
+						
+						return new ModelAndView(new RedirectView(request.getContextPath() + "/options.form#Change Login Info"));
+					} else {
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.answer.invalid");
+						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.question.fill");
+						request.setAttribute("secretQuestion", secretQuestion);
+					}
 				}
 			}
 		}
 		
 		loginAttemptsByIP.put(ipAddress, forgotPasswordAttempts);
+		
 		request.setAttribute("uname", username);
+		
 		return showForm(request, response, errors);
 	}
 	
+	public String getRandomPassword() {
+		//Password should be of length at-least 8, must have 1 upper case letter and 1 number
+		return RandomStringUtils.randomAlphabetic(1).toUpperCase() + RandomStringUtils.randomAlphanumeric(8)+ RandomStringUtils.randomNumeric(1);
+	}
+	
+	public String getRandomFakeSecretQuestion(String username) {
+		
+		List<String> questions = new ArrayList<String>();
+		
+		questions.add(Context.getMessageSourceService().getMessage("What is your best friend's name?"));
+		questions.add(Context.getMessageSourceService().getMessage("What is your grandfather's home town?"));
+		questions.add(Context.getMessageSourceService().getMessage("What is your mother's maiden name?"));
+		questions.add(Context.getMessageSourceService().getMessage("What is your favorite band?"));
+		questions.add(Context.getMessageSourceService().getMessage("What is your first pet's name?"));
+		questions.add(Context.getMessageSourceService().getMessage("What is your brother's middle name?"));
+		questions.add(Context.getMessageSourceService().getMessage("Which city were you born in?"));
+		
+		int hashValueForName = username.hashCode();
+		
+		//Converting this value to something between 0 and 6
+		if (hashValueForName < 0) {
+			hashValueForName *= -1;
+		}
+		hashValueForName %= 7;
+		
+		//Return random question
+		return questions.get(hashValueForName);
+	}
 }
