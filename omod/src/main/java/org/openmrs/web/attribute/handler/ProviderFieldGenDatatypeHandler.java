@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 /**
  * Handler for the Provider custom datatype
  */
-//@Component
+@Component
 public class ProviderFieldGenDatatypeHandler extends BaseMetadataFieldGenDatatypeHandler<ProviderDatatype, Provider> {
 	
 	/**

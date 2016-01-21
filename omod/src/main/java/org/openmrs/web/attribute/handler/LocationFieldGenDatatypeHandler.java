@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 /**
  * Handler for the Location custom datatype
  */
-//@Component
+@Component
 public class LocationFieldGenDatatypeHandler extends BaseMetadataFieldGenDatatypeHandler<LocationDatatype, Location> {
 	
 	/**
