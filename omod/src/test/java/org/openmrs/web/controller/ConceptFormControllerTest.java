@@ -42,6 +42,7 @@ import org.openmrs.ConceptSource;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
+import org.openmrs.util.LocaleUtility;
 import org.openmrs.web.controller.ConceptFormController.ConceptFormBackingObject;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.WebTestHelper;
@@ -65,9 +66,14 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Autowired
 	ConceptService conceptService;
 	
+	private Locale britishEn;
+	
 	@Before
 	public void updateSearchIndex() {
 		super.updateSearchIndex();
+		if (britishEn == null) {
+			britishEn = LocaleUtility.fromSpecification("en_GB");
+		}
 	}
 	
 	/**
@@ -161,11 +167,11 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		
 		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
 		assertNotNull(actualConcept);
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(new Locale("en", "GB")).getName());
+		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(1, actualNames.size());
-		assertNull(actualConcept.getShortNameInLocale(new Locale("en", "GB")));
-		assertNull(actualConcept.getDescription(new Locale("en", "GB")));
+		assertNull(actualConcept.getShortNameInLocale(britishEn));
+		assertNull(actualConcept.getDescription(britishEn));
 	}
 	
 	/**
@@ -202,11 +208,11 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(actualConcept);
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(2, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(new Locale("en", "GB")).getName());
+		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
 		assertEquals(1, actualConcept.getShortNames().size());
-		assertNotNull(actualConcept.getShortNameInLocale(new Locale("en", "GB")));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(new Locale("en", "GB")).getName());
-		assertNull(actualConcept.getDescription(new Locale("en", "GB")));
+		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
+		assertNull(actualConcept.getDescription(britishEn));
 	}
 	
 	/**
@@ -246,12 +252,12 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(actualConcept);
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(2, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(new Locale("en", "GB")).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(new Locale("en", "GB")));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(new Locale("en", "GB")).getName());
+		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
 		
-		assertNotNull(actualConcept.getDescription(new Locale("en", "GB")));
-		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(new Locale("en", "GB")).getDescription());
+		assertNotNull(actualConcept.getDescription(britishEn));
+		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
 	}
 	
 	/**
@@ -291,12 +297,12 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(actualConcept);
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(2, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(new Locale("en", "GB")).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(new Locale("en", "GB")));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(new Locale("en", "GB")).getName());
+		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
 		
-		assertNotNull(actualConcept.getDescription(new Locale("en", "GB")));
-		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(new Locale("en", "GB")).getDescription());
+		assertNotNull(actualConcept.getDescription(britishEn));
+		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
 	}
 	
 	/**
@@ -342,12 +348,12 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(actualConcept);
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(5, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(new Locale("en", "GB")).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(new Locale("en", "GB")));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(new Locale("en", "GB")).getName());
+		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
 		
-		assertNotNull(actualConcept.getDescription(new Locale("en", "GB")));
-		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(new Locale("en", "GB")).getDescription());
+		assertNotNull(actualConcept.getDescription(britishEn));
+		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
 		
 	}
 	
@@ -394,9 +400,9 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(actualConcept);
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(4, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(new Locale("en", "GB")).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(new Locale("en", "GB")));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(new Locale("en", "GB")).getName());
+		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
 		
 	}
 	
@@ -443,9 +449,9 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(actualConcept);
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(4, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(new Locale("en", "GB")).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(new Locale("en", "GB")));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(new Locale("en", "GB")).getName());
+		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
 		
 	}
 	
@@ -495,12 +501,12 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		ConceptService cs = Context.getConceptService();
 		
 		final Concept concept = new Concept();
-		concept.addName(new ConceptName(CONCEPT_NAME, new Locale("en", "GB")));
-		concept.setShortName(new ConceptName("shortname", new Locale("en", "GB")));
+		concept.addName(new ConceptName(CONCEPT_NAME, britishEn));
+		concept.setShortName(new ConceptName("shortname", britishEn));
 		cs.saveConcept(concept);
 		
 		Concept actualConcept = cs.getConceptByName(CONCEPT_NAME);
-		assertThat(actualConcept.getShortNameInLocale(new Locale("en", "GB")), is(notNullValue()));
+		assertThat(actualConcept.getShortNameInLocale(britishEn), is(notNullValue()));
 		assertThat(actualConcept.getShortNames().size(), greaterThan(0));
 		assertThat(actualConcept.getNames().size(), is(2));
 		
@@ -519,7 +525,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(mav);
 		
 		actualConcept = cs.getConceptByName(CONCEPT_NAME);
-		assertThat(actualConcept.getShortNameInLocale(new Locale("en", "GB")), is(nullValue()));
+		assertThat(actualConcept.getShortNameInLocale(britishEn), is(nullValue()));
 		assertThat(actualConcept.getShortNames().size(), is(0));
 		assertThat(actualConcept.getNames().size(), is(1));
 	}
@@ -545,7 +551,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		Concept conceptToUpdate = new Concept();
 		conceptToUpdate.addName(new ConceptName("demo name", Context.getLocale()));
 		ConceptDescription originalConceptDescription = new ConceptDescription();
-		originalConceptDescription.setLocale(new Locale("en", "GB"));
+		originalConceptDescription.setLocale(britishEn);
 		originalConceptDescription.setDescription(ORIGINAL_DESCRIPTION);
 		conceptToUpdate.addDescription(originalConceptDescription);
 		cs.saveConcept(conceptToUpdate);
@@ -573,8 +579,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
 		assertNotNull(actualConcept);
 		
-		assertNotNull(actualConcept.getDescription(new Locale("en", "GB")));
-		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(new Locale("en", "GB")).getDescription());
+		assertNotNull(actualConcept.getDescription(britishEn));
+		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
 	}
 	
 	/**
@@ -800,7 +806,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		ConceptService cs = Context.getConceptService();
 		Concept concept = cs.getConcept(5497);
 		//sanity check, the current preferred Name should be different from what will get set in the form
-		Assert.assertNotSame("CD3+CD4+ABS CNT", concept.getPreferredName(new Locale("en", "GB")).getName());
+		Assert.assertNotSame("CD3+CD4+ABS CNT", concept.getPreferredName(britishEn).getName());
 		
 		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
 		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
@@ -813,9 +819,9 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
 		
-		Assert.assertEquals("CD3+CD4+ABS CNT", concept.getPreferredName(new Locale("en", "GB")).getName());
+		Assert.assertEquals("CD3+CD4+ABS CNT", concept.getPreferredName(britishEn).getName());
 		//preferred name should be the new one that has been set from the form
-		Assert.assertEquals(true, concept.getPreferredName(new Locale("en", "GB")).isLocalePreferred());
+		Assert.assertEquals(true, concept.getPreferredName(britishEn).isLocalePreferred());
 	}
 	
 	/**
@@ -827,7 +833,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		ConceptService cs = Context.getConceptService();
 		Concept concept = cs.getConcept(5497);
 		//mark one of the synonyms as preferred
-		ConceptName preferredName = new ConceptName("pref name", new Locale("en", "GB"));
+		ConceptName preferredName = new ConceptName("pref name", britishEn);
 		preferredName.setLocalePreferred(true);
 		concept.addName(preferredName);
 		cs.saveConcept(concept);
@@ -991,8 +997,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		BindException errors = new BindException(concept, "concept");
 		new ConceptFormController().validateConceptUsesPersistedObjects(concept, errors);
 		Assert.assertEquals(1, errors.getErrorCount());
-		Assert.assertEquals(true, errors
-		        .hasFieldErrors("conceptMappings[0].conceptReferenceTerm.conceptReferenceTermMaps[0].conceptMapType"));
+		Assert.assertEquals(true,
+		    errors.hasFieldErrors("conceptMappings[0].conceptReferenceTerm.conceptReferenceTermMaps[0].conceptMapType"));
 	}
 	
 	/**
@@ -1030,8 +1036,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		BindException errors = new BindException(concept, "concept");
 		new ConceptFormController().validateConceptUsesPersistedObjects(concept, errors);
 		Assert.assertEquals(1, errors.getErrorCount());
-		Assert.assertEquals(true, errors
-		        .hasFieldErrors("conceptMappings[0].conceptReferenceTerm.conceptReferenceTermMaps[0].termB"));
+		Assert.assertEquals(true,
+		    errors.hasFieldErrors("conceptMappings[0].conceptReferenceTerm.conceptReferenceTermMaps[0].termB"));
 	}
 	
 	/**
@@ -1055,7 +1061,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		Context.clearSession();
 		
 		Concept concept = conceptService.getConcept(conceptId);
-		assertThat(concept.getPreferredName(new Locale("en", "GB")).getName(), is("STAVUDINE LAMIVUDINE AND NEVIRAPINE"));
+		assertThat(concept.getPreferredName(britishEn).getName(), is("STAVUDINE LAMIVUDINE AND NEVIRAPINE"));
 	}
 	
 	@Test
