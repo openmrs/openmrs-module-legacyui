@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
@@ -58,7 +57,6 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Unit testing for the ConceptFormController.
  */
-@Ignore
 public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	@Autowired
