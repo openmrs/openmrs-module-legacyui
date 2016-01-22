@@ -9,26 +9,24 @@
  */
 package org.openmrs.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.openmrs.api.context.Context;
+import org.openmrs.web.WebConstants;
+import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
- * Test the different aspects of
- * {@link org.openmrs.web.controller.ForgotPasswordFormController}
+ * Test the different aspects of {@link org.openmrs.web.controller.ForgotPasswordFormController}
  */
 
 public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensitiveTest {
@@ -48,10 +46,9 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	 */
 	
 	@Test
-	public void shouldNotFailOnInvalidUsername() throws Exception {
+	public void shouldSetARandomSecretQuestionWhenTheUsernameIsInvalid() throws Exception {
 		
 		ForgotPasswordFormController controller = new ForgotPasswordFormController();
-		
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -77,10 +74,10 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		Assert.assertTrue(questions.contains(request.getAttribute("secretQuestion")));
 	}
 	
-	
 	@Test
 	public void shouldAcceptAsUserWithValidSecretQuestion() throws Exception {
-		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext.getBean("forgotPasswordForm");
+		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext
+		        .getBean("forgotPasswordForm");
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("POST");
@@ -89,30 +86,32 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		request.addParameter("secretAnswer", "valid secret answer");
 		
 		HttpServletResponse response = new MockHttpServletResponse();
-		controller.handleRequest(request, response);
-		
+		ModelAndView mv = controller.handleRequest(request, response);
+		Assert.assertEquals("/options.form#Change Login Info", ((RedirectView) mv.getView()).getUrl());
 		Assert.assertEquals(2, Context.getAuthenticatedUser().getId().intValue());
 	}
 	
 	/**
 	 * If a user enters the wrong secret answer, they should be kicked back to the form and not be
-	 * Acceptd
+	 * accepted even though the username is correct
 	 *
 	 * @throws Exception
 	 */
 	@Test
-	public void shouldNotAcceptAsUserWithInvalidSecretQuestion() throws Exception {
-		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext.getBean("forgotPasswordForm");
+	public void shouldFailForAValidUsernameAndInvalidSecretQuestion() throws Exception {
+		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext
+		        .getBean("forgotPasswordForm");
 		
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("POST");
-		
-		request.addParameter("uname", "invaliduser");
+		request.addParameter("uname", "validuser");
 		request.addParameter("secretAnswer", "invalid secret answer");
 		
 		HttpServletResponse response = new MockHttpServletResponse();
 		controller.handleRequest(request, response);
-		
+		Assert.assertEquals("valid secret question", request.getAttribute("secretQuestion"));
+		Assert.assertEquals("auth.answer.invalid", request.getSession().getAttribute(WebConstants.OPENMRS_ERROR_ATTR));
+		Assert.assertEquals("auth.question.fill", request.getSession().getAttribute(WebConstants.OPENMRS_MSG_ATTR));
 		Assert.assertFalse(Context.isAuthenticated());
 	}
 	
@@ -123,7 +122,8 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	 */
 	@Test
 	public void shouldLockOutAfterFiveFailedInvalidUsernames() throws Exception {
-		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext.getBean("forgotPasswordForm");
+		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext
+		        .getBean("forgotPasswordForm");
 		
 		for (int x = 1; x <= 5; x++) {
 			MockHttpServletRequest request = new MockHttpServletRequest();
@@ -152,7 +152,8 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	 */
 	@Test
 	public void shouldNotAcceptAfterFiveFailedInvalidUsernames() throws Exception {
-		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext.getBean("forgotPasswordForm");
+		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext
+		        .getBean("forgotPasswordForm");
 		
 		for (int x = 1; x <= 5; x++) {
 			MockHttpServletRequest request = new MockHttpServletRequest();
@@ -182,7 +183,8 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	 */
 	@Test
 	public void shouldLockOutAfterFiveFailedInvalidSecretAnswers() throws Exception {
-		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext.getBean("forgotPasswordForm");
+		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext
+		        .getBean("forgotPasswordForm");
 		
 		for (int x = 1; x <= 5; x++) {
 			MockHttpServletRequest request = new MockHttpServletRequest();
@@ -269,7 +271,8 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	
 	@Test
 	public void shouldNotAcceptWithInvalidSecretQuestionIfUserIsNull() throws Exception {
-		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext.getBean("forgotPasswordForm");
+		ForgotPasswordFormController controller = (ForgotPasswordFormController) applicationContext
+		        .getBean("forgotPasswordForm");
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		
 		request.setMethod("POST");

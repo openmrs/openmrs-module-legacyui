@@ -21,10 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.validation.BindException;
@@ -177,7 +179,7 @@ public class ForgotPasswordFormController extends SimpleFormController {
 						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.password.reset");
 						Context.authenticate(username, randomPassword);
 						httpSession.setAttribute("loginAttempts", 0);
-						
+
 						return new ModelAndView(new RedirectView(request.getContextPath() + "/options.form#Change Login Info"));
 					} else {
 						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.answer.invalid");
@@ -196,13 +198,19 @@ public class ForgotPasswordFormController extends SimpleFormController {
 	}
 	
 	public String getRandomPassword() {
-		//Password should be of length at-least 8, must have 1 upper case letter and 1 number
-		return RandomStringUtils.randomAlphabetic(1).toUpperCase() + RandomStringUtils.randomAlphanumeric(8)+ RandomStringUtils.randomNumeric(1);
+		//Password should be satisfy the minimum length if any is set, must have 1 upper case letter and 1 number
+		Integer minLength = 8;
+		String str = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GP_PASSWORD_MINIMUM_LENGTH);
+		if (StringUtils.isNotBlank(str)) {
+			minLength = Integer.valueOf(str);
+		}
+		return RandomStringUtils.randomAlphabetic(1).toUpperCase() + RandomStringUtils.randomAlphanumeric(minLength)
+		        + RandomStringUtils.randomNumeric(1);
 	}
 	
 	public String getRandomFakeSecretQuestion(String username) {
 		
-		List<String> questions = new ArrayList<String>();
+		List<String> questions = new ArrayList<>();
 		
 		questions.add(Context.getMessageSourceService().getMessage("What is your best friend's name?"));
 		questions.add(Context.getMessageSourceService().getMessage("What is your grandfather's home town?"));
