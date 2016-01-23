@@ -9,10 +9,6 @@
  */
 package org.openmrs.web.controller.patient;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,9 +23,13 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
 
 public class ShortPatientFormValidatorTest extends BaseModuleWebContextSensitiveTest {
 	
@@ -305,5 +305,35 @@ public class ShortPatientFormValidatorTest extends BaseModuleWebContextSensitive
 		Errors errors = new BindException(model, "patientModel");
 		validator.validate(model, errors);
 		Assert.assertEquals(true, errors.hasErrors());
+	}
+
+	/**
+	 * @see ShortPatientFormValidator#validate(Object, Errors)
+	 */
+	@Test
+	@Verifies(value = "should return meaningful error message if name duplicate with voided name", method = "validate(Object,Errors)")
+	public void validate_shouldNotRejectAgainstVoidedName() throws Exception {
+		// Getting patient with id 2
+		Patient patient = ps.getPatient(2);
+		//add a voided name for test the functionality
+		PersonName name = new PersonName("rasanjana", "C", "perera");
+		name.setVoided(true);
+		patient.addName(name);
+		Context.getPatientService().savePatient(patient);
+		Assert.assertNotNull(name.getId());//should have been added
+
+		ShortPatientModel model = new ShortPatientModel(patient);
+
+		//change to a voided name to check whether issue is fixed
+		model.getPersonName().setGivenName("rasanjana");
+		model.getPersonName().setMiddleName("C");
+		model.getPersonName().setFamilyName("perera");
+
+		//Check validator has errors
+		Errors errors = new BindException(model, "patientModel");
+		validator.validate(model, errors);
+		Assert.assertEquals(true, errors.hasErrors());
+		ObjectError error = errors.getAllErrors().get(0);
+		Assert.assertTrue(error.getDefaultMessage().contains("Please unvoid the existing name"));
 	}
 }
