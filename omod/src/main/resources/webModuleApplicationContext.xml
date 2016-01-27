@@ -134,9 +134,12 @@
 				<prop key="admin/provider/providerAttributeType.list">providerAttributeTypeList</prop>
 				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>	
 
+				<prop key="**/*.htm">springController</prop>
  			</props>
 		</property>
 	</bean>
+	
+	<bean id="springController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
 
     <!-- Pages with no controllers - begin -->
 
