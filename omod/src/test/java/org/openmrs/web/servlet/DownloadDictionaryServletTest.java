@@ -43,12 +43,12 @@ public class DownloadDictionaryServletTest extends BaseModuleWebContextSensitive
 	
 	@Test
 	public void shouldPrintHeaderAndFormattedConceptLines() throws Exception {
-		String actualContent = runServletWithConcepts(conceptDAO.getConcept(3), conceptDAO.getConcept(5), conceptDAO
-		        .getConcept(6));
+		String actualContent = runServletWithConcepts(conceptDAO.getConcept(3), conceptDAO.getConcept(5),
+		    conceptDAO.getConcept(6));
 		String expectedContent = EXPECTED_HEADER
 		        + "3,\"COUGH SYRUP\",\"This is used for coughs\",\"COUGH SYRUP\",\"\",\"\",\"Drug\",\"N/A\",\"\",\"Super User\"\n"
-		        + "5,\"SINGLE\",\"\",\"SINGLE\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n"
-		        + "6,\"MARRIED\",\"\",\"MARRIED\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n";
+		        + "5,\"SINGLE\",\"Some description\",\"SINGLE\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n"
+		        + "6,\"MARRIED\",\"Some description\",\"MARRIED\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n";
 		Assert.assertEquals(expectedContent, actualContent);
 	}
 	
@@ -95,7 +95,8 @@ public class DownloadDictionaryServletTest extends BaseModuleWebContextSensitive
 	
 	private String runServletWithConcepts(Concept... concepts) throws Exception {
 		DownloadDictionaryServlet downloadServlet = new DownloadDictionaryServlet();
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/moduleServlet/legacyui/downloadDictionaryServlet");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET",
+		        "/moduleServlet/legacyui/downloadDictionaryServlet");
 		request.setContextPath("/somecontextpath");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		
@@ -111,8 +112,8 @@ public class DownloadDictionaryServletTest extends BaseModuleWebContextSensitive
 		Assert.assertTrue(actualContent.endsWith(expectedEnd));
 		
 		// The content with line breaks can come in any order so test for the content flexibly
-		String lineBreakContent = actualContent.substring(expectedStart.length(), actualContent.length()
-		        - expectedEnd.length());
+		String lineBreakContent = actualContent.substring(expectedStart.length(),
+		    actualContent.length() - expectedEnd.length());
 		
 		// Should start and end with "
 		Assert.assertTrue(lineBreakContent.startsWith("\""));

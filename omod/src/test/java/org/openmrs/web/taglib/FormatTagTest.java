@@ -18,6 +18,7 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.Concept;
+import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNameTag;
 import org.openmrs.api.ConceptNameType;
@@ -48,6 +49,7 @@ public class FormatTagTest extends BaseModuleWebContextSensitiveTest {
 		c.addName(buildName("English synonym", locale, false, null, null));
 		c.addName(buildName("English tag", locale, false, null, tag));
 		c.addName(buildName("English another tag", locale, false, null, anotherTag));
+		c.addDescription(new ConceptDescription("some description", null));
 		c.setDatatype(service.getConceptDatatype(1));
 		c.setConceptClass(service.getConceptClass(1));
 		
@@ -88,6 +90,7 @@ public class FormatTagTest extends BaseModuleWebContextSensitiveTest {
 		Concept c = new Concept();
 		c.addName(buildName("English fully\"><script>alert('xss possible!')</script> specified", locale, true,
 		    ConceptNameType.FULLY_SPECIFIED, null));
+		c.addDescription(new ConceptDescription("some description", null));
 		c.setDatatype(service.getConceptDatatype(1));
 		c.setConceptClass(service.getConceptClass(1));
 		
@@ -110,7 +113,7 @@ public class FormatTagTest extends BaseModuleWebContextSensitiveTest {
 	 * @return
 	 */
 	private ConceptName buildName(String name, Locale locale, boolean localePreferred, ConceptNameType nameType,
-	        ConceptNameTag tag) {
+	                              ConceptNameTag tag) {
 		ConceptName ret = new ConceptName();
 		ret.setName(name);
 		ret.setLocale(locale);
@@ -172,7 +175,7 @@ public class FormatTagTest extends BaseModuleWebContextSensitiveTest {
 	 * @param pageContext the page context to be used when checking start tag evaluation
 	 * @param tag the format tag whose doStartTag() method will be evaluated
 	 * @param object the object to format with given tag
-	 * @param expected the expected result of object formatting 
+	 * @param expected the expected result of object formatting
 	 */
 	private void checkStartTagEvaluation(PageContext pageContext, FormatTag tag, Object object, String expected) {
 		tag.setObject(object);

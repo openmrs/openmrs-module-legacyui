@@ -39,10 +39,13 @@ import org.openmrs.ConceptNumeric;
 import org.openmrs.ConceptReferenceTerm;
 import org.openmrs.ConceptReferenceTermMap;
 import org.openmrs.ConceptSource;
+import org.openmrs.GlobalProperty;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
 import org.openmrs.util.LocaleUtility;
+import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.controller.ConceptFormController.ConceptFormBackingObject;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.WebTestHelper;
@@ -159,6 +162,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setMethod("POST");
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
 		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
@@ -171,7 +175,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(1, actualNames.size());
 		assertNull(actualConcept.getShortNameInLocale(britishEn));
-		assertNull(actualConcept.getDescription(britishEn));
+		assertNotNull(actualConcept.getDescription(britishEn));
 	}
 	
 	/**
@@ -198,6 +202,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
 		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
@@ -212,7 +217,6 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertEquals(1, actualConcept.getShortNames().size());
 		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
 		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
-		assertNull(actualConcept.getDescription(britishEn));
 	}
 	
 	/**
@@ -503,6 +507,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		final Concept concept = new Concept();
 		concept.addName(new ConceptName(CONCEPT_NAME, britishEn));
 		concept.setShortName(new ConceptName("shortname", britishEn));
+		concept.addDescription(new ConceptDescription("some description", null));
 		cs.saveConcept(concept);
 		
 		Concept actualConcept = cs.getConceptByName(CONCEPT_NAME);
@@ -765,6 +770,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("conceptId", "8473");
 		mockRequest.setParameter("namesByLocale[en_GB].name", "A complex concept");
+		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "13");
 		mockRequest.setParameter("concept.class", "5");
 		mockRequest.setParameter("handlerKey", "TextHandler"); // switching it from an ImageHandler to a TextHandler
@@ -904,6 +910,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setMethod("POST");
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("namesByLocale[en_GB].name", conceptName);
+		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
 		mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "1");
 		mockRequest.setParameter("conceptMappings[0].conceptMapType", "3");
@@ -1067,11 +1074,17 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	public void shouldRemoveConceptDescriptionIfRemovedFromUI() throws Exception {
 		ConceptService cs = Context.getConceptService();
-		
+		final String espaniol = "es";
+		AdministrationService as = Context.getAdministrationService();
+		GlobalProperty gp = as.getGlobalPropertyObject(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
+		gp.setPropertyValue("en_GB, " + espaniol);
+		as.saveGlobalProperty(gp);
 		// make sure the concept already exists
 		Concept concept = cs.getConcept(3);
 		assertNotNull(concept);
-		assertNotNull(concept.getDescription());
+		Locale spanish = LocaleUtility.fromSpecification(espaniol);
+		assertNotNull(concept.getDescription(britishEn, true));
+		assertNull(concept.getDescription(spanish, true));
 		
 		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
 		
@@ -1082,6 +1095,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "");
+		mockRequest.setParameter("descriptionsByLocale[es].description", "new spanish description");
 		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
 		assertNotNull(mav);
@@ -1089,35 +1103,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		
 		Concept actualConcept = cs.getConcept(3);
 		assertNotNull(actualConcept);
-		assertNull(concept.getDescription());
-	}
-	
-	@Test
-	public void shouldRemoveConceptDescriptionIfEmptyStringFromUI() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept already exists
-		Concept concept = cs.getConcept(3);
-		assertNotNull(concept);
-		assertNotNull(concept.getDescription());
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "    ");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConcept(3);
-		assertNotNull(actualConcept);
-		assertNull(concept.getDescription());
+		assertNull(concept.getDescription(britishEn, true));
+		assertNotNull(concept.getDescription(spanish, true));
 	}
 	
 	/**
