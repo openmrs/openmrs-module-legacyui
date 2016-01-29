@@ -334,6 +334,6 @@ public class ShortPatientFormValidatorTest extends BaseModuleWebContextSensitive
 		validator.validate(model, errors);
 		Assert.assertEquals(true, errors.hasErrors());
 		ObjectError error = errors.getAllErrors().get(0);
-		Assert.assertTrue(error.getDefaultMessage().contains("Please unvoid the existing name"));
+		Assert.assertTrue(error.getDefaultMessage().contains("Please restore the existing name"));
 	}
 }
