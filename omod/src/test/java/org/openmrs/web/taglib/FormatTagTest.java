@@ -14,6 +14,7 @@ import java.util.Locale;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.Tag;
 
+import org.apache.commons.lang.LocaleUtils;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class FormatTagTest extends BaseModuleWebContextSensitiveTest {
 		c.addName(buildName("English synonym", locale, false, null, null));
 		c.addName(buildName("English tag", locale, false, null, tag));
 		c.addName(buildName("English another tag", locale, false, null, anotherTag));
-		c.addDescription(new ConceptDescription("some description", null));
+		c.addDescription(new ConceptDescription("some description", LocaleUtils.toLocale("en")));
 		c.setDatatype(service.getConceptDatatype(1));
 		c.setConceptClass(service.getConceptClass(1));
 		
@@ -90,7 +91,7 @@ public class FormatTagTest extends BaseModuleWebContextSensitiveTest {
 		Concept c = new Concept();
 		c.addName(buildName("English fully\"><script>alert('xss possible!')</script> specified", locale, true,
 		    ConceptNameType.FULLY_SPECIFIED, null));
-		c.addDescription(new ConceptDescription("some description", null));
+		c.addDescription(new ConceptDescription("some description", LocaleUtils.toLocale("en")));
 		c.setDatatype(service.getConceptDatatype(1));
 		c.setConceptClass(service.getConceptClass(1));
 		

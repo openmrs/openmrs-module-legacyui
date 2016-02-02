@@ -47,8 +47,8 @@ public class DownloadDictionaryServletTest extends BaseModuleWebContextSensitive
 		    conceptDAO.getConcept(6));
 		String expectedContent = EXPECTED_HEADER
 		        + "3,\"COUGH SYRUP\",\"This is used for coughs\",\"COUGH SYRUP\",\"\",\"\",\"Drug\",\"N/A\",\"\",\"Super User\"\n"
-		        + "5,\"SINGLE\",\"Some description\",\"SINGLE\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n"
-		        + "6,\"MARRIED\",\"Some description\",\"MARRIED\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n";
+		        + "5,\"SINGLE\",\"\",\"SINGLE\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n"
+		        + "6,\"MARRIED\",\"\",\"MARRIED\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n";
 		Assert.assertEquals(expectedContent, actualContent);
 	}
 	
