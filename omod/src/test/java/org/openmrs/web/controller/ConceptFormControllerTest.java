@@ -25,7 +25,6 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.LocaleUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -508,7 +507,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		final Concept concept = new Concept();
 		concept.addName(new ConceptName(CONCEPT_NAME, britishEn));
 		concept.setShortName(new ConceptName("shortname", britishEn));
-		concept.addDescription(new ConceptDescription("some description", LocaleUtils.toLocale("en")));
+		concept.addDescription(new ConceptDescription("some description", null));
 		cs.saveConcept(concept);
 		
 		Concept actualConcept = cs.getConceptByName(CONCEPT_NAME);
