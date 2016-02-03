@@ -27,23 +27,28 @@ public class WebComponentRegistrar implements ServletContextAware {
 	@Override
 	public void setServletContext(ServletContext servletContext) {
 		
-		ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
-		addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet");
-		
-		addMappings(servletContext.getServletRegistration("jsp"), "*.withjstl");
-		
-		Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", new ForcePasswordChangeFilter());
-		filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
-		filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
-		filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
-		
-		servletContext.addListener(new SessionListener());
-		/*
-		 * EfficientShutdownServletContextAttributeListener is used instead of
-		 * EfficientShutdownServletContextListener since the latter implements ServletContextListener,
-		 * which is not supported by ServletContext.addListener.
-		*/
-		servletContext.addListener(new EfficientShutdownServletContextAttributeListener());
+		try {
+			ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
+			addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet");
+			
+			addMappings(servletContext.getServletRegistration("jsp"), "*.withjstl");
+			
+			Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", new ForcePasswordChangeFilter());
+			filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
+			filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
+			filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+			
+			servletContext.addListener(new SessionListener());
+			/*
+			 * EfficientShutdownServletContextAttributeListener is used instead of
+			 * EfficientShutdownServletContextListener since the latter implements ServletContextListener,
+			 * which is not supported by ServletContext.addListener.
+			*/
+			servletContext.addListener(new EfficientShutdownServletContextAttributeListener());
+		}
+		catch (Exception ex) {
+			//TODO not yet looked into what caused this to fail.
+		}
 	}
 	
 	private void addMappings(ServletRegistration reg, String... mappings) {
