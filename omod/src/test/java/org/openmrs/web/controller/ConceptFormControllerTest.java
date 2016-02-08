@@ -25,6 +25,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.LocaleUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +45,6 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.util.LocaleUtility;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.controller.ConceptFormController.ConceptFormBackingObject;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
@@ -75,7 +75,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	public void updateSearchIndex() {
 		super.updateSearchIndex();
 		if (britishEn == null) {
-			britishEn = LocaleUtility.fromSpecification("en_GB");
+			britishEn = LocaleUtils.toLocale("en_GB");
 		}
 	}
 	
@@ -1082,7 +1082,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		// make sure the concept already exists
 		Concept concept = cs.getConcept(3);
 		assertNotNull(concept);
-		Locale spanish = LocaleUtility.fromSpecification(espaniol);
+		Locale spanish = LocaleUtils.toLocale(espaniol);
 		assertNotNull(concept.getDescription(britishEn, true));
 		assertNull(concept.getDescription(spanish, true));
 		
