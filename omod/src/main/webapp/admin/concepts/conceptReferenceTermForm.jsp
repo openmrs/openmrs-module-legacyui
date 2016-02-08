@@ -127,7 +127,7 @@ $j(document).ready( function() {
             <th class="alignRight" valign="top"><openmrs:message code="ConceptReferenceTerm.code"/><span class="required">*</span></th>
             <td valign="top">
                 <spring:bind path="code">
-                    <input type="text" name="${status.expression}" value="<c:out value="${status.value}" />"/>
+                    <input type="text" name="${status.expression}" value="${status.value}" />
                     <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                 </spring:bind>
             </td>
@@ -136,7 +136,7 @@ $j(document).ready( function() {
             <th class="alignRight" valign="top"><openmrs:message code="general.name"/></th>
             <td valign="top">
                 <spring:bind path="name">
-                    <input type="text" name="${status.expression}" value="<c:out value="${status.value}" />"/>
+                    <input type="text" name="${status.expression}" value="${status.value}" />
                     <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                 </spring:bind>
             </td>
@@ -149,7 +149,7 @@ $j(document).ready( function() {
 					<option value=""></option>
 					<openmrs:forEachRecord name="conceptSource">
 					<option value="${record.conceptSourceId}" <c:if test="${record.conceptSourceId == status.value}">selected="selected"</c:if>>
-						<c:out value="${record.name}" />  <c:if test="${not empty record.hl7Code}">[${record.hl7Code}]</c:if>
+						${record.name}  <c:if test="${not empty record.hl7Code}">[${record.hl7Code}]</c:if>
 					</option>
 					</openmrs:forEachRecord>
 				</select>
@@ -161,7 +161,7 @@ $j(document).ready( function() {
        		<th class="alignRight" valign="top"><openmrs:message code="general.description"/></th>
             <td valign="top">
                 <spring:bind path="description">
-                	<textarea name="${status.expression}" rows="3" cols="50"><c:out value="${status.value}" /></textarea>
+                	<textarea name="${status.expression}" rows="3" cols="50">${status.value}</textarea>
                     <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                 </spring:bind>
             </td>
@@ -170,7 +170,7 @@ $j(document).ready( function() {
             <th class="alignRight"><openmrs:message code="general.version"/></th>
             <td>
                 <spring:bind path="version">
-                    <input type="text" name="${status.expression}" value="<c:out value="${status.value}" />"/>
+                    <input type="text" name="${status.expression}" value="${status.value}"/>
                     <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                 </spring:bind>
             </td>
@@ -201,7 +201,7 @@ $j(document).ready( function() {
 									<c:set var="groupOpen" value="true" />
 								</c:if>
 								<option value="${record.conceptMapTypeId}" <c:if test="${record.conceptMapTypeId == status.value}">selected="selected"</c:if> >
-									<c:out value="${record.name}" />
+									${record.name}
 								</option>
 							</openmrs:forEachRecord>
 							<c:if test="${groupOpen}">

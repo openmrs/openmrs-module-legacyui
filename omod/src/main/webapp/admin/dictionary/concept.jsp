@@ -150,7 +150,7 @@
 						<spring:bind path="command.synonymsByLocale[${loc}][${varStatus.index}]">
 							<c:if test="${!status.value.voided}">
 								<div>
-									<c:out value="${status.value.name}" />
+									${status.value.name}
 								</div>
 							</c:if>
 						</spring:bind>
@@ -166,7 +166,7 @@
 						<spring:bind path="command.indexTermsByLocale[${loc}][${varStatus.index}]">
 							<c:if test="${!status.value.voided}">
 								<div>
-									<c:out value="${status.value.name}" />
+									${status.value.name}
 								</div>
 							</c:if>
 						</spring:bind>
@@ -285,7 +285,7 @@
 								<th><openmrs:message code="ConceptNumeric.displayPrecision"/></th>
 								<td colspan="2">
 									<spring:bind path="command.concept.displayPrecision">
-										<c:out value="${status.value}" />
+										${status.value}
 										<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 									</spring:bind>
 								</td>
@@ -330,7 +330,7 @@
 			<th title="<openmrs:message code="Concept.version.help"/>"><openmrs:message code="Concept.version" /></th>
 			<td>
 				<spring:bind path="command.concept.version">
-					<c:out value="${status.value}" />
+					${status.value}
 				</spring:bind>
 			</td>
 		</tr>

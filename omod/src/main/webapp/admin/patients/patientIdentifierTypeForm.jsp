@@ -130,7 +130,7 @@
 					<option value="${piv['class'].name}" 
 						<c:if test="${status.value == piv['class'].name}">selected</c:if> 
 					/>
-					<c:out value="${piv.name}" />
+					${piv.name}
 						<c:if test="${defaultValidatorName == piv.name}"> (default)</c:if>
 					</option>
 				</c:forEach>
@@ -154,7 +154,7 @@
        <td><font color="#D0D0D0"><sub><openmrs:message code="general.uuid"/></sub></font></td>
        <td colspan="${fn:length(locales)}"><font color="#D0D0D0"><sub>
          <spring:bind path="patientIdentifierType.uuid">
-             <c:out value="${status.value}"></c:out>
+             ${status.value}
          </spring:bind>
            </sub>
          </font>

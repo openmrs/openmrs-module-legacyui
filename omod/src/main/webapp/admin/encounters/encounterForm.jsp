@@ -343,7 +343,7 @@
 					<c:forEach items="${patientVisits}" var="visit">
 						<option value="${visit.visitId}" <c:if test="${visit.visitId == status.value}">selected="selected"</c:if>>
 							 <openmrs:formatDate date="${visit.startDatetime}" />
-							 ${visit.visitType.name} <c:out value="${visit.patient.personName}" />
+							 ${visit.visitType.name} ${visit.patient.personName}
 							<c:if test="${visit.indication != null}"> ${visit.indication.name}</c:if>
 							<c:if test="${visit.location != null}"> ${visit.location}</c:if>
 						</option>
