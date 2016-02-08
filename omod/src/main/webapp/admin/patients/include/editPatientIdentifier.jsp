@@ -31,7 +31,7 @@
 					<option value=""></option>
 					<openmrs:forEachRecord name="patientIdentifierType">
 						<option value="${record.patientIdentifierTypeId}" <c:if test="${record.patientIdentifierTypeId == status.value}">selected</c:if>>
-                            <c:out value="${record.name}" />
+                            ${record.name}
 						</option>
 					</openmrs:forEachRecord>
 				</select>
@@ -57,7 +57,7 @@
 					<option value=""></option>
 					<openmrs:forEachRecord name="location">
 						<option value="${record.locationId}" <c:if test="${record.locationId == status.value}">selected</c:if>>
-                            <c:out value="${record.name}" />
+                            ${record.name}
 						</option>
 					</openmrs:forEachRecord>
 				</select>
@@ -75,7 +75,7 @@
 			<tr>
 				<td><openmrs:message code="general.createdBy" /></td>
 				<td>
-					<c:out value="${status.value.personName}" /> -
+					${status.value.personName} -
 					<openmrs:formatDate path="dateCreated" type="long" />
 				</td>
 			</tr>
@@ -87,7 +87,7 @@
 		<tr>
 			<td><openmrs:message code="general.changedBy" /></td>
 			<td>
-				<c:out value="${status.value.personName}" /> -
+				${status.value.personName} -
 				<openmrs:formatDate path="dateChanged" type="long" />
 			</td>
 		</tr>
@@ -101,12 +101,12 @@
 					<input type="hidden" name="_${status.expression}"/>
 					<input type="checkbox" name="${status.expression}"
 						   <c:if test="${status.value == true}">checked="checked"</c:if> 
-						   onClick="toggleLayer('voidReasonIdentifierRow-<c:out value="${identifier}" />'); if (voidedBoxClicked) voidedBoxClicked(this); "
+						   onClick="toggleLayer('voidReasonIdentifierRow-${identifier}'); if (voidedBoxClicked) voidedBoxClicked(this); "
 					/>
 				</spring:bind>
 			</td>
 		</tr>
-	<tr id="voidReasonIdentifierRow-<c:out value="${identifier.patientIdentifierId}" />" <spring:bind path="voided"><c:if test="${status.value == false}">style="display: none"</c:if></spring:bind> >
+	<tr id="voidReasonIdentifierRow-${identifier.patientIdentifierId} "  <spring:bind path="voided"><c:if test="${status.value == false}">style="display: none"</c:if></spring:bind> >
 		<td><openmrs:message code="general.voidReason"/></td>
 		<spring:bind path="voidReason">
 			<td>
@@ -121,7 +121,7 @@
 			<tr>
 				<td><openmrs:message code="general.voidedBy" /></td>
 				<td>
-					<c:out value="${status.value.personName}" /> -
+					${status.value.personName} -
 					<openmrs:formatDate path="dateVoided" type="long" />
 				</td>
 			</tr>

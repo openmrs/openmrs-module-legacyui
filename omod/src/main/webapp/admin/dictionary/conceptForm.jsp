@@ -251,7 +251,7 @@
 					<tr>
 						<td id="similarConceptsStart" valign="bottom" >
 								<spring:bind path="command.namesByLocale[${loc}].name">
-								<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" id="${status.expression}" class="largeWidth" onchange="setRadioValue(this, 'fullySpecPreferred[${loc}]')" />
+								<input type="text" name="${status.expression}" value="${status.value}" id="${status.expression}" class="largeWidth" onchange="setRadioValue(this, 'fullySpecPreferred[${loc}]')" />
 								<span class="error" id="duplicateConceptError" hidden="true"><openmrs:message code="Concept.error.fullySpecifiedName.notUnique"/></span>
 								</spring:bind>
 						</td>
@@ -267,7 +267,7 @@
 								<c:if test="${fn:length(command.synonymsByLocale[loc]) == 0}">style = "visibility: hidden"</c:if> title="<openmrs:message code="Concept.name.localePreferred.help"/>" />
 							<br />
 							<spring:bind path="command.preferredNamesByLocale[${loc}]" ignoreNestedPath="true">			
-							<input id="fullySpecPreferred[${loc}]" type="radio" name="${status.expression}" value="<c:out value="${command.namesByLocale[loc].name}" />"
+							<input id="fullySpecPreferred[${loc}]" type="radio" name="${status.expression}" value="${command.namesByLocale[loc].name}"
 								<c:if test="${command.namesByLocale[loc].localePreferred}">checked=checked</c:if>
 								<c:if test="${fn:length(command.synonymsByLocale[loc]) > 0}">style = "visibility: visible"</c:if>
 								<c:if test="${fn:length(command.synonymsByLocale[loc]) == 0}">style = "visibility: hidden"</c:if>/>
@@ -298,7 +298,7 @@
 						<input type="hidden" name="_synonymsByLocale[${loc}][${varStatus.index}].name" value="" />
 						<div>							
 							<spring:bind path="name">																
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="largeWidth"
+							<input type="text" name="${status.expression}" value="${status.value}" class="largeWidth"
 							<c:if test="${conceptNameHasObsMap[synonym.conceptNameId] ==  null}">onchange="setRadioValue(this, 'possiblePrefName_[${loc}][${varStatus.index}]')" </c:if> 
 							<c:if test="${conceptNameHasObsMap[synonym.conceptNameId] !=  null}">readonly="readonly"</c:if> />							
 							</spring:bind>
@@ -319,7 +319,7 @@
 							</spring:bind>														
 							<spring:bind path="voided">
 								<input type="hidden" name="_${status.expression}" value="" />
-								<input id="synonymsByLocale[${loc}][${varStatus.index}].isVoided" type="hidden" name="${status.expression}" value="<c:out value="${status.value}" />" />
+								<input id="synonymsByLocale[${loc}][${varStatus.index}].isVoided" type="hidden" name="${status.expression}" value="${status.value}" />
 							</spring:bind>							
 						</div>
 					</spring:nestedPath>
@@ -345,7 +345,7 @@
 						<input type="hidden" name="_indexTermsByLocale[${loc}][${varStatus.index}].name" value="" />
 						<div>							
 							<spring:bind path="name">
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="largeWidth"
+							<input type="text" name="${status.expression}" value="${status.value}" class="largeWidth"
 							<c:if test="${conceptNameHasObsMap[indexTerm.conceptNameId] !=  null}">readonly="readonly"</c:if> />								
 							</spring:bind>
 							<!-- A place holder radio button just to maintain alignment of the voided checkbox on the page  -->
@@ -364,7 +364,7 @@
 							</spring:bind>
 							<spring:bind path="voided">
 								<input type="hidden" name="_${status.expression}" value="" />
-								<input id="indexTermsByLocale[${loc}][${varStatus.index}].isVoided" type="hidden" name="${status.expression}" value="<c:out value="${status.value}" />" />
+								<input id="indexTermsByLocale[${loc}][${varStatus.index}].isVoided" type="hidden" name="${status.expression}" value="${status.value}"  />
 							</spring:bind>							
 						</div>
 					</spring:nestedPath>
@@ -386,7 +386,7 @@
 		<c:forEach items="${command.locales}" var="loc">
 			<td class="${loc}">
 				<spring:bind path="command.shortNamesByLocale[${loc}].name">
-					<input class="smallWidth" type="text" name="${status.expression}" value="<c:out value="${status.value}" />" />
+					<input class="smallWidth" type="text" name="${status.expression}" value="${status.value}" />
 					<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 				</spring:bind>
 			</td>
@@ -399,7 +399,7 @@
 		<c:forEach items="${command.locales}" var="loc">
 			<td valign="top" class="${loc}">
 				<spring:bind path="command.descriptionsByLocale[${loc}].description">
-					<textarea name="${status.expression}" rows="4" cols="50"><c:out value="${status.value}" /></textarea>
+					<textarea name="${status.expression}" rows="4" cols="50">${status.value}</textarea>
 					<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 				</spring:bind>
 			</td>
@@ -524,7 +524,7 @@
 					<th valign="middle"><openmrs:message code="ConceptNumeric.absoluteHigh"/></th>
 					<td valign="middle">
 						<spring:bind path="command.hiAbsolute">
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="smallWidth" />
+							<input type="text" name="${status.expression}" value="${status.value}" class="smallWidth" />
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
@@ -533,7 +533,7 @@
 					<th valign="middle"><openmrs:message code="ConceptNumeric.criticalHigh"/></th>
 					<td valign="middle">
 						<spring:bind path="command.hiCritical">
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="smallWidth" />
+							<input type="text" name="${status.expression}" value="${status.value}" class="smallWidth" />
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
@@ -542,7 +542,7 @@
 					<th valign="middle"><openmrs:message code="ConceptNumeric.normalHigh"/></th>
 					<td valign="middle">
 						<spring:bind path="command.hiNormal">
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="smallWidth" />
+							<input type="text" name="${status.expression}" value="${status.value}"  class="smallWidth" />
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
@@ -551,7 +551,7 @@
 					<th valign="middle"><openmrs:message code="ConceptNumeric.normalLow"/></th>
 					<td valign="middle">
 						<spring:bind path="command.lowNormal">
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="smallWidth" />
+							<input type="text" name="${status.expression}" value="${status.value}"  class="smallWidth" />
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
@@ -560,7 +560,7 @@
 					<th valign="middle"><openmrs:message code="ConceptNumeric.criticalLow"/></th>
 					<td valign="middle">
 						<spring:bind path="command.lowCritical">
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="smallWidth" />
+							<input type="text" name="${status.expression}" value="${status.value}"  class="smallWidth" />
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
@@ -569,7 +569,7 @@
 					<th valign="middle"><openmrs:message code="ConceptNumeric.absoluteLow"/></th>
 					<td valign="middle">
 						<spring:bind path="command.lowAbsolute">
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="smallWidth" />
+							<input type="text" name="${status.expression}" value="${status.value}"  class="smallWidth" />
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
@@ -583,7 +583,7 @@
 					<th><openmrs:message code="ConceptNumeric.units"/></th>
 					<td colspan="2">
 						<spring:bind path="command.units">
-							<input type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="mediumWidth" />
+							<input type="text" name="${status.expression}" value="${status.value}"  class="mediumWidth" />
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
@@ -602,7 +602,7 @@
 					<th><openmrs:message code="ConceptNumeric.displayPrecision"/></th>
 					<td colspan="2">
 						<spring:bind path="command.displayPrecision">
-							<input type="text" id="display_precision_textbox" name="${status.expression}" value="<c:out value="${status.value}" />" class="mediumWidth" />
+							<input type="text" id="display_precision_textbox" name="${status.expression}" value="${status.value}" class="mediumWidth" />
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
@@ -672,7 +672,7 @@
 									<c:set var="groupOpen" value="true" />
 								</c:if>
 								<option value="${record.conceptMapTypeId}" <c:if test="${record.conceptMapTypeId == status.value}">selected="selected"</c:if> >
-									<c:out value="${record.name}" />
+									${record.name}
 								</option>
 							</openmrs:forEachRecord>
 							<c:if test="${groupOpen}">
@@ -685,7 +685,7 @@
 					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>${mapping.conceptReferenceTerm.conceptSource.name}</td>
 					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>${mapping.conceptReferenceTerm.code}
 					<spring:bind path="conceptReferenceTerm">
-						<input type="hidden" name="${status.expression}" value="<c:out value="${status.value}" />" />
+						<input type="hidden" name="${status.expression}" value="${status.value}"  />
 					</spring:bind>
 					</td>
 					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>${mapping.conceptReferenceTerm.name}</td>
@@ -701,7 +701,7 @@
 									<c:set var="groupOpen" value="true" />
 								</c:if>
 								<option value="${record.conceptMapTypeId}" <c:if test="${record.conceptMapTypeId == status.value}">selected="selected"</c:if> >
-									<c:out value="${record.name}" />
+									${record.name}
 								</option>
 							</openmrs:forEachRecord>
 							<c:if test="${groupOpen}">
@@ -724,7 +724,7 @@
 					<td>
 						<spring:bind path="conceptReferenceTerm">
 						<input type="text" id="term[${mapStatus.index}].code" name="term.code" value="${mapping.conceptReferenceTerm.code}" size="25" />
-						<input type="hidden" id="${status.expression}" name="${status.expression}" value="<c:out value="${status.value}" />" />
+						<input type="hidden" id="${status.expression}" name="${status.expression}" value="${status.value}" />
 						<script type="text/javascript">
 							addAutoComplete('term[${mapStatus.index}].code', 'term[${mapStatus.index}].source', 'conceptMappings[${mapStatus.index}].conceptReferenceTerm', 'term[${mapStatus.index}].name')
 						</script>
@@ -821,7 +821,7 @@
 		</th>
 		<td>
 			<spring:bind path="command.concept.version">
-				<input class="smallWidth" type="text" name="${status.expression}" value="<c:out value="${status.value}" />" class="smallWidth" />
+				<input class="smallWidth" type="text" name="${status.expression}" value="${status.value}" class="smallWidth" />
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 			</spring:bind>
 		</td>

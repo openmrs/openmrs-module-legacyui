@@ -103,7 +103,7 @@
 		<td>
 			<spring:bind path="drug.name">			
 				<input type="text" name="${status.expression}" size="40"
-					   value="<c:out value="${status.value}" />" />
+					   value="${status.value}" />
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if> 
 			</spring:bind>
 		</td>
@@ -142,7 +142,7 @@
 		<td>
 			<spring:bind path="drug.strength">
 				<input type="text" name="${status.expression}" size="10" 
-					   value="<c:out value="${status.value}" />" />
+					   value="${status.value}" />
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if> 
 			</spring:bind>
 		</td>
@@ -152,7 +152,7 @@
 		<td>
 			<spring:bind path="drug.minimumDailyDose">			
 				<input type="text" name="${status.expression}" size="10" 
-					   value="<c:out value="${status.value}" />" />
+					   value="${status.value}" />
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if> 
 			</spring:bind>
 		</td>
@@ -162,7 +162,7 @@
 		<td>
 			<spring:bind path="drug.maximumDailyDose">
 				<input type="text" name="${status.expression}" size="10" 
-					   value="<c:out value="${status.value}" />" />
+					   value="${status.value}" />
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if> 
 			</spring:bind>
 		</td>

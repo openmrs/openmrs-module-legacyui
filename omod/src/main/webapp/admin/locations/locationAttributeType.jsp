@@ -157,7 +157,7 @@
        <font color="#D0D0D0"><sub>
        <c:if test="${attributeType.locationAttributeTypeId != null}">
        <spring:bind path="attributeType.uuid">
-           <c:out value="${status.value}"></c:out>
+           ${status.value}
        </spring:bind></c:if>
        </sub></font>
      </td>

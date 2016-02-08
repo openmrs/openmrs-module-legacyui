@@ -188,7 +188,7 @@
 		<tr>
 			<td><openmrs:message code="general.createdBy" /></td>
 			<td>
-				<c:out value="${status.value.personName}" /> -
+				${status.value.personName} -
 				<openmrs:formatDate path="dateCreated" type="long" />
 			</td>
 		</tr>
@@ -200,7 +200,7 @@
 		<tr>
 			<td><openmrs:message code="general.changedBy" /></td>
 			<td colspan="2">
-				<c:out value="${status.value.personName}" /> -
+				${status.value.personName} -
 				<openmrs:formatDate path="dateChanged" type="long" />
 			</td>
 		</tr>
@@ -232,7 +232,7 @@
       <td colspan="${fn:length(locales)}">
       <font color="#D0D0D0"><sub>
        <spring:bind path="person.uuid">
-           <c:out value="${status.value}"></c:out>
+           ${status.value}"
        </spring:bind>
        </sub></font>
      </td>
@@ -242,7 +242,7 @@
 		<tr>
 			<td><openmrs:message code="general.voidedBy"/></td>
 			<td>
-				<c:out value="${status.value.personName}" /> -
+				${status.value.personName} -
 				<openmrs:formatDate path="dateVoided" type="long" />
 			</td>
 		</tr>
