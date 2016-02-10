@@ -359,8 +359,9 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		log.error("Locale:" + britishEn);
 		log.error("Allowed Locales:" + Context.getAdministrationService().getAllowedLocales());
 		log.error("Short Names:" + actualConcept.getShortNames().size());
-		for (ConceptName name : actualConcept.getShortNames()) {
-			log.error("Short name =>" + name.getName() + ":" + name.getLocale());
+        log.error("Names:" + actualConcept.getNames().size());
+		for (ConceptName name : actualConcept.getNames()) {
+            log.error("Name =>" + name.getName() + ":" + name.getLocale());
 		}
 		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
 		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
