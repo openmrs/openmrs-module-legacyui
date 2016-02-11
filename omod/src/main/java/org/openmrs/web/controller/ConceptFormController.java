@@ -107,8 +107,8 @@ public class ConceptFormController extends SimpleFormController {
 		NumberFormat nf = NumberFormat.getInstance(Context.getLocale());
 		binder.registerCustomEditor(java.lang.Integer.class, new CustomNumberEditor(java.lang.Integer.class, nf, true));
 		binder.registerCustomEditor(java.lang.Double.class, new CustomNumberEditor(java.lang.Double.class, nf, true));
-		binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(SimpleDateFormat.getDateInstance(
-		    SimpleDateFormat.SHORT, Context.getLocale()), true));
+		binder.registerCustomEditor(java.util.Date.class,
+		    new CustomDateEditor(SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT, Context.getLocale()), true));
 		binder.registerCustomEditor(org.openmrs.ConceptClass.class, new ConceptClassEditor());
 		binder.registerCustomEditor(org.openmrs.ConceptDatatype.class, new ConceptDatatypeEditor());
 		binder.registerCustomEditor(java.util.Collection.class, "concept.conceptSets", new ConceptSetsEditor(commandObject
@@ -127,7 +127,7 @@ public class ConceptFormController extends SimpleFormController {
 	 */
 	@Override
 	protected ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object object,
-	        BindException errors) throws Exception {
+	                                             BindException errors) throws Exception {
 		
 		if (getMessageSourceAccessor().getMessage("Concept.cancel").equals(request.getParameter("action"))) {
 			return new ModelAndView(new RedirectView("index.htm"));
@@ -175,7 +175,7 @@ public class ConceptFormController extends SimpleFormController {
 	 */
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
-	        BindException errors) throws Exception {
+	                                BindException errors) throws Exception {
 		
 		HttpSession httpSession = request.getSession();
 		ConceptService cs = Context.getConceptService();
@@ -480,15 +480,15 @@ public class ConceptFormController extends SimpleFormController {
 					descriptionsByLocale.put(locale, new ConceptDescription(null, locale));
 				}
 				
-				synonymsByLocale.put(locale, ListUtils.lazyList(synonymsByLocale.get(locale), FactoryUtils
-				        .instantiateFactory(ConceptName.class)));
-				indexTermsByLocale.put(locale, ListUtils.lazyList(indexTermsByLocale.get(locale), FactoryUtils
-				        .instantiateFactory(ConceptName.class)));
+				synonymsByLocale.put(locale,
+				    ListUtils.lazyList(synonymsByLocale.get(locale), FactoryUtils.instantiateFactory(ConceptName.class)));
+				indexTermsByLocale.put(locale,
+				    ListUtils.lazyList(indexTermsByLocale.get(locale), FactoryUtils.instantiateFactory(ConceptName.class)));
 			}
 			
 			// turn the list objects into lazy lists
-			conceptMappings = ListUtils.lazyList(new ArrayList<ConceptMap>(concept.getConceptMappings()), FactoryUtils
-			        .instantiateFactory(ConceptMap.class));
+			conceptMappings = ListUtils.lazyList(new ArrayList<ConceptMap>(concept.getConceptMappings()),
+			    FactoryUtils.instantiateFactory(ConceptMap.class));
 			
 			if (concept instanceof ConceptNumeric) {
 				ConceptNumeric cn = (ConceptNumeric) concept;
@@ -552,9 +552,7 @@ public class ConceptFormController extends SimpleFormController {
 							synonym.setVoidReason(null);
 						} else {
 							// always set the default void/retire reason
-							synonym
-							        .setVoidReason(Context.getMessageSourceService()
-							                .getMessage("general.default.voidReason"));
+							synonym.setVoidReason(Context.getMessageSourceService().getMessage("general.default.voidReason"));
 						}
 					}
 				}
@@ -662,6 +660,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		/**
 		 * Builds a white-space separated list of concept ids belonging to a concept set
+		 * 
 		 * @return white-space separated list
 		 */
 		public String getSetElements() {
@@ -920,7 +919,6 @@ public class ConceptFormController extends SimpleFormController {
 		}
 		
 		/**
-		 *
 		 * Get the list of extensions/metadata and the specific instances of them that use this
 		 * concept.
 		 *
