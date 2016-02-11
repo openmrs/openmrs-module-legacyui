@@ -25,8 +25,6 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,8 +62,6 @@ import org.springframework.web.servlet.ModelAndView;
  * Unit testing for the ConceptFormController.
  */
 public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest {
-	
-	private static final Log log = LogFactory.getLog(ConceptFormControllerTest.class);
 	
 	@Autowired
 	WebTestHelper webTestHelper;
@@ -166,7 +162,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setMethod("POST");
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
 		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
@@ -206,7 +202,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
 		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
@@ -356,12 +352,6 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(actualConcept);
 		Collection<ConceptName> actualNames = actualConcept.getNames();
 		assertEquals(5, actualNames.size());
-		log.error("Locale:" + britishEn);
-		log.error("Allowed Locales:" + Context.getAdministrationService().getAllowedLocales());
-		log.error("Short Names:" + actualConcept.getShortNames().size());
-		for (ConceptName name : actualConcept.getShortNames()) {
-			log.error("Short name =>" + name.getName() + ":" + name.getLocale());
-		}
 		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
 		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
 		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
