@@ -323,11 +323,6 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		final String EXPECTED_SYNONYM_B = "imaginary";
 		final String EXPECTED_SYNONYM_C = "mock";
 		
-		AdministrationService as = Context.getAdministrationService();
-		GlobalProperty gp = as.getGlobalPropertyObject(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
-		gp.setPropertyValue("en_GB, en_US");
-		as.saveGlobalProperty(gp);
-		
 		ConceptService cs = Context.getConceptService();
 		
 		// make sure the concept doesn't already exist
