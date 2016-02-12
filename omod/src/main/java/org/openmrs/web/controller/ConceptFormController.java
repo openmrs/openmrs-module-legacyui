@@ -172,6 +172,7 @@ public class ConceptFormController extends SimpleFormController {
 	 * @should ignore new concept map row if the user did not select a term
 	 * @should add a new Concept map when creating a concept
 	 * @should not save changes if there are validation errors
+	 * @should edit short name when there are multiple allowed locales
 	 */
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
@@ -463,7 +464,13 @@ public class ConceptFormController extends SimpleFormController {
 				ConceptName preferredName = concept.getPreferredName(locale);
 				preferredNamesByLocale.put(locale, (preferredName != null ? preferredName.getName() : null));
 				namesByLocale.put(locale, concept.getFullySpecifiedName(locale));
-				shortNamesByLocale.put(locale, concept.getShortNameInLocale(locale));
+				ConceptName localeShortName = null;
+				for (ConceptName cn : concept.getShortNames()) {
+					if (locale.equals(cn.getLocale())) {
+						localeShortName = cn;
+					}
+				}
+				shortNamesByLocale.put(locale, localeShortName);
 				synonymsByLocale.put(locale, (List<ConceptName>) concept.getSynonyms(locale));
 				descriptionsByLocale.put(locale, concept.getDescription(locale, true));
 				indexTermsByLocale.put(locale, (List<ConceptName>) concept.getIndexTermsForLocale(locale));
@@ -532,7 +539,9 @@ public class ConceptFormController extends SimpleFormController {
 				}
 				
 				ConceptName shortNameInLocale = shortNamesByLocale.get(locale);
-				concept.setShortName(shortNameInLocale);
+				if (shortNameInLocale != null && StringUtils.hasText(shortNameInLocale.getName())) {
+					concept.setShortName(shortNameInLocale);
+				}
 				
 				for (ConceptName synonym : synonymsByLocale.get(locale)) {
 					if (synonym != null && StringUtils.hasText(synonym.getName())) {

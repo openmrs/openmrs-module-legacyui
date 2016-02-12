@@ -323,6 +323,11 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		final String EXPECTED_SYNONYM_B = "imaginary";
 		final String EXPECTED_SYNONYM_C = "mock";
 		
+		AdministrationService as = Context.getAdministrationService();
+		GlobalProperty gp = as.getGlobalPropertyObject(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
+		gp.setPropertyValue("en_GB, en_US");
+		as.saveGlobalProperty(gp);
+		
 		ConceptService cs = Context.getConceptService();
 		
 		// make sure the concept doesn't already exist
@@ -1113,17 +1118,15 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should set concept on concept answers", method = "getConceptFromFormData()")
 	public void getConceptFromFormData_shouldSetConceptOnConceptAnswers() throws Exception {
-		ConceptService cs = Context.getConceptService();
 		int conceptId = 21;
 		
-		Concept concept = cs.getConcept(conceptId);
+		Concept concept = conceptService.getConcept(conceptId);
 		assertNotNull(concept);
 		
 		int initialCount = concept.getAnswers().size();
 		
 		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
 		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
 		
 		mockRequest.setMethod("POST");
 		mockRequest.setParameter("action", "Save Concept");
@@ -1145,5 +1148,37 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		for (ConceptAnswer ca : parsedConcept.getAnswers()) {
 			assertNotNull(ca.getConcept());
 		}
+	}
+	
+	/**
+	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
+	 * @verifies edit short name when there are multiple allowed locales
+	 */
+	@Test
+	public void onSubmit_shouldEditShortNameWhenThereAreMultipleAllowedLocales() throws Exception {
+		AdministrationService as = Context.getAdministrationService();
+		GlobalProperty gp = as.getGlobalPropertyObject(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
+		gp.setPropertyValue(britishEn + ", en_US");
+		as.saveGlobalProperty(gp);
+		
+		final Integer conceptId = 5089;
+		Concept concept = conceptService.getConcept(conceptId);
+		assertEquals("WT", concept.getShortNameInLocale(britishEn).getName());
+		ConceptFormController controller = applicationContext.getBean("conceptForm", ConceptFormController.class);
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		final String newShortName = "WGT";
+		request.setMethod("POST");
+		request.setParameter("action", "Save Concept");
+		request.setParameter("conceptId", conceptId.toString());
+		request.setParameter("shortNamesByLocale[" + britishEn + "].name", newShortName);
+		request.setParameter("shortNamesByLocale[en_US].name", "");
+		ModelAndView mav = controller.handleRequest(request, response);
+		assertNotNull(mav);
+		assertTrue(mav.getModel().isEmpty());
+		concept = conceptService.getConcept(conceptId);
+		ConceptName shortConceptName = concept.getShortNameInLocale(britishEn);
+		assertNotNull(shortConceptName);
+		assertEquals(newShortName, shortConceptName.getName());
 	}
 }
