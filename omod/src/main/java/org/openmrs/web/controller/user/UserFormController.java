@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
+import org.openmrs.Provider;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.PasswordException;
@@ -72,8 +73,7 @@ public class UserFormController {
 		User u = null;
 		try {
 			u = Context.getUserService().getUser(Integer.valueOf(userId));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			log.error("Error while getting user", ex);
 		}
 		if (u == null) {
@@ -104,9 +104,10 @@ public class UserFormController {
 	}
 	
 	@RequestMapping(value = "/admin/users/user.form", method = RequestMethod.GET)
-	public String showForm(@RequestParam(required = false, value = "userId") Integer userId,
-	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
-	        @ModelAttribute("user") User user, ModelMap model) {
+	public String showForm(
+			@RequestParam(required = false, value = "userId") Integer userId, 
+			@RequestParam(required = false, value = "createNewPerson") String createNewPerson, 
+			@ModelAttribute("user") User user, ModelMap model) {
 		
 		// the formBackingObject method above sets up user, depending on userId and personId parameters   
 		
@@ -123,6 +124,13 @@ public class UserFormController {
 			model.addAttribute("changePassword", new UserProperties(user.getUserProperties()).isSupposedToChangePassword());
 			
 			model.addAttribute("secretQuestion", userService.getSecretQuestion(user));
+		}
+		
+		if (user.getPerson().getId() != null && !Context.getProviderService().getProvidersByPerson(user.getPerson()).isEmpty()) {
+			model.addAttribute("isProvider", true);
+			model.addAttribute("providerList", Context.getProviderService().getProvidersByPerson(user.getPerson()));
+		} else {
+			model.addAttribute("isProvider", false);
 		}
 		
 		// not using the default view name because I'm converting from an existing form
@@ -142,7 +150,8 @@ public class UserFormController {
 	        @RequestParam(required = false, value = "confirm") String confirm,
 	        @RequestParam(required = false, value = "forcePassword") Boolean forcePassword,
 	        @RequestParam(required = false, value = "roleStrings") String[] roles,
-	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
+	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson, 
+	        @RequestParam(required = false, value = "providerCheckBox") String addToProviderTableOption,
 	        @ModelAttribute("user") User user, BindingResult errors) {
 		
 		UserService us = Context.getUserService();
@@ -161,8 +170,7 @@ public class UserFormController {
 				Context.getUserService().purgeUser(user);
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "User.delete.success");
 				return "redirect:users.list";
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "User.delete.failure");
 				log.error("Failed to delete user", ex);
 				return "redirect:/admin/users/user.form?userId=" + request.getParameter("userId");
@@ -182,7 +190,6 @@ public class UserFormController {
 			us.unretireUser(user);
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "User.unRetiredMessage");
 		} else {
-			
 			// check if username is already in the database
 			if (us.hasDuplicateUsername(user)) {
 				errors.rejectValue("username", "error.username.taken");
@@ -208,8 +215,7 @@ public class UserFormController {
 			if (password.length() > 0) {
 				try {
 					OpenmrsUtil.validatePassword(user.getUsername(), password, user.getSystemId());
-				}
-				catch (PasswordException e) {
+				} catch (PasswordException e) {
 					errors.reject(e.getMessage());
 				}
 			}
@@ -284,6 +290,13 @@ public class UserFormController {
 				us.changeQuestionAnswer(user, secretQuestion, secretAnswer);
 			}
 			
+			//Check if admin wants the person associated with the user to be added to the Provider Table
+			if(addToProviderTableOption != null) {
+				Provider provider = new Provider();
+				provider.setPerson(user.getPerson());
+				provider.setIdentifier(user.getSystemId());
+				Context.getProviderService().saveProvider(provider);
+			}
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "User.saved");
 		}
 		return "redirect:users.list";
