@@ -103,8 +103,30 @@
 			</tr>
 		</table>
 	</fieldset>	
-	
 	<br/>
+	
+    <fieldset>
+        <legend><openmrs:message code="legacyui.manageuser.providerAccount"/></legend>
+        <c:if test="${isProvider}">
+            <openmrs:message code="legacyui.manageuser.providerIdentfier"/>
+            <c:forEach items="${providerList}" var="currentProvider" varStatus="loop">   
+                <c:if test="${empty currentProvider.identifier}">
+                    <openmrs:message code="legacyui.manageuser.noProviderIdentifier"/>
+                </c:if>
+                <c:if test="${not empty currentProvider.identifier}">
+                    <c:out value="${currentProvider.identifier}"/>
+                </c:if>
+                
+                <c:if test="${!loop.last}">,</c:if>
+            </c:forEach>
+        </c:if>
+        
+        <c:if test="${!isProvider}">
+            <input id="providerCheckBox" name="providerCheckBox" type="checkbox" value="addToProviderTable"/>
+            <label for="providerCheckBox"><openmrs:message code="legacyui.manageuser.createProviderAccount"/></label>
+        </c:if>
+    </fieldset>	
+    <br/>	
 	
 	<fieldset>
 		<legend><openmrs:message code="User.loginInfo"/></legend>
