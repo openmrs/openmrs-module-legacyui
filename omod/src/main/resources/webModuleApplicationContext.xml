@@ -26,7 +26,7 @@
 	<!-- Add here beans related to the web context -->
 	
 	<bean id="legacyUiUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="order"><value>55</value></property>
+		<property name="order"><value>100</value></property>
 		<property name="mappings">
 			<props>
 				<prop key="admin/patients/patient.form">patientForm</prop>
