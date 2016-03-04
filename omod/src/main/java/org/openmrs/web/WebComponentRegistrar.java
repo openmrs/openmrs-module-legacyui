@@ -29,7 +29,7 @@ public class WebComponentRegistrar implements ServletContextAware {
 		
 		try {
 			ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
-			addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet", "*.page");
+			addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet", "*.page", "*.action");
 			
 			addMappings(servletContext.getServletRegistration("jsp"), "*.withjstl");
 			
