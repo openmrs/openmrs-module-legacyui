@@ -18,6 +18,7 @@ import javax.servlet.ServletRegistration;
 
 import org.directwebremoting.servlet.EfficientShutdownServletContextAttributeListener;
 import org.openmrs.module.web.filter.ForcePasswordChangeFilter;
+import org.openmrs.web.servlet.LogoutServlet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
@@ -32,6 +33,9 @@ public class WebComponentRegistrar implements ServletContextAware {
 			addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet", "*.page", "*.action");
 			
 			addMappings(servletContext.getServletRegistration("jsp"), "*.withjstl");
+			
+			ServletRegistration servletReg = servletContext.addServlet("logoutServlet", LogoutServlet.class);
+			servletReg.addMapping("/logout");
 			
 			Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", new ForcePasswordChangeFilter());
 			filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
