@@ -378,7 +378,7 @@ public class PortletController implements Controller {
 			log.debug(portletPath + " took " + (System.currentTimeMillis() - timeAtStart) + " ms");
 		}
 		
-		return new ModelAndView("/module/legacyui" + portletPath, "model", model);
+		return new ModelAndView(portletPath, "model", model);
 		
 	}
 	
