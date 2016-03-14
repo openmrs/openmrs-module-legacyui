@@ -17,6 +17,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
 import org.directwebremoting.servlet.EfficientShutdownServletContextAttributeListener;
+import org.openmrs.module.web.filter.AdminPageFilter;
 import org.openmrs.module.web.filter.ForcePasswordChangeFilter;
 import org.openmrs.web.servlet.LogoutServlet;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,9 @@ public class WebComponentRegistrar implements ServletContextAware {
 			filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
 			filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
 			filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+			
+			filter = servletContext.addFilter("adminPageFilter", new AdminPageFilter());
+			filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/admin");
 			
 			servletContext.addListener(new SessionListener());
 			/*
