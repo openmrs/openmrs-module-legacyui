@@ -48,7 +48,7 @@ public class PatientDashboardGraphControllerTest extends BaseModuleWebContextSen
 		
 		String expectedData = String
 		        .format(
-		            "{\"absolute\":{\"high\":50.0,\"low\":2.0},\"critical\":{\"high\":null,\"low\":null},\"name\":\"Some concept name\",\"normal\":{\"high\":null,\"low\":null},\"data\":[[%d,2.0],[%d,1.0]],\"units\":\"\"}",
+		            "{\"absolute\":{\"high\":50.0,\"low\":2.0},\"critical\":{\"high\":null,\"low\":null},\"name\":\"Some concept name\",\"normal\":{\"high\":null,\"low\":null},\"data\":[[%d,null],[%d,1.0]],\"units\":\"\"}",
 		            secondObsDate, firstObsDate);
 		
 		ObjectMapper mapper = new ObjectMapper();
