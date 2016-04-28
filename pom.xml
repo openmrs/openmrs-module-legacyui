@@ -96,7 +96,12 @@
                 <version>2.0</version>
                 <scope>provided</scope>
             </dependency>
-						
+			
+			<dependency>
+				<groupId>org.codehaus.sonar-plugins.java</groupId>
+				<artifactId>sonar-jacoco-listeners</artifactId>
+				<version>3.1</version>
+			</dependency>
 			<!-- End OpenMRS core -->
 
 		</dependencies>
@@ -142,6 +147,16 @@
                         <tagNameFormat>@{project.version}</tagNameFormat>
                     </configuration>
                 </plugin>
+                <plugin>
+                	<groupId>org.codehaus.sonar</groupId>
+                	<artifactId>sonar-maven-plugin</artifactId>
+                	<version>4.5.4</version>
+                </plugin>
+                <plugin>
+                	<groupId>org.jacoco</groupId>
+                	<artifactId>jacoco-maven-plugin</artifactId>
+                	<version>0.7.4.201502262128</version>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -177,5 +192,61 @@
             <url>http://mavenrepo.openmrs.org/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-
+    <profiles>
+    	<profile>
+    		<id>sonar</id>
+    		<build>
+    			<plugins>
+    				<plugin>
+    					<groupId>org.apache.maven.plugins</groupId>
+    					<artifactId>maven-surefire-plugin</artifactId>
+    					<configuration>
+    						<properties>
+    							<property>
+    								<name>listener</name>
+    								<value>org.sonar.java.jacoco.JUnitListener</value>
+    							</property>
+    						</properties>
+    						<testFailureIgnore>false</testFailureIgnore>
+    					</configuration>
+    				</plugin>
+    				<plugin>
+    					<groupId>org.jacoco</groupId>
+    					<artifactId>jacoco-maven-plugin</artifactId>
+    					<executions>
+    						<execution>
+    							<id>prepare-agent</id>
+    							<goals>
+    								<goal>prepare-agent</goal>
+    							</goals>
+    							<phase>validate</phase>
+    							<configuration>
+    									<includes>
+    	                                      <include>org.openmrs.*</include>
+    	                                  </includes>
+    							</configuration>
+    						</execution>
+    					</executions>
+    				</plugin>
+    			</plugins>
+    		</build>
+    		<dependencies>
+    			<dependency>
+    				<groupId>org.codehaus.sonar-plugins.java</groupId>
+    				<artifactId>sonar-jacoco-listeners</artifactId>
+    				<scope>test</scope>
+    			</dependency>
+    		</dependencies>
+    	</profile>
+    </profiles>
+    <reporting>
+      <excludeDefaults>true</excludeDefaults>
+      <plugins>
+        <plugin>
+          <groupId>@project.groupId@</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>@project.version@</version>
+        </plugin>
+      </plugins>
+    </reporting>
 </project>
