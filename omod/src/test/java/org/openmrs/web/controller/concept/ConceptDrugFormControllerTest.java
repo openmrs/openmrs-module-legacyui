@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.openmrs.Drug;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.test.Verifies;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -47,5 +48,23 @@ public class ConceptDrugFormControllerTest extends BaseModuleWebContextSensitive
 		controller.onSubmit(mockHttpServletRequest, mockHttpServletResponse, drug, errors);
 		Context.flushSession();
 		org.junit.Assert.assertNull(service.getDrug(drugId));
+	}
+
+	/**
+	 * @verifies that no exception is thrown when ConceptDrugFormController is given an empty
+	 *           request
+	 * @see {@link ConceptDrugFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 * 		javax.servlet.http.HttpServletResponse,Object,BindException)}
+	 */
+	@Test
+	@Verifies(value = "should not fail with empty request",
+					 method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
+	public void onSubmit_shouldNotFailWithEmptyRequest() throws Exception {
+		ConceptDrugFormController controller = (ConceptDrugFormController) applicationContext.getBean("conceptDrugForm");
+
+		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+		mockRequest.setMethod("POST");
+
+		controller.handleRequest(mockRequest, new MockHttpServletResponse());
 	}
 }
