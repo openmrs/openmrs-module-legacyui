@@ -28,7 +28,6 @@ import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.api.ConceptService;
-import org.openmrs.api.PatientSetService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsUtil;
 
@@ -137,12 +136,12 @@ public class SummaryTest extends TagSupport {
 			log.debug(key + " -> " + val);
 		}
 		
-		PatientSetService.TimeModifier test = PatientSetService.TimeModifier.ANY;
+		TimeModifier test = TimeModifier.ANY;
 		Set<Concept> conceptsOfInterest = new HashSet<Concept>();
 		Date fromDate = null;
 		Date toDate = null;
 		if (args.containsKey("test")) {
-			test = PatientSetService.TimeModifier.valueOf(args.get("test").trim().toUpperCase());
+			test = TimeModifier.valueOf(args.get("test").trim().toUpperCase());
 		}
 		String conceptName = args.get("concept");
 		if (conceptName == null) {
@@ -214,9 +213,9 @@ public class SummaryTest extends TagSupport {
 			}
 		}
 		log.debug("obsThatMatter (" + obsThatMatter.size() + "): " + obsThatMatter);
-		if (test == PatientSetService.TimeModifier.ANY) {
+		if (test == TimeModifier.ANY) {
 			return obsThatMatter.size() > 0;
-		} else if (test == PatientSetService.TimeModifier.NO) {
+		} else if (test == TimeModifier.NO) {
 			return obsThatMatter.size() == 0;
 		} else {
 			throw new RuntimeException("Can't handle test:" + test);
@@ -263,4 +262,13 @@ public class SummaryTest extends TagSupport {
 		this.encounters = encounters;
 	}
 	
+	public enum TimeModifier {
+		ANY,
+		NO,
+		FIRST,
+		LAST,
+		MIN,
+		MAX,
+		AVG;
+	}
 }
