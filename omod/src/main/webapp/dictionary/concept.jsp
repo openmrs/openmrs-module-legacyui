@@ -319,7 +319,17 @@
 				</table>
 			</td>
 		</tr>
-		
+
+		<c:forEach var="attribute" items="${command.concept.activeAttributes}">
+			<tr id="conceptAttributeRow">
+				<th valign="top" style="padding-top: 8px" title="<openmrs:message code="attribute.attributeType.description"/>">
+					${attribute.attributeType.name}
+				</th>
+				<td valign="middle">${attribute.value}
+				</td>
+			</tr>
+		</c:forEach>
+
         <c:if test="${command.concept.complex}">
             <tr>
                 <th valign="top"><openmrs:message code="ConceptComplex.handler"/></th>

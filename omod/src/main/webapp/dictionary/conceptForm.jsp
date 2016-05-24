@@ -815,6 +815,27 @@
 			</table>
 		</td>
 	</tr>
+
+	<spring:bind path="command.activeAttributes">
+		<c:if test="${status.error}">
+			<tr>
+				<th></th>
+				<td colspan="5">
+						<span class="error">
+							<c:forEach var="err" items="${status.errorMessages}">
+								${ err }<br/>
+							</c:forEach>
+						</span>
+				</td>
+			</tr>
+		</c:if>
+	</spring:bind>
+	<c:forEach var="attrType" items="${ attributeTypes }">
+		<c:if test="${ !attrType.retired }">
+			<openmrs_tag:attributesForType attributeType="${ attrType }" customizable="${ command.concept }" formFieldNamePrefix="attribute.${ attrType.id }"/>
+		</c:if>
+	</c:forEach>
+
 	<tr>
 		<th>
 			<openmrs:message code="Concept.version" /> <img class="help_icon_bottom" src="${pageContext.request.contextPath}/images/help.gif" border="0" title="<openmrs:message code="Concept.version.help"/>"/>
