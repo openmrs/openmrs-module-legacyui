@@ -13,6 +13,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -32,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
+import org.openmrs.ConceptAttribute;
 import org.openmrs.ConceptComplex;
 import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptMap;
@@ -66,6 +68,7 @@ import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.validator.ValidateUtil;
 import org.openmrs.web.WebConstants;
+import org.openmrs.web.attribute.WebAttributeUtil;
 import org.openmrs.web.controller.concept.ConceptReferenceTermWebValidator;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
@@ -259,6 +262,9 @@ public class ConceptFormController extends SimpleFormController {
 				}
 				
 				try {
+					WebAttributeUtil.handleSubmittedAttributesForType(conceptBackingObject.getConcept(), errors, ConceptAttribute.class, request,
+							cs.getAllConceptAttributeTypes());
+
 					errors.pushNestedPath("concept");
 					ValidateUtil.validate(concept, errors);
 					errors.popNestedPath();
@@ -398,7 +404,8 @@ public class ConceptFormController extends SimpleFormController {
 		
 		// make spring locale available to jsp
 		map.put("locale", Context.getLocale()); // should be same string format as conceptNamesByLocale map keys
-		
+
+		map.put("attributeTypes", cs.getAllConceptAttributeTypes());
 		return map;
 	}
 	
@@ -450,6 +457,8 @@ public class ConceptFormController extends SimpleFormController {
 		
 		public Map<Locale, String> preferredNamesByLocale = new HashMap<Locale, String>();
 		
+		public Collection<ConceptAttribute> activeAttributes;
+
 		/**
 		 * Default constructor must take in a Concept object to create itself
 		 *
@@ -516,6 +525,8 @@ public class ConceptFormController extends SimpleFormController {
 			if (concept.getConceptClass() != null && OpenmrsUtil.nullSafeEquals(concept.getConceptClass().getName(), "Drug")) {
 				this.conceptDrugList.addAll(Context.getConceptService().getDrugsByConcept(concept));
 			}
+
+			this.activeAttributes = concept.getActiveAttributes();
 		}
 		
 		/**
@@ -1111,5 +1122,12 @@ public class ConceptFormController extends SimpleFormController {
 			this.conceptAnswersByLocale = conceptAnswersByLocale;
 		}
 		
+		public Collection<ConceptAttribute> getActiveAttributes() {
+			return activeAttributes;
+		}
+
+		public void setActiveAttributes(Collection<ConceptAttribute> activeAttributes) {
+			this.activeAttributes = activeAttributes;
+		}
 	}
 }

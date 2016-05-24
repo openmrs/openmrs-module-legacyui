@@ -68,6 +68,13 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
+
+	<li <c:if test='<%= request.getRequestURI().contains("conceptAttributeTypes") %>'>class="active"</c:if>>
+		<a href="${pageContext.request.contextPath}/admin/concepts/conceptAttributeTypes.list">
+			<openmrs:message code="ConceptAttributeType.manage.title"/>
+		</a>
+	</li>
+
 	<openmrs:extensionPoint pointId="org.openmrs.admin.concepts.localHeader" type="html">
 			<c:forEach items="${extension.links}" var="link">
 				<li <c:if test="${fn:endsWith(pageContext.request.requestURI, link.key)}">class="active"</c:if> >
