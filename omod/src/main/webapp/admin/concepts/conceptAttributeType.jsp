@@ -7,7 +7,8 @@
 
 <script type="text/javascript">
     function confirmPurge() {
-        if (confirm("Are you sure you want to purge this object? It will be permanently removed from the system.")) {
+        <openmrs:message var="confirmMessage" code="ConceptAttributeType.confirm.purge"/>
+        if (confirm("${confirmMessage}")) {
             return true;
         } else {
             return false;
