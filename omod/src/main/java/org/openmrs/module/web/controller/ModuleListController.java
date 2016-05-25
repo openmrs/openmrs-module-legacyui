@@ -40,6 +40,7 @@ import org.openmrs.module.ModuleFileParser;
 import org.openmrs.module.ModuleUtil;
 import org.openmrs.module.web.WebModuleUtil;
 import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.WebUtil;
@@ -187,7 +188,21 @@ public class ModuleListController extends SimpleFormController {
 						}
 						
 						if (someModuleNeedsARefresh) {
-							WebModuleUtil.refreshWAC(getServletContext(), false, module);
+							//Refresh context and check whether error occurs.
+							if(WebModuleUtil.refreshWAC(getServletContext(), false, module) == null){
+								if (ModuleFactory.isModuleStarted(module)) {
+									ModuleFactory.stopModule(module); // stop the module so that when the web stop is done properly
+								}
+								//Stop webmodule including remove register, etc.
+								WebModuleUtil.stopModule(module, getServletContext());
+								ModuleFactory.unloadModule(module);
+								if( moduleFile != null)
+									moduleFile.delete();
+								success = "";
+								error = msa.getMessage("Module.invalid",
+									new String[] { "Error occurs when loading module. " +
+									"Please check the compatibility between current versions of OpenMRS and module"});
+							}
 						}
 
 					} else {
