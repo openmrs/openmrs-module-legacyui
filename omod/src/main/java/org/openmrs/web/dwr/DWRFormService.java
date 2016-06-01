@@ -292,6 +292,12 @@ public class DWRFormService {
 		if (field.getConcept() != null) {
 			concept = field.getConcept();
 			conceptName = concept.getName(locale);
+			
+			//if no name found in current locale, get any other
+			if (conceptName == null) {
+				conceptName = concept.getName();
+			}
+			
 			isSet = concept.isSet();
 			isCodedDatatype = concept.getDatatype().isCoded();
 		}
