@@ -227,7 +227,7 @@
                 <c:forEach items="${command.locales}" var="loc">
                     <td class="${loc}">
                         <c:forEach items="${command.conceptAnswersByLocale[loc]}" var="answer">
-                            <a href="concept.htm?conceptId=${fn:substring(answer.key, 0, fn:indexOf(answer.key, '^'))}"><c:out value="${answer.value}" /> (${fn:substring(answer.key, 0, fn:indexOf(answer.key, '^'))})</a><br/>
+                            <a href="concept.htm?conceptId=${fn:substring(answer.key, 0, fn:indexOf(answer.key, '^'))}">${answer.value}(${fn:substring(answer.key, 0, fn:indexOf(answer.key, '^'))})</a><br/>
                         </c:forEach>
                     </td>
                 </c:forEach>
