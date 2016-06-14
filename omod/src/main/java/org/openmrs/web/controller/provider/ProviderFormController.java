@@ -85,10 +85,9 @@ public class ProviderFormController {
 					message = "Provider.unretired";
 				}
 				
+				request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, message);
+				return "redirect:index.htm";
 			}
-			
-			request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR, message);
-			return "redirect:index.htm";
 		}
 		
 		return showForm();
