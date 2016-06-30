@@ -40,6 +40,7 @@ public class OpenmrsDWRServlet extends DwrServlet {
 		
 		DwrServletConfig conf =  new DwrServletConfig(config.getServletName(), config.getServletContext());
 		conf.setInitParameter("debug", "false");
+		conf.setInitParameter("crossDomainSessionSecurity", "false");
 		conf.setInitParameter("config-modules", "/WEB-INF/dwr-modules.xml");
 		
 		super.init(conf);
