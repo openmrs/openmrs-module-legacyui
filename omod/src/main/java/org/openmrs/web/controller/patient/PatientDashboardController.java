@@ -3,7 +3,6 @@
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
  * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
- *
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
@@ -16,6 +15,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
@@ -29,7 +29,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.web.extension.ExtensionUtil;
 import org.openmrs.module.web.extension.provider.Link;
 import org.openmrs.web.WebConstants;
-import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,27 +37,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PatientDashboardController {
 	
+	
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	/**
 	 * render the patient dashboard model and direct to the view
+	 * 
+	 * @should render patient dashboard if given patient id is an existing id
+	 * @should render patient dashboard if given patient id is an existing uuid
+	 * @should redirect to find patient page if given patient id is not an existing id
+	 * @should redirect to find patient page if given patient id is not an existing uuid
 	 */
 	@RequestMapping("/patientDashboard.form")
-	protected String renderDashboard(@RequestParam(required = true, value = "patientId") Integer patientId, ModelMap map,
-	        HttpServletRequest request) throws Exception {
+	protected String renderDashboard(@RequestParam("patientId") String patientId, ModelMap map, HttpServletRequest request)
+	        throws Exception {
 		
-		// get the patient
-		
-		PatientService ps = Context.getPatientService();
-		Patient patient = null;
-		
-		try {
-			patient = ps.getPatient(patientId);
-		}
-		catch (ObjectRetrievalFailureException noPatientEx) {
-			log.warn("There is no patient with id: '" + patientId + "'", noPatientEx);
-		}
+		Patient patient = getPatient(patientId);
 		
 		if (patient == null) {
 			// redirect to the patient search page if no patient is found
@@ -105,8 +100,8 @@ public class PatientDashboardController {
 			patientVariation = "Dead";
 		}
 		
-		Concept reasonForExitConcept = Context.getConceptService().getConcept(
-		    Context.getAdministrationService().getGlobalProperty("concept.reasonExitedCare"));
+		Concept reasonForExitConcept = Context.getConceptService()
+		        .getConcept(Context.getAdministrationService().getGlobalProperty("concept.reasonExitedCare"));
 		
 		if (reasonForExitConcept != null) {
 			List<Obs> patientExitObs = Context.getObsService().getObservationsByPersonAndConcept(patient,
@@ -141,4 +136,31 @@ public class PatientDashboardController {
 		return "module/legacyui/patientDashboardForm";
 	}
 	
+	/**
+	 * Get {@code Patient} by ID or UUID string.
+	 * 
+	 * @param patientId the id or uuid of wanted patient
+	 * @return patient matching given patient id
+	 * @should return patient if given patient id is an existing id
+	 * @should return patient if given patient id is an existing uuid
+	 * @should return null if given null or whitespaces only
+	 * @should return null if given patient id is not an existing id
+	 * @should return null if given patient id is not an existing uuid
+	 */
+	private Patient getPatient(String patientId) {
+		
+		if (StringUtils.isBlank(patientId)) {
+			return null;
+		}
+		
+		PatientService ps = Context.getPatientService();
+		Patient patient = null;
+		try {
+			patient = ps.getPatient(Integer.valueOf(patientId));
+		}
+		catch (Exception ex) {
+			patient = ps.getPatientByUuid(patientId);
+		}
+		return patient;
+	}
 }
