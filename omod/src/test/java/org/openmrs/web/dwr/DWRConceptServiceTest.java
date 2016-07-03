@@ -274,4 +274,15 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		}
 		
 	}
+	
+	@Test
+	public void findBatchOfConcepts_shouldNotReturnDuplicatesWhenSearchingByConceptId() {
+		String phrase = "1001";
+		Concept expected = Context.getConceptService().getConcept(phrase);
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase,
+				Boolean.FALSE, null, null, null, null, null, null);
+		Assert.assertNotNull(result);
+		Assert.assertEquals(1, result.size());
+		Assert.assertTrue(isConceptFound(expected, result));
+	}
 }
