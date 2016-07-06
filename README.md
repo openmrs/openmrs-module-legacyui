@@ -1,8 +1,8 @@
 # openmrs-module-legacyui
 [![Build Status](https://travis-ci.org/openmrs/openmrs-module-legacyui.svg?branch=master)](https://travis-ci.org/openmrs/openmrs-module-legacyui)
 
-- The legacy user interface for OpenMRS 1.9 is chiefly comprised of administrative functions and the patient dashboard. 
-- Apparently, a new and more contemporary UI has been introduced via a UI framework and the legacy UI is kept around for 
+- The legacy user interface for OpenMRS Platform 2.x is chiefly comprised of administrative functions and the patient dashboard. 
+- A new and more contemporary UI has been introduced via a UI framework and the legacy UI is kept around for 
 administrative functions that are not yet implemented in the new UI.
 - To retire the Legacy UI as planned, it is required to move the implementations and modules that still rely on it in order to 
 maintain backwards compatibility.
