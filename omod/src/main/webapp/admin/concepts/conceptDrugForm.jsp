@@ -167,15 +167,6 @@
 			</spring:bind>
 		</td>
 	</tr>
-	<tr>
-		<th><openmrs:message code="ConceptDrug.route"/></th>
-		<td>
-			<spring:bind path="drug.route">
-				<openmrs_tag:conceptField formFieldName="${status.expression}" formFieldId="route" initialValue="${status.value}" includeClasses="${routeConceptClasses}" />
-				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>				
-			</spring:bind>
-		</td>
-	</tr>
 
 	<tr>
 		
