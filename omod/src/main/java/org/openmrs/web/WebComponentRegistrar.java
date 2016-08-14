@@ -38,7 +38,7 @@ public class WebComponentRegistrar implements ServletContextAware {
 			ServletRegistration servletReg = servletContext.addServlet("logoutServlet", new LogoutServlet());
 			servletReg.addMapping("/logout");
 			
-			Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", ForcePasswordChangeFilter.class);
+			Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", new ForcePasswordChangeFilter());
 			filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
 			filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
 			filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
