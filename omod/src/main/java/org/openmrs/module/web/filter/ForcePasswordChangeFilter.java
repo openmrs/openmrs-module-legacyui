@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.api.context.UserContext;
+import org.openmrs.web.WebConstants;
 import org.openmrs.web.user.UserProperties;
 
 /**
@@ -52,7 +54,8 @@ public class ForcePasswordChangeFilter implements Filter {
 	        ServletException {
 		String requestURI = ((HttpServletRequest) request).getRequestURI();
 		
-		if (Context.isAuthenticated()
+		UserContext userContext = (UserContext) ((HttpServletRequest) request).getSession().getAttribute(WebConstants.OPENMRS_USER_CONTEXT_HTTPSESSION_ATTR);
+		if (userContext != null && Context.isAuthenticated()
 		        && new UserProperties(Context.getAuthenticatedUser().getUserProperties()).isSupposedToChangePassword()
 		        && shouldNotAllowAccessToUrl(requestURI)) {
 			config.getServletContext().getRequestDispatcher(changePasswordForm).forward(request, response);
