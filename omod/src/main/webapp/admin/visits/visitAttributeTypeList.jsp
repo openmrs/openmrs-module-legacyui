@@ -24,15 +24,15 @@
 					<a href="visitAttributeType.form?visitAttributeTypeId=${visitAttributeType.visitAttributeTypeId}">
 						<c:choose>
 							<c:when test="${visitAttributeType.retired == true}">
-								<del>${visitAttributeType.name}</del>
+								<del><c:out value="${visitAttributeType.name}"/></del>
 							</c:when>
 							<c:otherwise>
-								${visitAttributeType.name}
+								<c:out value="${visitAttributeType.name}"/>
 							</c:otherwise>
 						</c:choose>
 					</a>
 				</td>
-				<td valign="top">${visitAttributeType.description}</td>
+				<td valign="top"><c:out value="${visitAttributeType.description}"/></td>
 			</tr>
 		</c:forEach>
 	</table>
