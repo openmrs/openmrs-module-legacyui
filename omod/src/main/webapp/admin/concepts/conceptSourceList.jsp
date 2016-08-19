@@ -28,16 +28,16 @@
 				<td valign="top"><a href="conceptSource.form?conceptSourceId=${conceptSource.conceptSourceId}">
 					  <c:choose>
 					  <c:when test="${conceptSource.retired == true}">
-					 	 <del> ${conceptSource.name}</del>
+					 	 <del> <c:out value="${conceptSource.name}"/></del>
 					  </c:when>
 					  <c:otherwise>
-					 	 ${conceptSource.name}
+					 	 <c:out value="${conceptSource.name}"/>
 					  </c:otherwise>
 					  </c:choose>
 					</a>
 				</td>
-				<td valign="top">${conceptSource.hl7Code}</td>
-				<td valign="top">${conceptSource.description}</td>
+				<td valign="top"><c:out value="${conceptSource.hl7Code}"/></td>
+				<td valign="top"><c:out value="${conceptSource.description}"/></td>
 			</tr>
 		</c:forEach>
 	</table>

@@ -22,8 +22,8 @@
 		<c:forEach var="conceptStopWord" items="${conceptStopWordList}">
 			<tr> 
  				<td valign="top"><input type="checkbox" name="conceptStopWord" value="${conceptStopWord.conceptStopWordId}"></td>
-				<td valign="top"> ${conceptStopWord.value}</td>
-				<td valign="top"> ${conceptStopWord.locale.displayName}</td>
+				<td valign="top"> <c:out value="${conceptStopWord.value}"/></td>
+				<td valign="top"> <c:out value="${conceptStopWord.locale.displayName}"/></td>
 			</tr>
 		</c:forEach>
 	</table>

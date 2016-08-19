@@ -25,10 +25,10 @@
 			<tr> 
 				<td valign="top"><input type="checkbox" name="conceptClassId" value="${conceptClass.conceptClassId}"></td>
 				<td valign="top"><a href="conceptClass.form?conceptClassId=${conceptClass.conceptClassId}">
-					   ${conceptClass.name}
+					   <c:out value="${conceptClass.name}"/>
 					</a>
 				</td>
-				<td valign="top">${conceptClass.description}</td>
+				<td valign="top"><c:out value="${conceptClass.description}"/></td>
 			</tr>
 		</c:forEach>
 	</table>

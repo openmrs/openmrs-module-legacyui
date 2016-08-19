@@ -26,9 +26,9 @@
 		<c:forEach var="conceptDatatype" items="${conceptDatatypeList}">
 			<tr> 
 				<%-- <td valign="top"><input type="checkbox" name="conceptDatatypeId" value="${conceptDatatype.conceptDatatypeId}"></td> --%>
-				<td valign="top"> ${conceptDatatype.name}
+				<td valign="top"> <c:out value="${conceptDatatype.name}"/>
 				</td>
-				<td valign="top">${conceptDatatype.description}</td>
+				<td valign="top"><c:out value="${conceptDatatype.description}"/></td>
 			</tr>
 		</c:forEach>
 	</table>

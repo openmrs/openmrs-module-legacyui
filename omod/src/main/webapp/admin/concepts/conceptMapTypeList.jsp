@@ -25,13 +25,13 @@
 					<a href="conceptMapType.form?conceptMapTypeId=${conceptMapType.conceptMapTypeId}" 
 					<c:if test="${conceptMapType.isHidden == true }">style='color:grey'</c:if>>
 						<c:choose>
-							<c:when test="${conceptMapType.retired}"><strike>${conceptMapType.name}</strike></c:when>
-							<c:otherwise>${conceptMapType.name}</c:otherwise>
+							<c:when test="${conceptMapType.retired}"><strike><c:out value="${conceptMapType.name}"/></strike></c:when>
+							<c:otherwise><c:out value="${conceptMapType.name}"/></c:otherwise>
 						</c:choose>
 					</a>
 				</td>
 				<td>&nbsp;</td>
-				<td valign="top" <c:if test="${conceptMapType.isHidden == true }">style='color:grey'</c:if>>${conceptMapType.description}</td>
+				<td valign="top" <c:if test="${conceptMapType.isHidden == true }">style='color:grey'</c:if>><c:out value="${conceptMapType.description}"/></td>
 			</tr>
 		</c:forEach>
 	</table>
