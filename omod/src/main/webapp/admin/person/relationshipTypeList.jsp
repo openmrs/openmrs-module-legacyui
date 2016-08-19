@@ -25,15 +25,15 @@
 					<a href="relationshipType.form?relationshipTypeId=${relationshipType.relationshipTypeId}">
 						<c:choose>
 							<c:when test="${relationshipType.retired == true}">
-								<del>${relationshipType}</del>
+								<del><c:out value="${relationshipType}"/></del>
 							</c:when>
 							<c:otherwise>
-								${relationshipType}
+								<c:out value="${relationshipType}"/>
 							</c:otherwise>
 						</c:choose>
 					</a>
 				</td>
-				<td valign="top">${relationshipType.description}</td>
+				<td valign="top"><c:out value="${relationshipType.description}"/></td>
 			</tr>
 		</c:forEach>
 	</table>

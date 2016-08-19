@@ -25,15 +25,15 @@
 					<a href="patientIdentifierType.form?patientIdentifierTypeId=${patientIdentifierType.patientIdentifierTypeId}">
 						<c:choose>
 							<c:when test="${patientIdentifierType.retired == true}">
-								<del>${patientIdentifierType.name}</del>
+								<del><c:out value="${patientIdentifierType.name}"/></del>
 							</c:when>
 							<c:otherwise>
-								${patientIdentifierType.name}
+								<c:out value="${patientIdentifierType.name}"/>
 							</c:otherwise>
 						</c:choose>
 					</a>
 				</td>
-				<td valign="top">${patientIdentifierType.description}</td>
+				<td valign="top"><c:out value="${patientIdentifierType.description}"/></td>
 			</tr>
 		</c:forEach>
 	</table>

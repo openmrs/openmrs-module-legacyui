@@ -48,8 +48,8 @@
 		<c:forEach var="form" items="${formList}" varStatus="status">
 			<tr class='${status.index % 2 == 0 ? "evenRow" : "oddRow"} ${form.retired ? "voided" : ""}'>
 				<td valign="top" style="white-space: nowrap"><a href="formEdit.form?formId=${form.formId}"><c:out value="${form.name}"/></a></td>
-				<td valign="top">${form.version}</td>
-				<td valign="top">${form.build}</td>
+				<td valign="top"><c:out value="${form.version}"/></td>
+				<td valign="top"><c:out value="${form.build}"/></td>
 				<td valign="top"><c:out value="${form.description}"/></td>
 				<td valign="top"><c:if test="${form.published == true}"><openmrs:message code="general.yes"/></c:if></td>
 			</tr>

@@ -31,18 +31,18 @@
 					<a href="personAttributeType.form?personAttributeTypeId=${personAttributeType.personAttributeTypeId}">
 						<c:choose>
 							<c:when test="${personAttributeType.retired == true}">
-								<del>${personAttributeType.name}</del>
+								<del><c:out value="${personAttributeType.name}"/></del>
 							</c:when>
 							<c:otherwise>
-								${personAttributeType.name}
+								<c:out value="${personAttributeType.name}"/>
 							</c:otherwise>
 						</c:choose>
 					</a>
 				</td>
-				<td valign="top">${personAttributeType.format}</td>
+				<td valign="top"><c:out value="${personAttributeType.format}"/></td>
 				<td valign="top"><c:if test="${personAttributeType.searchable == true}"><openmrs:message code="general.yes"/></c:if></td>
-				<td valign="top">${personAttributeType.description}</td>
-				<td valign="top">${personAttributeType.editPrivilege}</td>
+				<td valign="top"><c:out value="${personAttributeType.description}"/></td>
+				<td valign="top"><c:out value="${personAttributeType.editPrivilege}"/></td>
 			</tr>
 		</c:forEach>
 	</table>

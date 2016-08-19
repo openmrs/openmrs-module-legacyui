@@ -48,11 +48,11 @@
 							<a href="program.form?programId=${program.programId}">${program.name}</a>
 						</td>
 						<td valign="top">
-							${program.description}
+							<c:out value="${program.description}"/>
 						</td>
 						<openmrs:concept conceptId="${program.concept.conceptId}" var="v" nameVar="n" numericVar="num">
 							<td valign="top">
-								${n.name}
+								<c:out value="${n.name}"/>
 							</td>
 						</openmrs:concept>
 						<td>
