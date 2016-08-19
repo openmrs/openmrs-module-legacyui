@@ -24,15 +24,15 @@
 					<a href="visitType.form?visitTypeId=${visitType.visitTypeId}">
 						<c:choose>
 							<c:when test="${visitType.retired == true}">
-								<del>${visitType.name}</del>
+								<del><c:out value="${visitType.name}"/></del>
 							</c:when>
 							<c:otherwise>
-								${visitType.name}
+								<c:out value="${visitType.name}"/>
 							</c:otherwise>
 						</c:choose>
 					</a>
 				</td>
-				<td valign="top">${visitType.description}</td>
+				<td valign="top"><c:out value="${visitType.description}"/></td>
 			</tr>
 		</c:forEach>
 	</table>
