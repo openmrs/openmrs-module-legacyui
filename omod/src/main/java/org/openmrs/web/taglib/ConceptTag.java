@@ -82,6 +82,9 @@ public class ConceptTag extends BodyTagSupport {
 		}
 		if (nameVar != null) {
 			ConceptName cName = c.getName(loc);
+			if (cName == null) {
+				cName = c.getName();
+			}
 			pageContext.setAttribute(nameVar, cName);
 			log.debug("Retrieved name " + cName.getName() + ", set to variable: " + nameVar);
 		}
