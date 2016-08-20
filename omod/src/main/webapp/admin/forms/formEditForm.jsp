@@ -84,7 +84,7 @@
 							<optgroup label="<openmrs:message code="Encounter.type.retired"/>">
 							<c:set var="groupOpen" value="true" />
 						</c:if>
-						<option value="${type.encounterTypeId}" <c:if test="${type.encounterTypeId == status.value}">selected</c:if>>${type.name}</option>
+						<option value="${type.encounterTypeId}" <c:if test="${type.encounterTypeId == status.value}">selected</c:if>><c:out value="${type.name}"/></option>
 					</c:forEach>
 					<c:if test="${groupOpen}">
 						</optgroup>
