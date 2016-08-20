@@ -182,7 +182,7 @@
 			<select id="roleStr" class="mediumWidth">
 				<option value=""><openmrs:message code="general.none"/></option>
 				<c:forEach items="${allRoles}" var="role">
-					<option value="${role.role}" <c:if test="${role == status.value}">selected</c:if>>${role.role}</option>
+					<option value="${role.role}" <c:if test="${role == status.value}">selected</c:if>><c:out value="${role.role}"/></option>
 				</c:forEach>
 			</select>
 			&nbsp;<input type="button" class="smallButton" value="<openmrs:message code="Alert.addRole"/>" onClick="addRole();"/>
