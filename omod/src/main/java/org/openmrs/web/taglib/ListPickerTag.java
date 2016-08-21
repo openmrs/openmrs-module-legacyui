@@ -18,6 +18,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.web.WebUtil;
 
 public class ListPickerTag extends TagSupport {
 	
@@ -52,7 +53,7 @@ public class ListPickerTag extends TagSupport {
 		if (allItems == null) {
 			allItems = new Vector<Object>();
 		}
-		String str = "\n<div id='" + name + "' class='listItemBox'>";
+		String str = "\n<div id='" + WebUtil.encodeForHtmlAttribute(name) + "' class='listItemBox'>";
 		
 		for (Object item : allItems) {
 			if (descendantItems.contains(item)) {
@@ -66,7 +67,7 @@ public class ListPickerTag extends TagSupport {
 			if (inheritedItems.contains(item)) {
 				inherited = true;
 			}
-			String id = name + "." + item.toString().replace(" ", "");
+			String id = WebUtil.encodeForHtmlAttribute(name) + "." + item.toString().replace(" ", "");
 			if (inherited) {
 				str += "<span class='listItem listItemChecked'>";
 				str += "<input type='checkbox' name=''";
@@ -75,7 +76,7 @@ public class ListPickerTag extends TagSupport {
 			} else {
 				str += "<span class='listItem" + (checked ? " listItemChecked" : "") + "'>";
 				str += "<input type='checkbox'";
-				str += " name='" + name + "'";
+				str += " name='" + WebUtil.encodeForHtmlAttribute(name) + "'";
 				str += " id='" + id + "'";
 				str += " value='" + item + "'";
 				str += " onclick='this.parentNode.className=\"listItem \" + (this.checked == true ? \"listItemChecked\" : \"\");'";
@@ -83,7 +84,7 @@ public class ListPickerTag extends TagSupport {
 					str += "  checked='checked' ";
 				}
 			}
-			str += " /><label for='" + id + "'>" + item + "</label>";
+			str += " /><label for='" + id + "'>" + WebUtil.encodeForHtmlAttribute(item.toString()) + "</label>";
 			str += "</span>\n";
 		}
 		
