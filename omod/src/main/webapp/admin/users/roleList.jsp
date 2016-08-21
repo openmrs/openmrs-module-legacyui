@@ -42,14 +42,14 @@
 					<td colspan="2" style="white-space: nowrap"><openmrs:message code="Role.superuser.hasAllRolesAndPrivileges"/></td>
 				</c:when>
 				<c:otherwise>
-					<td style="white-space: nowrap" <c:if test="${fn:length(map.key.inheritedRoles)>2}">title="${map.key.inheritedRoles}"</c:if>>
+					<td style="white-space: nowrap" <c:if test="${fn:length(map.key.inheritedRoles)>2}">title="<c:out value="${map.key.inheritedRoles}"/>"</c:if>>
 						<c:forEach items="${map.key.inheritedRoles}" var="role" begin="0" end="1" varStatus="status">
 							<c:if test="${!status.first}">,</c:if>
 							${role}
 							<c:if test="${status.last && fn:length(map.key.inheritedRoles) > 2}"> ... </c:if>
 						</c:forEach>
 					</td>
-					<td style="white-space: nowrap" <c:if test="${fn:length(map.key.privileges)>2}">title="${map.key.privileges}"</c:if>>
+					<td style="white-space: nowrap" <c:if test="${fn:length(map.key.privileges)>2}">title="<c:out value="${map.key.privileges}"/>"</c:if>>
 						<c:forEach items="${map.key.privileges}" var="priv" begin="0" end="1" varStatus="status">
 							<c:if test="${!status.first}">,</c:if>
 							${priv}

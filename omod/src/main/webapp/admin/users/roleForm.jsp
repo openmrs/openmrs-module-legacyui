@@ -79,7 +79,7 @@
 					<tr>
 						<c:forEach items="${inheritingRoles}" var="role" varStatus="varStatus"> 
 							<c:if test="${varStatus.index % 2 == 0}"></tr><tr></c:if>
-							<td><a href="role.form?roleName=${role.role}" onclick="return leaveForm()" title="${role.description}">${role.role}</a></td>
+							<td><a href="role.form?roleName=<c:out value="${role.role}"/>" onclick="return leaveForm()" title="<c:out value="${role.description}"/>"><c:out value="${role.role}"/></a></td>
 						</c:forEach>
 					</tr>
 				</table>
