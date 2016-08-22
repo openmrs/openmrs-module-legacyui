@@ -90,7 +90,7 @@
 </fieldset>
 </c:if>
 
-<c:if test="${conceptSource.voided && not empty conceptSource.conceptSourceId}">
+<c:if test="${conceptSource.retired && not empty conceptSource.conceptSourceId}">
 <br/>
 <fieldset>
 	<form method="post">
