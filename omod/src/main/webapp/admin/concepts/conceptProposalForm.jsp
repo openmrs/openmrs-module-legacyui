@@ -130,7 +130,7 @@
 								<c:if test="${status.index == 4}"></td><td valign="top"></c:if>
 								<a href="#selectObject" 
 									onClick="return selectConceptId('${listItem.conceptId}')";
-									title="${listItem.description}"
+									title="<c:out value="${listItem.description}"/>"
 									class='searchHit'>
 									${status.index + 1})
 									<c:choose >

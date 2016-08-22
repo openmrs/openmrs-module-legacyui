@@ -39,7 +39,7 @@
 			</tr>
 			<tr class='${status.index % 2 == 0 ? "evenRow" : "oddRow"} ${obs.voided ? "voided" : ""}' 
 				onmouseover="mouseover(this, true)" onmouseout="mouseout(this, true)" onclick="click('${obs.obsId}')">
-				<td colspan="5" style="padding-left: ${padding}"><div class="description">${obs.concept.description}</div></td>
+				<td colspan="5" style="padding-left: ${padding}"><div class="description"><c:out value="${obs.concept.description}"/></div></td>
 			</tr>
 		</c:otherwise>
 	</c:choose>

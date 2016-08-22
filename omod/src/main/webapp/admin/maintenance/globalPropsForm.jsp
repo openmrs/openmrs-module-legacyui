@@ -71,7 +71,7 @@
 					<td colspan="2" valign="top" class="description">
 						<textarea name="description" class="descriptionBox" 
 							rows="2" cols="96" onkeyup="edited()"
-							onfocus="descriptionFocus(this)" onblur="descriptionBlur(this)">${globalProp.description}</textarea>
+							onfocus="descriptionFocus(this)" onblur="descriptionBlur(this)"><c:out value="${globalProp.description}"/></textarea>
 					</td>
 				</tr>
 			</c:forEach>

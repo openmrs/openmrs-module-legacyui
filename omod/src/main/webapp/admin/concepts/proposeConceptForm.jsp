@@ -64,7 +64,7 @@
 							<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</c:otherwise>
 					</c:choose>
-					<div class="description" style="clear: left;" id="conceptDescription">${conceptName.description}</div>
+					<div class="description" style="clear: left;" id="conceptDescription"><c:out value="${conceptName.description}"/></div>
 				</spring:bind>
 			</td>
 		</tr>

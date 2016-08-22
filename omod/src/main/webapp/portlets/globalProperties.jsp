@@ -69,7 +69,7 @@
 			<c:if test="${model.hideDescription != 'true'}">
 				<tr <c:if test="${ind % 2 == 1}">style="background-color: #f0f0f0"</c:if>><td colspan="3">
 					<small>
-						<c:if test="${not empty prop.description}"><i>${prop.description}</i><br/></c:if>
+						<c:if test="${not empty prop.description}"><i><c:out value="${prop.description}"/></i><br/></c:if>
 						&nbsp;
 					</small>
 				<td></tr>

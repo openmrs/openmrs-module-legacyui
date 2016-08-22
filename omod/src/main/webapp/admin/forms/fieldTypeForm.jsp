@@ -29,7 +29,7 @@
 		</tr>
 		<tr>
 			<td valign="top"><openmrs:message code="general.description" /></td>
-			<td><textarea name="description" rows="3" cols="40">${fieldType.description}</textarea></td>
+			<td><textarea name="description" rows="3" cols="40"><c:out value="${fieldType.description}"/></textarea></td>
 		</tr>
 		<c:if test="${!(orderType.creator == null)}">
 			<tr>
