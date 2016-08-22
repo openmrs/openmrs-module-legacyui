@@ -414,7 +414,7 @@
 				<select class="smallWidth" name="${status.expression}" id="conceptClass" onChange="changeClass(this);">
 					<c:forEach items="${classes}" var="cc">
 						<option value="${cc.conceptClassId}"
-							<c:if test="${cc.conceptClassId == status.value}">selected="selected"</c:if>>${cc.name}
+							<c:if test="${cc.conceptClassId == status.value}">selected="selected"</c:if>> <c:out value="${cc.name}"/>
 						</option>
 					</c:forEach>
 				</select>
@@ -469,7 +469,7 @@
 										   <c:if test="${dataTypeReadOnly == true}">disabled="disabled"</c:if>>
 					<c:forEach items="${datatypes}" var="cd">
 						<option value="${cd.conceptDatatypeId}"
-							<c:if test="${cd.conceptDatatypeId == status.value}">selected="selected"</c:if>>${cd.name}</option>
+							<c:if test="${cd.conceptDatatypeId == status.value}">selected="selected"</c:if>> <c:out value="${cd.name}"/> </option>
 					</c:forEach>
 				</select>
 				<c:if test="${dataTypeReadOnly == true && isBoolean != null && isBoolean == true}">					
@@ -621,7 +621,7 @@
 					<option value=""><openmrs:message code="general.select"/>...</option>
 					<c:forEach var="handler" items="${handlers}">
 						<option value="${handler.key}" <c:if test="${handler.key == status.value}">selected="selected"</c:if>>
-					        ${handler.key}
+					        <c:out value="${handler.key}"/>
 					    </option>
 					</c:forEach>
 				</select>
@@ -672,7 +672,7 @@
 									<c:set var="groupOpen" value="true" />
 								</c:if>
 								<option value="${record.conceptMapTypeId}" <c:if test="${record.conceptMapTypeId == status.value}">selected="selected"</c:if> >
-									${record.name}
+									<c:out value="${record.name}"/>
 								</option>
 							</openmrs:forEachRecord>
 							<c:if test="${groupOpen}">
@@ -701,7 +701,7 @@
 									<c:set var="groupOpen" value="true" />
 								</c:if>
 								<option value="${record.conceptMapTypeId}" <c:if test="${record.conceptMapTypeId == status.value}">selected="selected"</c:if> >
-									${record.name}
+									<c:out value="${record.name}"/>
 								</option>
 							</openmrs:forEachRecord>
 							<c:if test="${groupOpen}">
