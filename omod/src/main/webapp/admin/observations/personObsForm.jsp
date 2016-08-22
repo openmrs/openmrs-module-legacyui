@@ -71,7 +71,7 @@
 			<td>
 				<c:if test="${not empty obs.encounter}">
 					<a target="new" href="../encounters/encounter.form?encounterId=${obs.encounter.encounterId}">
-						${obs.encounter.encounterType.name}
+						<c:out value="${obs.encounter.encounterType.name}"/>
 						<openmrs:formatDate date="${obs.encounter.encounterDatetime}"/>
 					</a>
 					<c:if test="${obs.dateCreated != obs.encounter.dateCreated}">

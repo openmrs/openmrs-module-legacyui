@@ -119,17 +119,17 @@ Parameters:
 					</c:url>
 					<tr<c:if test="${entry.key.retired}"> class="retired"</c:if>>
 						<td>
-							<a href="${formUrl}" onclick="startDownloading();">${entry.key.name}</a>
+							<a href="${formUrl}" onclick="startDownloading();"><c:out value="${entry.key.name}"/></a>
 						</td>
 						<td>
 							${rowCounter.count}
 						</td>
 						<td>
-							${entry.key.version}
+							<c:out value="${entry.key.version}"/>
 							<c:if test="${!entry.key.published}"><i>(<openmrs:message code="Form.unpublished"/>)</i></c:if>
 						</td>
 						<td>
-							${entry.key.encounterType.name}
+							<c:out value="${entry.key.encounterType.name}"/>
 						</td>
 						<td>${entry.key.retired}</td>
 					</tr>

@@ -35,7 +35,7 @@
 					<c:if test="${program.retired}">
 						<td colspan="6">
 							<i><openmrs:message code="general.retired"/><strike>
-								<a href="program.form?programId=${program.programId}">${program.name}</a>
+								<a href="program.form?programId=${program.programId}"><c:out value="${program.name}"/></a>
 							</strike></i>
 						</td>
 					</c:if>
@@ -45,7 +45,7 @@
 							${program.programId}
 						</td>
 						<td valign="top">
-							<a href="program.form?programId=${program.programId}">${program.name}</a>
+							<a href="program.form?programId=${program.programId}"><c:out value="${program.name}"/></a>
 						</td>
 						<td valign="top">
 							<c:out value="${program.description}"/>

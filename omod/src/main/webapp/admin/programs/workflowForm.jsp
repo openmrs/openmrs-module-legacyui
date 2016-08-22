@@ -248,7 +248,7 @@ refreshStateTable();
 
 <script type="text/javascript">
 <c:forEach var="state" items="${workflow.states}">
-idToNameMap[${state.concept.conceptId}] = '<openmrs:concept conceptId="${state.concept.conceptId}" nameVar="n" var="v" numericVar="nv">${n.name}</openmrs:concept>';
+idToNameMap[${state.concept.conceptId}] = '<openmrs:concept conceptId="${state.concept.conceptId}" nameVar="n" var="v" numericVar="nv"><c:out value="${n.name}"/></openmrs:concept>';
 allStates.push([ ${state.concept.conceptId}, ${state.initial}, ${state.terminal} ]);
 	<c:if test="${!state.retired}">
 	displayedStates.push([ ${state.concept.conceptId}, ${state.initial}, ${state.terminal} ]);

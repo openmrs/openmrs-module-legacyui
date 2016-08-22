@@ -150,7 +150,7 @@
 						<spring:bind path="command.synonymsByLocale[${loc}][${varStatus.index}]">
 							<c:if test="${!status.value.voided}">
 								<div>
-									${status.value.name}
+									<c:out value="${status.value.name}"/>
 								</div>
 							</c:if>
 						</spring:bind>
@@ -166,7 +166,7 @@
 						<spring:bind path="command.indexTermsByLocale[${loc}][${varStatus.index}]">
 							<c:if test="${!status.value.voided}">
 								<div>
-									${status.value.name}
+									<c:out value="${status.value.name}"/>
 								</div>
 							</c:if>
 						</spring:bind>
@@ -199,7 +199,7 @@
 				<openmrs:message code="Concept.conceptClass" />
 			</th>
 			<td valign="top">
-				${command.concept.conceptClass.name}
+				<c:out value="${command.concept.conceptClass.name}"/>
 			</td>
 		</tr>
 		<c:if test="${command.concept.set}">
@@ -309,10 +309,10 @@
 				</tr>
 				<c:forEach var="mapping" items="${command.conceptMappings}" varStatus="mapStatus">
 					<tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-						<td>${mapping.conceptMapType.name}</td>
-						<td>${mapping.conceptReferenceTerm.conceptSource.name}</td>
-						<td>${mapping.conceptReferenceTerm.code}</td>
-						<td>${mapping.conceptReferenceTerm.name}</td>
+						<td><c:out value="${mapping.conceptMapType.name}"/></td>
+						<td><c:out value="${mapping.conceptReferenceTerm.conceptSource.name}"/></td>
+						<td><c:out value="${mapping.conceptReferenceTerm.code}"/></td>
+						<td><c:out value="${mapping.conceptReferenceTerm.name}"/></td>
 					</tr>
 				</c:forEach>
 				

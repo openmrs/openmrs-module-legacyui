@@ -17,7 +17,7 @@
 			<td><openmrs:message code="general.name" /><span class="required">*</span></td>
 			<td>
                 <spring:bind path="fieldType.name">
-				<input type="text" name="name" id="fieldTypeName" value="${fieldType.name}" size="35" onKeyUp="hideError('nameError');"/>
+				<input type="text" name="name" id="fieldTypeName" value="<c:out value="${fieldType.name}"/>" size="35" onKeyUp="hideError('nameError');"/>
                 <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                 </spring:bind>
 			</td>

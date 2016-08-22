@@ -286,7 +286,7 @@
 						<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 					</c:when>
 					<c:otherwise>
-						${status.editor.value.location.name} - <openmrs:formatDate date="${status.editor.value.encounterDatetime}" type="medium" />
+						<c:out value="${status.editor.value.location.name}"/> - <openmrs:formatDate date="${status.editor.value.encounterDatetime}" type="medium" />
 						<a href="${pageContext.request.contextPath}/admin/encounters/encounter.form?encounterId=${status.editor.value.encounterId}"><openmrs:message code="general.view"/>/<openmrs:message code="general.edit"/></a>
 					</c:otherwise>
 				</c:choose>

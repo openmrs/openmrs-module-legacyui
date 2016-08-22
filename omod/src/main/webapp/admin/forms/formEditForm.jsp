@@ -275,7 +275,7 @@
 <br/>
 <h2>
 	<openmrs:message code="Form.design.title" /><!-- - 
-	${form.name} -->
+	<c:out value="${form.name}"/> -->
 </h2>
 
 <br/>

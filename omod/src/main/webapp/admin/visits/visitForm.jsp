@@ -201,7 +201,7 @@ $j(document).ready( function() {
 					<c:set var="groupOpen" value="true" />
 				</c:if>
 					<option value="${visitType.visitTypeId}" <c:if test="${visitType.visitTypeId == status.value}">selected="selected"</c:if>>
-						${visitType.name}
+						<c:out value="${visitType.name}"/>
 					</option>
 				</c:forEach>
 				<c:if test="${groupOpen}">

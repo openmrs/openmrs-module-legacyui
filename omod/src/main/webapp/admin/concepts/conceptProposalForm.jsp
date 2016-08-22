@@ -136,10 +136,10 @@
 									<c:choose >
 										<c:when test="${listItem.synonym != ''}">
 											<span class='mainHit'>${listItem.synonym}</span>
-											<span class='additionalHit'>&rArr; ${listItem.name}</span>
+											<span class='additionalHit'>&rArr; <c:out value="${listItem.name}"/></span>
 										</c:when>
 										<c:otherwise>
-											<span class='mainHit'>${listItem.name}</span>
+											<span class='mainHit'><c:out value="${listItem.name}"/></span>
 										</c:otherwise>
 									</c:choose>
 								</a><br/>

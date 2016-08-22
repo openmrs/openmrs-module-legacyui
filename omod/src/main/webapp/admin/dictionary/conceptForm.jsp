@@ -267,7 +267,7 @@
 								<c:if test="${fn:length(command.synonymsByLocale[loc]) == 0}">style = "visibility: hidden"</c:if> title="<openmrs:message code="Concept.name.localePreferred.help"/>" />
 							<br />
 							<spring:bind path="command.preferredNamesByLocale[${loc}]" ignoreNestedPath="true">			
-							<input id="fullySpecPreferred[${loc}]" type="radio" name="${status.expression}" value="${command.namesByLocale[loc].name}"
+							<input id="fullySpecPreferred[${loc}]" type="radio" name="${status.expression}" value="<c:out value="${command.namesByLocale[loc].name}"/>"
 								<c:if test="${command.namesByLocale[loc].localePreferred}">checked=checked</c:if>
 								<c:if test="${fn:length(command.synonymsByLocale[loc]) > 0}">style = "visibility: visible"</c:if>
 								<c:if test="${fn:length(command.synonymsByLocale[loc]) == 0}">style = "visibility: hidden"</c:if>/>
@@ -303,7 +303,7 @@
 							<c:if test="${conceptNameHasObsMap[synonym.conceptNameId] !=  null}">readonly="readonly"</c:if> />							
 							</spring:bind>
 							<spring:bind path="command.preferredNamesByLocale[${loc}]" ignoreNestedPath="true">							
-							<input id="possiblePrefName_[${loc}][${varStatus.index}]" type="radio" name="${status.expression}" value="${synonym.name}" <c:if test="${synonym.localePreferred}">checked=checked</c:if> />							
+							<input id="possiblePrefName_[${loc}][${varStatus.index}]" type="radio" name="${status.expression}" value="<c:out value="${synonym.name}"/>" <c:if test="${synonym.localePreferred}">checked=checked</c:if> />							
 							</spring:bind>
 							<!-- If this was a new synonym that failed validation, it can be removed without a void reason  -->
 							<c:if test="${command.synonymsByLocale[loc][varStatus.index].conceptNameId == null}">
@@ -682,13 +682,13 @@
 						<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 						</spring:bind>
 					</td>
-					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>${mapping.conceptReferenceTerm.conceptSource.name}</td>
-					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>${mapping.conceptReferenceTerm.code}
+					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>><c:out value="${mapping.conceptReferenceTerm.conceptSource.name}"/></td>
+					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>><c:out value="${mapping.conceptReferenceTerm.code}"/>
 					<spring:bind path="conceptReferenceTerm">
 						<input type="hidden" name="${status.expression}" value="${status.value}"  />
 					</spring:bind>
 					</td>
-					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>${mapping.conceptReferenceTerm.name}</td>
+					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>><c:out value="${mapping.conceptReferenceTerm.name}"/></td>
 					</c:when>
 					<c:otherwise>
 					<td>
@@ -731,7 +731,7 @@
 						</spring:bind>
 					</td>
 					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-						<input type="text" id="term[${mapStatus.index}].name" size="25" value="${mapping.conceptReferenceTerm.name}" readonly="readonly" />
+						<input type="text" id="<c:out value="term[${mapStatus.index}].name"/>" size="25" value="<c:out value="${mapping.conceptReferenceTerm.name}"/>" readonly="readonly" />
 					</td>
 					</c:otherwise>
 					</c:choose>

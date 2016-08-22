@@ -15,7 +15,7 @@
 	<select name="duplicateFormId" id="duplicateFormId" <c:if test="${formsLocked == 'true'}"> disabled </c:if>>
 		<option value=""><openmrs:message code="general.choose"/>...</option>
 		<c:forEach var="form" items="${formList}">
-			<option value="${form.formId}"><c:out value="${form.name}"/> (v. ${form.version}.${form.build})</option>
+			<option value="${form.formId}"><c:out value="${form.name}"/> <c:out value="(v. ${form.version}.${form.build})"/></option>
 		</c:forEach>
 	</select>
 	<input type="button" value="<openmrs:message code="Form.duplicate"/>" onclick="return duplicate()" <c:if test="${formsLocked == 'true'}"> disabled </c:if>/>

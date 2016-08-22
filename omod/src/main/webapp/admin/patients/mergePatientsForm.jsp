@@ -109,7 +109,7 @@ function collectInfo(){
 		</c:forEach>
 		<c:forEach items="${patientEncounters}" var="encounters" varStatus="status">
 			<c:forEach items="${encounters}" var="encounter">
-						encounters.value = encounters.value+"${encounter.encounterType.name} ${encounter.location.name} <openmrs:formatDate date='${encounter.encounterDatetime}' type='short' /> <a href=\"${pageContext.request.contextPath}/admin/encounters/encounter.form?encounterId=${encounter.encounterId}\"><openmrs:message code='general.view'/></a>|";
+						encounters.value = encounters.value+"<c:out value="${encounter.encounterType.name} ${encounter.location.name}"/> <openmrs:formatDate date='${encounter.encounterDatetime}' type='short' /> <a href=\"${pageContext.request.contextPath}/admin/encounters/encounter.form?encounterId=${encounter.encounterId}\"><openmrs:message code='general.view'/></a>|";
 			</c:forEach>
 			encounters.value = encounters.value+"#";
 		</c:forEach>
@@ -746,8 +746,8 @@ function toggleUnvoidedOrderErrorMessage(prefPatientId){
 				<ol id="encounter1">
 					<c:forEach items="${patient1Encounters}" var="encounter">
 						<li>
-							${encounter.encounterType.name}
-							${encounter.location.name}
+							<c:out value="${encounter.encounterType.name}"/>
+							<c:out value="${encounter.location.name}"/>
 							<openmrs:formatDate date="${encounter.encounterDatetime}" type="short" />
 							<a href="${pageContext.request.contextPath}/admin/encounters/encounter.form?encounterId=${encounter.encounterId}">
 								<openmrs:message code="general.view"/>
@@ -761,8 +761,8 @@ function toggleUnvoidedOrderErrorMessage(prefPatientId){
 					<ol id="encounter2">
 						<c:forEach items="${patient2Encounters}" var="encounter">
 							<li>
-								${encounter.encounterType.name}
-								${encounter.location.name}
+								<c:out value="${encounter.encounterType.name}"/>
+								<c:out value="${encounter.location.name}"/>
 								<openmrs:formatDate date="${encounter.encounterDatetime}" type="short" />
 								<a href="${pageContext.request.contextPath}/admin/encounters/encounter.form?encounterId=${encounter.encounterId}">
 									<openmrs:message code="general.view"/>

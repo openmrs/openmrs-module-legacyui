@@ -343,9 +343,9 @@
 					<c:forEach items="${patientVisits}" var="visit">
 						<option value="${visit.visitId}" <c:if test="${visit.visitId == status.value}">selected="selected"</c:if>>
 							 <openmrs:formatDate date="${visit.startDatetime}" />
-							 ${visit.visitType.name} ${visit.patient.personName}
-							<c:if test="${visit.indication != null}"> ${visit.indication.name}</c:if>
-							<c:if test="${visit.location != null}"> ${visit.location}</c:if>
+							 <c:out value="${visit.visitType.name}"/> <c:out value="${visit.patient.personName}"/>
+							<c:if test="${visit.indication != null}"> <c:out value="${visit.indication.name}"/></c:if>
+							<c:if test="${visit.location != null}"> <c:out value="${visit.location}"/></c:if>
 						</option>
 					</c:forEach>
 				</select>
@@ -366,7 +366,7 @@
 										<optgroup label="<openmrs:message code="Encounter.type.retired"/>">
 										<c:set var="groupOpen" value="true" />
 									</c:if>
-									<option value="${type.encounterTypeId}" <c:if test="${type.encounterTypeId == status.value}">selected</c:if>>${type.name}</option>								
+									<option value="${type.encounterTypeId}" <c:if test="${type.encounterTypeId == status.value}">selected</c:if>><c:out value="${type.name}"/></option>								
 								</c:forEach>
 								<c:if test="${groupOpen}">
 									</optgroup>
@@ -374,7 +374,7 @@
 							</select>
 						</c:when>
 						<c:otherwise>
-							${encounter.encounterType.name}
+							<c:out value="${encounter.encounterType.name}"/>
 						</c:otherwise>
 					</c:choose>
 					<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
@@ -390,12 +390,12 @@
 							<select name="form">
 								<option value=""></option>
 								<c:forEach items="${forms}" var="form">
-									<option value="${form.formId}" <c:if test="${form.formId == status.value}">selected</c:if>>${form.name}</option>
+									<option value="${form.formId}" <c:if test="${form.formId == status.value}">selected</c:if>><c:out value="${form.name}"/></option>
 								</c:forEach>
 							</select>
 						</c:when>
 						<c:otherwise>
-							${encounter.form.name} v${encounter.form.version}
+							<c:out value="${encounter.form.name}"/> <c:out value="v${encounter.form.version}"/>
 						</c:otherwise>
 					</c:choose>
 					<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
@@ -457,10 +457,10 @@
 		<c:forEach items="${encounter.providersByRoles}" var="providerRole">
 			<c:forEach items="${providerRole.value}" var="provider">
 				<tr>
-					<td>${providerRole.key.name}
+					<td><c:out value="${providerRole.key.name}"/>
 						<input type="hidden" name="encounterRoleIds" value="${providerRole.key.encounterRoleId}" />
 					</td>
-					<td>${provider.name}
+					<td><c:out value="${provider.name}"/>
 						<input type="hidden" name="providerIds" value="${provider.providerId}" />
 					</td>
 					<td><c:out value="${provider.identifier}" /></td>

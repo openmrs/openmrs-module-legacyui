@@ -136,7 +136,7 @@ function containsError(element) {
 				<select name="${status.expression}">
 					<option value=""></option>
 					<c:forEach items="${locations}" var="loc">
-						<option value="${loc.locationId}" <c:if test="${loc.locationId == status.value}">selected</c:if>>${loc.name}</option>
+						<option value="${loc.locationId}" <c:if test="${loc.locationId == status.value}">selected</c:if>><c:out value="${loc.name}"/></option>
 					</c:forEach>
 				</select>
 				<c:if test="${status.errorMessage != ''}">

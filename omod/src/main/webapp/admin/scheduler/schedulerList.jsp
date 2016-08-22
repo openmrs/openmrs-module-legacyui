@@ -66,7 +66,7 @@
 								</c:choose>
 							</td>							
 							<td class="left">
-								<a href="scheduler.form?taskId=${task.id}"><strong>${task.name}</strong></a> 
+								<a href="scheduler.form?taskId=${task.id}"><strong><c:out value="${task.name}"/></strong></a> 
 									<br/>${task.taskClass}
 							</td>
 							<td class="left"><openmrs:message htmlEscape="false" code="Scheduler.list.runsEvery" arguments="${intervals[task]}"/>

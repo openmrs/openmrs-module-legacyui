@@ -149,7 +149,7 @@ $j(document).ready( function() {
 					<option value=""></option>
 					<openmrs:forEachRecord name="conceptSource">
 					<option value="${record.conceptSourceId}" <c:if test="${record.conceptSourceId == status.value}">selected="selected"</c:if>>
-						${record.name}  <c:if test="${not empty record.hl7Code}">[${record.hl7Code}]</c:if>
+						<c:out value="${record.name}"/>  <c:if test="${not empty record.hl7Code}">[<c:out value="${record.hl7Code}"/>]</c:if>
 					</option>
 					</openmrs:forEachRecord>
 				</select>
@@ -201,7 +201,7 @@ $j(document).ready( function() {
 									<c:set var="groupOpen" value="true" />
 								</c:if>
 								<option value="${record.conceptMapTypeId}" <c:if test="${record.conceptMapTypeId == status.value}">selected="selected"</c:if> >
-									${record.name}
+									<c:out value="${record.name}"/>
 								</option>
 							</openmrs:forEachRecord>
 							<c:if test="${groupOpen}">
@@ -212,9 +212,9 @@ $j(document).ready( function() {
 					</td>
 					<c:choose>
 					<c:when test="${map.conceptReferenceTermMapId != null}">
-					<td>${map.termB.conceptSource.name}</td>
-					<td>${map.termB.code}</td>
-					<td>${map.termB.name}</td>
+					<td><c:out value="${map.termB.conceptSource.name}"/></td>
+					<td><c:out value="${map.termB.code}"/></td>
+					<td><c:out value="${map.termB.name}"/></td>
 					</c:when>
 					<c:otherwise>
 					<td>

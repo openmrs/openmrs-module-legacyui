@@ -130,7 +130,7 @@
 					<option value="${piv['class'].name}" 
 						<c:if test="${status.value == piv['class'].name}">selected</c:if> 
 					/>
-					${piv.name}
+					<c:out value="${piv.name}"/>
 						<c:if test="${defaultValidatorName == piv.name}"> (default)</c:if>
 					</option>
 				</c:forEach>

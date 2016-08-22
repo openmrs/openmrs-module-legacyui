@@ -485,7 +485,7 @@
 													</c:otherwise>
 												</c:choose>
 																					  <c:if test="${program.dateCompleted == null}">
-													<a href="javascript:showEditWorkflowPopup('<openmrs:concept conceptId="${workflow.concept.conceptId}" nameVar="n" var="v" numericVar="nv">${n.name}</openmrs:concept>', ${program.patientProgramId}, ${workflow.programWorkflowId})">[<openmrs:message code="general.edit"/>]</a>
+													<a href="javascript:showEditWorkflowPopup('<openmrs:concept conceptId="${workflow.concept.conceptId}" nameVar="n" var="v" numericVar="nv"><c:out value="${n.name}"/></openmrs:concept>', ${program.patientProgramId}, ${workflow.programWorkflowId})">[<openmrs:message code="general.edit"/>]</a>
 												</c:if>
 											</td>
 										</tr>

@@ -32,8 +32,8 @@
 				<td valign="top" style="white-space: nowrap">
 					<a href="scheduler.htm?method=viewTask&taskId=${task.id}"><openmrs:message code="Scheduler.scheduleTask"/></a> 
 				</td>
-				<td valign="top">${task.name}</td>
-				<td valign="top">${task.description}</td>
+				<td valign="top"><c:out value="${task.name}"/></td>
+				<td valign="top"><c:out value="${task.description}"/></td>
 				<td valign="top">
           <c:if test="${task.active == true}"><openmrs:message code="general.yes"/></c:if>
           <c:if test="${task.active != true}"><openmrs:message code="general.no"/></c:if>
