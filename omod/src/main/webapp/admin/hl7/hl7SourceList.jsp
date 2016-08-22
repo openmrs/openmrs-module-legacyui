@@ -23,10 +23,10 @@
 			<tr class='${status.index % 2 == 0 ? "evenRow" : "oddRow"} ${hl7Source.retired ? "voided" : ""}'>
 				<td valign="top">
 					<a href="hl7Source.form?hl7SourceId=${hl7Source.id}">
-						${hl7Source.name}
+						<c:out value="${hl7Source.name}"/>
 					</a>
 				</td>
-				<td valign="top">${hl7Source.description}</td>
+				<td valign="top"> <c:out value="${hl7Source.description}"/> </td>
 			</tr>
 		</c:forEach>
 	</table>
