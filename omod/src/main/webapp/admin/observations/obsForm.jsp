@@ -266,7 +266,7 @@
 			<spring:bind path="person">
 <c:choose>
                     <c:when test="${obs.encounter != null}">
-                        <input type="text" name="person" id="person" value="${status.editor.value.personName}" size="20" disabled="disabled" />
+                        <input type="text" name="person" id="person" value="<c:out value="${status.editor.value.personName}"/>" size="20" disabled="disabled" />
                     </c:when>
                     <c:otherwise>
                         <openmrs_tag:personField formFieldName="person" searchLabelCode="Person.findBy" initialValue="${status.editor.value.personId}" linkUrl="" callback="" />

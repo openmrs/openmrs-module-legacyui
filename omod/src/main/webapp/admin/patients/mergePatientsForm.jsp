@@ -102,7 +102,7 @@ function collectInfo(){
 			</c:forEach>
 			patientAddress.value = patientAddress.value+"#";
 
-			patientInfos.value = patientInfos.value+"<c:out value="${patient.patientId}" />|${patient.gender}|<openmrs:formatDate date='${patient.birthdate}' type='short' />|<openmrs:formatDate date='${patient.deathDate}' type='short' />|<c:out value="${patient.creator.personName}" /> - <openmrs:formatDate date='${patient.dateCreated}' type='long' />|${patient.changedBy.personName} - <openmrs:formatDate date='${patient.dateChanged}' type='long' />|${patient.voided}#";
+			patientInfos.value = patientInfos.value+"<c:out value="${patient.patientId}" />|${patient.gender}|<openmrs:formatDate date='${patient.birthdate}' type='short' />|<openmrs:formatDate date='${patient.deathDate}' type='short' />|<c:out value="${patient.creator.personName}" /> - <openmrs:formatDate date='${patient.dateCreated}' type='long' />|<c:out value="${patient.changedBy.personName}"/> - <openmrs:formatDate date='${patient.dateChanged}' type='long' />|${patient.voided}#";
 			if(!isPreferred){
 				addPatientTab('${status.index}', notPreferredCount);
 			}
