@@ -125,6 +125,14 @@ public class LoginController {
 			model.put("reason", reason);
 			model.put("refererUrl", refererUrl);
 		}
+
+		if (webRequest.getParameter("redirect_url") != null) {
+			String redirectUrlTemp = webRequest.getParameter("redirect_url").toString();
+			if (StringUtils.isNotBlank(redirectUrlTemp) && !redirectUrlTemp.contains("login.")) {
+				redirectUrlTemp = redirectUrlTemp.replace("_HASHTAG_", "#");
+				webRequest.setAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, redirectUrlTemp, 1);
+			}
+		}
 		
 		return "/module/legacyui" + LOGIN_FORM;
 	}
