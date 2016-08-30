@@ -330,12 +330,12 @@
 					<option value=""><openmrs:message code="Program.location.choose"/></option>
 					<c:forEach var="location" items="${model.locations}">
 						<c:if test="${!location.retired}">
-							<option value="${location.locationId}">${location.displayString}</option>
+							<option value="${location.locationId}"><c:out value="${location.displayString}"/></option>
 						</c:if>
 					</c:forEach>
 					<c:forEach var="location" items="${model.locations}">
 						<c:if test="${location.retired}">
-							<option value="${location.locationId}">${location.displayString} (<openmrs:message code="general.retired"/>)</option>
+							<option value="${location.locationId}"><c:out value="${location.displayString}"/> (<openmrs:message code="general.retired"/>)</option>
 						</c:if>
 					</c:forEach>
 				</select>
@@ -589,12 +589,12 @@
 						<option value=""><openmrs:message code="Program.location.choose"/></option>
 						<c:forEach var="location" items="${model.locations}">
 							<c:if test="${!location.retired}">
-							  <option value="${location.locationId}">${location.displayString}</option>
+							  <option value="${location.locationId}"><c:out value="${location.displayString}"/></option>
 							</c:if>
 						</c:forEach>
 						<c:forEach var="location" items="${model.locations}">
 							<c:if test="${location.retired}">						
-								<option value="${location.locationId}">${location.displayString} (<openmrs:message code="general.retired"/>)</option>						
+								<option value="${location.locationId}"><c:out value="${location.displayString}"/> (<openmrs:message code="general.retired"/>)</option>						
 							</c:if>
 						</c:forEach>
 					</select>				
