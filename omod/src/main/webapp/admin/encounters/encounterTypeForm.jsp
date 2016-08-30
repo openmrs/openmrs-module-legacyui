@@ -52,7 +52,7 @@
 				<select name="editPrivilege">
 					<option value=""></option>
 					<c:forEach items="${privileges}" var="privilege">
-						<option value="${privilege.privilege}" <c:if test="${privilege.privilege == status.value}">selected</c:if>>${privilege.privilege}</option>
+						<option value="${privilege.privilege}" <c:if test="${privilege.privilege == status.value}">selected</c:if>><c:out value="${privilege.privilege}"/></option>
 					</c:forEach>
 				</select>
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
@@ -67,7 +67,7 @@
 				<select name="viewPrivilege">
 					<option value=""></option>
 					<c:forEach items="${privileges}" var="privilege">
-						<option value="${privilege.privilege}" <c:if test="${privilege.privilege == status.value}">selected</c:if>>${privilege.privilege}</option>
+						<option value="${privilege.privilege}" <c:if test="${privilege.privilege == status.value}">selected</c:if>><c:out value="${privilege.privilege}"/></option>
 					</c:forEach>
 				</select>
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
