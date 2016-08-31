@@ -683,7 +683,7 @@
 						</spring:bind>
 					</td>
 					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>><c:out value="${mapping.conceptReferenceTerm.conceptSource.name}"/></td>
-					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if><c:out value=">${mapping.conceptReferenceTerm.code}"/>
+					<td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>><c:out value="${mapping.conceptReferenceTerm.code}"/>
 					<spring:bind path="conceptReferenceTerm">
 						<input type="hidden" name="${status.expression}" value="${status.value}" />
 					</spring:bind>
