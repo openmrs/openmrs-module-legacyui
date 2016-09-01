@@ -6,6 +6,7 @@
 		<a href="${pageContext.request.contextPath}/"><openmrs:message code="Navigation.home"/></a>
 	</li>
 
+	<openmrs:hasPrivilege privilege="View Patients">
 	<li id="findPatientNavLink">
 		<a href="${pageContext.request.contextPath}/findPatient.htm">
 			<openmrs:hasPrivilege privilege="Add Patients">
@@ -16,7 +17,8 @@
 			</openmrs:hasPrivilege>
 		</a>
 	</li>
-	
+	</openmrs:hasPrivilege>
+
 	<openmrs:hasPrivilege privilege="View Concepts">
 		<li id="dictionaryNavLink">
 			<a href="${pageContext.request.contextPath}/dictionary/index.htm"><openmrs:message code="Navigation.dictionary"/></a>
