@@ -1,6 +1,6 @@
 <%@ page isErrorPage="true" import="java.io.*" %>
 
-<%@ taglib uri="/openmrs" prefix="openmrs" %>
+<%@ taglib uri="/WEB-INF/taglibs/openmrs.tld" prefix="openmrs" %>
 <%-- 
 	Exceptions thrown from within jsps e.g those with scripts calling code that requires authentication, are
 	forwarded here so we need to be able to handle them too, but by the time we are on this JSP, the actual  
