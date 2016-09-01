@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+
+-->
+<dataset>
+  <privilege privilege="Manage Patients" description="Able to manage patients" uuid="b0da53a7-e5f5-4584-a9b9-bf911470fe57"/>
+  <privilege privilege="View Patients" description="Able to view patients" uuid="83756836-aa91-44d0-97de-2cfcf3a64808"/>
+  <privilege privilege="Edit Patients" description="Able to edit patients" uuid="68ba469c-22cc-46fd-a992-e4ec7db92b7f"/>
+  
+  <role role="Data Clerk" description="Takes care of entering, editing patients." uuid="dddf8f8e-c6e3-49d3-8f70-2107a60f7df2"/>
+  <role role="Clinician" description="Looks up patients." uuid="fa2fd77d-a586-4e89-9bd0-193a34b6d01e"/>
+
+  <role_privilege role="Data Clerk" privilege="Manage Patients" />
+  <role_privilege role="Data Clerk" privilege="Edit Patients" />
+  <role_privilege role="Data Clerk" privilege="View Patients" />
+  <role_privilege role="Clinician" privilege="View Patients" />
+
+  <person person_id="505" gender="F" dead="false" creator="1" date_created="2008-08-15 15:46:47.0" voided="false" uuid="e69facd2-56d0-44c6-b8fd-52e287474c2e"/>
+  <users user_id="505" person_id="505" system_id="6-7" username="dataclerk1" password="4a1750c8607d0fa237de36c6305715c223415189" salt="c788c6ad82a157b712392ca695dfcf2eed193d7f" secret_question="" creator="1" date_created="2008-08-15 15:57:09.0" changed_by="1" date_changed="2008-08-18 11:51:56.0" retired="false" retire_reason="" uuid="0f8a0e5a-e6d7-11de-8404-001e378eb67e"/>
+  <user_role user_id="505" role="Data Clerk" />
+
+  <person person_id="506" gender="M" dead="false" creator="1" date_created="2008-08-15 15:57:09.0" voided="false" uuid="9a2e8cb8-81a7-46ba-a33a-7ff176de9a9e"/>
+  <users user_id="506" person_id="506" system_id="7-5" username="clinician1" password="4a1750c8607d0fa237de36c6305715c223415189" salt="c788c6ad82a157b712392ca695dfcf2eed193d7f" secret_question="" creator="1" date_created="2008-08-15 15:57:09.0" changed_by="1" date_changed="2008-08-18 11:51:56.0" retired="false" retire_reason="" uuid="39582370-e6d7-11de-8404-001e378eb67e"/>
+  <user_role user_id="506" role="Clinician" />
+</dataset>

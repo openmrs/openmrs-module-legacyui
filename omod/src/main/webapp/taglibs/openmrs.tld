@@ -73,6 +73,11 @@
 		<required>false</required>
 		<rtexprvalue>true</rtexprvalue>
 	</attribute>
+	<attribute>
+		<name>hasAll</name>
+		<required>false</required>
+		<rtexprvalue>true</rtexprvalue>
+	</attribute>
 </tag>
 
 <tag>
