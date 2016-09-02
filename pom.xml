@@ -142,8 +142,51 @@
                         <tagNameFormat>@{project.version}</tagNameFormat>
                     </configuration>
                 </plugin>
+				<plugin>
+					<groupId>com.mycila</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>3.0</version>
+					<configuration>
+						<header>license-header.txt</header>
+						<includes>
+							<include>**/*.java</include>
+							<include>**/*.txt</include>
+							<include>**/*.xml</include>
+						</includes>
+						<excludes>
+							<exclude>license-header.txt</exclude>
+							<exclude>.git/**</exclude>
+							<exclude>tools/formatter/**</exclude>
+							<!-- From gitignore -->
+							<exclude>.idea/**</exclude>
+							<exclude>target/**</exclude>
+							<exclude>bin/**</exclude>
+							<exclude>tmp/**</exclude>
+							<exclude>.settings/**</exclude>
+							<exclude>.externalToolBuilders/</exclude>
+							<exclude>build/</exclude>
+							<exclude>bin/</exclude>
+							<exclude>dist/</exclude>
+						</excludes>
+					</configuration>
+					<executions>
+						<execution>
+							<id>format-license-header</id>
+							<phase>process-sources</phase>
+							<goals>
+								<goal>format</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 
 	<repositories>
@@ -178,4 +221,38 @@
         </snapshotRepository>
     </distributionManagement>
 
+	<profiles>
+		<profile>
+			<id>ci</id>
+			<activation>
+				<property>
+					<name>env.CI</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>com.mycila</groupId>
+							<artifactId>license-maven-plugin</artifactId>
+							<executions>
+								<execution>
+									<id>format-license-header</id>
+									<phase>none</phase>
+								</execution>
+								<execution>
+									<id>validate-license-header</id>
+									<goals>
+										<goal>check</goal>
+									</goals>
+									<phase>initialize</phase>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 </project>
