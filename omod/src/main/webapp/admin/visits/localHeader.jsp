@@ -3,21 +3,21 @@
 		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Manage Visit Types,View Visit Types">
-		<li <c:if test='<%= request.getRequestURI().contains("visits/visitTypeList.jsp") %>'>class="active"</c:if>>
+		<li id="legacyui-manageVisitTypes" <c:if test='<%= request.getRequestURI().contains("visits/visitTypeList.jsp") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/visits/visitType.list">
 				<openmrs:message code="VisitType.manage"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="Manage Visit Attribute Types,View Visit Attribute Types,Purge Visit Attribute Types">
-		<li <c:if test='<%= request.getRequestURI().contains("visits/visitAttributeTypeList.jsp") %>'>class="active"</c:if>>
+		<li id="legacyui-manageVisitAttributeTypes" <c:if test='<%= request.getRequestURI().contains("visits/visitAttributeTypeList.jsp") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/visits/visitAttributeType.list">
 				<openmrs:message code="VisitAttributeType.manage"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="Configure Visits">
-		<li <c:if test='<%= request.getRequestURI().contains("configureVisits") %>'>class="active"</c:if>>
+		<li id="legacyui-configureVisits" <c:if test='<%= request.getRequestURI().contains("configureVisits") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/visits/configureVisits.list">
 				<openmrs:message code="Visit.configure"/>
 			</a>

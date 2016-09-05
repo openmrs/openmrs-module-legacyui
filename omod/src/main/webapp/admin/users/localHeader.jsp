@@ -3,28 +3,28 @@
 		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Edit Users">
-		<li <c:if test='<%= request.getRequestURI().contains("users/users") %>'>class="active"</c:if>>
+		<li id="legacyui-mangeUsers" <c:if test='<%= request.getRequestURI().contains("users/users") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/users/users.list">
 				<openmrs:message code="User.manage"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="Manage Roles">
-		<li <c:if test='<%= request.getRequestURI().contains("role") %>'>class="active"</c:if>>
+		<li id="legacyui-manageRoles" <c:if test='<%= request.getRequestURI().contains("role") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/users/role.list">
 				<openmrs:message code="Role.manage"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="Manage Privileges">
-		<li <c:if test='<%= request.getRequestURI().contains("privilege") %>'>class="active"</c:if>>
+		<li id="legacyui-managePrivileges" <c:if test='<%= request.getRequestURI().contains("privilege") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/users/privilege.list">
 				<openmrs:message code="Privilege.manage"/>
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="Manage Alerts">
-		<li <c:if test='<%= request.getRequestURI().contains("alert") %>'>class="active"</c:if>>
+		<li id="legacyui-manageAlerts" <c:if test='<%= request.getRequestURI().contains("alert") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/users/alert.list">
 				<openmrs:message code="Alert.manage"/>
 			</a>
