@@ -72,10 +72,10 @@
 		<c:forEach var="rel" items="${model.personRelationships}">
 			rel = new Object();
 			rel.relationshipId = ${rel.relationshipId};
-			rel.personA = '${fn:replace(rel.personA.personName, "'", "\\'")}';
-			rel.personB = '${fn:replace(rel.personB.personName, "'", "\\'")}';
-			rel.aIsToB = '${fn:replace(rel.relationshipType.aIsToB, "'", "\\'")}';
-			rel.bIsToA = '${fn:replace(rel.relationshipType.bIsToA, "'", "\\'")}';
+			rel.personA = '${fn:replace(<c:out value="rel.personA.personName"/>, "'", "\\'")}';
+			rel.personB = '${fn:replace(<c:out value="rel.personB.personName"/>, "'", "\\'")}';
+			rel.aIsToB = '${fn:replace(<c:out value="rel.relationshipType.aIsToB"/>, "'", "\\'")}';
+			rel.bIsToA = '${fn:replace(<c:out value="rel.relationshipType.bIsToA"/>, "'", "\\'")}';
 			rel.personAId = ${rel.personA.personId};
 			rel.personBId = ${rel.personB.personId};
 			rel.personAIsPatient = ${rel.personA.patient};
