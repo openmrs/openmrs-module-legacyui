@@ -289,16 +289,16 @@
 					<c:choose>
 						<c:when test="${relType.aIsToB == relType.bIsToA}">
 							<td style="text-align: center; white-space: nowrap" align="center" colspan="3">
-								<a href="javascript:handlePickRelType('${relType.relationshipTypeId}', '${relType.aIsToB}')">${relType.aIsToB}</a>
+								<a href="javascript:handlePickRelType('${relType.relationshipTypeId}', '${relType.aIsToB}')"><c:out value="${relType.aIsToB}"/></a>
 							</td>
 						</c:when>
 						<c:otherwise>
 							<td style="text-align: right; white-space: nowrap; width: 49%">
-								<a onclick="handlePickRelType('${relType.relationshipTypeId}', '${relType.aIsToB}')">${relType.aIsToB}</a>
+								<a onclick="handlePickRelType('${relType.relationshipTypeId}', '${relType.aIsToB}')"><c:out value="${relType.aIsToB}"/></a>
 							</td>
 							<td width="2%">:</td>
 							<td style="text-align: left; white-space: nowrap; width: 49%">
-								<a onclick="handlePickRelType('${relType.relationshipTypeId}::reverse', '${relType.bIsToA}')">${relType.bIsToA}</a>
+								<a onclick="handlePickRelType('${relType.relationshipTypeId}::reverse', '${relType.bIsToA}')"><c:out value="${relType.bIsToA}"/></a>
 							</td>
 						</c:otherwise>
 					</c:choose>
