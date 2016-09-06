@@ -45,7 +45,7 @@
 				<select name="format">
                     <option value=""></option>
                     <c:forEach items="${formats}" var="format">
-                        <option value="${format}" <c:if test="${format == status.value}">selected</c:if>>${format}</option>
+                        <option value="<c:out value="${format}"/>" <c:if test="${format == status.value}">selected</c:if>><c:out value="${format}"/></option>
                     </c:forEach>
                     <c:if test="${isJavaUtilDate}">
 						<option value="java.util.Date" selected="true">java.util.Date</option>
@@ -87,7 +87,7 @@
 		<td valign="top"><openmrs:message code="general.description"/></td>
 		<td valign="top">
 			<spring:bind path="personAttributeType.description">
-				<textarea name="description" rows="3" cols="40">${status.value}</textarea>
+				<textarea name="description" rows="3" cols="40"><c:out value="${status.value}"/></textarea>
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 			</spring:bind>
 		</td>
@@ -99,7 +99,7 @@
 				<select name="editPrivilege">
 					<option value=""></option>
 					<c:forEach items="${privileges}" var="privilege">
-						<option value="${privilege.privilege}" <c:if test="${privilege.privilege == status.value}">selected</c:if>>${privilege.privilege}</option>
+						<option value="<c:out value="${privilege.privilege}"/>" <c:if test="${privilege.privilege == status.value}">selected</c:if>><c:out value="${privilege.privilege}"/></option>
 					</c:forEach>
 				</select>
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
