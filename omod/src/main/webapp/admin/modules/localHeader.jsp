@@ -3,7 +3,7 @@
 		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Manage Modules">
-		<li <c:if test='<%= request.getRequestURI().contains("modules/moduleList") %>'>class="active"</c:if>>
+		<li id="legacyui-manageModules" <c:if test='<%= request.getRequestURI().contains("modules/moduleList") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/modules/module.list">
 				<openmrs:message code="Module.manage"/>
 			</a>
