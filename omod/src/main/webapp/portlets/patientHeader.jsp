@@ -19,7 +19,15 @@
 
 <%-- Header showing preferred name, id, and treatment status --%>
 <div id="patientHeader" class="boxHeader${model.patientVariation}">
-<div id="patientHeaderPatientName"><c:out value="${model.patient.personName}" /></div>
+<div id="patientHeaderPatientName">
+<c:choose>
+<c:when test="${model.showPatientDashboardLink == true}" >
+  <a href="${pageContext.request.contextPath}/patientDashboard.form?patientId=${model.patient.id}"><c:out value="${model.patient.personName}" /></a></div>
+</c:when>
+<c:otherwise>
+  <c:out value="${model.patient.personName}" /></div>
+</c:otherwise>
+</c:choose>
 <div id="patientHeaderPreferredIdentifier">
 	<c:if test="${fn:length(model.patient.activeIdentifiers) > 0}">
 		<c:forEach var="identifier" items="${model.patient.activeIdentifiers}"
