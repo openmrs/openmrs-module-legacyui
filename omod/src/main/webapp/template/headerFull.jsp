@@ -81,7 +81,9 @@
 			dwr.engine.setWarningHandler(handler);
 			
 			/* initialize common form validation */
-			jQuery(document).ready(initializeForceMaxLength);
+			<c:if test="${empty DO_NOT_INCLUDE_JQUERY}">
+			    jQuery(document).ready(initializeForceMaxLength);
+			</c:if>
 		</script>
 
 		<openmrs:extensionPoint pointId="org.openmrs.headerFullIncludeExt" type="html" requiredClass="org.openmrs.module.web.extension.HeaderIncludeExt">
