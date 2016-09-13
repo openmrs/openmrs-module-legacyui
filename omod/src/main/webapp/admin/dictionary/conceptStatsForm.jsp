@@ -57,13 +57,13 @@
 		<a href="#previousConcept" id="previousConcept" valign="middle" accesskey="," onclick="return jumpToConcept('previous')"><openmrs:message code="general.previous"/></a>
 			|
 		<a href="concept.htm?conceptId=${concept.conceptId}" id="viewConcept" accesskey="v" ><openmrs:message code="general.view"/></a> |
-		<openmrs:hasPrivilege privilege="Edit Concepts"><a href="concept.form?conceptId=${concept.conceptId}" accesskey="e" id="editConcept" valign="middle"></openmrs:hasPrivilege><openmrs:message code="general.edit"/><openmrs:hasPrivilege privilege="Edit Concepts"></a></openmrs:hasPrivilege> |
+		<openmrs:hasPrivilege privilege="Manage Concepts"><a href="concept.form?conceptId=${concept.conceptId}" accesskey="e" id="editConcept" valign="middle"></openmrs:hasPrivilege><openmrs:message code="general.edit"/><openmrs:hasPrivilege privilege="Manage Concepts"></a></openmrs:hasPrivilege> |
 		<a href="#nextConcept" id="nextConcept" accesskey="." valign="middle" onclick="return jumpToConcept('next')"><openmrs:message code="general.next"/></a>
 			|
 	</form>
 </c:if>
 
-<openmrs:hasPrivilege privilege="Edit Concepts"><a href="concept.form" id="newConcept" valign="middle"></openmrs:hasPrivilege><openmrs:message code="general.new"/><openmrs:hasPrivilege privilege="Edit Concepts"></a></openmrs:hasPrivilege>
+<openmrs:hasPrivilege privilege="Manage Concepts"><a href="concept.form" id="newConcept" valign="middle"></openmrs:hasPrivilege><openmrs:message code="general.new"/><openmrs:hasPrivilege privilege="Manage Concepts"></a></openmrs:hasPrivilege>
 
 <openmrs:extensionPoint pointId="org.openmrs.dictionary.conceptFormHeader" type="html" parameters="conceptId=${command.concept.conceptId}" />
 
