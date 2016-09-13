@@ -366,7 +366,7 @@
 		
 		<tr><td colspan="2"><br/></td></tr>
 		
-		<openmrs:hasPrivilege privilege="Edit Concepts">
+		<openmrs:hasPrivilege privilege="Manage Concepts">
 			<c:if test="${ not empty command.conceptDrugList and fn:length(command.conceptDrugList) > 0}">
 				<tr>
 					<td colspan="2">

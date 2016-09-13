@@ -45,7 +45,7 @@
 
 <br/><br/>
 
-<openmrs:hasPrivilege privilege="Edit Concepts">
+<openmrs:hasPrivilege privilege="Manage Concepts">
 	<table>
 		<tr>
 			<th><openmrs:message code="ConceptProposal.includeCompleted"/></th>

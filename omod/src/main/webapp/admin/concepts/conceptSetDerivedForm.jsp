@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
-<openmrs:require privilege="Edit Concepts" otherwise="/login.htm" redirect="/admin/concepts/conceptSetDerived.form" />
+<openmrs:require privilege="Manage Concepts" otherwise="/login.htm" redirect="/admin/concepts/conceptSetDerived.form" />
 
 <%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
