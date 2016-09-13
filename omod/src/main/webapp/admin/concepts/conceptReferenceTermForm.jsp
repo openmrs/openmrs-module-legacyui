@@ -1,7 +1,7 @@
 <%@page import="java.util.Locale" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
-<openmrs:require privilege="Manage Concept Reference Terms" otherwise="/login.htm"
+<openmrs:require allPrivileges="Manage Concept Reference Terms,Get Concept Map Types" otherwise="/login.htm"
                  redirect="/admin/concepts/conceptReferenceTerm.form"/>
 
 <%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
