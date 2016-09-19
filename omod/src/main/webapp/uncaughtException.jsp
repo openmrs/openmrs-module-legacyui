@@ -81,7 +81,7 @@ try {
 
 <%@ include file="authorizationHandlerInclude.jsp" %>
 
-<%       
+<%
 		out.println("<b>" + exception.getClass().getName() + "</b>");
 		if (exception.getMessage() != null)
 			out.println("<pre id='exceptionMessage'>" + WebUtil.escapeHTML(exception.getMessage()) + "</pre>");
@@ -107,12 +107,7 @@ try {
 	// page isn't passed through that filter like all other pages	
 	UserContext userContext = (UserContext) session.getAttribute(WebConstants.OPENMRS_USER_CONTEXT_HTTPSESSION_ATTR);
 	if (exception != null) {
-		if (userContext == null || userContext.getAuthenticatedUser() == null) {
-			out.println("<openmrs:message code='uncaughtException.logged.out'/>");
-			// print the stack trace to the servlet container's error logs
-			exception.printStackTrace();
-		}
-		else {
+		if(userContext != null && userContext.getAuthenticatedUser() != null) {
 			java.lang.StackTraceElement[] elements;
 			
 			if (exception instanceof ServletException) {
@@ -138,8 +133,8 @@ try {
 				else
 					out.println(element + "<br/>");
 			}
-			
-			pageContext.setAttribute("reportBugUrl", Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_REPORT_BUG_URL)); 
+
+			pageContext.setAttribute("reportBugUrl", Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_REPORT_BUG_URL));
             pageContext.setAttribute("stackTrace", OpenmrsUtil.shortenedStackTrace(description.toString()));
             pageContext.setAttribute("errorMessage", exception.toString());
             pageContext.setAttribute("openmrs_version", OpenmrsConstants.OPENMRS_VERSION);
