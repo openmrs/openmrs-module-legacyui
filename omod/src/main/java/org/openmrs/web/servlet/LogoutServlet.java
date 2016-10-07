@@ -47,7 +47,7 @@ public class LogoutServlet extends HttpServlet {
 		// clears attributes and makes sure that no one can access this session
 		httpSession.invalidate();
 		
-		request.getSession().setAttribute(SESSION_ATTRIBUTE_MANUAL_LOGOUT, "true");
+		httpSession.setAttribute(SESSION_ATTRIBUTE_MANUAL_LOGOUT, "true");
 	}
 	
 }
