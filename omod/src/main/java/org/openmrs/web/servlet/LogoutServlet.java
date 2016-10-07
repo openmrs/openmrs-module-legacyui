@@ -29,8 +29,6 @@ public class LogoutServlet extends HttpServlet {
 	
 	public static final long serialVersionUID = 123423L;
 	
-	public static final String SESSION_ATTRIBUTE_MANUAL_LOGOUT = "manual-logout";
-	
 	/**
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse)
@@ -46,8 +44,6 @@ public class LogoutServlet extends HttpServlet {
 		
 		// clears attributes and makes sure that no one can access this session
 		httpSession.invalidate();
-		
-		httpSession.setAttribute(SESSION_ATTRIBUTE_MANUAL_LOGOUT, "true");
 	}
 	
 }
