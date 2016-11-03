@@ -1,6 +1,7 @@
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:htmlInclude file="/scripts/easyAjax.js" />
+<openmrs:htmlInclude file="/dwr/interface/DWRPatientSetService.js" />
 <openmrs:htmlInclude file="/dwr/interface/DWRCohortBuilderService.js" />
 <openmrs:htmlInclude file="/dwr/engine.js" />
 <openmrs:htmlInclude file="/dwr/util.js" />
@@ -93,6 +94,7 @@
 		var str = '';
 		for (var i = cohort_startIndex; i < cohort_endIndex; ++i)
 			str += cohort_patientIds[i] + ',';
+		DWRPatientSetService.getPatients(str, cohort_showContentHelper);
 	}
 	
 	function cohort_showContentHelper(patientList) {
