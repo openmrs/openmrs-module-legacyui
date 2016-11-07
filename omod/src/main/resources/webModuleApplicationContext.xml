@@ -37,6 +37,12 @@
 	<!-- Add here beans related to the web context -->
 	
 	<bean id="legacyUiUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="localeChangeInterceptor" />
+				<ref bean="themeChangeInterceptor" />
+			</list>
+		</property>
 		<property name="order"><value>100</value></property>
 		<property name="mappings">
 			<props>
