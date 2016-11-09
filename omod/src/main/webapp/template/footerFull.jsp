@@ -16,10 +16,15 @@
 					String qs = org.apache.commons.lang.StringEscapeUtils.escapeXml(request.getQueryString());
 					if (qs == null)
 						qs = "";
-					int i = qs.lastIndexOf("&amp;lang=");
+					int i = qs.lastIndexOf("lang=");
 					if (i == -1)
 						i = qs.length();
-					pageContext.setAttribute("qs", qs.substring(0, i));
+						
+					String s = "&amp;";
+					if (i == 0 || qs.indexOf("&") > 0)
+						s = "";
+						
+					pageContext.setAttribute("qs", qs.substring(0, i) + s);
 					pageContext.setAttribute("locales", org.openmrs.api.context.Context.getAdministrationService().getPresentationLocales());
 					pageContext.setAttribute("openmrsVersion", org.openmrs.util.OpenmrsConstants.OPENMRS_VERSION);
 					pageContext.setAttribute("locale", org.openmrs.api.context.Context.getLocale());
@@ -32,7 +37,7 @@
 					%>
 					<c:if test="${status.index != 0}">| </c:if>
 					<c:if test="${fn:toLowerCase(locale) == fn:toLowerCase(loc)}">${locDisplayName}</c:if>
-					<c:if test="${fn:toLowerCase(locale) != fn:toLowerCase(loc)}"><a href="?${qs}&amp;lang=${loc}">${locDisplayName}</a></c:if> 
+					<c:if test="${fn:toLowerCase(locale) != fn:toLowerCase(loc)}"><a href="?${qs}lang=${loc}">${locDisplayName}</a></c:if> 
 				</c:forEach>
 			</span>	
 	
