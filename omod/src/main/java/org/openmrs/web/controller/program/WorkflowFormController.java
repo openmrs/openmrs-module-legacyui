@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Program;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.APIException;
@@ -59,8 +60,10 @@ public class WorkflowFormController extends SimpleFormController {
 		if (Context.isAuthenticated()) {
 			ProgramWorkflowService ps = Context.getProgramWorkflowService();
 			String programWorkflowId = request.getParameter("programWorkflowId");
+			String programId = request.getParameter("programId");
 			if (programWorkflowId != null) {
-				//wf = ps.getWorkflow(Integer.valueOf(programWorkflowId));
+				Program program = ps.getProgram(Integer.valueOf(programId));
+				wf = program.getWorkflow(Integer.valueOf(programWorkflowId));
 			}
 			
 			if (wf == null) {

@@ -57,7 +57,7 @@
 						</openmrs:concept>
 						<td>
 							<c:forEach var="workflow" items="${program.workflows}">
-								<a href="workflow.form?programWorkflowId=${workflow.programWorkflowId}">
+								<a href="workflow.form?programId=${program.programId}&programWorkflowId=${workflow.programWorkflowId}">
 									<openmrs_tag:concept conceptId="${workflow.concept.conceptId}"/>
 									(${workflow.nonRetiredStateCount})
 								</a>
