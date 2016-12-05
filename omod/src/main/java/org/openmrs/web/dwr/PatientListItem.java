@@ -14,6 +14,8 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 
+import java.util.Set;
+
 public class PatientListItem extends PersonListItem {
 	
 	protected final Log log = LogFactory.getLog(getClass());
@@ -39,14 +41,11 @@ public class PatientListItem extends PersonListItem {
 		if (patient != null) {
 			
 			patientId = patient.getPatientId();
-			
+
+			identifier = patient.getPatientIdentifier().getIdentifier();
 			// get patient's identifiers
-			boolean first = true;
 			for (PatientIdentifier pi : patient.getIdentifiers()) {
-				if (first) {
-					identifier = pi.getIdentifier();
-					first = false;
-				} else {
+				if (!pi.getIdentifier().equals(identifier)) {
 					if (!"".equals(otherIdentifiers)) {
 						otherIdentifiers += ",";
 					}

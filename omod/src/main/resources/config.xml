@@ -72,6 +72,7 @@
 				<include method="getPatient"/>
 				<include method="getSimilarPatients"/>
 				<include method="findDuplicatePatients" />
+                <include method="findPatientsByIdentifier" />
 				<include method="addIdentifier" />
 				<include method="exitPatientFromCare" />
 				<include method="changeHealthCenter" />
