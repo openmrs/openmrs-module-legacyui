@@ -55,7 +55,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	private static final Log log = LogFactory.getLog(DWRPatientService.class);
 	
 	private static Integer maximumResults;
-	
+
 	/**
 	 * Search on the <code>searchValue</code>. If a number is in the search string, do an identifier
 	 * search. Else, do a name search
@@ -335,7 +335,24 @@ public class DWRPatientService implements GlobalPropertyListener {
 		}
 		return pli;
 	}
-	
+
+	/**
+	 * find all the patients with the given patient identifiers (identifiers)
+	 *
+	 * @param identifiers
+	 * @return list of patientListItems
+	 */
+	public Vector<Object> findPatientsByIdentifier(String[] identifiers) {
+		Vector<Object> patientList = new Vector<>();
+		for (String identifier : identifiers) {
+			List<PatientIdentifier> patientIdentifiers = Context.getPatientService().getPatientIdentifiers(identifier, null, null, null, true);
+			if(patientIdentifiers.size() > 0){
+				patientList.add(new PatientListItem(patientIdentifiers.get(0).getPatient()));
+			}
+		}
+		return patientList;
+	}
+
 	/**
 	 * find all patients with duplicate attributes (searchOn)
 	 *
