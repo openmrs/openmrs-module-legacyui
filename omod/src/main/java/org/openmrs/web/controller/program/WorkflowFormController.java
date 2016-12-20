@@ -172,7 +172,7 @@ public class WorkflowFormController extends SimpleFormController {
 					}
 				}
 				try {
-					//Context.getProgramWorkflowService().updateWorkflow(wf);
+					Context.getProgramWorkflowService().saveProgram(wf.getProgram());
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Workflow.saved");
 				}
 				catch (APIException e) {
@@ -185,7 +185,7 @@ public class WorkflowFormController extends SimpleFormController {
 						s.setRetired(true);
 					}
 				}
-				//Context.getProgramWorkflowService().updateWorkflow(wf);
+				Context.getProgramWorkflowService().saveProgram(wf.getProgram());
 			}
 		}
 		view = getSuccessView();
