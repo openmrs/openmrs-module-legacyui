@@ -20,7 +20,7 @@
 var dupSize=0;
 var currSelectedTab = null;
 var tabCount = 0;
-var patientIdsWithUnvoidedOrders = ${patientIdsWithUnvoidedOrders}
+var activeOrderErrorMessage = "${activeOrderErrorMessage}";
 	dojo.require("dojo.widget.openmrs.PatientSearch");
 	
 	function changePrimary(dir, patientId) {
@@ -402,24 +402,15 @@ var patientList = [];
 <c:forEach items="${patientList}" var="pat" varStatus="status">
 patientList[${status.index}] = ${pat.patientId};
 </c:forEach>
-function toggleUnvoidedOrderErrorMessage(prefPatientId){
+function toggleUnvoidedOrderErrorMessage(){
     $j('#patientWithUnvoidedOrdersError').hide();
     $j('#mergeButton').removeAttr('disabled');
-    if(!prefPatientId && patientList.length > 0){
-        prefPatientId = patientList[0];
-    }
 
-    if(prefPatientId){
-        for(var i = 0; i < patientList.length; i++){
-            if(patientList[i] != prefPatientId){
-                if(patientIdsWithUnvoidedOrders.indexOf(patientList[i]) > -1){
-                    $j('#patientWithUnvoidedOrdersError').show();
-                    $j('#mergeButton').attr('disabled', 'disabled');
-                    break;
-                }
-            }
-        }
-    }
+	if(activeOrderErrorMessage){
+        $j('#patientWithUnvoidedOrdersError').html(activeOrderErrorMessage);
+		$j('#patientWithUnvoidedOrdersError').show();
+		$j('#mergeButton').attr('disabled', 'disabled');
+	}
 }
 
 </script>

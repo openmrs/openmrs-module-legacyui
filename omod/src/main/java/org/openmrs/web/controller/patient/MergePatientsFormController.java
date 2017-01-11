@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Encounter;
-import org.openmrs.Order;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.EncounterService;
@@ -101,7 +103,11 @@ public class MergePatientsFormController extends SimpleFormController {
 			}
 			catch (APIException e) {
 				log.error("Unable to merge patients", e);
-				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Patient.merge.fail");
+				String message = e.getMessage();
+				if(message == null || "".equals(message)){
+					message = "Patient.merge.fail";
+				}
+				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, message);
 				return showForm(request, response, errors);
 			}
 			
@@ -159,7 +165,7 @@ public class MergePatientsFormController extends SimpleFormController {
 	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors errors) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		Patient p1 = (Patient) obj;
 		Patient p2 = new Patient();
 		Collection<Encounter> patient1Encounters = new Vector<Encounter>();
@@ -186,27 +192,49 @@ public class MergePatientsFormController extends SimpleFormController {
 			}
 			
 		}
-		
+
 		map.put("patient1Encounters", patient1Encounters);
 		map.put("patient2Encounters", patient2Encounters);
 		map.put("patientEncounters", encounterList);
 		map.put("patient2", p2);
 		map.put("patientList", patientList);
 		map.put("modalMode", request.getParameter("modalMode"));
-		List<Integer> patientIdsWithUnvoidedOrders = new ArrayList<Integer>();
-		OrderService os = Context.getOrderService();
-		for (Patient pat : patientList) {
-			List<Order> orders = os.getAllOrdersByPatient(pat);
-			for (Order o : orders) {
-				if (!o.isVoided()) {
-					patientIdsWithUnvoidedOrders.add(pat.getId());
-					break;
-				}
-			}
-		}
-		map.put("patientIdsWithUnvoidedOrders", patientIdsWithUnvoidedOrders);
-		
+		map.put("activeOrderErrorMessage", buildErrorMessage(getOrderTypePatientsMap(patientList)));
 		return map;
 	}
-	
+
+	private Map<OrderType, Set<Patient>> getOrderTypePatientsMap(List<Patient> patientList) {
+		Map<OrderType, Set<Patient>> activeOrderAndPatientsMap = new HashMap<>();
+		OrderService os = Context.getOrderService();
+		patientList.forEach(patient -> {
+			os.getAllOrdersByPatient(patient).forEach(order -> {
+				if (!order.isActive()) return;
+				Set<Patient> patients = activeOrderAndPatientsMap.getOrDefault(order.getOrderType(), new HashSet<>());
+				patients.add(patient);
+				activeOrderAndPatientsMap.putIfAbsent(order.getOrderType(), patients);
+			});
+		});
+		return activeOrderAndPatientsMap;
+	}
+
+	private String buildErrorMessage(Map<OrderType, Set<Patient>> activeOrderAndPatientsMap){
+		String ACTIVE_DRUG_ORDER_ERR = "Active [ORDER_TYPE] orders exist for patientsPATIENT_IDS.<br />";
+		String ACTIVE_DRUG_ORDER_WARN = "More than one patient having active order of same type is Not allowed";
+		String[] errorMessages = new String[]{""};
+		activeOrderAndPatientsMap.forEach((OrderType orderType, Set<Patient> patients) -> {
+			if (patients.size() < 2) return;
+			String patientIds = patients.stream()
+				.map((Patient patient) -> patient.getPatientIdentifier().getIdentifier())
+				.reduce("", (id1, id2) -> id1 + ", " + id2);
+
+			errorMessages[0] += ACTIVE_DRUG_ORDER_ERR
+				.replace("ORDER_TYPE",orderType.toString())
+				.replace("PATIENT_IDS",patientIds);
+		});
+
+		if(!"".equals(errorMessages[0])){
+			return errorMessages[0] + ACTIVE_DRUG_ORDER_WARN;
+		}
+		return "";
+	}
 }
