@@ -142,7 +142,7 @@ public class ShortPatientFormValidator implements Validator {
 				continue;
 			}
 			
-			if (!possibleDuplicate.isBlank() && !personAddress.isBlank()
+			if (!possibleDuplicate.getVoided() && !possibleDuplicate.isBlank() && !personAddress.isBlank()
 			        && possibleDuplicate.toString().equalsIgnoreCase(personAddress.toString())) {
 				errors.reject("Patient.duplicateAddress", new Object[] { personAddress.toString() },
 				    personAddress.toString() + " is a duplicate address for the same patient");
