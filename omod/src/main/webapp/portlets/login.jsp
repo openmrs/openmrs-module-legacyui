@@ -12,7 +12,7 @@
 	<table>
 		<tr>
 			<td><openmrs:message code="User.username"/>:</td>
-			<td><input type="text" name="uname" value="<request:parameter name="username" />" id="username" size="25" maxlength="50" /></td>
+			<td><input type="text" name="uname" value="<c:out value='${param.username}' />" id="username" size="25" maxlength="50" /></td>
 		</tr>
 		<tr>
 			<td><openmrs:message code="User.password"/>:</td>
