@@ -21,6 +21,7 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
+import org.openmrs.web.WebUtil;
 
 /**
  * DWR Provider methods. The methods in here are used in the webapp to get data from the database
@@ -51,7 +52,7 @@ public class DWRProviderService {
 		
 		if (providerList.size() == 0) {
 			MessageSourceService mss = Context.getMessageSourceService();
-			providerListItem.add(mss.getMessage("Provider.noMatchesFound", new Object[] { name }, Context.getLocale()));
+			providerListItem.add(mss.getMessage("Provider.noMatchesFound", new Object[] { WebUtil.escapeHTML(name) }, Context.getLocale()));
 		} else {
 			for (Provider p : providerList) {
 				providerListItem.add(new ProviderListItem(p));
