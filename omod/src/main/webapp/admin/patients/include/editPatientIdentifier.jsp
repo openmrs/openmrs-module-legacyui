@@ -101,7 +101,7 @@
 					<input type="hidden" name="_${status.expression}"/>
 					<input type="checkbox" name="${status.expression}"
 						   <c:if test="${status.value == true}">checked="checked"</c:if> 
-						   onClick="toggleLayer('voidReasonIdentifierRow-${identifier}'); if (voidedBoxClicked) voidedBoxClicked(this); "
+						   onClick="toggleLayer('voidReasonIdentifierRow-<c:out value="${identifier}" />'); if (voidedBoxClicked) voidedBoxClicked(this); "
 					/>
 				</spring:bind>
 			</td>
