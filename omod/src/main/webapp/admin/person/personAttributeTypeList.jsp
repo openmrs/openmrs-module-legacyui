@@ -64,27 +64,27 @@
 	<table>
 		<tr>
 			<th><openmrs:message code="PersonAttributeType.patient.listing" /></th>
-			<td><input type="text" size="50" name="patientListingAttributeTypes" value="${patientListingAttributeTypes}"/></td>
+			<td><input type="text" size="50" name="patientListingAttributeTypes" value="<c:out value='${patientListingAttributeTypes}' />"/></td>
 			<td><openmrs:message code="PersonAttributeType.patient.listing.help" /></td>
 		</tr>
 		<tr>
 			<th><openmrs:message code="PersonAttributeType.patient.viewing" /></th>
-			<td><input type="text" size="50" name="patientViewingAttributeTypes" value="${patientViewingAttributeTypes}"/></td>
+			<td><input type="text" size="50" name="patientViewingAttributeTypes" value="<c:out value='${patientViewingAttributeTypes}' />"/></td>
 			<td><openmrs:message code="PersonAttributeType.patient.viewing.help" /></td>
 		</tr>
 		<tr>
 			<th><openmrs:message code="PersonAttributeType.patient.header" /></th>
-			<td><input type="text" size="50" name="patientHeaderAttributeTypes" value="${patientHeaderAttributeTypes}"/></td>
+			<td><input type="text" size="50" name="patientHeaderAttributeTypes" value="<c:out value='${patientHeaderAttributeTypes}' />"/></td>
 			<td><openmrs:message code="PersonAttributeType.patient.header.help" /></td>
 		</tr>		
 		<tr>
 			<th><openmrs:message code="PersonAttributeType.user.listing" /></th>
-			<td><input type="text" size="50" name="userListingAttributeTypes" value="${userListingAttributeTypes}"/></td>
+			<td><input type="text" size="50" name="userListingAttributeTypes" value="<c:out value='${userListingAttributeTypes}' />"/></td>
 			<td><openmrs:message code="PersonAttributeType.user.listing.help" /></td>
 		</tr>
 		<tr>
 			<th><openmrs:message code="PersonAttributeType.user.viewing" /></th>
-			<td><input type="text" size="50" name="userViewingAttributeTypes" value="${userViewingAttributeTypes}"/></td>
+			<td><input type="text" size="50" name="userViewingAttributeTypes" value="<c:out value='${userViewingAttributeTypes}' />"/></td>
 			<td><openmrs:message code="PersonAttributeType.user.viewing.help" /></td>
 		</tr>
 	</table>

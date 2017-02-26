@@ -78,8 +78,8 @@
 		
 		<br/>
 		<input type="hidden" name="personId" id="personId" />
-		<input type="hidden" name="personType" value="${param.personType}" />
-		<input type="hidden" name="viewType" value="${param.viewType}" />
+		<input type="hidden" name="personType" value="<c:out value='${param.personType}' />" />
+		<input type="hidden" name="viewType" value="<c:out value='${param.viewType}' />" />
 		
 		<input type="submit" value='<openmrs:message code="Person.search.similarPersonNotOnList"/>' />
 		&nbsp;

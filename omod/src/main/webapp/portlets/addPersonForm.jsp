@@ -56,8 +56,8 @@
 						</td>
 					</tr>
 				</table>
-				<input type="hidden" name="personType" value="${model.personType}"/>
-				<input type="hidden" name="viewType" value="${model.viewType}"/>
+				<input type="hidden" name="personType" value="<c:out value='${model.personType}' />"/>
+				<input type="hidden" name="viewType" value="<c:out value='${model.viewType}' />"/>
 			</form>
 		</div>
 		
