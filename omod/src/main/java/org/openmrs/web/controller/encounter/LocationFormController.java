@@ -121,6 +121,7 @@ public class LocationFormController extends SimpleFormController {
 						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "legacyui.Location.purgedSuccessfully");
 					}
 					catch (DataIntegrityViolationException e) {
+						log.error("Failed to delete location", e);
 						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "error.object.inuse.cannot.purge");
 					}
 				}
