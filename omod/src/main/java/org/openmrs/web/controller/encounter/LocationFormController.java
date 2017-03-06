@@ -33,6 +33,7 @@ import org.openmrs.util.MetadataComparator;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.attribute.WebAttributeUtil;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
@@ -113,6 +114,15 @@ public class LocationFormController extends SimpleFormController {
 				else if (request.getParameter("unretireLocation") != null) {
 					locationService.unretireLocation(location);
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Location.unretired");
+				} 
+				else if (request.getParameter("purgeLocation") != null) {
+					try {
+						locationService.purgeLocation(location);
+						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "legacyui.Location.purgedSuccessfully");
+					}
+					catch (DataIntegrityViolationException e) {
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "error.object.inuse.cannot.purge");
+					}
 				}
 			}
 			catch (APIException e) {

@@ -7,6 +7,16 @@
 
 <h2><openmrs:message code="Location.title"/></h2>
 
+<script type="text/javascript">
+	function confirmLocationPurge() {
+        if (confirm('<openmrs:message code="legacyui.Location.confirmDelete"/>')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
 <openmrs:extensionPoint pointId="org.openmrs.admin.locations.locationForm.afterTitle" type="html" parameters="locationId=${location.locationId}" />
 
 <c:if test="${location.retired}">
@@ -139,6 +149,21 @@
 			<input type="submit" value='<openmrs:message code="Location.retireLocation"/>' name="retireLocation"/>
 		</fieldset>
 	</form>
+	<br/>
+	<div class="box">
+        <form action="" method="post" onsubmit="return confirmLocationPurge()">
+            <table cellpadding="3" cellspacing="0">
+                <tr>
+                    <th><openmrs:message code="legacyui.Location.purgeLocation" /></th>
+                </tr>
+                <tr>
+                    <td>
+                    	<input type="submit" value='<openmrs:message code="legacyui.Location.purgeLocation"/>' name="purgeLocation">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </c:if>
 
 <br/>
