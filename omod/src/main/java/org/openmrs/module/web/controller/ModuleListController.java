@@ -183,10 +183,16 @@ public class ModuleListController extends SimpleFormController {
 								ModuleFactory.startModule(depMod);
 								boolean thisModuleCausesRefresh = WebModuleUtil.startModule(depMod, getServletContext(), true);
 								someModuleNeedsARefresh = someModuleNeedsARefresh || thisModuleCausesRefresh;
+								if (someModuleNeedsARefresh) {
+									WebModuleUtil.loadServlets(depMod, getServletContext());
+									WebModuleUtil.loadFilters(depMod, getServletContext());
+								}
 							}
 						}
 						
 						if (someModuleNeedsARefresh) {
+							WebModuleUtil.loadServlets(module, getServletContext());
+							WebModuleUtil.loadFilters(module, getServletContext());
 							WebModuleUtil.refreshWAC(getServletContext(), false, module);
 						}
 
@@ -208,6 +214,10 @@ public class ModuleListController extends SimpleFormController {
 					ModuleFactory.startModule(module);
 					boolean thisModuleCausesRefresh = WebModuleUtil.startModule(module, getServletContext(), true);
 					someModuleNeedsARefresh = someModuleNeedsARefresh || thisModuleCausesRefresh;
+					if (someModuleNeedsARefresh) {
+						WebModuleUtil.loadServlets(module, getServletContext());
+						WebModuleUtil.loadFilters(module, getServletContext());
+					}
 				}
 
 				if (someModuleNeedsARefresh) {
