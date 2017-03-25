@@ -160,7 +160,7 @@ function confirmPurge() {
 
 		<br/>
 	
-	<input type="hidden" name="phrase" value='<request:parameter name="phrase" />'/>
+	<input type="hidden" name="phrase" value='<c:out value="${param.phrase}" />'/>
 	<input type="submit" name="saveProviderButton" value='<openmrs:message code="Provider.save"/>'>
 	&nbsp;
 	<input type="button" value='<openmrs:message code="general.cancel"/>' onclick="document.location='index.htm'">

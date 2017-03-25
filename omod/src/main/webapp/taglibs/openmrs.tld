@@ -1525,5 +1525,25 @@
 	<function-class>org.openmrs.web.taglib.functions.CollectionContains</function-class>
 	<function-signature>java.lang.Boolean collectionContains(java.util.Collection, java.lang.Object)</function-signature>
 </function>
-	
+
+<function>
+	<description>Makes an untrusted string JS-safe</description>
+	<name>getSafeJsString</name>
+	<function-class>org.openmrs.web.taglib.functions.Util</function-class>
+	<function-signature>java.lang.String getSafeJsString(java.lang.String)</function-signature>
+</function>
+
+<function>
+	<description>Makes an untrusted boolean val (e.g. from a URL param) JS-safe</description>
+	<name>getSafeJsBoolean</name>
+	<function-class>org.openmrs.web.taglib.functions.Util</function-class>
+	<function-signature>java.lang.String getSafeJsBoolean(java.lang.String)</function-signature>
+</function>
+
+<function>
+	<description>Makes an untrusted integer val (e.g. from a URL param) JS-safe</description>
+	<name>getSafeJsInt</name>
+	<function-class>org.openmrs.web.taglib.functions.Util</function-class>
+	<function-signature>java.lang.String getSafeJsInt(java.lang.String)</function-signature>
+</function>
 </taglib>

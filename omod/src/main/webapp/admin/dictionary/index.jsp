@@ -28,7 +28,7 @@
 					includeVoidedLabel: '<openmrs:message code="SearchResults.includeRetired" javaScriptEscape="true"/>', 
 					columnRenderers: [nameColumnRenderer, null], 
 					columnVisibility: [true, false],
-					searchPhrase:'<request:parameter name="phrase"/>',
+					searchPhrase: '${openmrs:getSafeJsString(param.phrase)}',
 					showIncludeVerbose: true,
 					verboseHandler: doGetVerbose,
 					showSearchButton: true,

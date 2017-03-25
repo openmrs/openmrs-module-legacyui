@@ -5,7 +5,7 @@
 		<c:when test="${model.size == 'compact'}">
 			<form method=get action="${model.postURL}">
 				<openmrs:message code="Navigation.findPatient" />
-				<input type="text" name="phrase" value="<request:parameter name="phrase"/>"/>
+				<input type="text" name="phrase" value="<c:out value='${param.phrase}'/>"/>
 				<input type="submit" value="<openmrs:message code="general.searchButton" />" />
 			</form>
 		</c:when>
@@ -48,7 +48,7 @@
 				var patient;
 				var autoJump = true;
 				<request:existsParameter name="autoJump">
-					autoJump = <request:parameter name="autoJump"/>;
+					autoJump = ${openmrs:getSafeJsBoolean(param.autoJump)};
 				</request:existsParameter>
 
 				function showSearch() {
@@ -112,13 +112,13 @@
 						<!-- User has 'patientId' in the request params -- selecting that patient -->
 						var pats = new Array();
 						pats.push(new Object());
-						pats[0].patientId = '<request:parameter name="patientId"/>';
+						pats[0].patientId = '${openmrs:getSafeJsString(param.patientId)}';
 						onSelect(pats);
 					</request:existsParameter>
 
 					<request:existsParameter name="phrase">
 						<!-- User has 'phrase' in the request params -- searching on that -->
-						searchBox.value = '<request:parameter name="phrase"/>';
+						searchBox.value = '${openmrs:getSafeJsString(param.phrase)}';
 					</request:existsParameter>
 
 					showSearch();
