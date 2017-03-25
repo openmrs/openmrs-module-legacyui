@@ -73,7 +73,7 @@
 	<%@ include file="include/fieldEdit.jsp" %>
 
 	<br />
-	<input type="hidden" name="phrase" value='<request:parameter name="phrase" />' />
+	<input type="hidden" name="phrase" value='<c:out value="${param.phrase}" />' />
 	
 	<input type="submit" value='<openmrs:message code="general.save"/>' name="action">
 	<c:if test="${field.fieldId != null && empty param.duplicate}">

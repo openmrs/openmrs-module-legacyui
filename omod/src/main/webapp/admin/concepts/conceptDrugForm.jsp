@@ -10,9 +10,8 @@
 <script type="text/javascript">
 	dojo.require("dojo.widget.openmrs.ConceptSearch");
 	dojo.require("dojo.widget.openmrs.OpenmrsPopup");
-
 	<request:existsParameter name="autoJump">
-		var autoJump = <request:parameter name="autoJump"/>;
+		var autoJump = ${openmrs:getSafeJsBoolean(param.autoJump)};
 	</request:existsParameter>
 
 	dojo.addOnLoad( function() {
@@ -209,10 +208,10 @@
 <openmrs:extensionPoint pointId="org.openmrs.admin.concepts.conceptDrugForm.inForm" type="html" parameters="drugId=${drug.drugId}" />
 
 <br />
-<input type="hidden" name="phrase" value='<request:parameter name="phrase" />'/>
+<input type="hidden" name="phrase" value="<c:out value='${param.phrase}' />"/>
 <input type="submit" value='<openmrs:message code="ConceptDrug.save"/>'>
 &nbsp;
-<input type="button" value='<openmrs:message code="general.cancel"/>' onclick="history.go(-1); return; document.location='index.htm?autoJump=false&phrase=<request:parameter name="phrase"/>'">
+<input type="button" value='<openmrs:message code="general.cancel"/>' onclick="history.go(-1); return; document.location='index.htm?autoJump=false&phrase=<c:out value="${param.phrase}"/>'">
 </fieldset>
 </form>
 <br/>

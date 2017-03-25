@@ -494,7 +494,7 @@
 	</c:if>
 </table>
 </spring:nestedPath>
-<input type="hidden" name="phrase" value="<request:parameter name="phrase" />"/>
+<input type="hidden" name="phrase" value="<c:out value='${param.phrase}' />"/>
 <br /><br />
 
 <c:if test="${obs.obsId != null}">
