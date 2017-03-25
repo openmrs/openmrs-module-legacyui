@@ -37,7 +37,7 @@
 		<openmrs:message code="Field.find" />
 	</b>
 	<div class="box">
-		<div dojoType="FieldSearch" widgetId="fSearch" searchLabel='<openmrs:message code="Field.search" />' fieldId='<request:parameter name="fieldId" />'></div>
+		<div dojoType="FieldSearch" widgetId="fSearch" searchLabel='<openmrs:message code="Field.search" />' fieldId='<c:out value="${param.fieldId}" />'></div>
 	</div>
 </div>
 

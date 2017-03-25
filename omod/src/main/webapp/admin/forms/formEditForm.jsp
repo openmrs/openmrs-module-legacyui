@@ -268,7 +268,7 @@
 
 <script type="text/javascript">
 	var formPublished = ${form.published};
-	var formId = <request:parameter name="formId"/>;
+	var formId = ${openmrs:getSafeJsInt(param.formId)};
 	<c:if test="${isBasicForm}"> formPublished = true; </c:if>
 </script>
 
