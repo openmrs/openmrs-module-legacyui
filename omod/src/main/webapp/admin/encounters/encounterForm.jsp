@@ -498,10 +498,10 @@
 	<input type="button" id="addProviderButton" value='<openmrs:message code="Provider.add"/>' class="smallButton" onclick="addProvider()" />
 	</div>
 	<br/>
-	<input type="hidden" name="phrase" value='<request:parameter name="phrase" />'/>
+	<input type="hidden" name="phrase" value='<c:out value="${param.phrase}" />'/>
 	<input type="submit" id="saveEncounterButton" value='<openmrs:message code="Encounter.save"/>' >
 	&nbsp;
-	<input type="button" value='<openmrs:message code="general.cancel"/>' onclick="history.go(-1); return; document.location='index.htm?autoJump=false&phrase=<request:parameter name="phrase"/>'">
+	<input type="button" value='<openmrs:message code="general.cancel"/>' onclick="history.go(-1); return; document.location='index.htm?autoJump=false&phrase=${openmrs:getSafeJsString(param.phrase)}'">
 	</form>
 
 <!-- If new encounter add a provider row by default -->	
