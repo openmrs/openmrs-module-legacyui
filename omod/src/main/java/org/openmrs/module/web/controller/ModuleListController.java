@@ -43,6 +43,7 @@ import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.WebUtil;
+import org.openmrs.web.dwr.OpenmrsDWRServlet;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -194,6 +195,7 @@ public class ModuleListController extends SimpleFormController {
 							WebModuleUtil.loadServlets(module, getServletContext());
 							WebModuleUtil.loadFilters(module, getServletContext());
 							WebModuleUtil.refreshWAC(getServletContext(), false, module);
+							((OpenmrsDWRServlet)WebModuleUtil.getServlet("dwr-invoker")).reInitServlet();
 						}
 
 					} else {
@@ -222,6 +224,7 @@ public class ModuleListController extends SimpleFormController {
 
 				if (someModuleNeedsARefresh) {
 					WebModuleUtil.refreshWAC(getServletContext(), false, null);
+					((OpenmrsDWRServlet)WebModuleUtil.getServlet("dwr-invoker")).reInitServlet();
 				}
 			} else {
 				ModuleUtil.checkForModuleUpdates();
