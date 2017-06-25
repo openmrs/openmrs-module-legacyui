@@ -46,6 +46,7 @@ public class ShortPatientFormValidator implements Validator {
 	 * @param c The class to check for support.
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
 	 */
+	@Override
 	public boolean supports(Class c) {
 		return ShortPatientModel.class.isAssignableFrom(c);
 	}
@@ -72,6 +73,7 @@ public class ShortPatientFormValidator implements Validator {
 	 * @should reject a duplicate name
 	 * @should reject a duplicate address
 	 */
+	@Override
 	public void validate(Object obj, Errors errors) {
 		if (log.isDebugEnabled()) {
 			log.debug(this.getClass().getName() + ": Validating patient data from the short patient form....");
@@ -108,7 +110,7 @@ public class ShortPatientFormValidator implements Validator {
 		}
 		
 		Errors nameErrors = new BindException(personName, "personName");
-		new PersonNameValidator().validatePersonName(personName, nameErrors, false, true);
+		new PersonNameValidator().validate(personName, nameErrors);
 		
 		if (nameErrors.hasErrors()) {
 			// pick all the personName errors and bind them to the formObject
