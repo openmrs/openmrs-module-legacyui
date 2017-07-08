@@ -303,7 +303,7 @@ $j(document).ready( function() {
 			<td><openmrs:formatDate date="${enc.encounterDatetime}" type="small" /></td>
 			<td><openmrs:format encounterType="${enc.encounterType}" /></td>
 			<td><openmrs:format location="${enc.location}" /></td>
-			<td><openmrs:format person="${enc.provider}" /></td>
+			<td><openmrs:format encounterProviders="${enc.providersByRoles}"/></td>
 			<td class="removeButtonColumn">
 				<input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onclick="removeEncounter(this)" />
 				<input type="hidden" name="encounterIds" value="${enc.encounterId}" />
