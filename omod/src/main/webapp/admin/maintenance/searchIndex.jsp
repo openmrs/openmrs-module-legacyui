@@ -38,7 +38,28 @@
             "url": "${pageContext.request.contextPath}/admin/maintenance/rebuildSearchIndex.htm",
             "data": {},
             "dataType": "json",
-            "success": onSuccess,
+            "success": checkStatus,
+            "error": onError
+        });
+    }
+
+    function updateStatusOnUi(data) {
+        if (data.status === "success") {
+            onSuccess({success: true});
+        } else if (data.status === "error") {
+            onError(data);
+        } else {
+            setTimeout(checkStatus, 5000);
+        }
+    }
+
+    function checkStatus() {
+        $j.ajax({
+            "type": "GET",
+            "url": "${pageContext.request.contextPath}/admin/maintenance/rebuildSearchIndexStatus.htm",
+            "data": {},
+            "dataType": "json",
+            "success": updateStatusOnUi,
             "error": onError
         });
     }
