@@ -9,16 +9,18 @@
  */
 package org.openmrs.web.controller.maintenance;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * A controller for the search index
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SearchIndexController {
 
 	protected final Log log = LogFactory.getLog(getClass());
+	private Future<?> updateSearchIndexAsync = null;
 
 	/**
 	 * @should return the search index view
@@ -47,13 +50,39 @@ public class SearchIndexController {
 		boolean success = true;
 		Map<String, Object> results = new HashMap<String, Object>();
 		log.debug("rebuilding search index");
-		try {
-			Context.updateSearchIndex();
-		} catch (RuntimeException e) {
+		if (!Context.getUserContext().isAuthenticated()) {
 			success = false;
+		} else {
+			try {
+				updateSearchIndexAsync = Context.updateSearchIndexAsync();
+			} catch (RuntimeException e) {
+				success = false;
+			}
 		}
-
 		results.put("success", success);
 		return results;
 	}
+
+	/**
+	 * @should return return inProgress for status if a rebuildSearchIndex is not completed
+	 * @should return success for status if a rebuildSearchIndex is completed successfully
+	 * @should return error for status if a rebuildSearchIndex is not completed normally
+	 * @return hashMap of String, String holds a key named "status" indicating the status of
+	 * rebuild search index
+	 */
+    @RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/rebuildSearchIndexStatus")
+    public @ResponseBody Map<String, String> getStatus() {
+        if (updateSearchIndexAsync == null) {
+            throw new APIException("There was a problem rebuilding the search index");
+        }
+
+        Map<String, String> results = new HashMap<>();
+        if (updateSearchIndexAsync.isDone()) {
+            results.put("status", updateSearchIndexAsync.isCancelled() ? "error" : "success");
+            updateSearchIndexAsync = null;
+        } else {
+            results.put("status", "inProgress");
+        }
+        return results;
+    }
 }
