@@ -1,4 +1,9 @@
+/*Assigned Font to Html Instead Of * To Fix Issue Where Other Fonts May Get Overriden
+Moved To Proper Location.*/
+
 html {
+	font-family: Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif;
+    -moz-box-sizing: border-box;  /* Use IE-like Border-Box model */
 	height: 100%;
 	width: 100%;
 }
@@ -84,16 +89,6 @@ img.bar-round-reduced50 {
 * html #pageBody {
 	height: 100%;
 }
-
-/*Assigned Font to Html Instead Of * To Fix Issue Where Other Fonts May Get Overriden*/
-
-/*If Preferred, It Can Also Be Assigned to the Body Tag*/
-
-html {
-	font-family: Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif;
-    -moz-box-sizing: border-box;  /* Use IE-like Border-Box model */
-}
-
 h1, h2, h3, h4, h5 {
 	margin-top: 5px;
 	margin-bottom: 7px;
