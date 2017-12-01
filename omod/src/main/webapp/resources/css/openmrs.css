@@ -1,6 +1,3 @@
-/*Assigned Font to Html Instead Of * To Fix Issue Where Other Fonts May Get Overriden
-Moved To Proper Location.*/
-
 html {
 	font-family: Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif;
     -moz-box-sizing: border-box;  /* Use IE-like Border-Box model */
@@ -83,8 +80,6 @@ img.bar-round-reduced50 {
 		color: #ffffff;
 	}
 
-
-/*Note: Is Using Wildcard Selector, But Uses Other Selectors Alongside.*/
 	
 * html #pageBody {
 	height: 100%;
