@@ -1,4 +1,6 @@
 html {
+	font-family: Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif;
+    -moz-box-sizing: border-box;  /* Use IE-like Border-Box model */
 	height: 100%;
 	width: 100%;
 }
@@ -78,15 +80,10 @@ img.bar-round-reduced50 {
 		color: #ffffff;
 	}
 
+	
 * html #pageBody {
 	height: 100%;
 }
-
-* {
-	font-family: Verdana, 'Lucida Grande', 'Trebuchet MS', Arial, Sans-Serif;
-    -moz-box-sizing: border-box;  /* Use IE-like Border-Box model */
-}
-
 h1, h2, h3, h4, h5 {
 	margin-top: 5px;
 	margin-bottom: 7px;
