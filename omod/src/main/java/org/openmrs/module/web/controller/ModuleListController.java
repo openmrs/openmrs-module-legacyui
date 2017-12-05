@@ -185,6 +185,7 @@ public class ModuleListController extends SimpleFormController {
 								boolean thisModuleCausesRefresh = WebModuleUtil.startModule(depMod, getServletContext(), true);
 								someModuleNeedsARefresh = someModuleNeedsARefresh || thisModuleCausesRefresh;
 								if (someModuleNeedsARefresh) {
+									WebModuleUtil.refreshWAC(getServletContext(), false, depMod);
 									WebModuleUtil.loadServlets(depMod, getServletContext());
 									WebModuleUtil.loadFilters(depMod, getServletContext());
 								}
@@ -192,10 +193,12 @@ public class ModuleListController extends SimpleFormController {
 						}
 						
 						if (someModuleNeedsARefresh) {
+							WebModuleUtil.refreshWAC(getServletContext(), false, module);
 							WebModuleUtil.loadServlets(module, getServletContext());
 							WebModuleUtil.loadFilters(module, getServletContext());
-							WebModuleUtil.refreshWAC(getServletContext(), false, module);
-							((OpenmrsDWRServlet)WebModuleUtil.getServlet("dwr-invoker")).reInitServlet();
+							if (WebModuleUtil.getServlet("dwr-invoker") != null) {
+								((OpenmrsDWRServlet) WebModuleUtil.getServlet("dwr-invoker")).reInitServlet();
+							}
 						}
 
 					} else {
@@ -208,6 +211,7 @@ public class ModuleListController extends SimpleFormController {
 				boolean someModuleNeedsARefresh = false;
 				Collection<Module> modules = ModuleFactory.getLoadedModules();
 				Collection<Module> modulesInOrder = ModuleFactory.getModulesInStartupOrder(modules);
+				Collection<Module> modulesToRefresh = new ArrayList<>();
 				for (Module module : modulesInOrder) {
 					if (ModuleFactory.isModuleStarted(module)) {
 						continue;
@@ -217,14 +221,19 @@ public class ModuleListController extends SimpleFormController {
 					boolean thisModuleCausesRefresh = WebModuleUtil.startModule(module, getServletContext(), true);
 					someModuleNeedsARefresh = someModuleNeedsARefresh || thisModuleCausesRefresh;
 					if (someModuleNeedsARefresh) {
-						WebModuleUtil.loadServlets(module, getServletContext());
-						WebModuleUtil.loadFilters(module, getServletContext());
+						modulesToRefresh.add(module);
 					}
 				}
 
 				if (someModuleNeedsARefresh) {
 					WebModuleUtil.refreshWAC(getServletContext(), false, null);
-					((OpenmrsDWRServlet)WebModuleUtil.getServlet("dwr-invoker")).reInitServlet();
+					for (Module module : modulesToRefresh) {
+						WebModuleUtil.loadServlets(module, getServletContext());
+						WebModuleUtil.loadFilters(module, getServletContext());
+					}
+					if (WebModuleUtil.getServlet("dwr-invoker") != null) {
+						((OpenmrsDWRServlet) WebModuleUtil.getServlet("dwr-invoker")).reInitServlet();
+					}
 				}
 			} else {
 				ModuleUtil.checkForModuleUpdates();
