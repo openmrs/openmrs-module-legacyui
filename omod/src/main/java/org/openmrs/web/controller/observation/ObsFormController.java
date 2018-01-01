@@ -192,8 +192,10 @@ public class ObsFormController extends SimpleFormController {
 				String view = getSuccessView() + "?encounterId=" + obs.getEncounter().getEncounterId() + "&phrase="
 				        + request.getParameter("phrase");
 				return new ModelAndView(new RedirectView(view));
-			} else {
+			} else if (newlySavedObs != null) {
 				return new ModelAndView(new RedirectView("obs.form?obsId=" + newlySavedObs.getObsId()));
+			} else {
+				return new ModelAndView(new RedirectView("obs.form?obsId=" + obs.getObsId()));
 			}
 		}
 		
