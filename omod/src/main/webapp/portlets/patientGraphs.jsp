@@ -184,7 +184,7 @@ table#labTestTable th {
 				<openmrs:globalProperty var="colorNormal" key="graph.color.normal"/>
 				<openmrs:globalProperty var="colorCritical" key="graph.color.critical"/>
 		$j.getJSON("patientGraphJson.form?patientId=<c:out value="${patient.patientId}" />&conceptId=${conceptIds}", function(json){
-			json = json.graph.graph;
+			json = json.graph;
 			  $j("#conceptBox-${conceptIds} .conceptGraphTitle").html(json.name);
 			
 			  var plot = $j.plot($j('#conceptGraphBox-${conceptIds}'),
