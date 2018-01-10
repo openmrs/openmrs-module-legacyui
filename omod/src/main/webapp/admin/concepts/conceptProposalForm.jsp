@@ -133,15 +133,7 @@
 									title="<c:out value="${listItem.description}"/>"
 									class='searchHit'>
 									${status.index + 1})
-									<c:choose >
-										<c:when test="${listItem.synonym != ''}">
-											<span class='mainHit'>${listItem.synonym}</span>
-											<span class='additionalHit'>&rArr; <c:out value="${listItem.name}"/></span>
-										</c:when>
-										<c:otherwise>
-											<span class='mainHit'><c:out value="${listItem.name}"/></span>
-										</c:otherwise>
-									</c:choose>
+										<span class='mainHit'><c:out value="${listItem.name}"/></span>
 								</a><br/>
 							</c:forEach>
 						</td>
