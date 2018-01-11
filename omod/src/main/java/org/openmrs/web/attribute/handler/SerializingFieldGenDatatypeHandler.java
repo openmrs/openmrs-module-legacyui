@@ -11,9 +11,20 @@ package org.openmrs.web.attribute.handler;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.beans.PropertyEditor;
+
 import org.apache.commons.lang.StringUtils;
+import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.customdatatype.InvalidCustomValueException;
 import org.openmrs.customdatatype.SerializingCustomDatatype;
+import org.openmrs.customdatatype.datatype.ConceptDatatype;
+import org.openmrs.customdatatype.datatype.LocationDatatype;
+import org.openmrs.customdatatype.datatype.ProgramDatatype;
+import org.openmrs.customdatatype.datatype.ProviderDatatype;
+import org.openmrs.propertyeditor.ConceptEditor;
+import org.openmrs.propertyeditor.LocationEditor;
+import org.openmrs.propertyeditor.ProgramEditor;
+import org.openmrs.propertyeditor.ProviderEditor;
 
 /**
  * This is a superclass for FieldGenDatatypeHandlers for OpenmrsObjects
@@ -33,6 +44,33 @@ public abstract class SerializingFieldGenDatatypeHandler<DT extends SerializingC
 		if (StringUtils.isBlank(formFieldValue)) {
 			return null;
 		}
+		if (StringUtils.isNumeric(formFieldValue)) {
+			BaseOpenmrsObject metadata = null;
+			PropertyEditor editor;
+
+			if (datatype instanceof LocationDatatype) {
+				editor = new LocationEditor();
+				editor.setAsText(formFieldValue);
+				metadata = (BaseOpenmrsObject) editor.getValue();
+			} else if (datatype instanceof ProgramDatatype) {
+				editor = new ProgramEditor();
+				editor.setAsText(formFieldValue);
+				metadata = (BaseOpenmrsObject) editor.getValue();
+			} else if (datatype instanceof ConceptDatatype) {
+				editor = new ConceptEditor();
+				editor.setAsText(formFieldValue);
+				metadata = (BaseOpenmrsObject) editor.getValue();
+			} else if (datatype instanceof ProviderDatatype) {
+				editor = new ProviderEditor();
+				editor.setAsText(formFieldValue);
+				metadata = (BaseOpenmrsObject) editor.getValue();
+			}
+
+			if (metadata != null) {
+				formFieldValue = metadata.getUuid();
+			}
+		}
+
 		return datatype.deserialize(formFieldValue);
 	}
 }
