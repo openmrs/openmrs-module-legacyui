@@ -232,7 +232,7 @@
       <td colspan="${fn:length(locales)}">
       <font color="#D0D0D0"><sub>
        <spring:bind path="person.uuid">
-           ${status.value}"
+		   <c:out value="${status.value}"/>
        </spring:bind>
        </sub></font>
      </td>
