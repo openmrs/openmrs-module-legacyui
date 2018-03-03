@@ -1054,7 +1054,7 @@ public class ConceptFormController extends SimpleFormController {
 					name = answer.getAnswerDrug().getFullName(locale);
 				}
 				if (answer.getAnswerConcept().isRetired()) {
-					name = "<span class='retired'>" + name + "</span>";
+					name = name + " (Retired)";
 				}
 				conceptAnswers.put(key, name);
 			}
