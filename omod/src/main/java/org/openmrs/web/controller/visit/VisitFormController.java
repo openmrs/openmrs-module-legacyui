@@ -79,6 +79,7 @@ public class VisitFormController {
 			visit.setStartDatetime(new Date());
 		}
 		if (visit.getVisitId() != null) {
+			visit = Context.getVisitService().getVisit(visit.getVisitId());
 			model.addAttribute("canPurgeVisit", Context.getEncounterService().getEncountersByVisit(visit, true).size() == 0);
 		}
 		
@@ -381,7 +382,8 @@ public class VisitFormController {
 			}
 			model.put("visitEncounters", visitEncounters);
 		}
-		
+
+		model.put("visit", visit);
 		model.put("encounterCount", encounterCount);
 		model.put("observationCount", observationCount);
 	}
