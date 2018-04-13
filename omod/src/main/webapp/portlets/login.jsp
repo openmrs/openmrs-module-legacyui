@@ -1,13 +1,24 @@
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
-<%@ page import="org.openmrs.web.WebConstants" %>
+<%@ page import="org.openmrs.web.WebConstants"
+         
+ %>
+ 
+<%@ page import = "org.openmrs.error_msgs.LockoutMsg" %>
+ 
 <%
 	pageContext.setAttribute("redirect", session.getAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR));
 	session.removeAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR); 
 %>
 
 <br/>
-
+     <jsp:useBean id="Locked" class ="org.openmrs.error_msgs.LockoutMsg"></jsp:useBean>
+       
+       <jsp:getProperty property="Lockout_Msg" name="Locked"/>
+       
+       </br>
+       
+       
 <form method="post" action="<openmrs:contextPath/>/ms/legacyui/loginServlet" style="padding:15px; width: 300px;" autocomplete="off">
 	<table>
 		<tr>
@@ -51,4 +62,5 @@
 
 <script type="text/javascript">
  document.getElementById('username').focus();
+ 
 </script>
