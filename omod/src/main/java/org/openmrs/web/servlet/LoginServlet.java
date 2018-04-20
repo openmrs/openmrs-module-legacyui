@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.context.ContextAuthenticationException;
+import org.openmrs.error_msgs.LockoutMsg;
 import org.openmrs.util.LocaleUtility;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.OpenmrsCookieLocaleResolver;
@@ -114,6 +115,9 @@ public class LoginServlet extends HttpServlet {
 		
 		if (lockedOut) {
 			httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.login.tooManyAttempts");
+			LockoutMsg locked = new LockoutMsg ();
+			httpSession.setAttribute("Locked",locked );
+			
 		} else {
 			try {
 				
