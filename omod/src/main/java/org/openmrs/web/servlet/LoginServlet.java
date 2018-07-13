@@ -65,10 +65,12 @@ public class LoginServlet extends HttpServlet {
 	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse)
 	 */
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession httpSession = request.getSession();
 		
+		Integer loginAttemptsByUser;
 		String ipAddress = request.getRemoteAddr();
 		Integer loginAttempts = loginAttemptsByIP.get(ipAddress);
 		if (loginAttempts == null) {
@@ -76,7 +78,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		loginAttempts++;
-		
+		loginAttemptsByUser = loginAttempts - 1;
 		boolean lockedOut = false;
 		// look up the allowed # of attempts per IP
 		Integer allowedLockoutAttempts = 100;
@@ -178,7 +180,14 @@ public class LoginServlet extends HttpServlet {
 			catch (ContextAuthenticationException e) {
 				// set the error message for the user telling them
 				// to try again
-				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.password.invalid");
+				Integer maximumAlowedAttempts = 7;
+					if (loginAttemptsByUser <= maximumAlowedAttempts) {				
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.password.invalid");
+					}
+				
+					if (loginAttemptsByUser > maximumAlowedAttempts) {
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.login.tooManyAttempts");
+					}
 			}
 			
 		}
