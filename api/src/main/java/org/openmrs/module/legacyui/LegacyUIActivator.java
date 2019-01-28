@@ -21,6 +21,8 @@ import org.openmrs.module.ModuleActivator;
 public class LegacyUIActivator extends BaseModuleActivator {
 	
 	protected Log log = LogFactory.getLog(getClass());
+	
+	
 		
 	/**
 	 * @see ModuleActivator#willRefreshContext()
