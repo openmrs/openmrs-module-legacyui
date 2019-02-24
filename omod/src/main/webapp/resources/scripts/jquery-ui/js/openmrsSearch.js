@@ -549,10 +549,7 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
             if(typeof(Storage) !== "undefined") {
             	//check to see if there are parameters to get from sessionStorage
             	//after setting the fields clear out session storage so it doesn't get used on other pages
-            	if(sessionStorage.lastSearchText){
-            		self.options.searchPhrase = sessionStorage.lastSearchText;  
-            		sessionStorage.removeItem("lastSearchText");
-            	} 
+            	 
                 if(sessionStorage.includeVoided){
                 	self.options.includeVoided = true;
                 	sessionStorage.removeItem("includeVoided");
