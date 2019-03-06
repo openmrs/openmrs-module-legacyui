@@ -161,6 +161,29 @@ public class DWRConceptService {
 				}
 			}
 			
+			//Search By UUId
+			if(phrase.length()==36){
+				Concept obj = cs.getConceptByUuid(phrase);
+					if (obj != null && (!obj.isRetired() || includeRetired)) {
+						String conceptClassName = null;
+						if (obj.getConceptClass() != null) {
+							conceptClassName = obj.getConceptClass().getName();
+						}
+						String conceptDatatypeName = null;
+						if (obj.getDatatype() != null) {
+							conceptDatatypeName = obj.getDatatype().getName();
+						}
+						if ((includeClassNames.isEmpty() || includeClassNames.contains(conceptClassName))
+						        && (excludeClassNames.isEmpty() || !excludeClassNames.contains(conceptClassName))
+						        && (includeDatatypeNames.isEmpty() || includeDatatypeNames.contains(conceptDatatypeName))
+						        && (excludeDatatypeNames.isEmpty() || !excludeDatatypeNames.contains(conceptDatatypeName))) {
+							ConceptName objConceptName = obj.getName(defaultLocale);
+							ConceptSearchResult searchResult = new ConceptSearchResult(phrase, obj, objConceptName);
+							searchResults.add(searchResult);
+						}
+					}	
+			}
+			
 			if (!StringUtils.isBlank(phrase)) {
 				// turn classnames into class objects
 				List<ConceptClass> includeClasses = new ArrayList<ConceptClass>();
@@ -593,6 +616,28 @@ public class DWRConceptService {
 				int matchCount = 0;
 				if (getMatchCount) {
 					//get the count of matches
+					
+					//Search by UUID
+					if(phrase.length()==36){
+						Concept obj = cs.getConceptByUuid(phrase);
+							if (obj != null && (!obj.isRetired() || includeRetired)) {
+								String conceptClassName = null;
+								if (obj.getConceptClass() != null) {
+									conceptClassName = obj.getConceptClass().getName();
+								}
+								String conceptDatatypeName = null;
+								if (obj.getDatatype() != null) {
+									conceptDatatypeName = obj.getDatatype().getName();
+								}
+								if ((includeClassNames.isEmpty() || includeClassNames.contains(conceptClassName))
+								        && (excludeClassNames.isEmpty() || !excludeClassNames.contains(conceptClassName))
+								        && (includeDatatypeNames.isEmpty() || includeDatatypeNames.contains(conceptDatatypeName))
+								        && (excludeDatatypeNames.isEmpty() || !excludeDatatypeNames.contains(conceptDatatypeName))) {
+									matchCount++;
+								}
+							}	
+					}
+					
 					matchCount += cs.getCountOfConcepts(phrase, searchLocales, includeRetired, includeClasses,
 					    excludeClasses, includeDatatypes, excludeDatatypes, null);
 					if (phrase.matches("\\d+")) {
