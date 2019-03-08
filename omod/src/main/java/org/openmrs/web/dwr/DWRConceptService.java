@@ -620,22 +620,9 @@ public class DWRConceptService {
 					//Search by UUID
 					if(phrase.length()==36){
 						Concept obj = cs.getConceptByUuid(phrase);
-							if (obj != null && (!obj.isRetired() || includeRetired)) {
-								String conceptClassName = null;
-								if (obj.getConceptClass() != null) {
-									conceptClassName = obj.getConceptClass().getName();
-								}
-								String conceptDatatypeName = null;
-								if (obj.getDatatype() != null) {
-									conceptDatatypeName = obj.getDatatype().getName();
-								}
-								if ((includeClassNames.isEmpty() || includeClassNames.contains(conceptClassName))
-								        && (excludeClassNames.isEmpty() || !excludeClassNames.contains(conceptClassName))
-								        && (includeDatatypeNames.isEmpty() || includeDatatypeNames.contains(conceptDatatypeName))
-								        && (excludeDatatypeNames.isEmpty() || !excludeDatatypeNames.contains(conceptDatatypeName))) {
-									matchCount++;
-								}
-							}	
+						if (obj != null && (!obj.isRetired() || includeRetired)) {
+							matchCount++;
+						}		
 					}
 					
 					matchCount += cs.getCountOfConcepts(phrase, searchLocales, includeRetired, includeClasses,
