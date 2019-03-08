@@ -285,4 +285,148 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		Assert.assertEquals(1, result.size());
 		Assert.assertTrue(isConceptFound(expected, result));
 	}
+	
+	
+	//Tests for search by Concept's UUID
+	
+	/**
+	 * @see DWRConceptService#findBatchOfConcepts(String, boolean, java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, Integer, Integer)
+	 * @verifies return concept by given uuid if exclude and include lists are empty
+	 */
+	@Test
+	public void findBatchOfConcepts_shouldReturnConceptByGivenUuidIfExclusionAndInclusionListsAreEmpty() throws Exception {
+		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
+		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null, null, null,
+		    null);
+		Assert.assertNotNull(result);
+		Assert.assertTrue(isConceptFound(expected, result));
+	}
+	
+	/**
+	 * @see DWRConceptService#findBatchOfConcepts(String, boolean, java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, Integer, Integer)
+	 * @verifies return concept by given uuid if classname is included
+	 */
+	@Test
+	public void findBatchOfConcepts_shouldReturnConceptByGivenUuidIfClassnameIsIncluded() throws Exception {
+		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
+		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
+		// prepare include concept classnames list
+		List<String> includeClassNames = new ArrayList<String>();
+		includeClassNames.add("Question");
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, includeClassNames, null, null,
+		    null, null, null);
+		Assert.assertNotNull(result);
+		Assert.assertTrue(isConceptFound(expected, result));
+	}
+	
+	/**
+	 * @see DWRConceptService#findBatchOfConcepts(String, boolean, java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, Integer, Integer)
+	 * @verifies not return concept by given uuid if classname is not included
+	 */
+	@Test
+	public void findBatchOfConcepts_shouldNotReturnConceptByGivenUuidIfClassnameIsNotIncluded() throws Exception {
+		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
+		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
+		// prepare include concept classnames list and
+		// intentionally do not add expected concept class name
+		List<String> includeClassNames = new ArrayList<String>();
+		includeClassNames.add("test");
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, includeClassNames, null, null,
+		    null, null, null);
+		Assert.assertNotNull(result);
+		Assert.assertFalse(isConceptFound(expected, result));
+	}
+	
+	/**
+	 * @see DWRConceptService#findBatchOfConcepts(String, boolean, java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, Integer, Integer)
+	 * @verifies not return concept by given uuid if classname is excluded
+	 */
+	@Test
+	public void findBatchOfConcepts_shouldNotReturnConceptByGivenUuidIfClassnameIsExcluded() throws Exception {
+		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
+		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
+		// prepare exclude concept classnames list
+		List<String> excludeClassNames = new ArrayList<String>();
+		excludeClassNames.add("Question");
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, excludeClassNames, null,
+		    null, null, null);
+		Assert.assertNotNull(result);
+		Assert.assertFalse(isConceptFound(expected, result));
+	}
+	
+	/**
+	 * @see DWRConceptService#findBatchOfConcepts(String, boolean, java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, Integer, Integer)
+	 * @verifies return concept by given uuid if datatype is included
+	 */
+	@Test
+	public void findBatchOfConcepts_shouldReturnConceptByGivenUuidIfDatatypeIsIncluded() throws Exception {
+		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
+		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
+		// prepare include concept datatypes list
+		List<String> includeDatatypes = new ArrayList<String>();
+		includeDatatypes.add("Coded");
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, includeDatatypes,
+		    null, null, null);
+		Assert.assertNotNull(result);
+		Assert.assertTrue(isConceptFound(expected, result));
+	}
+	
+	/**
+	 * @see DWRConceptService#findBatchOfConcepts(String, boolean, java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, Integer, Integer)
+	 * @verifies not return concept by given uuid if datatype is not included
+	 */
+	@Test
+	public void findBatchOfConcepts_shouldNotReturnConceptByGivenUuidIfDatatypeIsNotIncluded() throws Exception {
+		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
+		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
+		// prepare include concept datatypes list and
+		// intentionally do not add expected concept data type
+		List<String> includeDatatypes = new ArrayList<String>();
+		includeDatatypes.add("test");
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, includeDatatypes,
+		    null, null, null);
+		Assert.assertNotNull(result);
+		Assert.assertFalse(isConceptFound(expected, result));
+	}
+	
+	/**
+	 * @see DWRConceptService#findBatchOfConcepts(String, boolean, java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, Integer, Integer)
+	 * @verifies not return concept by given uuid if datatype is excluded
+	 */
+	@Test
+	public void findBatchOfConcepts_shouldNotReturnConceptByGivenUuidIfDatatypeIsExcluded() throws Exception {
+		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
+		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
+		// prepare exclude concept datatypes list
+		List<String> excludeDatatypes = new ArrayList<String>();
+		excludeDatatypes.add("Coded");
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null,
+		    excludeDatatypes, null, null);
+		Assert.assertNotNull(result);
+		Assert.assertFalse(isConceptFound(expected, result));
+	}
+	
+	/**
+	 * @see DWRConceptService#findBatchOfConcepts(String, boolean, java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, Integer, Integer)
+	 * @verifies not return duplicate concept by given uuid
+	 */
+	@Test
+	public void findBatchOfConcepts_shouldNotReturnDuplicatesWhenSearchingByConceptUuid() {
+		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
+		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase,
+				Boolean.FALSE, null, null, null, null, null, null);
+		Assert.assertNotNull(result);
+		Assert.assertEquals(1, result.size());
+		Assert.assertTrue(isConceptFound(expected, result));
+	}
 }
