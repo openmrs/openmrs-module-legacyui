@@ -294,6 +294,22 @@
 			]]>
 		</signatures>
 	</dwr>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.dashboardTabs</property>
+		<defaultValue></defaultValue>
+		<description>
+			Comma delimited list of dashboard tabs
+		</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>FormEntry.enableDashboardTab</property>
+		<defaultValue>true</defaultValue>
+		<description>
+			true/false whether or not to show a Enter Form button on the enounters tab of the patient dashboard
+		</description>
+	</globalProperty>
 	
 	<servlet>
 		<servlet-name>showGraphServlet</servlet-name>
