@@ -596,7 +596,7 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
         	var inputNodeDOM = $j('#inputNode').get(0);
         	inputNodeDOM.focus();
         	if(inputNodeDOM){
-        		var searchPhraseLength = self.options.searchPhrase.length;
+        		var searchPhraseLength = self.options.searchPhrase ? self.options.searchPhrase.length : 0;
         		//setSelectionRange is for setting the cursor at the end of the search text
         		if (inputNodeDOM.setSelectionRange) {
         			inputNodeDOM.setSelectionRange(searchPhraseLength, searchPhraseLength);
