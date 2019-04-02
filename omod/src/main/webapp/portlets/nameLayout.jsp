@@ -11,7 +11,7 @@
 				<c:forEach items="${line}" var="token">
 					<c:if test="${token.isToken == model.layoutTemplate.layoutToken}">
 						<th><openmrs:message code="${token.displayText}"/>
-						    <c:if test="${token.displayText == 'PersonName.givenName' || token.displayText == 'PersonName.familyName'}">
+						    <c:if test="${token.displayText == 'PersonName.givenName'}">
 						        <span class="required">*</span>
 						    </c:if>
 						</th>
@@ -164,7 +164,7 @@
 									<c:forEach items="${line}" var="token" varStatus="tokenStatus">
 										<c:if test="${token.isToken == model.layoutTemplate.layoutToken}">
 											<td><openmrs:message code="${token.displayText}" />
-											    <c:if test="${token.displayText == 'PersonName.givenName' || token.displayText == 'PersonName.familyName'}">
+											    <c:if test="${token.displayText == 'PersonName.givenName'}">
 											        <span class="required">*</span>
 											    </c:if>
 											</td>
