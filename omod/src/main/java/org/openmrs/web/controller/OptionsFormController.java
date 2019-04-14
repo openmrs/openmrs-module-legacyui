@@ -182,13 +182,7 @@ public class OptionsFormController extends SimpleFormController {
 				catch (APIException e) {
 					errors.rejectValue("oldPassword", "error.password.match");
 				}
-			} else {
-				// if they left the old password blank but filled in new
-				// password
-				if (!"".equals(opts.getNewPassword())) {
-					errors.rejectValue("oldPassword", "error.password.incorrect");
-				}
-			}
+			} 
 			
 			if (!"".equals(opts.getSecretQuestionPassword())) {
 				if (!errors.hasErrors()) {
@@ -203,7 +197,7 @@ public class OptionsFormController extends SimpleFormController {
 			} else if (!"".equals(opts.getSecretAnswerNew())) {
 				// if they left the old password blank but filled in new
 				// password
-				errors.rejectValue("secretQuestionPassword", "error.password.incorrect");
+				errors.rejectValue("secretQuestionPassword", "Enter old password");
 			}
 			
 			String notifyType = opts.getNotification();
