@@ -198,7 +198,13 @@
 				</tr>
 			</c:if>
 			<tr><td colspan="2">&nbsp;</td></tr>
-			
+			<tr>
+				<td colspan="2">&nbsp;
+					<openmrs:extensionPoint pointId="org.openmrs.locations" type="html">
+					</openmrs:extensionPoint>
+				</td>
+			</tr>
+
 			<tr>
 				<td valign="top"><openmrs:message code="User.roles"/></td>
 				<td valign="top">
