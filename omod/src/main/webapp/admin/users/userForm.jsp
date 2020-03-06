@@ -214,11 +214,6 @@
 			
 			<tr><td colspan="2">&nbsp;</td></tr>
 			<tr>
-					<openmrs:extensionPoint pointId="org.openmrs.locations" type="html">
-					</openmrs:extensionPoint>
-			</tr>
-			<tr><td colspan="2">&nbsp;</td></tr>
-			<tr>
 				<td colspan="2"><a href="#Show Advanced" onclick="return toggleLayer('advancedOptions', this, '<openmrs:message code="User.showAdvancedOptions"/>', '<openmrs:message code="User.hideAdvancedOptions"/>')"><openmrs:message code="User.showAdvancedOptions"/></a></td>
 			</tr>
 			<tbody id="advancedOptions" style="display: none">

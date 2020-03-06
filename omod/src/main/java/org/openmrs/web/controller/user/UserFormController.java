@@ -9,20 +9,9 @@
  */
 package org.openmrs.web.controller.user;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Person;
-import org.openmrs.PersonName;
-import org.openmrs.Provider;
-import org.openmrs.Role;
-import org.openmrs.User;
+import org.openmrs.*;
 import org.openmrs.api.PasswordException;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
@@ -35,17 +24,21 @@ import org.openmrs.validator.UserValidator;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.user.UserProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 /**
  * Used for creating/editing User
@@ -142,21 +135,23 @@ public class UserFormController {
 	 */
 	@RequestMapping(value = "/admin/users/user.form", method = RequestMethod.POST)
 	public String handleSubmission(WebRequest request, HttpSession httpSession, ModelMap model,
-	        @RequestParam(required = false, value = "action") String action,
-	        @RequestParam(required = false, value = "userFormOldPassword") String oldPassword,
-	        @RequestParam(required = false, value = "userFormPassword") String password,
-	        @RequestParam(required = false, value = "secretQuestion") String secretQuestion,
-	        @RequestParam(required = false, value = "secretAnswer") String secretAnswer,
-	        @RequestParam(required = false, value = "confirm") String confirm,
-	        @RequestParam(required = false, value = "forcePassword") Boolean forcePassword,
-	        @RequestParam(required = false, value = "roleStrings") String[] roles,
-	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson, 
-	        @RequestParam(required = false, value = "providerCheckBox") String addToProviderTableOption,
-	        @ModelAttribute("user") User user, BindingResult errors) {
-		
+								   @RequestParam(required = false, value = "action") String action,
+								   @RequestParam(required = false, value = "userFormOldPassword") String oldPassword,
+								   @RequestParam(required = false, value = "userFormPassword") String password,
+								   @RequestParam(required = false, value = "secretQuestion") String secretQuestion,
+								   @RequestParam(required = false, value = "secretAnswer") String secretAnswer,
+								   @RequestParam(required = false, value = "confirm") String confirm,
+								   @RequestParam(required = false, value = "forcePassword") Boolean forcePassword,
+								   @RequestParam(required = false, value = "roleStrings") String[] roles,
+								   @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
+								   @RequestParam(required = false, value = "providerCheckBox") String addToProviderTableOption,
+								   @ModelAttribute("user") User user,
+								   BindingResult errors,
+								   HttpServletResponse response) {
+
 		UserService us = Context.getUserService();
 		MessageSourceService mss = Context.getMessageSourceService();
-		
+
 		if (!Context.isAuthenticated()) {
 			errors.reject("auth.invalid");
 		} else if (mss.getMessage("User.assumeIdentity").equals(action)) {
@@ -164,7 +159,7 @@ public class UserFormController {
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "User.assumeIdentity.success");
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ARGS, user.getPersonName());
 			return "redirect:/index.htm";
-			
+
 		} else if (mss.getMessage("User.delete").equals(action)) {
 			try {
 				Context.getUserService().purgeUser(user);
@@ -175,7 +170,7 @@ public class UserFormController {
 				log.error("Failed to delete user", ex);
 				return "redirect:/admin/users/user.form?userId=" + request.getParameter("userId");
 			}
-			
+
 		} else if (mss.getMessage("User.retire").equals(action)) {
 			String retireReason = request.getParameter("retireReason");
 			if (!(StringUtils.hasText(retireReason))) {
@@ -185,7 +180,7 @@ public class UserFormController {
 				us.retireUser(user, retireReason);
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "User.retiredMessage");
 			}
-			
+
 		} else if (mss.getMessage("User.unRetire").equals(action)) {
 			us.unretireUser(user);
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "User.unRetiredMessage");
@@ -194,7 +189,7 @@ public class UserFormController {
 			if (us.hasDuplicateUsername(user)) {
 				errors.rejectValue("username", "error.username.taken");
 			}
-			
+
 			// check if password and password confirm are identical
 			if (password == null || password.equals("XXXXXXXXXXXXXXX")) {
 				password = "";
@@ -202,15 +197,15 @@ public class UserFormController {
 			if (confirm == null || confirm.equals("XXXXXXXXXXXXXXX")) {
 				confirm = "";
 			}
-			
+
 			if (!password.equals(confirm)) {
 				errors.reject("error.password.match");
 			}
-			
+
 			if (password.length() == 0 && isNewUser(user)) {
 				errors.reject("options.login.password.null");
 			}
-			
+
 			//check password strength
 			if (password.length() > 0) {
 				try {
@@ -219,7 +214,7 @@ public class UserFormController {
 					errors.reject(e.getMessage());
 				}
 			}
-			
+
 			Set<Role> newRoles = new HashSet<Role>();
 			if (roles != null) {
 				for (String r : roles) {
@@ -241,16 +236,16 @@ public class UserFormController {
 					newRoles.add(role);
 				}
 			}
-			
+
 			if (user.getRoles() == null) {
 				newRoles.clear();
 			} else {
 				user.getRoles().retainAll(newRoles);
 			}
-			
+
 			String[] keys = request.getParameterValues("property");
 			String[] values = request.getParameterValues("value");
-			
+
 			if (keys != null && values != null) {
 				for (int x = 0; x < keys.length; x++) {
 					String key = keys[x];
@@ -258,26 +253,27 @@ public class UserFormController {
 					user.setUserProperty(key, val);
 				}
 			}
-			
+
 			if (StringUtils.hasLength(secretQuestion) && !StringUtils.hasLength(secretAnswer)) {
 				errors.reject("error.User.secretAnswer.empty");
 			} else if (!StringUtils.hasLength(secretQuestion) && StringUtils.hasLength(secretAnswer)) {
 				errors.reject("error.User.secretQuestion.empty");
 			}
-			
+
 			new UserProperties(user.getUserProperties()).setSupposedToChangePassword(forcePassword);
-			
+
 			userValidator.validate(user, errors);
-			
+
 			if (errors.hasErrors()) {
+				response.setStatus(HttpStatus.BAD_REQUEST.value());
 				return showForm(user.getUserId(), createNewPerson, user, model);
 			}
-			
+
 			if (isNewUser(user)) {
 				us.createUser(user, password);
 			} else {
 				us.saveUser(user);
-				
+
 				if (!"".equals(password) && Context.hasPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS)) {
 					if (log.isDebugEnabled()) {
 						log.debug("calling changePassword for user " + user + " by user " + Context.getAuthenticatedUser());
@@ -285,13 +281,13 @@ public class UserFormController {
 					us.changePassword(user, oldPassword, password);
 				}
 			}
-			
+
 			if (StringUtils.hasLength(secretQuestion) && StringUtils.hasLength(secretAnswer)) {
 				us.changeQuestionAnswer(user, secretQuestion, secretAnswer);
 			}
-			
+
 			//Check if admin wants the person associated with the user to be added to the Provider Table
-			if(addToProviderTableOption != null) {
+			if (addToProviderTableOption != null) {
 				Provider provider = new Provider();
 				provider.setPerson(user.getPerson());
 				provider.setIdentifier(user.getSystemId());
@@ -301,7 +297,7 @@ public class UserFormController {
 		}
 		return "redirect:users.list";
 	}
-	
+
 	/**
 	 * Superficially determines if this form is being filled out for a new user (basically just
 	 * looks for a primary key (user_id)
