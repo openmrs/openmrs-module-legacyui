@@ -124,7 +124,6 @@
 				<prop key="admin/programs/conversion.list">stateConversionList</prop>
 				<prop key="admin/programs/conversion.form">stateConversionForm</prop>
 				<prop key="admin/programs/workflow.form">workflowFormController</prop>
-				<prop key="admin/programs/patientProgram.form">patientProgramFormController</prop>
 
 				<prop key="admin/maintenance/globalProps.form">globalPropertyController</prop>
 				<prop key="admin/maintenance/serverLog.form">serverLogController</prop>
@@ -595,16 +594,6 @@
 		</property>
 		<property name="formView"><value>/module/legacyui/admin/programs/programForm</value></property>
 		<property name="successView"><value>program.list</value></property>
-	</bean>
- 
-	<bean id="patientProgramFormController"
-		class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
-		<property name="methodNameResolver">
-			<ref bean="defaultMethodParamResolver" />
-		</property>
-		<property name="delegate">
-			<bean class="org.openmrs.web.controller.program.PatientProgramFormController" />
-		</property>
 	</bean>
 
 	<bean id="workflowFormController"
