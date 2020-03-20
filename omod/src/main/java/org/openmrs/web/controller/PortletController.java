@@ -38,6 +38,7 @@ import org.openmrs.User;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.legacyui.GeneralUtils;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.util.StringUtils;
@@ -202,14 +203,15 @@ public class PortletController implements Controller {
 						try {
 							String weightString = as.getGlobalProperty("concept.weight");
 							ConceptNumeric weightConcept = null;
+							GeneralUtils.getConcept(weightString);
 							if (StringUtils.hasLength(weightString)) {
-								weightConcept = cs.getConceptNumeric(cs.getConcept(Integer.valueOf(weightString))
+								weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString)
 								        .getConceptId());
 							}
 							String heightString = as.getGlobalProperty("concept.height");
 							ConceptNumeric heightConcept = null;
 							if (StringUtils.hasLength(heightString)) {
-								heightConcept = cs.getConceptNumeric(cs.getConcept(Integer.valueOf(heightString))
+								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString)
 								        .getConceptId());
 							}
 							for (Obs obs : patientObs) {
