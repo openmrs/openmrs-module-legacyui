@@ -203,7 +203,6 @@ public class PortletController implements Controller {
 						try {
 							String weightString = as.getGlobalProperty("concept.weight");
 							ConceptNumeric weightConcept = null;
-							GeneralUtils.getConcept(weightString);
 							if (StringUtils.hasLength(weightString)) {
 								weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString)
 								        .getConceptId());
