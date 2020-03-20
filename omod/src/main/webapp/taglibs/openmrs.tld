@@ -1511,7 +1511,7 @@
 <function>
 	<name>filterObsByConcept</name>
 	<function-class>org.openmrs.web.taglib.functions.Filter</function-class>
-	<function-signature>java.util.Set filterObsByConcept(java.util.Collection, java.lang.Integer)</function-signature>
+	<function-signature>java.util.Set filterObsByConcept(java.util.Collection, java.lang.String)</function-signature>
 </function>
 
 <function>

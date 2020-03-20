@@ -18,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
+import org.openmrs.module.legacyui.GeneralUtils;
 
 /**
  * Functions used within taglibs in a webapp jsp page. <br>
@@ -60,17 +61,33 @@ public class Filter {
 	 * Returns a subset of the passed set of observations that match the passed concept type id
 	 * 
 	 * @param obs Superset of obs
-	 * @param concept ConceptId to match
-	 * @return Subset of passed obs that match ConceptId
+	 * @param concept Concept Id or UUID to match
+	 * @return Subset of passed obs that match Concept
 	 */
-	public static Set<Obs> filterObsByConcept(Collection<Obs> obs, Integer concept) {
+	public static Set<Obs> filterObsByConcept(Collection<Obs> obs, String concept) {
 		log.debug("Filtering obs for concept id: " + concept);
 		Set<Obs> ret = new HashSet<Obs>();
+		int intConceptId = 0;
+		try {
+			intConceptId = Integer.parseInt(concept);
+		} catch(NumberFormatException e) {
+			log.debug("concept is not Integer: ", e);
+		}
+		String conceptUuid = null;
+		if (intConceptId == 0 && GeneralUtils.isValidUuidFormat(concept)) {
+			conceptUuid = concept;
+		}
 		if (obs != null) {
 			for (Iterator<Obs> i = obs.iterator(); i.hasNext();) {
 				Obs o = i.next();
-				if (o.getConcept().getConceptId().intValue() == concept.intValue()) {
-					ret.add(o);
+				if (conceptUuid != null) {
+					if (o.getConcept().getUuid().equals(conceptUuid)) {
+						ret.add(o);
+					}
+				} else if (intConceptId > 0) {
+					if (o.getConcept().getConceptId().intValue() == intConceptId) {
+						ret.add(o);
+					}
 				}
 			}
 		}
