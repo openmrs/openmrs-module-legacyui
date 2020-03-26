@@ -21,13 +21,13 @@ import org.openmrs.module.web.filter.AdminPageFilter;
 import org.openmrs.module.web.filter.ForcePasswordChangeFilter;
 import org.openmrs.web.servlet.LogoutServlet;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.ServletContextAware;
+import org.springframework.web.WebApplicationInitializer;
 
 @Component
-public class WebComponentRegistrar implements ServletContextAware {
+public class WebComponentRegistrar implements WebApplicationInitializer {
 	
 	@Override
-	public void setServletContext(ServletContext servletContext) {
+	public void onStartup(ServletContext servletContext) {
 		
 		try {
 			ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
