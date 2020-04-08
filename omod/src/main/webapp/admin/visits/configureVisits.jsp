@@ -37,7 +37,7 @@
 <b class="boxHeader"><openmrs:message
 		code="Visit.configure" /> </b>
 <div class="box">
-	<form:form method="post" commandName="configureVisitsForm">
+	<form:form method="post" modelAttribute="configureVisitsForm">
 		<p>
 			<b><openmrs:message code="Encounter.visits.enable" />
 			</b>

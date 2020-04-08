@@ -23,7 +23,7 @@
 				</c:choose>
 			</c:forEach></td>
 		<td class="box"><form:form method="post"
-				commandName="settingsForm">
+				modelAttribute="settingsForm">
 				<form:hidden path="section"/>
 				<table>
 					<c:forEach items="${ settingsForm.settings }" var="item"
