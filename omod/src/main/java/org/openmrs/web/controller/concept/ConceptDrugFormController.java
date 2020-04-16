@@ -83,7 +83,7 @@ public class ConceptDrugFormController extends SimpleFormController {
 				conceptService.retireDrug(drug, retireReason);
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "ConceptDrug.retiredSuccessfully");
 			}
-
+			
 			// if this obs is already voided and needs to be unvoided
 			else if (request.getParameter("unretireDrug") != null) {
 				conceptService.unretireDrug(drug);

@@ -32,7 +32,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 @RunWith(PowerMockRunner.class)
 public class RegexValidatedTextDatatypeHandlerTest {
 	
-	
 	@Rule
 	ExpectedException expectedException = ExpectedException.none();
 	

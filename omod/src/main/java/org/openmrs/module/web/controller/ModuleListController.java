@@ -67,10 +67,9 @@ public class ModuleListController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(HttpServletRequest,
-	 *      HttpServletResponse, Object,
-	 *      BindException)
+	 *      HttpServletResponse, Object, BindException)
 	 */
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command,
@@ -302,10 +301,11 @@ public class ModuleListController extends SimpleFormController {
 
 		return new ModelAndView(new RedirectView(view));
 	}
-
+	
 	/**
 	 * @param modulesToStart
-	 * @return a new list, with the same elements as modulesToStart, sorted so that no module is before a module it depends on
+	 * @return a new list, with the same elements as modulesToStart, sorted so that no module is
+	 *         before a module it depends on
 	 * @should sort modules correctly
 	 */
 	List<Module> sortStartupOrder(List<Module> modulesToStart) {
@@ -322,11 +322,11 @@ public class ModuleListController extends SimpleFormController {
 		}
 		return ret;
 	}
-
+	
 	/**
-	 * Looks for a module in the list that doesn't depend on any other modules in the list.
-	 * If any is found, that module is removed from the list and returned.
-	 *
+	 * Looks for a module in the list that doesn't depend on any other modules in the list. If any
+	 * is found, that module is removed from the list and returned.
+	 * 
 	 * @param candidates
 	 * @return
 	 */
@@ -347,11 +347,11 @@ public class ModuleListController extends SimpleFormController {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(HttpServletRequest)
 	 */
 	@Override
@@ -370,10 +370,10 @@ public class ModuleListController extends SimpleFormController {
 		MessageSourceAccessor msa = getMessageSourceAccessor();
 		
 		map.put("allowAdmin", ModuleUtil.allowAdmin().toString());
-		map.put("disallowUploads", msa.getMessage("Module.disallowUploads",
-		    new String[] { ModuleConstants.RUNTIMEPROPERTY_ALLOW_ADMIN }));
+		map.put("disallowUploads",
+		    msa.getMessage("Module.disallowUploads", new String[] { ModuleConstants.RUNTIMEPROPERTY_ALLOW_ADMIN }));
 		
-		map.put("openmrsVersion", OpenmrsConstants.OPENMRS_VERSION_SHORT);
+		map.put("openmrsPlatformVersion", OpenmrsConstants.OPENMRS_VERSION_SHORT);
 		map.put("moduleRepositoryURL", WebConstants.MODULE_REPOSITORY_URL);
 		
 		map.put("loadedModules", ModuleFactory.getLoadedModules());

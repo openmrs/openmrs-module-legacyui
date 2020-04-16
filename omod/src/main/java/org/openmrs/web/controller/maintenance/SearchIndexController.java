@@ -27,10 +27,11 @@ import java.util.concurrent.Future;
  */
 @Controller
 public class SearchIndexController {
-
+	
 	protected final Log log = LogFactory.getLog(getClass());
+	
 	private Future<?> updateSearchIndexAsync = null;
-
+	
 	/**
 	 * @should return the search index view
 	 * @return the searchIndex view
@@ -39,14 +40,15 @@ public class SearchIndexController {
 	public String showPage() {
 		return "/module/legacyui/admin/maintenance/searchIndex";
 	}
-
+	
 	/**
 	 * @should return true for success if the update does not fail
 	 * @should return false for success if a RuntimeException is thrown
 	 * @return a marker indicating success
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/rebuildSearchIndex")
-	public @ResponseBody Map<String, Object> rebuildSearchIndex() {
+	public @ResponseBody
+	Map<String, Object> rebuildSearchIndex() {
 		boolean success = true;
 		Map<String, Object> results = new HashMap<String, Object>();
 		log.debug("rebuilding search index");
@@ -55,22 +57,23 @@ public class SearchIndexController {
 		} else {
 			try {
 				updateSearchIndexAsync = Context.updateSearchIndexAsync();
-			} catch (RuntimeException e) {
+			}
+			catch (RuntimeException e) {
 				success = false;
 			}
 		}
 		results.put("success", success);
 		return results;
 	}
-
+	
 	/**
 	 * @should return return inProgress for status if a rebuildSearchIndex is not completed
 	 * @should return success for status if a rebuildSearchIndex is completed successfully
 	 * @should return error for status if a rebuildSearchIndex is not completed normally
-	 * @return hashMap of String, String holds a key named "status" indicating the status of
-	 * rebuild search index
+	 * @return hashMap of String, String holds a key named "status" indicating the status of rebuild
+	 *         search index
 	 */
-    @RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/rebuildSearchIndexStatus")
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/rebuildSearchIndexStatus")
     public @ResponseBody Map<String, String> getStatus() {
         if (updateSearchIndexAsync == null) {
             throw new APIException("There was a problem rebuilding the search index");

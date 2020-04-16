@@ -26,14 +26,14 @@ public class ConceptDrugFormControllerTest extends BaseModuleWebContextSensitive
 	/**
 	 * @verifies should purge the concept drug
 	 * @see org.openmrs.web.controller.concept.ConceptDrugFormController#onSubmit(javax.servlet.http.HttpServletRequest,
-	 * 		javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindingResult)
+	 *      javax.servlet.http.HttpServletResponse, Object,
+	 *      org.springframework.validation.BindingResult)
 	 */
 	@Test
 	public void onSubmit_shouldPurgeConceptDrug() throws Exception {
 		executeDataSet("org/openmrs/api/include/ConceptServiceTest-drugSearch.xml");
 		ConceptService service = Context.getConceptService();
-		ConceptDrugFormController controller = (ConceptDrugFormController) applicationContext
-		        .getBean("conceptDrugForm");
+		ConceptDrugFormController controller = (ConceptDrugFormController) applicationContext.getBean("conceptDrugForm");
 		
 		Integer drugId = new Integer(444);
 		Drug drug = service.getDrug(drugId);

@@ -24,7 +24,7 @@ import org.openmrs.util.OpenmrsUtil;
 
 /**
  * Extends functionality of {@link MediaHandler} for web specific views.
- *
+ * 
  * @since 1.12
  */
 public class WebMediaHandler extends MediaHandler {
@@ -44,13 +44,13 @@ public class WebMediaHandler extends MediaHandler {
 	 * listed in ComplexObsHandler.*_VIEW. <br>
 	 * Currently the only implemented views are those implemented by ancestor plus the following:
 	 * <ul>
-	 * <li>{@link org.openmrs.web.WebConstants#HYPERLINK_VIEW}: a lightweight alternative to returning the
-	 * ComplexData from the parent class since this does not require access to the service layer.
-	 * Gives a link to the ComplexServlet for this obs
-	 * <li>{@link org.openmrs.web.WebConstants#HTML_VIEW}: An html tag that will display this complex data. For this
-	 * MediaHandler, its an html5 audio or video tag.
+	 * <li>{@link org.openmrs.web.WebConstants#HYPERLINK_VIEW}: a lightweight alternative to
+	 * returning the ComplexData from the parent class since this does not require access to the
+	 * service layer. Gives a link to the ComplexServlet for this obs
+	 * <li>{@link org.openmrs.web.WebConstants#HTML_VIEW}: An html tag that will display this
+	 * complex data. For this MediaHandler, its an html5 audio or video tag.
 	 * </ul>
-	 *
+	 * 
 	 * @see org.openmrs.obs.handler.MediaHandler#getObs(org.openmrs.Obs, java.lang.String)
 	 */
 	@Override

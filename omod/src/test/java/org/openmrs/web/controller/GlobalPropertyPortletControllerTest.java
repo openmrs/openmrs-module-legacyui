@@ -112,7 +112,7 @@ public class GlobalPropertyPortletControllerTest extends BaseModuleWebContextSen
 		
 		//then
 		portletController.setupModelForModule(model);
-		Assert.assertEquals(excludePrefix + ";" + forModule + ".started;" + forModule + ".mandatory", model
-		        .get("excludePrefix"));
+		Assert.assertEquals(excludePrefix + ";" + forModule + ".started;" + forModule + ".mandatory",
+		    model.get("excludePrefix"));
 	}
 }

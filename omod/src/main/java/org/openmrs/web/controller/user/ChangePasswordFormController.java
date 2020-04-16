@@ -86,7 +86,7 @@ public class ChangePasswordFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public String handleSubmission(HttpSession httpSession,
-			@RequestParam(required = true, value = "oldPassword") String oldPassword,
+	        @RequestParam(required = true, value = "oldPassword") String oldPassword,
 	        @RequestParam(required = true, value = "password") String password,
 	        @RequestParam(required = true, value = "confirmPassword") String confirmPassword,
 	        @RequestParam(required = false, value = "question") String question,
@@ -116,7 +116,8 @@ public class ChangePasswordFormController {
 	 * @param password new password
 	 * @param questionAnswer (optional) security question and answer
 	 */
-	private void changeUserPasswordAndQuestion(User user, String oldPassword, NewPassword password, NewQuestionAnswer questionAnswer) {
+	private void changeUserPasswordAndQuestion(User user, String oldPassword, NewPassword password,
+	        NewQuestionAnswer questionAnswer) {
 		try {
 			Context.addProxyPrivilege(PrivilegeConstants.EDIT_USERS);
 			Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);

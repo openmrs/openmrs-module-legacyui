@@ -15,39 +15,37 @@ import java.util.List;
  * Form used by {@link SettingsController}.
  */
 public class SettingsForm {
-
+	
 	private String section;
-
+	
 	private List<SettingsProperty> settings;
-
+	
 	/**
 	 * @return the section
 	 */
 	public String getSection() {
 		return section;
 	}
-
+	
 	/**
-	 * @param section
-	 *            the section to set
+	 * @param section the section to set
 	 */
 	public void setSection(String section) {
 		this.section = section;
 	}
-
+	
 	/**
 	 * @return the settings
 	 */
 	public List<SettingsProperty> getSettings() {
 		return settings;
 	}
-
+	
 	/**
-	 * @param settings
-	 *            the settings to set
+	 * @param settings the settings to set
 	 */
 	public void setSettings(List<SettingsProperty> settings) {
 		this.settings = settings;
 	}
-
+	
 }

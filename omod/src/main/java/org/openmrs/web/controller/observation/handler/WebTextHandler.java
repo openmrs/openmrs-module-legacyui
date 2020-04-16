@@ -42,8 +42,8 @@ public class WebTextHandler extends TextHandler {
 	}
 	
 	/**
-	 * Returns the ComplexData for an Obs depending on the view.
-	 * Currently, the views implemented are those supported by ancestor plus the following:
+	 * Returns the ComplexData for an Obs depending on the view. Currently, the views implemented
+	 * are those supported by ancestor plus the following:
 	 * <ul>
 	 * <li>{@link ComplexObsHandler#URI_VIEW}: a lightweight alternative to returning the
 	 * ComplexData from the parent class since this does not require access to the service layer.

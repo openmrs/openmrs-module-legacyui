@@ -70,7 +70,7 @@ public class MergePatientsFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
@@ -104,7 +104,7 @@ public class MergePatientsFormController extends SimpleFormController {
 			catch (APIException e) {
 				log.error("Unable to merge patients", e);
 				String message = e.getMessage();
-				if(message == null || "".equals(message)){
+				if (message == null || "".equals(message)) {
 					message = "Patient.merge.fail";
 				}
 				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, message);
@@ -136,7 +136,7 @@ public class MergePatientsFormController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
@@ -158,14 +158,14 @@ public class MergePatientsFormController extends SimpleFormController {
 	
 	/**
 	 * Called prior to form display. Allows for data to be put in the request to be used in the view
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors errors) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		
 		Patient p1 = (Patient) obj;
 		Patient p2 = new Patient();
 		Collection<Encounter> patient1Encounters = new Vector<Encounter>();
@@ -192,7 +192,7 @@ public class MergePatientsFormController extends SimpleFormController {
 			}
 			
 		}
-
+		
 		map.put("patient1Encounters", patient1Encounters);
 		map.put("patient2Encounters", patient2Encounters);
 		map.put("patientEncounters", encounterList);
@@ -202,7 +202,7 @@ public class MergePatientsFormController extends SimpleFormController {
 		map.put("activeOrderErrorMessage", buildErrorMessage(getOrderTypePatientsMap(patientList)));
 		return map;
 	}
-
+	
 	private Map<OrderType, Set<Patient>> getOrderTypePatientsMap(List<Patient> patientList) {
 		Map<OrderType, Set<Patient>> activeOrderAndPatientsMap = new HashMap<>();
 		OrderService os = Context.getOrderService();
@@ -216,7 +216,7 @@ public class MergePatientsFormController extends SimpleFormController {
 		});
 		return activeOrderAndPatientsMap;
 	}
-
+	
 	private String buildErrorMessage(Map<OrderType, Set<Patient>> activeOrderAndPatientsMap){
 		String ACTIVE_DRUG_ORDER_ERR = "Active [ORDER_TYPE] orders exist for patientsPATIENT_IDS.<br />";
 		String ACTIVE_DRUG_ORDER_WARN = "More than one patient having active order of same type is Not allowed";

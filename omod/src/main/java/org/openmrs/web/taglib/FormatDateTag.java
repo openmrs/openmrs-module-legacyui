@@ -32,11 +32,11 @@ import org.springframework.web.servlet.tags.RequestContextAwareTag;
 /**
  * Formats a date object in the desired type:<br>
  * e.g:
- *
+ * 
  * <pre>
  *   &lt;openmrs:formatDate date="${dateObj}" type="textbox"/&gt;
  * </pre>
- *
+ * 
  * becomes a string like: "20/11/2009" in the user's current locale. <br>
  * <br>
  * Options for "type" are:

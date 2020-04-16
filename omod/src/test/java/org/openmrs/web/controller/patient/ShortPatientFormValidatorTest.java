@@ -306,7 +306,7 @@ public class ShortPatientFormValidatorTest extends BaseModuleWebContextSensitive
 		validator.validate(model, errors);
 		Assert.assertEquals(true, errors.hasErrors());
 	}
-
+	
 	/**
 	 * @see ShortPatientFormValidator#validate(Object, Errors)
 	 */
@@ -321,14 +321,14 @@ public class ShortPatientFormValidatorTest extends BaseModuleWebContextSensitive
 		patient.addName(name);
 		Context.getPatientService().savePatient(patient);
 		Assert.assertNotNull(name.getId());//should have been added
-
+		
 		ShortPatientModel model = new ShortPatientModel(patient);
-
+		
 		//change to a voided name to check whether issue is fixed
 		model.getPersonName().setGivenName("rasanjana");
 		model.getPersonName().setMiddleName("C");
 		model.getPersonName().setFamilyName("perera");
-
+		
 		//Check validator has errors
 		Errors errors = new BindException(model, "patientModel");
 		validator.validate(model, errors);
@@ -346,7 +346,7 @@ public class ShortPatientFormValidatorTest extends BaseModuleWebContextSensitive
 		oldAddress.setAddress1("Address1");
 		oldAddress.setAddress2("address1");
 		Context.getPatientService().savePatient(patient);
-
+		
 		PersonAddress address = (PersonAddress) oldAddress.clone();
 		address.setPersonAddressId(null);
 		address.setUuid(null);
@@ -359,14 +359,14 @@ public class ShortPatientFormValidatorTest extends BaseModuleWebContextSensitive
 		oldAddress.setVoided(true);
 		oldAddress.setVoidReason("test duplicate address");
 		Context.getPatientService().savePatient(patient);
-
+		
 		ShortPatientModel model = new ShortPatientModel(patient);
 		//the second address should be now the active address
 		Assert.assertEquals(address.getId(), model.getPersonAddress().getId());
 		//change to a duplicate name
 		model.getPersonAddress().setAddress1("address1");//should be case insensitive
 		model.getPersonAddress().setAddress2("address1");
-
+		
 		Errors errors = new BindException(model, "patientModel");
 		validator.validate(model, errors);
 		Assert.assertEquals(false, errors.hasErrors());

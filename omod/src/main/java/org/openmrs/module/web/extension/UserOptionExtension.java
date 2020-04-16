@@ -13,17 +13,19 @@ public abstract class UserOptionExtension extends PortletExt {
 	
 	/**
 	 * page views are controlled by privileges. The user must have this privilege to be able to view
+	 * 
 	 * @return the privilege name.
 	 */
 	public abstract String getRequiredPrivilege();
 	
-	/** 
+	/**
 	 * @return the tab unique name without spaces.
 	 */
 	public abstract String getTabId();
 	
 	/**
-	 * @return The visible name of this tab. This can return either a string or a spring message code
+	 * @return The visible name of this tab. This can return either a string or a spring message
+	 *         code
 	 */
 	public abstract String getTabName();
 }

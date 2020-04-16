@@ -26,7 +26,7 @@ import org.openmrs.web.WebUtil;
  * A mini/simplified Person object. Used as the return object from DWR methods to allow javascript
  * and other consumers to easily use all methods. This class guarantees that all objects in this
  * class will be initialized (copied) off of the Person object.
- *
+ * 
  * @see Person
  * @see DWRPersonService
  */
@@ -72,7 +72,7 @@ public class PersonListItem {
 	 * Creates an instance of a subclass of PersonListItem which is best suited for the parameter.
 	 * If a {@link Patient} is passed in, a {@link PatientListItem} is returned, otherwise a
 	 * {@link PersonListItem} is returned.
-	 *
+	 * 
 	 * @param person the {@link Person} object to covert to a {@link PersonListItem}
 	 * @return a {@link PersonListItem} or subclass thereof
 	 * @should return PatientListItem given patient parameter
@@ -94,7 +94,7 @@ public class PersonListItem {
 	
 	/**
 	 * Convenience constructor to create a PersonListItem that has only this personId
-	 *
+	 * 
 	 * @param personId the person id to assign
 	 */
 	public PersonListItem(Integer personId) {
@@ -104,7 +104,7 @@ public class PersonListItem {
 	/**
 	 * Convenience constructor that creates a PersonListItem from the given Person. All relevant
 	 * attributes are pulled off of the Person object and copied to this PersonListItem
-	 *
+	 * 
 	 * @param person the Person to turn into a PersonListItem
 	 * @should put attribute toString value into attributes map
 	 */
@@ -152,9 +152,9 @@ public class PersonListItem {
 	
 	/**
 	 * Convenience constructor that creates a PersonListItem from the given Person. All relevant
-	 * attributes are pulled off of the Person object and copied to this PersonListItem. And
-	 * set the best match name based on the search criteria.
-	 *
+	 * attributes are pulled off of the Person object and copied to this PersonListItem. And set the
+	 * best match name based on the search criteria.
+	 * 
 	 * @param person the Person to turn into a PersonListItem
 	 * @param searchName Search query string of the name
 	 * @should identify best matching name for the family name
@@ -188,12 +188,13 @@ public class PersonListItem {
 	}
 	
 	/**
-	 *Helper method to check if all the search names(separated by spaces) are contained in the person's full name.
-
-	 *@param fullName the fullName upon which the search names are to be compared
-	 *@param searchNames Array&lt;String&gt; of searched names
-	 *@should return true when all searched names are found in full name
-	 *@should return false if even one of the searched names are not found in full name
+	 * Helper method to check if all the search names(separated by spaces) are contained in the
+	 * person's full name.
+	 * 
+	 * @param fullName the fullName upon which the search names are to be compared
+	 * @param searchNames Array&lt;String&gt; of searched names
+	 * @should return true when all searched names are found in full name
+	 * @should return false if even one of the searched names are not found in full name
 	 */
 	private boolean containsAll(String fullName, String[] searchNames) {
 		for (String name : searchNames) {
@@ -239,7 +240,7 @@ public class PersonListItem {
 	
 	/**
 	 * Returns a formatted birthdate value
-	 *
+	 * 
 	 * @since 1.8
 	 */
 	public String getBirthdateString() {
@@ -320,7 +321,7 @@ public class PersonListItem {
 	
 	/**
 	 * Convenience method to retrieve the givenName middleName familyName
-	 *
+	 * 
 	 * @return String this person's name
 	 */
 	public String getPersonName() {

@@ -73,7 +73,8 @@ public class UserFormController {
 		User u = null;
 		try {
 			u = Context.getUserService().getUser(Integer.valueOf(userId));
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Error while getting user", ex);
 		}
 		if (u == null) {
@@ -104,10 +105,9 @@ public class UserFormController {
 	}
 	
 	@RequestMapping(value = "/admin/users/user.form", method = RequestMethod.GET)
-	public String showForm(
-			@RequestParam(required = false, value = "userId") Integer userId, 
-			@RequestParam(required = false, value = "createNewPerson") String createNewPerson, 
-			@ModelAttribute("user") User user, ModelMap model) {
+	public String showForm(@RequestParam(required = false, value = "userId") Integer userId,
+	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
+	        @ModelAttribute("user") User user, ModelMap model) {
 		
 		// the formBackingObject method above sets up user, depending on userId and personId parameters   
 		
@@ -126,7 +126,8 @@ public class UserFormController {
 			model.addAttribute("secretQuestion", userService.getSecretQuestion(user));
 		}
 		
-		if (user.getPerson().getId() != null && !Context.getProviderService().getProvidersByPerson(user.getPerson()).isEmpty()) {
+		if (user.getPerson().getId() != null
+		        && !Context.getProviderService().getProvidersByPerson(user.getPerson()).isEmpty()) {
 			model.addAttribute("isProvider", true);
 			model.addAttribute("providerList", Context.getProviderService().getProvidersByPerson(user.getPerson()));
 		} else {
@@ -150,7 +151,7 @@ public class UserFormController {
 	        @RequestParam(required = false, value = "confirm") String confirm,
 	        @RequestParam(required = false, value = "forcePassword") Boolean forcePassword,
 	        @RequestParam(required = false, value = "roleStrings") String[] roles,
-	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson, 
+	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
 	        @RequestParam(required = false, value = "providerCheckBox") String addToProviderTableOption,
 	        @ModelAttribute("user") User user, BindingResult errors) {
 		
@@ -170,7 +171,8 @@ public class UserFormController {
 				Context.getUserService().purgeUser(user);
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "User.delete.success");
 				return "redirect:users.list";
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "User.delete.failure");
 				log.error("Failed to delete user", ex);
 				return "redirect:/admin/users/user.form?userId=" + request.getParameter("userId");
@@ -215,7 +217,8 @@ public class UserFormController {
 			if (password.length() > 0) {
 				try {
 					OpenmrsUtil.validatePassword(user.getUsername(), password, user.getSystemId());
-				} catch (PasswordException e) {
+				}
+				catch (PasswordException e) {
 					errors.reject(e.getMessage());
 				}
 			}
@@ -291,7 +294,7 @@ public class UserFormController {
 			}
 			
 			//Check if admin wants the person associated with the user to be added to the Provider Table
-			if(addToProviderTableOption != null) {
+			if (addToProviderTableOption != null) {
 				Provider provider = new Provider();
 				provider.setPerson(user.getPerson());
 				provider.setIdentifier(user.getSystemId());

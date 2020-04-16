@@ -47,7 +47,7 @@ import org.openmrs.util.OpenmrsConstants;
 /**
  * DWR patient methods. The methods in here are used in the webapp to get data from the database via
  * javascript calls.
- *
+ * 
  * @see PatientService
  */
 public class DWRPatientService implements GlobalPropertyListener {
@@ -55,11 +55,11 @@ public class DWRPatientService implements GlobalPropertyListener {
 	private static final Log log = LogFactory.getLog(DWRPatientService.class);
 	
 	private static Integer maximumResults;
-
+	
 	/**
 	 * Search on the <code>searchValue</code>. If a number is in the search string, do an identifier
 	 * search. Else, do a name search
-	 *
+	 * 
 	 * @param searchValue string to be looked for
 	 * @param includeVoided true/false whether or not to included voided patients
 	 * @return Collection&lt;Object&gt; of PatientListItem or String
@@ -83,7 +83,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	/**
 	 * Search on the <code>searchValue</code>. If a number is in the search string, do an identifier
 	 * search. Else, do a name search
-	 *
+	 * 
 	 * @see PatientService#getPatients(String, String, List, boolean, Integer, Integer)
 	 * @param searchValue string to be looked for
 	 * @param includeVoided true/false whether or not to included voided patients
@@ -165,7 +165,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * matching patients (depending on values of start and length parameters) while the keys are are
 	 * 'count' and 'objectList' respectively, if the length parameter is not specified, then all
 	 * matches will be returned from the start index if specified.
-	 *
+	 * 
 	 * @param searchValue patient name or identifier
 	 * @param includeVoided true/false whether or not to included voided patients
 	 * @param start the beginning index
@@ -211,13 +211,14 @@ public class DWRPatientService implements GlobalPropertyListener {
 						if (newPatientCount > 0) {
 							// Send a signal to the core search widget to search again against newSearch
 							resultsMap.put("searchAgain", newSearchStr);
-							resultsMap.put("notification", Context.getMessageSourceService().getMessage(
-							    "searchWidget.noResultsFoundFor", new Object[] { searchValue, newSearchStr },
-							    Context.getLocale()));
+							resultsMap.put(
+							    "notification",
+							    Context.getMessageSourceService().getMessage("searchWidget.noResultsFoundFor",
+							        new Object[] { searchValue, newSearchStr }, Context.getLocale()));
 						}
 					}
 				}
-
+				
 				//no results found and a number was in the search --
 				//should check whether the check digit is correct.
 				else if (patientCount == 0 && searchValue.matches(".*\\d+.*")) {
@@ -246,9 +247,9 @@ public class DWRPatientService implements GlobalPropertyListener {
 					
 					if (identifierMatchesValidationScheme) {
 						if (shouldWarnUser) {
-							resultsMap.put("notification", "<b>"
-							        + Context.getMessageSourceService().getMessage("Patient.warning.inValidIdentifier")
-							        + "<b/>");
+							resultsMap.put("notification",
+							    "<b>" + Context.getMessageSourceService().getMessage("Patient.warning.inValidIdentifier")
+							            + "<b/>");
 						} else if (validCheckDigit) {
 							resultsMap.put("notification", "<b style=\"color:green;\">"
 							        + Context.getMessageSourceService().getMessage("Patient.message.validIdentifier")
@@ -299,7 +300,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * matching patients (depending on values of start and length parameters) while the keys are are
 	 * 'count' and 'objectList' respectively, if the length parameter is not specified, then all
 	 * matches will be returned from the start index if specified.
-	 *
+	 * 
 	 * @param searchValue patient name or identifier
 	 * @param start the beginning index
 	 * @param length the number of matching patients to return
@@ -320,7 +321,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	/**
 	 * Convenience method for dwr/javascript to convert a patient id into a Patient object (or at
 	 * least into data about the patient)
-	 *
+	 * 
 	 * @param patientId the {@link Patient#getPatientId()} to match on
 	 * @return a truncated Patient object in the form of a PatientListItem
 	 */
@@ -335,10 +336,10 @@ public class DWRPatientService implements GlobalPropertyListener {
 		}
 		return pli;
 	}
-
+	
 	/**
 	 * find all the patients with the given patient identifiers (identifiers)
-	 *
+	 * 
 	 * @param identifiers
 	 * @return list of patientListItems
 	 */
@@ -352,10 +353,10 @@ public class DWRPatientService implements GlobalPropertyListener {
 		}
 		return patientList;
 	}
-
+	
 	/**
 	 * find all patients with duplicate attributes (searchOn)
-	 *
+	 * 
 	 * @param searchOn
 	 * @return list of patientListItems
 	 */
@@ -592,7 +593,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 			}
 		}
 		*/
-
+		
 		return ret;
 	}
 	
@@ -618,7 +619,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	
 	/**
 	 * Fetch the max results value from the global properties table
-	 *
+	 * 
 	 * @return Integer value for the person search max results global property
 	 */
 	private static Integer getMaximumSearchResults() {

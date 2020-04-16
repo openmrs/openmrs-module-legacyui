@@ -47,7 +47,7 @@ public abstract class SerializingFieldGenDatatypeHandler<DT extends SerializingC
 		if (StringUtils.isNumeric(formFieldValue)) {
 			BaseOpenmrsObject metadata = null;
 			PropertyEditor editor;
-
+			
 			if (datatype instanceof LocationDatatype) {
 				editor = new LocationEditor();
 				editor.setAsText(formFieldValue);
@@ -65,12 +65,12 @@ public abstract class SerializingFieldGenDatatypeHandler<DT extends SerializingC
 				editor.setAsText(formFieldValue);
 				metadata = (BaseOpenmrsObject) editor.getValue();
 			}
-
+			
 			if (metadata != null) {
 				formFieldValue = metadata.getUuid();
 			}
 		}
-
+		
 		return datatype.deserialize(formFieldValue);
 	}
 }

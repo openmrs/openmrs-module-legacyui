@@ -40,7 +40,7 @@ public class Hl7InQueueListController {
 	
 	/**
 	 * Render the pending HL7 queue messages page
-	 *
+	 * 
 	 * @param modelMap
 	 * @return path
 	 */
@@ -52,7 +52,7 @@ public class Hl7InQueueListController {
 	
 	/**
 	 * Render the suspended HL7 queue messages page
-	 *
+	 * 
 	 * @param modelMap
 	 * @return path
 	 */
@@ -64,7 +64,7 @@ public class Hl7InQueueListController {
 	
 	/**
 	 * suspends or restores a HL7InQueue based on current status
-	 *
+	 * 
 	 * @param id HL7InQueueId for identifying the HL7 message
 	 * @return formatted success or failure message for display
 	 * @throws Exception
@@ -116,7 +116,7 @@ public class Hl7InQueueListController {
 	
 	/**
 	 * method for returning a batch of HL7s from the queue based on datatable parameters
-	 *
+	 * 
 	 * @param iDisplayStart start index for search
 	 * @param iDisplayLength amount of terms to return
 	 * @param sSearch search term(s)
@@ -154,7 +154,7 @@ public class Hl7InQueueListController {
 	
 	/**
 	 * create an object array for a given HL7InQueue
-	 *
+	 * 
 	 * @param q HL7InQueue object
 	 * @return object array for use with datatables
 	 */

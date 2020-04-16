@@ -78,8 +78,7 @@ public class ForEachDrugOrderTag extends BodyTagSupport {
 			Collections.sort(matchingDrugOrders, comp);
 		}
 		catch (ClassCastException cce) {
-			log
-			        .error("ForEachDrugTag unable to compare the list of drug orders passed.  Ensure they are compatible with Comparator used.");
+			log.error("ForEachDrugTag unable to compare the list of drug orders passed.  Ensure they are compatible with Comparator used.");
 		}
 		
 		// Return appropriate number of results

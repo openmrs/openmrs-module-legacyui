@@ -14,9 +14,10 @@ import javax.servlet.jsp.JspException;
 import org.springframework.web.servlet.tags.HtmlEscapingAwareTag;
 
 /**
- * This class takes its functionality from {@link HtmlEscapingAwareTag}. Actually, it supplies a "htmlEscape" property for
- * explicitly specifying whether or not to apply HTML escaping. The only difference from spring's analog is that it provides
- * additional access to tag body content, which is not provided in spring implementation
+ * This class takes its functionality from {@link HtmlEscapingAwareTag}. Actually, it supplies a
+ * "htmlEscape" property for explicitly specifying whether or not to apply HTML escaping. The only
+ * difference from spring's analog is that it provides additional access to tag body content, which
+ * is not provided in spring implementation
  */
 public abstract class OpenmrsHtmlEscapingAwareTag extends OpenmrsRequestContextAwareBodyTag {
 	

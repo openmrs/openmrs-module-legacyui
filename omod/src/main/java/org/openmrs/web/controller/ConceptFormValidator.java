@@ -33,7 +33,7 @@ public class ConceptFormValidator implements Validator {
 	
 	/**
 	 * Determines if the command object being submitted is a valid type
-	 *
+	 * 
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
 	 */
 	@SuppressWarnings("rawtypes")
@@ -43,7 +43,7 @@ public class ConceptFormValidator implements Validator {
 	
 	/**
 	 * Checks the form object for any inconsistencies/errors
-	 *
+	 * 
 	 * @see org.springframework.validation.Validator#validate(java.lang.Object,
 	 *      org.springframework.validation.Errors)
 	 */

@@ -74,7 +74,7 @@ public class ConceptListItem {
 	
 	/**
 	 * Most common constructor
-	 *
+	 * 
 	 * @param searchResult the search to use to construct this conceptListItem
 	 */
 	public ConceptListItem(ConceptSearchResult searchResult) {
@@ -102,7 +102,7 @@ public class ConceptListItem {
 	
 	/**
 	 * Populate all of the attributes of this class
-	 *
+	 * 
 	 * @param concept
 	 * @param conceptName
 	 * @param locale

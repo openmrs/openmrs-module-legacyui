@@ -14,5 +14,5 @@ package org.openmrs.web.controller.concept;
  */
 @Deprecated
 public class ConceptDatatypeValidator extends org.openmrs.validator.ConceptDatatypeValidator {
-
+	
 }

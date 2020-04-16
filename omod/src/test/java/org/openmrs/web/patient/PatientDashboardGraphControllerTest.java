@@ -71,7 +71,7 @@ public class PatientDashboardGraphControllerTest extends BaseModuleWebContextSen
 	@Verifies(value = "return form for rendering the json data", method = "showGraphData(Integer, Integer, ModelMap)")
 	public void shouldDisplayPatientDashboardGraphForm() throws Exception {
 		executeDataSet("org/openmrs/api/include/ObsServiceTest-initial.xml");
-		Assert.assertEquals("module/legacyui/patientGraphJsonForm", new PatientDashboardGraphController()
-		        .showGraphData(2, 1, new ModelMap()));
+		Assert.assertEquals("module/legacyui/patientGraphJsonForm",
+		    new PatientDashboardGraphController().showGraphData(2, 1, new ModelMap()));
 	}
 }

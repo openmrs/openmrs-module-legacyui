@@ -40,7 +40,7 @@ public class Hl7InArchiveListController {
 	
 	/**
 	 * Render the archived HL7 messages page
-	 *
+	 * 
 	 * @param modelMap
 	 * @return path
 	 */
@@ -51,7 +51,7 @@ public class Hl7InArchiveListController {
 	
 	/**
 	 * method for returning a batch of HL7s from the queue based on datatable parameters
-	 *
+	 * 
 	 * @param iDisplayStart start index for search
 	 * @param iDisplayLength amount of terms to return
 	 * @param sSearch search term(s)
@@ -78,8 +78,8 @@ public class Hl7InArchiveListController {
 		// build the response
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("iTotalRecords", Context.getHL7Service().countHL7InArchive(HL7Constants.HL7_STATUS_PROCESSED, null));
-		response.put("iTotalDisplayRecords", Context.getHL7Service().countHL7InArchive(HL7Constants.HL7_STATUS_PROCESSED,
-		    sSearch));
+		response.put("iTotalDisplayRecords",
+		    Context.getHL7Service().countHL7InArchive(HL7Constants.HL7_STATUS_PROCESSED, sSearch));
 		response.put("sEcho", sEcho);
 		response.put("aaData", results.toArray());
 		
@@ -89,7 +89,7 @@ public class Hl7InArchiveListController {
 	
 	/**
 	 * create an object array for a given HL7InArchive
-	 *
+	 * 
 	 * @param q HL7InArchive object
 	 * @return object array for use with datatables
 	 */

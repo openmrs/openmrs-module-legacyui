@@ -41,7 +41,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	
 	/**
 	 * Check to see if the admin's secret question comes back
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	
@@ -94,7 +94,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	/**
 	 * If a user enters the wrong secret answer, they should be kicked back to the form and not be
 	 * accepted even though the username is correct
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -117,7 +117,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	
 	/**
 	 * If a user enters 5 requests, the 6th should fail even if that one has a valid username in it
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -147,7 +147,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	/**
 	 * If a user enters 5 requests, the 6th should fail even if that one has a valid username and a
 	 * secret answer associated with it
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -178,7 +178,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	/**
 	 * If a user enters 5 requests with username+secret answer, the 6th should fail even if that one
 	 * has a valid answer in it
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -211,7 +211,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	/**
 	 * If a user enters 4 username requests, the 5th one should reset the lockout and they should be
 	 * allowed 5 attempts at the secret answer
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	@Test

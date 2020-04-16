@@ -65,12 +65,12 @@ public class DWRCohortService {
 	}
 	
 	/**
-	 * Returns a Vector&lt;ListItem&gt; of all saved Cohorts containing the {@link Patient} identified by
-	 * <code>patientId</code>
+	 * Returns a Vector&lt;ListItem&gt; of all saved Cohorts containing the {@link Patient}
+	 * identified by <code>patientId</code>
 	 * 
 	 * @param patientId - Identifies the {@link Patient} to lookup in each {@link Cohort}
-	 * @return Vector&lt;ListItem&gt; - of all saved Cohorts containing the {@link Patient} identified by
-	 *         <code>patientId</code>
+	 * @return Vector&lt;ListItem&gt; - of all saved Cohorts containing the {@link Patient}
+	 *         identified by <code>patientId</code>
 	 */
 	public Vector<ListItem> getCohortsContainingPatient(Integer patientId) {
 		Vector<ListItem> ret = new Vector<ListItem>();

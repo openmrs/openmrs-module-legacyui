@@ -30,7 +30,7 @@ public class Link {
 	}
 	
 	/**
-	 * @since 1.10 
+	 * @since 1.10
 	 */
 	public Link(String label, String url) {
 		this.label = label;
@@ -70,14 +70,14 @@ public class Link {
 	}
 	
 	/**
-	 * @since 1.10 
+	 * @since 1.10
 	 */
 	public Boolean getStrike() {
 		return strike;
 	}
 	
 	/**
-	 * @since 1.10 
+	 * @since 1.10
 	 */
 	public void setStrike(Boolean strike) {
 		this.strike = strike;

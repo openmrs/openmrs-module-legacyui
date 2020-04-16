@@ -108,8 +108,8 @@ public class ForEachRecordTag extends BodyTagSupport {
 				
 				Map<String, String> opts = new HashMap<String, String>();
 				for (ConceptAnswer a : civilStatus.getAnswers(false)) {
-					opts.put(a.getAnswerConcept().getConceptId().toString(), a.getAnswerConcept().getShortestName(locale, false)
-					        .getName());
+					opts.put(a.getAnswerConcept().getConceptId().toString(),
+					    a.getAnswerConcept().getShortestName(locale, false).getName());
 				}
 				records = opts.entrySet().iterator();
 				if (select != null) {

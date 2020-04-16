@@ -16,10 +16,9 @@ import org.springframework.web.servlet.theme.CookieThemeResolver;
 
 /**
  * Customization of the spring theme resolver so that an admin can set a global property for the
- * default locale for the system
- *
- * This class will not throw an exception even if there is a problem retrieving that global property, since that
- * prevent even an error page from being displayed properly
+ * default locale for the system This class will not throw an exception even if there is a problem
+ * retrieving that global property, since that prevent even an error page from being displayed
+ * properly
  */
 public class OpenmrsCookieThemeResolver extends CookieThemeResolver {
 	

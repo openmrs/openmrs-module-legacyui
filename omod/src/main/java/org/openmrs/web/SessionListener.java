@@ -33,7 +33,7 @@ public class SessionListener implements HttpSessionListener {
 	
 	/**
 	 * Called whenever a session times out or a user logs out (and so the session is closed)
-	 *
+	 * 
 	 * @see HttpSessionListener#sessionDestroyed(HttpSessionEvent)
 	 */
 	public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {

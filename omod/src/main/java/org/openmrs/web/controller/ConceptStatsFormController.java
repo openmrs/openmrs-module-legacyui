@@ -83,7 +83,7 @@ public class ConceptStatsFormController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
@@ -105,7 +105,7 @@ public class ConceptStatsFormController extends SimpleFormController {
 	
 	/**
 	 * Called prior to form display. Allows for data to be put in the request to be used in the view
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
 	 */
 	protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
@@ -139,8 +139,8 @@ public class ConceptStatsFormController extends SimpleFormController {
 					map.put("displayType", "numeric");
 					
 					List<Obs> numericAnswers = obsService.getObservations(null, null, Collections.singletonList(concept),
-					    null, Collections.singletonList(OpenmrsConstants.PERSON_TYPE.PERSON), null, Collections
-					            .singletonList("valueNumeric"), null, null, null, null, false);
+					    null, Collections.singletonList(OpenmrsConstants.PERSON_TYPE.PERSON), null,
+					    Collections.singletonList("valueNumeric"), null, null, null, null, false);
 					
 					if (numericAnswers.size() > 0) {
 						Double min = numericAnswers.get(0).getValueNumeric();
@@ -192,9 +192,9 @@ public class ConceptStatsFormController extends SimpleFormController {
 						HistogramDataset histDataset = new HistogramDataset(); // dataset for histogram
 						histDataset.addSeries(concept.getName().getName(), obsNumerics, counts.size());
 						
-						JFreeChart histogram = ChartFactory.createHistogram(concept.getName().getName(), msa
-						        .getMessage("Concept.stats.histogramDomainAxisTitle"), msa
-						        .getMessage("Concept.stats.histogramRangeAxisTitle"), histDataset, PlotOrientation.VERTICAL,
+						JFreeChart histogram = ChartFactory.createHistogram(concept.getName().getName(),
+						    msa.getMessage("Concept.stats.histogramDomainAxisTitle"),
+						    msa.getMessage("Concept.stats.histogramRangeAxisTitle"), histDataset, PlotOrientation.VERTICAL,
 						    false, true, false);
 						map.put("histogram", histogram);
 						
@@ -245,9 +245,9 @@ public class ConceptStatsFormController extends SimpleFormController {
 							HistogramDataset outlierHistDataset = new HistogramDataset();
 							outlierHistDataset.addSeries(concept.getName().getName(), obsNumericsOutliers, counts.size());
 							
-							JFreeChart histogramOutliers = ChartFactory.createHistogram(concept.getName().getName(), msa
-							        .getMessage("Concept.stats.histogramDomainAxisTitle"), msa
-							        .getMessage("Concept.stats.histogramRangeAxisTitle"), outlierHistDataset,
+							JFreeChart histogramOutliers = ChartFactory.createHistogram(concept.getName().getName(),
+							    msa.getMessage("Concept.stats.histogramDomainAxisTitle"),
+							    msa.getMessage("Concept.stats.histogramRangeAxisTitle"), outlierHistDataset,
 							    PlotOrientation.VERTICAL, false, true, false);
 							map.put("histogramOutliers", histogramOutliers);
 							map.put("outliers", outliers);
@@ -256,9 +256,9 @@ public class ConceptStatsFormController extends SimpleFormController {
 						
 						// create line graph chart
 						timeDataset.addSeries(timeSeries);
-						JFreeChart lineChart = ChartFactory.createTimeSeriesChart(concept.getName().getName(), msa
-						        .getMessage("Concept.stats.lineChartDomainAxisLabel"), msa
-						        .getMessage("Concept.stats.lineChartRangeAxisLabel"), timeDataset, false, true, false);
+						JFreeChart lineChart = ChartFactory.createTimeSeriesChart(concept.getName().getName(),
+						    msa.getMessage("Concept.stats.lineChartDomainAxisLabel"),
+						    msa.getMessage("Concept.stats.lineChartRangeAxisLabel"), timeDataset, false, true, false);
 						map.put("timeSeries", lineChart);
 						
 					}

@@ -134,6 +134,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Applies case conversion to metadata
+	 * 
 	 * @since 1.10
 	 */
 	private String caseConversion;
@@ -262,6 +263,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Formats anything and prints it to string builder. (Delegates to other methods here)
+	 * 
 	 * @param sb the string builder to print object with
 	 * @param o the object to print
 	 */
@@ -302,7 +304,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Prints encounter into via given string builder
-	 *
+	 * 
 	 * @param sb the string builder object to print encounter value with
 	 * @param encounter the encounter to print
 	 */
@@ -317,7 +319,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Prints visit via given string builder
-	 *
+	 * 
 	 * @param sb the string builder to print visit with
 	 * @param visit the visit object to print
 	 */
@@ -331,7 +333,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Prints program via given string builder
-	 *
+	 * 
 	 * @param sb the string builder to print program with
 	 * @param program the program object to print
 	 */
@@ -345,7 +347,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Formats a {@link Form} and prints it to sb
-	 *
+	 * 
 	 * @param sb
 	 * @param form
 	 */
@@ -356,11 +358,11 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Formats a {@link SingleCustomValue} and prints it to sb
-	 *
+	 * 
 	 * @param sb
 	 * @param val
 	 */
-	@SuppressWarnings( { "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void printSingleCustomValue(StringBuilder sb, SingleCustomValue<?> val) {
 		CustomValueDescriptor descriptor = val.getDescriptor();
 		CustomDatatype<?> datatype = CustomDatatypeUtil.getDatatype(descriptor);
@@ -379,7 +381,8 @@ public class FormatTag extends TagSupport {
 				
 				if (handler instanceof DownloadableDatatypeHandler) {
 					link = "downloadCustomValue.form?handler=" + handler.getClass().getName() + "&datatype="
-					        + datatype.getClass().getName() + "&value=" + StringEscapeUtils.escapeHtml(val.getValueReference());
+					        + datatype.getClass().getName() + "&value="
+					        + StringEscapeUtils.escapeHtml(val.getValueReference());
 					sb.append(" (<a href=\"" + link + "\">"
 					        + Context.getMessageSourceService().getMessage("general.download") + "</a>)");
 				}
@@ -393,16 +396,17 @@ public class FormatTag extends TagSupport {
 				sb.append("...");
 			}
 		} else {
-			sb.append(StringEscapeUtils.escapeHtml(Context.getMessageSourceService().getMessage("CustomDatatype.error.missingDatatype",
-			    new Object[] { descriptor.getDatatypeClassname() }, Context.getLocale())));
+			sb.append(StringEscapeUtils.escapeHtml(Context.getMessageSourceService().getMessage(
+			    "CustomDatatype.error.missingDatatype", new Object[] { descriptor.getDatatypeClassname() },
+			    Context.getLocale())));
 			sb.append(StringEscapeUtils.escapeHtml(val.getValueReference()));
 		}
 	}
 	
 	/**
-	 * Formats a Concept and prints it to sb, respecting conceptNameType and conceptNameTag if they are
-	 * specified and a match is found. (This will always prints something.)
-	 *
+	 * Formats a Concept and prints it to sb, respecting conceptNameType and conceptNameTag if they
+	 * are specified and a match is found. (This will always prints something.)
+	 * 
 	 * @param sb
 	 * @param concept
 	 * @should print the name with the correct name and type
@@ -440,7 +444,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * formats a date and prints it to sb
-	 *
+	 * 
 	 * @param sb
 	 * @param date
 	 */
@@ -450,6 +454,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Apply a case conversion to an input string
+	 * 
 	 * @param source
 	 * @return
 	 */
@@ -476,7 +481,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * formats any OpenmrsMetadata and prints it to sb
-	 *
+	 * 
 	 * @param sb
 	 * @param metadata
 	 */
@@ -512,7 +517,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * formats a user and prints it to sb
-	 *
+	 * 
 	 * @param sb
 	 * @param u
 	 */
@@ -531,7 +536,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * formats a person and prints it to sb
-	 *
+	 * 
 	 * @param sb
 	 * @param p
 	 */
@@ -543,7 +548,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * formats a provider and prints him or her to a string builder
-	 *
+	 * 
 	 * @param sb the string builder
 	 * @param p the provider
 	 */
@@ -555,7 +560,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * formats encounter providers and prints them to a string builder
-	 *
+	 * 
 	 * @param sb the string builder
 	 * @param eps the encounter providers.
 	 */
@@ -583,7 +588,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Gets the name of a provider.
-	 *
+	 * 
 	 * @param provider the provider.
 	 * @return the provider name.
 	 */
@@ -596,9 +601,9 @@ public class FormatTag extends TagSupport {
 	}
 	
 	/**
-	 * Filters a list of encounter providers according to the global property 
-	 * which determines providers in which encounter roles to display.
-	 *
+	 * Filters a list of encounter providers according to the global property which determines
+	 * providers in which encounter roles to display.
+	 * 
 	 * @param eps the encounter providers to filter.
 	 * @return the filtered encounter providers.
 	 */
@@ -622,9 +627,9 @@ public class FormatTag extends TagSupport {
 	}
 	
 	/**
-	 * Filters and returns a list of providers from an encounter role provider map.
-	 * The filtering is based on a given array of encounter roles names or ids.
-	 *
+	 * Filters and returns a list of providers from an encounter role provider map. The filtering is
+	 * based on a given array of encounter roles names or ids.
+	 * 
 	 * @param encounterProviders map of encounter role providers to filter.
 	 * @param rolesArray the roles string array.
 	 * @return a filtered list of providers.
@@ -644,7 +649,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Checks if an encounter role has its name or id in a string array.
-	 *
+	 * 
 	 * @param encounterRole the encounter role.
 	 * @param rolesArray the roles string array.
 	 * @return true if yes, else false.
@@ -662,7 +667,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Trims elements of a string array.
-	 *
+	 * 
 	 * @param unTrimmedArray the un trimmed array.
 	 * @return the trimmed array.
 	 */
@@ -714,6 +719,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Gets the object property
+	 * 
 	 * @return the object property value
 	 */
 	public Object getObject() {
@@ -722,6 +728,7 @@ public class FormatTag extends TagSupport {
 	
 	/**
 	 * Sets the object property
+	 * 
 	 * @param object the object to set
 	 */
 	public void setObject(Object object) {

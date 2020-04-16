@@ -18,15 +18,16 @@ import org.openmrs.customdatatype.CustomDatatypeHandler;
 import org.openmrs.customdatatype.InvalidCustomValueException;
 
 /**
- * A web-layer extension of a {@link CustomDatatypeHandler}, which also defines what fieldgen widget is used to
- * collect the values, and how to fetch them from a web request.
+ * A web-layer extension of a {@link CustomDatatypeHandler}, which also defines what fieldgen widget
+ * is used to collect the values, and how to fetch them from a web request.
+ * 
  * @since 1.9
  */
 public interface FieldGenDatatypeHandler<DT extends CustomDatatype<T>, T> extends HtmlDisplayableDatatypeHandler<T> {
 	
 	/**
-	 * @return the name of the fieldgen widget to be used to allow data entry for attribute types that
-	 * use this handler
+	 * @return the name of the fieldgen widget to be used to allow data entry for attribute types
+	 *         that use this handler
 	 */
 	String getWidgetName();
 	
@@ -37,6 +38,7 @@ public interface FieldGenDatatypeHandler<DT extends CustomDatatype<T>, T> extend
 	
 	/**
 	 * Fetches an attribute value from a web request, for a given form field name
+	 * 
 	 * @param datatype
 	 * @param request
 	 * @param formFieldName

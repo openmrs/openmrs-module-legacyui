@@ -17,17 +17,15 @@ import org.openmrs.web.taglib.OpenmrsMessageTag;
 public interface TagMessageWriterBehavior {
 	
 	/**
-	 * Implementations should override this method to customize how translated messages are rendered on JSP pages via
-	 * {@link OpenmrsMessageTag}. They may enclose passed in resolvedText with HTML span tags, for example.
+	 * Implementations should override this method to customize how translated messages are rendered
+	 * on JSP pages via {@link OpenmrsMessageTag}. They may enclose passed in resolvedText with HTML
+	 * span tags, for example.
 	 * 
-	 * @param resolvedText
-	 *            the resolved message string to be customized
-	 * @param code
-	 *            the code (key) used when looking up the message
-	 * @param locale
-	 *            the locale of the fallback message text provided by the tag
-	 * @param fallbackText
-	 *            the fallback text provided by tag if given code is not specified or can not be resolved
+	 * @param resolvedText the resolved message string to be customized
+	 * @param code the code (key) used when looking up the message
+	 * @param locale the locale of the fallback message text provided by the tag
+	 * @param fallbackText the fallback text provided by tag if given code is not specified or can
+	 *            not be resolved
 	 * @return customization created off passed in tag attributes.
 	 */
 	public String renderMessage(String resolvedText, String code, String locale, String fallbackText);

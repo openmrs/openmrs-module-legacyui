@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  * Tests the {@link WorkflowFormController} class.
  */
 public class WorkflowFormControllerTest extends BaseModuleWebContextSensitiveTest {
-
+	
 	/**
 	 * @see WorkflowFormController#formBackingObject(HttpServletRequest)
 	 */
@@ -35,15 +35,15 @@ public class WorkflowFormControllerTest extends BaseModuleWebContextSensitiveTes
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "");
 		request.setParameter("programId", "1");
 		request.setParameter("programWorkflowId", "1");
-
+		
 		HttpServletResponse response = new MockHttpServletResponse();
-
+		
 		WorkflowFormController controller = (WorkflowFormController) applicationContext.getBean("workflowFormController");
-
+		
 		ModelAndView modelAndView = controller.handleRequest(request, response);
-
+		
 		ProgramWorkflow command = (ProgramWorkflow) modelAndView.getModel().get("workflow");
 		Assert.assertNotNull(command.getProgramWorkflowId());
 	}
-
+	
 }

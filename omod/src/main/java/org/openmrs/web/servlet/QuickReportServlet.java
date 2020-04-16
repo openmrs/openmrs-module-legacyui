@@ -167,7 +167,8 @@ public class QuickReportServlet extends HttpServlet {
 			List<Location> locations = new ArrayList<Location>();
 			locations.add(locationObj);
 			
-			allObs = os.getObservations(null, null, questions, null, personTypes, locations, sort, null, null, null, null, true);
+			allObs = os.getObservations(null, null, questions, null, personTypes, locations, sort, null, null, null, null,
+			    true);
 		}
 		
 		List<Obs> obs = new Vector<Obs>();
@@ -232,20 +233,13 @@ public class QuickReportServlet extends HttpServlet {
 		Collection<Encounter> encounters = null;
 		
 		if (location == null || "".equals(location)) {
-			EncounterSearchCriteria encounterSearchCriteria = new EncounterSearchCriteriaBuilder()
-			.setIncludeVoided(true)
-			.setFromDate(start)
-			.setToDate(end)
-			.createEncounterSearchCriteria();
+			EncounterSearchCriteria encounterSearchCriteria = new EncounterSearchCriteriaBuilder().setIncludeVoided(true)
+			        .setFromDate(start).setToDate(end).createEncounterSearchCriteria();
 			encounters = es.getEncounters(encounterSearchCriteria);
 		} else {
 			Location locationObj = ls.getLocation(Integer.valueOf(location));
-			EncounterSearchCriteria encounterSearchCriteria = new EncounterSearchCriteriaBuilder()
-			.setIncludeVoided(true)
-			.setLocation(locationObj)
-			.setFromDate(start)
-			.setToDate(end)
-			.createEncounterSearchCriteria();
+			EncounterSearchCriteria encounterSearchCriteria = new EncounterSearchCriteriaBuilder().setIncludeVoided(true)
+			        .setLocation(locationObj).setFromDate(start).setToDate(end).createEncounterSearchCriteria();
 			encounters = es.getEncounters(encounterSearchCriteria);
 		}
 		

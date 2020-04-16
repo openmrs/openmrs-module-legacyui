@@ -679,8 +679,8 @@ public class DWRConceptService {
 			terms.addAll(cs.getConceptReferenceTerms(phrase, source, start, length, includeRetired));
 			
 			if (terms.size() == 0) {
-				objectList.add(mss.getMessage("general.noMatchesFound", new Object[] { "'" + phrase + "'" }, Context
-				        .getLocale()));
+				objectList.add(mss.getMessage("general.noMatchesFound", new Object[] { "'" + phrase + "'" },
+				    Context.getLocale()));
 			} else {
 				objectList = new ArrayList<Object>(terms.size());
 				for (ConceptReferenceTerm term : terms) {

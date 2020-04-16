@@ -50,7 +50,7 @@ public class EncounterDisplayController implements Controller {
 	
 	/**
 	 * This is the method called to produce the data and objects for the jsp page
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.Controller#handleRequest(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse)
 	 */
@@ -183,7 +183,7 @@ public class EncounterDisplayController implements Controller {
 	 * This will look through all form fields and find the one that has a concept that matches the
 	 * given concept If one is found, that formfield is removed from the given list
 	 * <code>formFields</code> If there are none found, null is returned.
-	 *
+	 * 
 	 * @param formFields list of FormFields to rifle through
 	 * @param conceptToSearchFor concept to look for in <code>formFields</code>
 	 * @return FormField object from <code>formFields</code> or null
@@ -241,7 +241,7 @@ public class EncounterDisplayController implements Controller {
 		/**
 		 * A row must be created with both a FormField to act as its label and an obs that is the
 		 * first of possibly several rows to display
-		 *
+		 * 
 		 * @throws Exception if the obsToAdd is an invalid type (meaning its contained in another
 		 *             obs group)
 		 */
@@ -259,7 +259,7 @@ public class EncounterDisplayController implements Controller {
 		
 		/**
 		 * public getter method for the formfield that is the label for this row
-		 *
+		 * 
 		 * @return FormField for this row
 		 */
 		public FormField getFormField() {
@@ -269,7 +269,7 @@ public class EncounterDisplayController implements Controller {
 		/**
 		 * public getter for the columns (that are unique concepts across all obs in this
 		 * FieldHolder)
-		 *
+		 * 
 		 * @return unique concepts across these obs
 		 */
 		public Set<Concept> getGroupMemberConcepts() {
@@ -280,7 +280,7 @@ public class EncounterDisplayController implements Controller {
 		 * public getter for the obs that are the different rows for this FieldHolder. If this isn't
 		 * a grouping type of row, the set could still have multiple obs in it because there are
 		 * multiple questions (obs) in this encounter that are asking the same thing (same concept)
-		 *
+		 * 
 		 * @return List of obs for this row
 		 */
 		public List<Obs> getObs() {
@@ -290,7 +290,7 @@ public class EncounterDisplayController implements Controller {
 		/**
 		 * Convenience method to know whether this row is an obs grouping and should be displayed
 		 * with a table or if its a single one-and-done obs and should just be shown as one value
-		 *
+		 * 
 		 * @return true/false whether this holder is for an obs grouping
 		 */
 		public boolean isObsGrouping() {
@@ -305,7 +305,7 @@ public class EncounterDisplayController implements Controller {
 		 * List of columns for each obs grouper in this fieldholder. Not every grouper will have
 		 * every column (concept), so some cells will be null. The columns are determined by
 		 * getObsGroupConcepts()
-		 *
+		 * 
 		 * @return a matrix of columns
 		 */
 		public Map<Obs, List<List<Obs>>> getObsGroupMatrix() {
@@ -340,7 +340,7 @@ public class EncounterDisplayController implements Controller {
 		/**
 		 * Add another obs grouper to this row This method shouldn't be called with obs that are
 		 * within another grouped obs. This should only be called with the parent obs grouper.
-		 *
+		 * 
 		 * @param obsToAdd Obs that should be an obs grouper
 		 */
 		public void addObservation(Obs obsToAdd) {
@@ -366,7 +366,7 @@ public class EncounterDisplayController implements Controller {
 		/**
 		 * Use this row's FormField to make comparisons about where to put it in relation to the
 		 * FieldHolder's
-		 *
+		 * 
 		 * @see org.openmrs.FormField#compareTo(org.openmrs.FormField)
 		 */
 		public int compareTo(FieldHolder other) {
@@ -389,7 +389,7 @@ public class EncounterDisplayController implements Controller {
 		
 		/**
 		 * Indicates whether some other object is "equal to" this one.
-		 *
+		 * 
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
 		@Override
@@ -412,7 +412,7 @@ public class EncounterDisplayController implements Controller {
 		/**
 		 * Convenience method to get the label that this field should have. This is produced from
 		 * the formfield associated with this row
-		 *
+		 * 
 		 * @return String representing the label to be displayed for this row
 		 */
 		public String getLabel() {
@@ -436,7 +436,7 @@ public class EncounterDisplayController implements Controller {
 		 * Convenience method to get the page number for this row. This just checks the associated
 		 * form field for its assigned page number. If the formfield doesn't have a page, this row
 		 * is thrown on the DEFAULT_PAGE_NUMBERth page.
-		 *
+		 * 
 		 * @return page number for this row
 		 */
 		public Integer getPageNumber() {

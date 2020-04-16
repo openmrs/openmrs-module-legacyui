@@ -29,7 +29,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 	
 	/**
 	 * @verifies save a new encounter role object
-	 * @see EncounterRoleFormController#save(javax.servlet.http.HttpSession, org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
+	 * @see EncounterRoleFormController#save(javax.servlet.http.HttpSession,
+	 *      org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
 	 */
 	@Test
 	public void saveEncounterRole_shouldSaveANewEncounterRoleObject() throws Exception {
@@ -47,7 +48,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 	
 	/**
 	 * @verifies raise an error if validation of encounter role fails
-	 * @see EncounterRoleFormController#save(javax.servlet.http.HttpSession, org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
+	 * @see EncounterRoleFormController#save(javax.servlet.http.HttpSession,
+	 *      org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
 	 */
 	@Test
 	public void saveEncounterRole_shouldRaiseAnErrorIfValidationOfEncounterRoleFails() throws Exception {
@@ -64,7 +66,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 	
 	/**
 	 * @verifies edit and save an existing encounter
-	 * @see EncounterRoleFormController#save(javax.servlet.http.HttpSession, org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
+	 * @see EncounterRoleFormController#save(javax.servlet.http.HttpSession,
+	 *      org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
 	 */
 	@Test
 	public void saveEncounterRole_shouldEditAndSaveAnExistingEncounter() throws Exception {
@@ -86,7 +89,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 	
 	/**
 	 * @verifies retire an existing encounter
-	 * @see EncounterRoleFormController#retire(javax.servlet.http.HttpSession, org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
+	 * @see EncounterRoleFormController#retire(javax.servlet.http.HttpSession,
+	 *      org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
 	 */
 	@Test
 	public void retire_shouldRetireAnExistingEncounter() throws Exception {
@@ -105,7 +109,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 	
 	/**
 	 * @verifies unretire an existing encounter
-	 * @see EncounterRoleFormController#unretire(javax.servlet.http.HttpSession, org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
+	 * @see EncounterRoleFormController#unretire(javax.servlet.http.HttpSession,
+	 *      org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
 	 */
 	@Test
 	public void unretire_shouldRetireAnExistingEncounter() throws Exception {
@@ -122,7 +127,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 	
 	/**
 	 * @verifies purge an existing encounter
-	 * @see EncounterRoleFormController#purge(javax.servlet.http.HttpSession, org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
+	 * @see EncounterRoleFormController#purge(javax.servlet.http.HttpSession,
+	 *      org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
 	 */
 	@Test
 	public void purge_shouldPurgeAnExistingEncounter() throws Exception {
@@ -152,7 +158,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 	
 	/**
 	 * @verifies raise an error if retire reason is not filled
-	 * @see EncounterRoleFormController#retire(javax.servlet.http.HttpSession, org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
+	 * @see EncounterRoleFormController#retire(javax.servlet.http.HttpSession,
+	 *      org.openmrs.EncounterRole, org.springframework.validation.BindingResult)
 	 */
 	@Test
 	public void retire_shouldRaiseAnErrorIfRetireReasonIsNotFilled() throws Exception {

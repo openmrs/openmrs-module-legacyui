@@ -24,40 +24,40 @@ import static org.junit.Assert.assertEquals;
  *
  */
 public class LoginControllerTest extends BaseModuleWebContextSensitiveTest {
-
-    @Autowired
-    private LoginController controller;
-
-    @Test
-    public void shouldReplaceHashtagInRedirectUrl() {
-        String redirectUrl = "www.openmrs.org/_HASHTAG_";
-
-        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        mockRequest.setParameter("redirect_url", redirectUrl);
-
-        WebRequest webRequest = new ServletWebRequest(mockRequest);
-        webRequest.setAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, true, WebRequest.SCOPE_SESSION);
-
-        ModelMap model = new ModelMap();
-
-        controller.handleRequest(webRequest, model);
-        assertEquals(webRequest.getAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, 1), "www.openmrs.org/#");
-    }
-
-    @Test
-    public void shouldSetTheRedirectAttribute() {
-        String redirectUrl = "www.openmrs.org/index";
-
-        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        mockRequest.setParameter("redirect_url", redirectUrl);
-
-        WebRequest webRequest = new ServletWebRequest(mockRequest);
-        webRequest.setAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, true, WebRequest.SCOPE_SESSION);
-
-        ModelMap model = new ModelMap();
-
-        controller.handleRequest(webRequest, model);
-        assertEquals(webRequest.getAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, 1),
-                "www.openmrs.org/index");
-    }
+	
+	@Autowired
+	private LoginController controller;
+	
+	@Test
+	public void shouldReplaceHashtagInRedirectUrl() {
+		String redirectUrl = "www.openmrs.org/_HASHTAG_";
+		
+		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+		mockRequest.setParameter("redirect_url", redirectUrl);
+		
+		WebRequest webRequest = new ServletWebRequest(mockRequest);
+		webRequest.setAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, true, WebRequest.SCOPE_SESSION);
+		
+		ModelMap model = new ModelMap();
+		
+		controller.handleRequest(webRequest, model);
+		assertEquals(webRequest.getAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, 1), "www.openmrs.org/#");
+	}
+	
+	@Test
+	public void shouldSetTheRedirectAttribute() {
+		String redirectUrl = "www.openmrs.org/index";
+		
+		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+		mockRequest.setParameter("redirect_url", redirectUrl);
+		
+		WebRequest webRequest = new ServletWebRequest(mockRequest);
+		webRequest.setAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, true, WebRequest.SCOPE_SESSION);
+		
+		ModelMap model = new ModelMap();
+		
+		controller.handleRequest(webRequest, model);
+		assertEquals(webRequest.getAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, 1),
+		    "www.openmrs.org/index");
+	}
 }

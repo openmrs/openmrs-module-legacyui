@@ -38,7 +38,7 @@ public class OpenmrsDWRServlet extends DwrServlet {
 	public void init(ServletConfig config) throws ServletException {
 		Thread.currentThread().setContextClassLoader(OpenmrsClassLoader.getInstance());
 		
-		DwrServletConfig conf =  new DwrServletConfig(config.getServletName(), config.getServletContext());
+		DwrServletConfig conf = new DwrServletConfig(config.getServletName(), config.getServletContext());
 		conf.setInitParameter("debug", "false");
 		conf.setInitParameter("crossDomainSessionSecurity", "false");
 		conf.setInitParameter("config-modules", "/WEB-INF/dwr-modules.xml");
@@ -49,7 +49,7 @@ public class OpenmrsDWRServlet extends DwrServlet {
 	@Override
 	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 		
-		HttpServletRequest request = (HttpServletRequest)req;
+		HttpServletRequest request = (HttpServletRequest) req;
 		
 		String uri = request.getRequestURI();
 		uri = uri.replace("/ms/legacyui/dwr-invoker/", "/dwr/");
@@ -64,7 +64,7 @@ public class OpenmrsDWRServlet extends DwrServlet {
 		
 		super.service(request, res);
 	}
-
+	
 	/**
 	 * This method is called to remake all of the dwr methods
 	 * 
@@ -75,9 +75,9 @@ public class OpenmrsDWRServlet extends DwrServlet {
 	}
 	
 	/**
-	 * Our module engine does not cater for servlet init parameters which are
-	 * required by the DWR servlet. So this class ensures that we keep
-	 * the servlet parameters and pass them over to the DWR engine.
+	 * Our module engine does not cater for servlet init parameters which are required by the DWR
+	 * servlet. So this class ensures that we keep the servlet parameters and pass them over to the
+	 * DWR engine.
 	 */
 	public static class DwrServletConfig implements ServletConfig {
 		

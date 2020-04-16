@@ -263,12 +263,6 @@ public class SummaryTest extends TagSupport {
 	}
 	
 	public enum TimeModifier {
-		ANY,
-		NO,
-		FIRST,
-		LAST,
-		MIN,
-		MAX,
-		AVG;
+		ANY, NO, FIRST, LAST, MIN, MAX, AVG;
 	}
 }

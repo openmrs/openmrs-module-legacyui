@@ -84,7 +84,7 @@ public class GlobalPropertyPortletController extends PortletController {
 	 * Sets propertyPrefix to "${forModule}.", hidePrefix to "true" and excludePrefix to
 	 * excludePrefix + "${forModule}.started;${forModule}.mandatory" if forModule parameter is
 	 * present.
-	 *
+	 * 
 	 * @should change model if forModule is present
 	 * @should not change mode if forModule is not present
 	 * @should not override excludePrefix but concatenate

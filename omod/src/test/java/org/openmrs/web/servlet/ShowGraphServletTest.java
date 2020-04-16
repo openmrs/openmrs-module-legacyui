@@ -107,9 +107,7 @@ public class ShowGraphServletTest extends BaseModuleWebContextSensitiveTest {
 		Long time = new Date().getTime() - 100000;
 		Calendar timeCal = Calendar.getInstance();
 		timeCal.setTimeInMillis(time);
-		timeCal
-		        .set(timeCal.get(Calendar.YEAR), timeCal.get(Calendar.MONTH), timeCal.get(Calendar.DAY_OF_MONTH) + 1, 0, 0,
-		            0);
+		timeCal.set(timeCal.get(Calendar.YEAR), timeCal.get(Calendar.MONTH), timeCal.get(Calendar.DAY_OF_MONTH) + 1, 0, 0, 0);
 		
 		Date toDate = new ShowGraphServlet().getToDate(Long.toString(time));
 		

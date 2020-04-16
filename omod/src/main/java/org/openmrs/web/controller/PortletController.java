@@ -204,14 +204,12 @@ public class PortletController implements Controller {
 							String weightString = as.getGlobalProperty("concept.weight");
 							ConceptNumeric weightConcept = null;
 							if (StringUtils.hasLength(weightString)) {
-								weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString)
-								        .getConceptId());
+								weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString).getConceptId());
 							}
 							String heightString = as.getGlobalProperty("concept.height");
 							ConceptNumeric heightConcept = null;
 							if (StringUtils.hasLength(heightString)) {
-								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString)
-								        .getConceptId());
+								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
 							}
 							for (Obs obs : patientObs) {
 								if (obs.getConcept().equals(weightConcept)) {
@@ -270,10 +268,12 @@ public class PortletController implements Controller {
 					
 					if (Context.hasPrivilege(PrivilegeConstants.GET_PROGRAMS)
 					        && Context.hasPrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)) {
-						model.put("patientPrograms", Context.getProgramWorkflowService().getPatientPrograms(p, null, null,
-						    null, null, null, false));
-						model.put("patientCurrentPrograms", Context.getProgramWorkflowService().getPatientPrograms(p, null,
-						    null, new Date(), new Date(), null, false));
+						model.put("patientPrograms",
+						    Context.getProgramWorkflowService().getPatientPrograms(p, null, null, null, null, null, false));
+						model.put(
+						    "patientCurrentPrograms",
+						    Context.getProgramWorkflowService().getPatientPrograms(p, null, null, new Date(), new Date(),
+						        null, false));
 					}
 					
 					model.put("patientId", patientId);

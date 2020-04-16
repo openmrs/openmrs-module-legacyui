@@ -119,7 +119,7 @@ public class DWRPatientServiceTest extends BaseModuleWebContextSensitiveTest {
 		Assert.assertEquals(1, resultObjects.get("count"));
 		Assert.assertEquals(1, ((List<?>) resultObjects.get("objectList")).size());
 	}
-
+	
 	/**
 	 * @see DWRPatientService#findPatientsByIdentifier(String,Integer,Integer,null)
 	 */
@@ -128,7 +128,8 @@ public class DWRPatientServiceTest extends BaseModuleWebContextSensitiveTest {
 	public void findPatientsByIdentifier_shouldGetResultsForPatientsForGivenIdentifiers() throws Exception {
 		executeDataSet("org/openmrs/web/dwr/include/DWRPatientService-findByIdentifier.xml");
 		DWRPatientService dwrService = new DWRPatientService();
-		Collection<Object> resultObjects = dwrService.findPatientsByIdentifier(new String[]{"Identifier1","Identifier2"});
+		Collection<Object> resultObjects = dwrService
+		        .findPatientsByIdentifier(new String[] { "Identifier1", "Identifier2" });
 		Assert.assertEquals(2, resultObjects.size());
 	}
 	

@@ -52,9 +52,9 @@ public class EncounterRoleFormController {
 	public static final String ENCOUNTERS_PATH = "admin/encounters/";
 	
 	/**
-	 * @param session       HttpSession for the user
+	 * @param session HttpSession for the user
 	 * @param encounterRole encounterRole object submitted from the form
-	 * @param errors        list of errors if exists   @return logical view name to resolve
+	 * @param errors list of errors if exists @return logical view name to resolve
 	 * @throws Exception
 	 * @should save a new encounter role object
 	 * @should raise an error if validation of encounter role fails
@@ -75,9 +75,9 @@ public class EncounterRoleFormController {
 	}
 	
 	/**
-	 * @param session       HttpSession for the user
+	 * @param session HttpSession for the user
 	 * @param encounterRole encounterRole object submitted from the form
-	 * @param errors        list of errors if exists   @return logical view name to resolve
+	 * @param errors list of errors if exists @return logical view name to resolve
 	 * @throws Exception
 	 * @should retire an existing encounter
 	 * @should raise an error if retire reason is not filled
@@ -100,9 +100,9 @@ public class EncounterRoleFormController {
 	}
 	
 	/**
-	 * @param session       HttpSession for the user
+	 * @param session HttpSession for the user
 	 * @param encounterRole encounterRole object submitted from the form
-	 * @param errors        list of errors if exists   @return logical view name to resolve
+	 * @param errors list of errors if exists @return logical view name to resolve
 	 * @throws Exception
 	 * @should unretire an existing encounter
 	 */
@@ -120,9 +120,9 @@ public class EncounterRoleFormController {
 	}
 	
 	/**
-	 * @param session       HttpSession for the user
+	 * @param session HttpSession for the user
 	 * @param encounterRole encounterRole object submitted from the form
-	 * @param errors        list of errors if exists   @return logical view name to resolve
+	 * @param errors list of errors if exists @return logical view name to resolve
 	 * @throws Exception
 	 * @should retire and unretire an existing encounter
 	 * @should raise an error if retire reason is not filled

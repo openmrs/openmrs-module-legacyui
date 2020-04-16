@@ -107,7 +107,7 @@
 			"bProcessing": true,
 			"bServerSide": true,
 			"fnServerData": function ( sSource, aoData, fnCallback ) {
-								aoData.push( { "name": "openmrs_version", "value": "${openmrsVersion}" } );
+								aoData.push( { "name": "openmrs_version", "value": "${openmrsPlatformVersion}" } );
 
 								<c:forEach var="module" items="${loadedModules}">
 								  aoData.push( { "name": "excludeModule", "value": "${module.moduleId}" } );

@@ -52,7 +52,7 @@ import org.springframework.web.servlet.view.RedirectView;
 /**
  * This is the controller for the "My Profile" page. This lets logged in users set personal
  * preferences, update their own information, etc.
- *
+ * 
  * @see OptionsForm
  */
 public class OptionsFormController extends SimpleFormController {
@@ -102,7 +102,7 @@ public class OptionsFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
@@ -141,8 +141,8 @@ public class OptionsFormController extends SimpleFormController {
 				properties.put(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCALE, locale.toString());
 			}
 			
-			properties.put(OpenmrsConstants.USER_PROPERTY_PROFICIENT_LOCALES, WebUtil.sanitizeLocales(opts
-			        .getProficientLocales()));
+			properties.put(OpenmrsConstants.USER_PROPERTY_PROFICIENT_LOCALES,
+			    WebUtil.sanitizeLocales(opts.getProficientLocales()));
 			properties.put(OpenmrsConstants.USER_PROPERTY_SHOW_RETIRED, opts.getShowRetiredMessage().toString());
 			properties.put(OpenmrsConstants.USER_PROPERTY_SHOW_VERBOSE, opts.getVerbose().toString());
 			properties.put(OpenmrsConstants.USER_PROPERTY_NOTIFICATION, opts.getNotification() == null ? "" : opts
@@ -193,8 +193,8 @@ public class OptionsFormController extends SimpleFormController {
 			if (!"".equals(opts.getSecretQuestionPassword())) {
 				if (!errors.hasErrors()) {
 					try {
-						us.changeQuestionAnswer(opts.getSecretQuestionPassword(), opts.getSecretQuestionNew(), opts
-						        .getSecretAnswerNew());
+						us.changeQuestionAnswer(opts.getSecretQuestionPassword(), opts.getSecretQuestionNew(),
+						    opts.getSecretAnswerNew());
 					}
 					catch (APIException e) {
 						errors.rejectValue("secretQuestionPassword", "error.password.match");
@@ -294,7 +294,7 @@ public class OptionsFormController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
@@ -332,7 +332,7 @@ public class OptionsFormController extends SimpleFormController {
 	
 	/**
 	 * Called prior to form display. Allows for data to be put in the request to be used in the view
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
 	 */
 	protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
@@ -379,14 +379,14 @@ public class OptionsFormController extends SimpleFormController {
 			}
 			
 			hints.add(mss.getMessage("options.login.password.minCharacterCount", new Object[] { minChar }, null));
-			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_CANNOT_MATCH_USERNAME_OR_SYSTEMID), mss
-			        .getMessage("options.login.password.cannotMatchUsername"));
-			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_UPPER_AND_LOWER_CASE), mss
-			        .getMessage("options.login.password.containUpperCase"));
-			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_DIGIT), mss
-			        .getMessage("options.login.password.containNumber"));
-			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_NON_DIGIT), mss
-			        .getMessage("options.login.password.containNonNumber"));
+			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_CANNOT_MATCH_USERNAME_OR_SYSTEMID),
+			    mss.getMessage("options.login.password.cannotMatchUsername"));
+			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_UPPER_AND_LOWER_CASE),
+			    mss.getMessage("options.login.password.containUpperCase"));
+			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_DIGIT),
+			    mss.getMessage("options.login.password.containNumber"));
+			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_NON_DIGIT),
+			    mss.getMessage("options.login.password.containNonNumber"));
 			
 			StringBuilder passwordHint = new StringBuilder("");
 			for (int i = 0; i < hints.size(); i++) {
@@ -409,7 +409,7 @@ public class OptionsFormController extends SimpleFormController {
 	/**
 	 * Utility method that check if a security property with boolean values is enabled and adds hint
 	 * message for it if it is not blank
-	 *
+	 * 
 	 * @param hints
 	 * @param gpValue the value of the global property
 	 * @param message the localized message to add

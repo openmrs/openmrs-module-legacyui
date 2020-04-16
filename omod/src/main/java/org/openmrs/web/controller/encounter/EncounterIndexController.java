@@ -19,5 +19,5 @@ public class EncounterIndexController {
 	public String displayEncounterIndex() {
 		return "module/legacyui/admin/encounters/index";
 	}
-
+	
 }

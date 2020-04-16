@@ -120,7 +120,7 @@ public class AddPersonController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 * @should catch an invalid birthdate
 	 * @should catch pass for a valid birthdate
@@ -260,7 +260,7 @@ public class AddPersonController extends SimpleFormController {
 	
 	/**
 	 * Returns the url string for the given personType and viewType
-	 *
+	 * 
 	 * @param personId
 	 * @param personType
 	 * @param viewType
@@ -301,8 +301,7 @@ public class AddPersonController extends SimpleFormController {
 	
 	/**
 	 * Returns the appropriate ?patientId/?userId/?name&age&birthyear etc
-	 *
-	 *
+	 * 
 	 * @param person@return
 	 * @throws UnsupportedEncodingException
 	 */

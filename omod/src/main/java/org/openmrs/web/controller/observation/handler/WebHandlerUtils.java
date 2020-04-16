@@ -13,8 +13,7 @@ import org.openmrs.Obs;
 import org.openmrs.web.WebConstants;
 
 /**
- * Common utilities for handling complex obs by the web application.
- * <br>
+ * Common utilities for handling complex obs by the web application. <br>
  * 
  * @since 1.12
  */
@@ -26,11 +25,12 @@ public class WebHandlerUtils {
 	 * 
 	 * @param obs
 	 * @param view
-	 * @return String url that will render the complex observation object (in this case, this rendering is
-	 *         done by the ComplexObsServlet)
+	 * @return String url that will render the complex observation object (in this case, this
+	 *         rendering is done by the ComplexObsServlet)
 	 */
 	public static String getHyperlink(Obs obs, String view) {
-		return "/" + WebConstants.WEBAPP_NAME + "/moduleServlet/legacyui/complexObsServlet?obsId=" + obs.getObsId() + "&view=" + view;
+		return "/" + WebConstants.WEBAPP_NAME + "/moduleServlet/legacyui/complexObsServlet?obsId=" + obs.getObsId()
+		        + "&view=" + view;
 	}
 	
 }

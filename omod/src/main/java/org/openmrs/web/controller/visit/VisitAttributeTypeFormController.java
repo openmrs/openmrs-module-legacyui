@@ -35,7 +35,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * Controller for editing visit attribute types.
- *
+ * 
  * @since 1.9
  */
 @SuppressWarnings("deprecation")
@@ -47,7 +47,7 @@ public class VisitAttributeTypeFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
@@ -68,7 +68,7 @@ public class VisitAttributeTypeFormController extends SimpleFormController {
 				view = getSuccessView();
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "VisitAttributeType.saved");
 			}
-
+			
 			// if the user is retiring out the VisitAttributeType
 			else if (request.getParameter("retire") != null) {
 				String retireReason = request.getParameter("retireReason");
@@ -82,7 +82,7 @@ public class VisitAttributeTypeFormController extends SimpleFormController {
 				
 				view = getSuccessView();
 			}
-
+			
 			// if the user is purging the visitAttributeType
 			else if (request.getParameter("purge") != null) {
 				
@@ -118,7 +118,7 @@ public class VisitAttributeTypeFormController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {

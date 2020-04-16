@@ -22,35 +22,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 /**
- * Backs the localesAndThemes.jsp page to let the admin change the default
- * locale, default theme, etc
+ * Backs the localesAndThemes.jsp page to let the admin change the default locale, default theme,
+ * etc
  */
 @Controller
 public class LocalesAndThemesFormController {
-
+	
 	/**
-	 * Called for GET requests only on the databaseChangesInfo page. POST page
-	 * requests are invalid and ignored.
+	 * Called for GET requests only on the databaseChangesInfo page. POST page requests are invalid
+	 * and ignored.
 	 * 
 	 * @param model the key value pair that will be accessible from the jsp page
 	 * @throws Exception if there is trouble getting the database changes from liquibase
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/localesAndThemes")
 	public String showPage(ModelMap model) throws Exception {
-		String theme = Context.getAdministrationService().getGlobalProperty(
-				OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_THEME);
+		String theme = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_THEME);
 		model.addAttribute("theme", theme);
-
-		String locale = Context.getAdministrationService().getGlobalProperty(
-				OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_LOCALE);
+		
+		String locale = Context.getAdministrationService()
+		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_LOCALE);
 		model.addAttribute("locale", locale);
-
+		
 		String allowedLocales = Context.getAdministrationService().getGlobalProperty(
-				OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
+		    OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
 		model.addAttribute("allowedLocales", allowedLocales);
 		return "/module/legacyui/admin/maintenance/localesAndThemes";
 	}
-
+	
 	/**
 	 * Called upon save of the page
 	 * 
@@ -59,44 +58,43 @@ public class LocalesAndThemesFormController {
 	 * @throws Exception
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/localesAndThemes")
-	public String saveDefaults(WebRequest request, @RequestParam("theme") String theme,
-			@RequestParam("locale") String locale) throws Exception {
+	public String saveDefaults(WebRequest request, @RequestParam("theme") String theme, @RequestParam("locale") String locale)
+	        throws Exception {
 		boolean localeInList = false;
 		String allowedLocales = Context.getAdministrationService().getGlobalProperty(
-				OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
+		    OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
 		String[] allowedLocalesList = allowedLocales.split(",");
-
+		
 		// save the theme
 		GlobalProperty themeGP = Context.getAdministrationService().getGlobalPropertyObject(
-				OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_THEME);
+		    OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_THEME);
 		themeGP.setPropertyValue(theme);
 		Context.getAdministrationService().saveGlobalProperty(themeGP);
-
+		
 		// save the locale
 		for (String loc : allowedLocalesList) {
 			loc = loc.trim();
 			if (loc.equals(locale)) {
 				localeInList = true;
 				GlobalProperty localeGP = Context.getAdministrationService().getGlobalPropertyObject(
-						OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_LOCALE);
+				    OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_LOCALE);
 				localeGP.setPropertyValue(locale);
 				Context.getAdministrationService().saveGlobalProperty(localeGP);
 				break;
 			}
 		}
-
+		
 		// displaying the success or failure message
 		if (localeInList) {
 			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "LocalesAndThemes.saved", WebRequest.SCOPE_SESSION);
 		} else if (StringUtils.isBlank(locale)) {
 			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "LocalesAndThemes.locale.isRequired",
-					WebRequest.SCOPE_SESSION);
+			    WebRequest.SCOPE_SESSION);
 		} else {
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "LocalesAndThemes.localeError",
-					WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "LocalesAndThemes.localeError", WebRequest.SCOPE_SESSION);
 		}
-
+		
 		return "redirect:/admin/maintenance/localesAndThemes.form";
 	}
-
+	
 }
