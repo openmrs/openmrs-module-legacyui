@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 		<br/>
 		</div>
 	</div>
@@ -44,7 +45,9 @@
 			<span id="buildDate"><openmrs:message code="footer.lastBuild"/>: <%= org.openmrs.web.WebConstants.BUILD_TIMESTAMP %></span>
 			
 			<span id="codeVersion"><openmrs:message code="footer.version"/>: ${openmrsPlatformVersion}</span>
-			
+
+			<c:if test="${not empty extraData}"><span id="extraData">${extraData}</span> </c:if>
+
 			<span id="poweredBy"><a href="http://openmrs.org"><openmrs:message code="footer.poweredBy"/> <img border="0" align="top" src="<%= request.getContextPath() %>/moduleResources/legacyui/images/openmrs_logo_tiny.png"/></a></span>
 		</div>
 	</div>

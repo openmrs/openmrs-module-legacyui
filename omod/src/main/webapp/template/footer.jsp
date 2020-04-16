@@ -6,6 +6,6 @@
 		<%@ include file="footerMinimal.jsp" %>
 	</c:when>
 	<c:otherwise>
-		<%@ include file="footerFull.jsp" %>
+		<jsp:include page="/template/footerFull.htm" />
 	</c:otherwise>
 </c:choose>

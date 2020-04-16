@@ -195,7 +195,7 @@ a:hover {
 	margin-right: 5px;
 }
 
-#buildDate, #codeVersion, #databaseVersion, #databaseVersionError {
+#buildDate, #codeVersion, #databaseVersion, #databaseVersionError,#extraData {
 	color: #999999;
 }
 
