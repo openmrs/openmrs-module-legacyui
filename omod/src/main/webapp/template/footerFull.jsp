@@ -47,6 +47,8 @@
 			<span id="codeVersion"><openmrs:message code="footer.version"/>: ${openmrsVersion}</span>
 			<c:if test="${not empty footerExtraData}"><span id="extraData">${footerExtraData}</span> </c:if>
 			
+			<span id="dockerImage"><openmrs:message code="legacyui.footer.extradata"/>: ${openmrsVersion}</span>
+			
 			<span id="poweredBy"><a href="http://openmrs.org"><openmrs:message code="footer.poweredBy"/> <img border="0" align="top" src="<%= request.getContextPath() %>/moduleResources/legacyui/images/openmrs_logo_tiny.png"/></a></span>
 		</div>
 	</div>
