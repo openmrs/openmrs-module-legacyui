@@ -34,11 +34,12 @@ import org.springframework.validation.BindingResult;
 
 /**
  * Web-layer utility methods related to customizable {@link Attribute}s
+ * 
  * @since 1.9
  */
 public class WebAttributeUtil {
 	
-	@SuppressWarnings( { "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Object getValue(HttpServletRequest request, CustomValueDescriptor descriptor, String paramName) {
 		CustomDatatype<?> datatype = CustomDatatypeUtil.getDatatype(descriptor);
 		CustomDatatypeHandler handler = CustomDatatypeUtil.getHandler(descriptor);
@@ -46,8 +47,9 @@ public class WebAttributeUtil {
 	}
 	
 	/**
-	 * Gets the value of an attribute out of an HTTP request, treating it according to the appropriate handler type.
-	 *
+	 * Gets the value of an attribute out of an HTTP request, treating it according to the
+	 * appropriate handler type.
+	 * 
 	 * @param request
 	 * @param handler
 	 * @param paramName
@@ -78,7 +80,7 @@ public class WebAttributeUtil {
 	
 	/**
 	 * something[3] -> 3
-	 *
+	 * 
 	 * @param input
 	 * @return
 	 */
@@ -90,7 +92,7 @@ public class WebAttributeUtil {
 	
 	/**
 	 * Finds an existing attribute in a Customizable parent with the given id
-	 *
+	 * 
 	 * @param owner
 	 * @param existingAttributeId
 	 * @return
@@ -106,7 +108,7 @@ public class WebAttributeUtil {
 	
 	/**
 	 * Helper method to void an attribute
-	 *
+	 * 
 	 * @param existing
 	 */
 	private static void voidAttribute(Attribute<?, ?> existing) {
@@ -117,10 +119,11 @@ public class WebAttributeUtil {
 	
 	/**
 	 * Handles attributes submitted on a form that uses the "attributesForType" tag
-	 *
+	 * 
 	 * @param owner the object that the attributes will be applied to
 	 * @param errors Spring binding object for owner
-	 * @param attributeClass the actual class of the attribute we need to instantiate, e.g. LocationAttribute
+	 * @param attributeClass the actual class of the attribute we need to instantiate, e.g.
+	 *            LocationAttribute
 	 * @param request the user's submission
 	 * @param attributeTypes all available attribute types for owner's class
 	 */

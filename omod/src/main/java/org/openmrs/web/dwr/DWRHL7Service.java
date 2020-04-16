@@ -32,7 +32,7 @@ public class DWRHL7Service {
 	
 	/**
 	 * Handles the ajax call for starting the migration of hl7 in archives to the file system
-	 *
+	 * 
 	 * @return an object array with a boolean value at index 0 indicating if the migration was
 	 *         started or not, at the second index is an optional descriptive message.
 	 */
@@ -59,7 +59,7 @@ public class DWRHL7Service {
 	
 	/**
 	 * Handles the ajax call to stop hl7 migration process
-	 *
+	 * 
 	 * @return a descriptive message
 	 */
 	public String stopHl7ArchiveMigration() {
@@ -70,7 +70,7 @@ public class DWRHL7Service {
 	
 	/**
 	 * Processes the ajax call for retrieving the progress and status
-	 *
+	 * 
 	 * @return a map containing the number migrated, the state of the migrate thread at a given time
 	 *         when it is running and a message string.
 	 */

@@ -27,13 +27,15 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Consists of unit tests for the PatientFormController
- *
+ * 
  * @see PatientFormController
  */
 public class PatientFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	/**
-	 * @see PatientFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 * @see PatientFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object,
+	 *      org.springframework.validation.BindException)
 	 */
 	@Test
 	@Verifies(value = "void patient when void reason is not empty", method = "onSubmit(HttpServletRequest, HttpServletResponse, Object, BindException)")
@@ -56,7 +58,9 @@ public class PatientFormControllerTest extends BaseModuleWebContextSensitiveTest
 	}
 	
 	/**
-	 * @see PatientFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 * @see PatientFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object,
+	 *      org.springframework.validation.BindException)
 	 */
 	@Test
 	@Verifies(value = "not void patient when void reason is empty", method = "onSubmit(HttpServletRequest, HttpServletResponse, Object, BindException)")

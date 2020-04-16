@@ -113,7 +113,7 @@ public class FormatTagTest extends BaseModuleWebContextSensitiveTest {
 	 * @return
 	 */
 	private ConceptName buildName(String name, Locale locale, boolean localePreferred, ConceptNameType nameType,
-	                              ConceptNameTag tag) {
+	        ConceptNameTag tag) {
 		ConceptName ret = new ConceptName();
 		ret.setName(name);
 		ret.setLocale(locale);

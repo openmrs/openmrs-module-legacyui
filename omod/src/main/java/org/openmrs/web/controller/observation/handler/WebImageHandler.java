@@ -47,8 +47,8 @@ public class WebImageHandler extends ImageHandler {
 	 * <li>{@link ComplexObsHandler#URI_VIEW}: a lightweight alternative to returning the
 	 * ComplexData from the parent class since this does not require access to the service layer.
 	 * Gives a link to the ComplexServlet for this obs
-	 * <li>{@link ComplexObsHandler#HTML_VIEW}: An html tag that will display this complex data. For this
-	 * ImageHandler, its an html img tag.
+	 * <li>{@link ComplexObsHandler#HTML_VIEW}: An html tag that will display this complex data. For
+	 * this ImageHandler, its an html img tag.
 	 * </ul>
 	 * 
 	 * @see org.openmrs.obs.handler.ImageHandler#getObs(Obs, String)

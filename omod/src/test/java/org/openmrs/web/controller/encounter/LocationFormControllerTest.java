@@ -33,8 +33,7 @@ import org.openmrs.validator.LocationValidator;
  */
 public class LocationFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
-	private LocationFormController getLocationFormController()
-	{
+	private LocationFormController getLocationFormController() {
 		LocationFormController controller = (LocationFormController) applicationContext.getBean("locationForm");
 		controller.setApplicationContext(applicationContext);
 		return controller;

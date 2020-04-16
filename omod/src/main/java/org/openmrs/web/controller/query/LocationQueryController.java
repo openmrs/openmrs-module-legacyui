@@ -50,7 +50,7 @@ public class LocationQueryController {
 	
 	/**
 	 * Gets JSON formatted for jstree jquery plugin [ { data: ..., children: ...}, ... ]
-	 *
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -80,7 +80,7 @@ public class LocationQueryController {
 	
 	/**
 	 * { data: "Location's name (tags)", children: [ recursive calls to this method, ... ] }
-	 *
+	 * 
 	 * @param loc
 	 * @return
 	 */
@@ -151,6 +151,7 @@ public class LocationQueryController {
 	
 	/**
 	 * Returns metadata name formatted if retired
+	 * 
 	 * @param metadata
 	 * @return
 	 */

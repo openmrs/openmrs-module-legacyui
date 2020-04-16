@@ -22,7 +22,7 @@ import org.openmrs.api.context.Context;
 public class PatientProgramItem {
 	
 	private static final String DATE_PATTERN = "yyyy-MM-dd";
-
+	
 	private Integer patientProgramId;
 	
 	private Integer patientId;
@@ -130,7 +130,6 @@ public class PatientProgramItem {
 	public void setPatientProgramId(Integer patientProgramId) {
 		this.patientProgramId = patientProgramId;
 	}
-	
 	
 	public String getDateEnrolledAsYmd() {
 		DateFormat ymdDf = new SimpleDateFormat(DATE_PATTERN);

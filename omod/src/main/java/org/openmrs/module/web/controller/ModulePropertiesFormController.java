@@ -41,40 +41,39 @@ public class ModulePropertiesFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(HttpServletRequest,
-	 *      HttpServletResponse, Object,
-	 *      BindException)
+	 *      HttpServletResponse, Object, BindException)
 	 */
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command,
 	        BindException errors) throws Exception {
-
+		
 		if (!Context.hasPrivilege(PrivilegeConstants.MANAGE_MODULES)) {
 			throw new APIAuthenticationException("Privilege required: " + PrivilegeConstants.MANAGE_MODULES);
 		}
-
+		
 		HttpSession httpSession = request.getSession();
 		String view = getFormView();
 		String success = "";
 		String error = "";
-
+		
 		view = getSuccessView();
-
+		
 		if (!"".equals(success)) {
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, success);
 		}
-
+		
 		if (!"".equals(error)) {
 			httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, error);
 		}
-
+		
 		return new ModelAndView(new RedirectView(view));
 	}
-
+	
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
@@ -88,8 +87,8 @@ public class ModulePropertiesFormController extends SimpleFormController {
 		MessageSourceAccessor msa = getMessageSourceAccessor();
 		
 		map.put("allowUpload", ModuleUtil.allowAdmin().toString());
-		map.put("disallowUploads", msa.getMessage("Module.disallowUploads",
-		    new String[] { ModuleConstants.RUNTIMEPROPERTY_ALLOW_UPLOAD }));
+		map.put("disallowUploads",
+		    msa.getMessage("Module.disallowUploads", new String[] { ModuleConstants.RUNTIMEPROPERTY_ALLOW_UPLOAD }));
 		
 		return map;
 	}

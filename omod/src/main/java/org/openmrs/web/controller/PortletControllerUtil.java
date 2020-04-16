@@ -25,7 +25,7 @@ import org.openmrs.module.web.extension.FormEntryHandler;
 
 /**
  * Contains utility method(s) to be used by PortletControllers
- *
+ * 
  * @since 1.9
  */
 public class PortletControllerUtil {
@@ -34,7 +34,7 @@ public class PortletControllerUtil {
 	
 	/**
 	 * Adds encounter formToEdit and formToView Url maps to the specified model
-	 *
+	 * 
 	 * @param model the model to which to add the maps
 	 */
 	public static void addFormToEditAndViewUrlMaps(Map<String, Object> model) {

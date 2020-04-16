@@ -18,7 +18,7 @@ public class CollectionContains {
 	
 	/**
 	 * Returns true if collection is not null and contains obj
-	 *
+	 * 
 	 * @param collection
 	 * @param obj
 	 * @return whether collection contains obj

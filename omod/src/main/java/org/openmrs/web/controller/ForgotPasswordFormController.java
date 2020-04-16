@@ -45,7 +45,7 @@ public class ForgotPasswordFormController extends SimpleFormController {
 	
 	/**
 	 * Not used with the forgot password form controller.
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
@@ -66,13 +66,13 @@ public class ForgotPasswordFormController extends SimpleFormController {
 	/**
 	 * This takes in the form twice. The first time when the input their username and the second
 	 * when they submit both their username and their secret answer
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
 	 */
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
-	                                BindException errors) throws Exception {
+	        BindException errors) throws Exception {
 		
 		HttpSession httpSession = request.getSession();
 		
@@ -123,7 +123,8 @@ public class ForgotPasswordFormController extends SimpleFormController {
 					if (username != null && username.length() > 0) {
 						user = Context.getUserService().getUserByUsername(username);
 					}
-				} finally {
+				}
+				finally {
 					Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				}
 				
@@ -151,7 +152,8 @@ public class ForgotPasswordFormController extends SimpleFormController {
 				try {
 					Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 					user = Context.getUserService().getUserByUsername(username);
-				} finally {
+				}
+				finally {
 					Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				}
 				
@@ -171,7 +173,8 @@ public class ForgotPasswordFormController extends SimpleFormController {
 						try {
 							Context.addProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
 							Context.getUserService().changePassword(user, randomPassword);
-						} finally {
+						}
+						finally {
 							Context.removeProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
 						}
 						
@@ -179,8 +182,9 @@ public class ForgotPasswordFormController extends SimpleFormController {
 						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.password.reset");
 						Context.authenticate(username, randomPassword);
 						httpSession.setAttribute("loginAttempts", 0);
-
-						return new ModelAndView(new RedirectView(request.getContextPath() + "/options.form#Change Login Info"));
+						
+						return new ModelAndView(new RedirectView(request.getContextPath()
+						        + "/options.form#Change Login Info"));
 					} else {
 						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.answer.invalid");
 						httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "auth.question.fill");

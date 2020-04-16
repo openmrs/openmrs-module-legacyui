@@ -32,7 +32,6 @@ import org.springframework.ui.ModelMap;
  */
 public class PatientDashboardControllerTest extends BaseModuleWebContextSensitiveTest {
 	
-	
 	private static final String PATIENT_FIND_VIEW = "module/legacyui/findPatient";
 	
 	private static final String PATIENT_DASHBOARD_VIEW = "module/legacyui/patientDashboardForm";

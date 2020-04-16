@@ -15,10 +15,11 @@ import org.openmrs.test.Verifies;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 
 public class OpenmrsHtmlEscapingAwareTagTest extends BaseModuleWebContextSensitiveTest {
+	
 	private static class OpenmrsHtmlEscapingAwareTagUnderTest extends OpenmrsHtmlEscapingAwareTag {
-
+		
 		private static final long serialVersionUID = 1L;
-
+		
 		@Override
 		protected int doEndTagInternal() throws Exception {
 			// Not called in this test, so return value doesn't matter
@@ -26,8 +27,7 @@ public class OpenmrsHtmlEscapingAwareTagTest extends BaseModuleWebContextSensiti
 		}
 		
 		@Override
-		public boolean isHtmlEscape()
-		{
+		public boolean isHtmlEscape() {
 			return super.isHtmlEscape();
 		}
 		
@@ -35,20 +35,17 @@ public class OpenmrsHtmlEscapingAwareTagTest extends BaseModuleWebContextSensiti
 	
 	@Test
 	@Verifies(value = "set the escape to true", method = "setHtmlEscape()")
-	public void setHtmlEscape_true() throws Exception
-	{		
+	public void setHtmlEscape_true() throws Exception {
 		setHtmlEscape("true", true);
 	}
 	
 	@Test
 	@Verifies(value = "set the escape to false", method = "setHtmlEscape()")
-	public void setHtmlEscape_false() throws Exception
-	{
+	public void setHtmlEscape_false() throws Exception {
 		setHtmlEscape("false", false);
 	}
-
-	private void setHtmlEscape(String setValue, boolean expectedValue)
-			throws Exception {
+	
+	private void setHtmlEscape(String setValue, boolean expectedValue) throws Exception {
 		final OpenmrsHtmlEscapingAwareTag objectUnderTest = new OpenmrsHtmlEscapingAwareTagUnderTest();
 		
 		objectUnderTest.setHtmlEscape(setValue);

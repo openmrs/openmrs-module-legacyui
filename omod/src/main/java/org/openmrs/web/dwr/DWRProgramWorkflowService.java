@@ -128,7 +128,7 @@ public class DWRProgramWorkflowService {
 	 * Also, if the enrollment date comes after the completion date, the PatientProgram will not be
 	 * updated.
 	 * </p>
-	 *
+	 * 
 	 * @param patientProgramId
 	 * @param enrollmentDateYmd
 	 * @param completionDateYmd
@@ -137,7 +137,7 @@ public class DWRProgramWorkflowService {
 	 * @throws ParseException
 	 */
 	public void updatePatientProgram(Integer patientProgramId, String enrollmentDateYmd, String completionDateYmd,
-	                                 Integer locationId, Integer outcomeId) throws ParseException {
+	        Integer locationId, Integer outcomeId) throws ParseException {
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		Location loc = null;
 		if (locationId != null) {
@@ -220,7 +220,7 @@ public class DWRProgramWorkflowService {
 	//TODO there doesn't seem to be any way in the administrator interface to retire a state, just a concept.
 	
 	public void changeToState(Integer patientProgramId, Integer programWorkflowId, Integer programWorkflowStateId,
-	                          String onDateDMY) throws ParseException {
+	        String onDateDMY) throws ParseException {
 		ProgramWorkflowService s = Context.getProgramWorkflowService();
 		PatientProgram pp = s.getPatientProgram(patientProgramId);
 		ProgramWorkflowState st = pp.getProgram().getWorkflow(programWorkflowId).getState(programWorkflowStateId);

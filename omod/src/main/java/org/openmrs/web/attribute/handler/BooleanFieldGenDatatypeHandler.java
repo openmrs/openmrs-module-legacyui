@@ -58,7 +58,8 @@ public class BooleanFieldGenDatatypeHandler implements FieldGenDatatypeHandler<B
 	}
 	
 	/**
-	 * @see org.openmrs.web.attribute.handler.FieldGenDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype, javax.servlet.http.HttpServletRequest, java.lang.String)
+	 * @see org.openmrs.web.attribute.handler.FieldGenDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype,
+	 *      javax.servlet.http.HttpServletRequest, java.lang.String)
 	 */
 	@Override
 	public Boolean getValue(org.openmrs.customdatatype.datatype.BooleanDatatype datatype, HttpServletRequest request,
@@ -76,7 +77,8 @@ public class BooleanFieldGenDatatypeHandler implements FieldGenDatatypeHandler<B
 	}
 	
 	/**
-	 * @see org.openmrs.web.attribute.handler.HtmlDisplayableDatatypeHandler#toHtmlSummary(org.openmrs.customdatatype.CustomDatatype, java.lang.String)
+	 * @see org.openmrs.web.attribute.handler.HtmlDisplayableDatatypeHandler#toHtmlSummary(org.openmrs.customdatatype.CustomDatatype,
+	 *      java.lang.String)
 	 */
 	@Override
 	public CustomDatatype.Summary toHtmlSummary(CustomDatatype<Boolean> datatype, String valueReference) {
@@ -84,7 +86,8 @@ public class BooleanFieldGenDatatypeHandler implements FieldGenDatatypeHandler<B
 	}
 	
 	/**
-	 * @see org.openmrs.web.attribute.handler.HtmlDisplayableDatatypeHandler#toHtml(org.openmrs.customdatatype.CustomDatatype, java.lang.String)
+	 * @see org.openmrs.web.attribute.handler.HtmlDisplayableDatatypeHandler#toHtml(org.openmrs.customdatatype.CustomDatatype,
+	 *      java.lang.String)
 	 */
 	@Override
 	public String toHtml(CustomDatatype<Boolean> datatype, String valueReference) {

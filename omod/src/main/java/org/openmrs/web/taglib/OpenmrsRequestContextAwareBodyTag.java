@@ -21,13 +21,14 @@ import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
 /**
- * Similar to Spring's {@link RequestContextAwareTag}, but intended to support tag body handling on the basis of functionalities,
- * provided by JSTL {@link BodyTagSupport}. Actually, it inherits additional convenience methods including getter methods for the
- * bodyContent property and methods to get at the previous out {@link JspWriter}. May be considered as base class for all tags that
+ * Similar to Spring's {@link RequestContextAwareTag}, but intended to support tag body handling on
+ * the basis of functionalities, provided by JSTL {@link BodyTagSupport}. Actually, it inherits
+ * additional convenience methods including getter methods for the bodyContent property and methods
+ * to get at the previous out {@link JspWriter}. May be considered as base class for all tags that
  * require a {@link RequestContext} and aware on processing of tag body content.
  * <p>
- * With use of a <code>RequestContext</code> instance, you can get easy access to current state like the web application context,
- * locale and so on.
+ * With use of a <code>RequestContext</code> instance, you can get easy access to current state like
+ * the web application context, locale and so on.
  * </p>
  */
 public abstract class OpenmrsRequestContextAwareBodyTag extends BodyTagSupport {
@@ -50,8 +51,8 @@ public abstract class OpenmrsRequestContextAwareBodyTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * After tag body has been evaluated and buffered this creates and exposes the current RequestContext. Delegates to
-	 * {@link #doEndTagInternal()} for actual work.
+	 * After tag body has been evaluated and buffered this creates and exposes the current
+	 * RequestContext. Delegates to {@link #doEndTagInternal()} for actual work.
 	 */
 	@Override
 	public final int doEndTag() throws JspException {
@@ -92,8 +93,8 @@ public abstract class OpenmrsRequestContextAwareBodyTag extends BodyTagSupport {
 	 * Called by doEndTag to perform the actual work.
 	 * 
 	 * @return same as BodyTagSupport.doEndTag
-	 * @throws Exception
-	 *             any exception, any checked one other than a JspException gets wrapped in a JspException by doEndTag
+	 * @throws Exception any exception, any checked one other than a JspException gets wrapped in a
+	 *             JspException by doEndTag
 	 * @see javax.servlet.jsp.tagext.TagSupport#doEndTag
 	 */
 	protected abstract int doEndTagInternal() throws Exception;

@@ -73,15 +73,13 @@ public class ExtensionPopupMenuTag extends TagSupport {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<span style=\"position: relative\">");
 		if (below) {
-			sb
-			        .append("<div id=\""
-			                + popupDivId
-			                + "\" style=\"width: 35em; border: 1px solid black; background-color: #f0f0a0; position: absolute; top: 0px; padding-right: 1.2em; z-index: 1; display: none\">");
+			sb.append("<div id=\""
+			        + popupDivId
+			        + "\" style=\"width: 35em; border: 1px solid black; background-color: #f0f0a0; position: absolute; top: 0px; padding-right: 1.2em; z-index: 1; display: none\">");
 		} else {
-			sb
-			        .append("<div id=\""
-			                + popupDivId
-			                + "\" style=\"width: 35em; border: 1px solid black; background-color: #f0f0a0; position: absolute; bottom: 0px; padding-right: 1.2em; z-index: 1; display: none\">");
+			sb.append("<div id=\""
+			        + popupDivId
+			        + "\" style=\"width: 35em; border: 1px solid black; background-color: #f0f0a0; position: absolute; bottom: 0px; padding-right: 1.2em; z-index: 1; display: none\">");
 		}
 		
 		sb.append("<div style=\"float: right\"><a href=\"javascript:hideLayer('" + popupDivId + "');\" >["

@@ -38,11 +38,10 @@ public class FieldTypeListController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
-	 *
 	 * @should display a user friendly error message
 	 */
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
@@ -105,7 +104,7 @@ public class FieldTypeListController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {

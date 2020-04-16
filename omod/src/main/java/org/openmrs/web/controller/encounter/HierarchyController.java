@@ -40,8 +40,10 @@ public class HierarchyController {
 	@RequestMapping("/admin/locations/hierarchy")
 	public void showHierarchy(ModelMap model) throws IOException {
 		model.addAttribute("json", getHierarchyAsJson());
-		model.addAttribute("locationWidgetType", Context.getAdministrationService().getGlobalProperty(
-		    OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, "default"));
+		model.addAttribute(
+		    "locationWidgetType",
+		    Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE,
+		        "default"));
 	}
 	
 	@RequestMapping("/admin/locations/changeLocationWidgetType")
@@ -53,7 +55,7 @@ public class HierarchyController {
 	
 	/**
 	 * Gets JSON formatted for jstree jquery plugin [ { data: ..., children: ...}, ... ]
-	 *
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -76,7 +78,7 @@ public class HierarchyController {
 	
 	/**
 	 * { data: "Location's name (tags)", children: [ recursive calls to this method, ... ] }
-	 *
+	 * 
 	 * @param loc
 	 * @return
 	 */

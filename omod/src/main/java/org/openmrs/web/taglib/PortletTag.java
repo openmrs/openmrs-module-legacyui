@@ -126,8 +126,12 @@ public class PortletTag extends ImportSupport {
 	
 	/**
 	 * Generates the portlet url.
-	 * <ul><li>Core portlets are expected to be in the /WEB-INF/view/portlets/ folder.</li>
-	 * <li>Module portlets are expected to be in the /WEB-INF/view/module/{@code moduleId}/portlets/ folder.</li></ul>
+	 * <ul>
+	 * <li>Core portlets are expected to be in the /WEB-INF/view/portlets/ folder.</li>
+	 * <li>Module portlets are expected to be in the /WEB-INF/view/module/{@code moduleId}/portlets/
+	 * folder.</li>
+	 * </ul>
+	 * 
 	 * @param portletUrl The portlet url.
 	 * @param moduleId The optional portlet module id.
 	 * @return The url for the portlet.

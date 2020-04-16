@@ -9,7 +9,6 @@
  */
 package org.openmrs.module.legacyui;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.BaseModuleActivator;
@@ -21,7 +20,7 @@ import org.openmrs.module.ModuleActivator;
 public class LegacyUIActivator extends BaseModuleActivator {
 	
 	protected Log log = LogFactory.getLog(getClass());
-		
+	
 	/**
 	 * @see ModuleActivator#willRefreshContext()
 	 */
@@ -63,5 +62,5 @@ public class LegacyUIActivator extends BaseModuleActivator {
 	public void stopped() {
 		log.info("Legacy UI Module stopped");
 	}
-		
+	
 }

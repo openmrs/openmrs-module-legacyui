@@ -13,6 +13,7 @@ import org.openmrs.Location;
 
 /**
  * This is helper bean use by {@link ForEachRecordTag} when fetching "locationHierarchy"
+ * 
  * @since 1.9
  */
 public class LocationAndDepth {

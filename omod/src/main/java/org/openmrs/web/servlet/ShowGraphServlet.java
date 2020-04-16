@@ -145,7 +145,7 @@ public class ShowGraphServlet extends HttpServlet {
 	/**
 	 * The main method for this class. It will create a JFreeChart object to be written to the
 	 * response.
-	 *
+	 * 
 	 * @param request the current request will all the parameters needed
 	 * @return JFreeChart object to be rendered
 	 * @should set value axis label to given units
@@ -296,12 +296,12 @@ public class ShowGraphServlet extends HttpServlet {
 			        && obs.getObsDatetime().getTime() < toDate.getTime()) {
 				cal.setTime(obs.getObsDatetime());
 				if (timeScale == Minute.class) {
-					Minute min = new Minute(cal.get(Calendar.MINUTE), cal.get(Calendar.HOUR_OF_DAY), cal
-					        .get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+					Minute min = new Minute(cal.get(Calendar.MINUTE), cal.get(Calendar.HOUR_OF_DAY),
+					        cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
 					series1.addOrUpdate(min, obs.getValueNumeric());
 				} else if (timeScale == Hour.class) {
-					Hour hour = new Hour(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.DAY_OF_MONTH), cal
-					        .get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+					Hour hour = new Hour(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.DAY_OF_MONTH),
+					        cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
 					series1.addOrUpdate(hour, obs.getValueNumeric());
 				} else {
 					Day day = new Day(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
@@ -316,12 +316,12 @@ public class ShowGraphServlet extends HttpServlet {
 			        && obs.getObsDatetime().getTime() < toDate.getTime()) {
 				cal.setTime(obs.getObsDatetime());
 				if (timeScale == Minute.class) {
-					Minute min = new Minute(cal.get(Calendar.MINUTE), cal.get(Calendar.HOUR_OF_DAY), cal
-					        .get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+					Minute min = new Minute(cal.get(Calendar.MINUTE), cal.get(Calendar.HOUR_OF_DAY),
+					        cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
 					series2.addOrUpdate(min, obs.getValueNumeric());
 				} else if (timeScale == Hour.class) {
-					Hour hour = new Hour(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.DAY_OF_MONTH), cal
-					        .get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
+					Hour hour = new Hour(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.DAY_OF_MONTH),
+					        cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
 					series2.addOrUpdate(hour, obs.getValueNumeric());
 				} else {
 					Day day = new Day(cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR));
@@ -439,7 +439,7 @@ public class ShowGraphServlet extends HttpServlet {
 	/**
 	 * Get the FromDate object from the given string that is the time in milliseconds. If
 	 * dateFromRequest is null, return 1 year ago from today.
-	 *
+	 * 
 	 * @param dateFromRequest String that was passed into this servlet
 	 * @return Date parsed from dateFromRequest string
 	 * @should return one year previous to today if parameter is null
@@ -463,7 +463,7 @@ public class ShowGraphServlet extends HttpServlet {
 	/**
 	 * Get the toDate object from the given string that is the time in milliseconds. If
 	 * dateFromRequest is null, return tomorrow's date.
-	 *
+	 * 
 	 * @param dateFromRequest String that was passed into this servlet
 	 * @return Date parsed from dateFromRequest string
 	 * @should return next months date if parameter is null

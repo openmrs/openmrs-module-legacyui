@@ -149,7 +149,7 @@ public class DatatableResponse {
 	}
 	
 	/**
-	 * Adds the given row to the data. 
+	 * Adds the given row to the data.
 	 * 
 	 * @param row
 	 */

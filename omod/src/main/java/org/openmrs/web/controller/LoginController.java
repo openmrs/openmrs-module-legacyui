@@ -28,7 +28,7 @@ public class LoginController {
 	
 	/**
 	 * Generates an appropriate alert message and send it to users with the system developer role
-	 *
+	 * 
 	 * @param webRequest the {@link WebRequest} object
 	 * @param model the {@link ModelMap} object
 	 * @return the view name
@@ -44,7 +44,7 @@ public class LoginController {
 			webRequest.removeAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, WebRequest.SCOPE_SESSION);
 		}
 		//If the user is logged in and there are no privilege problems, he should be redirected to home
-		if(Context.getAuthenticatedUser() != null && !failedPrivilegeCheck) {
+		if (Context.getAuthenticatedUser() != null && !failedPrivilegeCheck) {
 			return "redirect:/index.htm";
 		} else if (Context.getAuthenticatedUser() != null && failedPrivilegeCheck) { //Else, if there is a currently logged in user and they failed a privilege check, else go to login in page
 			model.addAttribute("foundMissingPrivileges", true);
@@ -125,7 +125,7 @@ public class LoginController {
 			model.put("reason", reason);
 			model.put("refererUrl", refererUrl);
 		}
-
+		
 		if (webRequest.getParameter("redirect_url") != null) {
 			String redirectUrlTemp = webRequest.getParameter("redirect_url").toString();
 			if (StringUtils.isNotBlank(redirectUrlTemp) && !redirectUrlTemp.contains("login.")) {

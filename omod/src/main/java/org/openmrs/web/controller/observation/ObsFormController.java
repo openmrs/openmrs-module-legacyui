@@ -68,7 +68,7 @@ public class ObsFormController extends SimpleFormController {
 	/**
 	 * Allows for Integers to be used as values in input tags. Normally, only strings and lists are
 	 * expected
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest,
 	 *      org.springframework.web.bind.ServletRequestDataBinder)
 	 */
@@ -117,7 +117,7 @@ public class ObsFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
@@ -158,7 +158,7 @@ public class ObsFormController extends SimpleFormController {
 					
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Obs.saved");
 				}
-
+				
 				// if the user is voiding out the observation
 				else if (request.getParameter("voidObs") != null) {
 					String voidReason = request.getParameter("voidReason");
@@ -170,7 +170,7 @@ public class ObsFormController extends SimpleFormController {
 					os.voidObs(obs, voidReason);
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Obs.voidedSuccessfully");
 				}
-
+				
 				// if this obs is already voided and needs to be unvoided
 				else if (request.getParameter("unvoidObs") != null) {
 					os.unvoidObs(obs);
@@ -205,7 +205,7 @@ public class ObsFormController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
@@ -240,7 +240,7 @@ public class ObsFormController extends SimpleFormController {
 	
 	/**
 	 * The other things shown on the obs form that are in the database
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest,
 	 *      java.lang.Object, org.springframework.validation.Errors)
 	 */
@@ -302,7 +302,7 @@ public class ObsFormController extends SimpleFormController {
 	
 	/**
 	 * Sets the value of a complex obs from an http request.
-	 *
+	 * 
 	 * @param obs the complex obs whose value to set.
 	 * @param request the http request.
 	 * @return the complex data input stream.

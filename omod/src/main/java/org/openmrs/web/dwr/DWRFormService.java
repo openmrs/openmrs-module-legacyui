@@ -320,7 +320,7 @@ public class DWRFormService {
 		        + "defaultValue: \"" + WebUtil.escapeQuotesAndNewlines(field.getDefaultValue()) + "\", "
 		        + "selectMultiple: " + field.getSelectMultiple() + ", " + "isCodedDatatype: " + isCodedDatatype + ", "
 		        + "numForms: " + size + ", " + "isSet: " + isSet + ", " +
-
+		        
 		        "fieldNumber: " + ff.getFieldNumber() + ", " + "fieldPart: \""
 		        + (ff.getFieldPart() == null ? "" : WebUtil.escapeQuotesAndNewlines(ff.getFieldPart())) + "\", "
 		        + "pageNumber: " + ff.getPageNumber() + ", " + "minOccurs: " + ff.getMinOccurs() + ", " + "maxOccurs: "

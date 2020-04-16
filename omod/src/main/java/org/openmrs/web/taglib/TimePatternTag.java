@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 
 /**
  * Returns a time pattern sting (E.g hh:mm ) suitable for jquery or Java in required locale
- *
+ * 
  * @since 1.9
  */
 public class TimePatternTag extends TagSupport {
@@ -33,14 +33,14 @@ public class TimePatternTag extends TagSupport {
 	private String localize = null;//TRUE by default
 	
 	/**
-	 * Defines the format, "jquery" for time pattern to be in jquery format
-	 * else time pattern to be in Java format
+	 * Defines the format, "jquery" for time pattern to be in jquery format else time pattern to be
+	 * in Java format
 	 */
 	private String format = null;
 	
 	/**
 	 * Does the actual working of printing the time pattern
-	 *
+	 * 
 	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
 	 */
 	@Override

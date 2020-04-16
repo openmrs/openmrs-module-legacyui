@@ -42,27 +42,28 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class SettingsController {
-
+	
 	protected final Logger log = Logger.getLogger(getClass());
-
+	
 	public static final String SETTINGS_PATH = "admin/maintenance/settings";
+	
 	public static final String SETTINGS_VIEW_PATH = "/module/legacyui/admin/maintenance/settings";
-
+	
 	public static final String SETTINGS_FORM = "settingsForm";
-
+	
 	public static final String SHOW = "show";
-
+	
 	public static final String SECTIONS = "sections";
-
+	
 	@RequestMapping(value = SETTINGS_PATH, method = RequestMethod.GET)
 	public String showSettings() {
 		return SETTINGS_VIEW_PATH;
 	}
-
+	
 	@RequestMapping(value = SETTINGS_PATH, method = RequestMethod.POST)
 	public String updateSettings(@ModelAttribute(SETTINGS_FORM) SettingsForm settingsForm, Errors errors,
-			HttpServletRequest request, HttpSession session) {
-
+	        HttpServletRequest request, HttpSession session) {
+		
 		List<GlobalProperty> toSave = new ArrayList<GlobalProperty>();
 		try {
 			for (int i = 0; i < settingsForm.getSettings().size(); ++i) {
@@ -75,9 +76,10 @@ public class SettingsController {
 					if (handler != null) {
 						try {
 							Object value = WebAttributeUtil.getValue(request, dt, handler, "settings[" + i
-									+ "].globalProperty.propertyValue");
+							        + "].globalProperty.propertyValue");
 							property.getGlobalProperty().setValue(value);
-						} catch (Exception ex) {
+						}
+						catch (Exception ex) {
 							String originalValue = request.getParameter("originalValue[" + i + "]");
 							property.getGlobalProperty().setPropertyValue(originalValue);
 							errors.rejectValue("settings[" + i + "].globalProperty.propertyValue", "general.invalid");
@@ -86,34 +88,36 @@ public class SettingsController {
 				}
 				toSave.add(property.getGlobalProperty());
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Error saving global property", e);
 			errors.reject("GlobalProperty.not.saved");
 			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, e.getMessage());
 		}
-
+		
 		if (errors.hasErrors()) {
 			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "GlobalProperty.not.saved");
-
+			
 		} else {
 			try {
 				for (GlobalProperty gp : toSave) {
 					getService().saveGlobalProperty(gp);
 				}
 				session.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "GlobalProperty.saved");
-			} catch (APIException e) {
+			}
+			catch (APIException e) {
 				errors.reject("GlobalProperty.not.saved");
 				session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, e.getMessage());
 			}
 			// TODO: move this to a GlobalPropertyListener
 			// refresh log level from global property(ies)
 			OpenmrsUtil.applyLogLevels();
-
+			
 			OpenmrsUtil.setupLogAppenders();
 		}
 		return SETTINGS_VIEW_PATH;
 	}
-
+	
 	@ModelAttribute(SECTIONS)
 	public List<String> getSections() {
 		SortedSet<String> sortedSections = new TreeSet<String>();
@@ -124,16 +128,16 @@ public class SettingsController {
 				sortedSections.add(property.getSection());
 			}
 		}
-
+		
 		List<String> sections = new ArrayList<String>();
 		if (sortedSections.remove(SettingsProperty.GENERAL)) {
 			sections.add(SettingsProperty.GENERAL);
 		}
 		sections.addAll(sortedSections);
-
+		
 		return sections;
 	}
-
+	
 	@ModelAttribute(SETTINGS_FORM)
 	public SettingsForm getSettingsForm(@RequestParam(value = SHOW, required = false) String show) {
 		SettingsForm settingsForm = new SettingsForm();
@@ -146,24 +150,24 @@ public class SettingsController {
 		}
 		return settingsForm;
 	}
-
+	
 	public List<SettingsProperty> getSettings(String section) {
 		List<SettingsProperty> settings = new ArrayList<SettingsProperty>();
-
+		
 		List<GlobalProperty> globalProperties = getService().getAllGlobalProperties();
 		for (GlobalProperty globalProperty : globalProperties) {
 			SettingsProperty property = new SettingsProperty(globalProperty);
-
+			
 			if (section.equals(property.getSection()) && !isHidden(property)) {
 				settings.add(property);
 			}
 		}
-
+		
 		Collections.sort(settings);
-
+		
 		return settings;
 	}
-
+	
 	/**
 	 * @param settingsProperty
 	 * @return <code>true</code> if the property should be hidden from the user
@@ -178,7 +182,7 @@ public class SettingsController {
 		}
 		return false;
 	}
-
+	
 	private AdministrationService getService() {
 		return Context.getAdministrationService();
 	}

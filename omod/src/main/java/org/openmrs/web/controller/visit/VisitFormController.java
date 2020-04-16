@@ -68,7 +68,7 @@ public class VisitFormController {
 		wdb.registerCustomEditor(java.util.Date.class, new CustomDateEditor(Context.getDateTimeFormat(), true, 10));
 	}
 	*/
-
+	
 	/**
 	 * Processes requests to display the form
 	 */
@@ -113,7 +113,7 @@ public class VisitFormController {
 	
 	/**
 	 * Processes requests to save/update a visit
-	 *
+	 * 
 	 * @param request the {@link WebRequest} object
 	 * @param visit the visit object to save/update
 	 * @param result the {@link BindingResult} object
@@ -200,6 +200,7 @@ public class VisitFormController {
 	
 	/**
 	 * Processes requests to end a visit
+	 * 
 	 * @param visit the visit object to updated
 	 * @param stopDate which contains the stopDate or null for current time
 	 * @param request the {@link WebRequest} object
@@ -230,7 +231,7 @@ public class VisitFormController {
 	
 	/**
 	 * Processes requests to void a visit
-	 *
+	 * 
 	 * @param request the {@link WebRequest} object
 	 * @param visit the visit object to void
 	 * @param voidReason the reason why the visit is getting void
@@ -257,8 +258,8 @@ public class VisitFormController {
 		}
 		catch (APIException e) {
 			log.warn("Error occurred while attempting to void visit", e);
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "Visit.void.error"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("Visit.void.error"), WebRequest.SCOPE_SESSION);
 		}
 		
 		addEncounterAndObservationCounts(visit, null, model);
@@ -267,7 +268,7 @@ public class VisitFormController {
 	
 	/**
 	 * Processes requests to unvoid a visit
-	 *
+	 * 
 	 * @param request the {@link WebRequest} object
 	 * @param visit the visit object to unvoid
 	 * @param status the {@link SessionStatus}
@@ -282,15 +283,15 @@ public class VisitFormController {
 			if (log.isDebugEnabled()) {
 				log.debug("Unvoided visit with id: " + visit.getId());
 			}
-			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-			    "Visit.unvoided"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+			    Context.getMessageSourceService().getMessage("Visit.unvoided"), WebRequest.SCOPE_SESSION);
 			return "redirect:" + VISIT_FORM_URL + ".form?visitId=" + visit.getVisitId() + "&patientId="
 			        + visit.getPatient().getPatientId();
 		}
 		catch (APIException e) {
 			log.warn("Error occurred while attempting to unvoid visit", e);
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "Visit.unvoid.error"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("Visit.unvoid.error"), WebRequest.SCOPE_SESSION);
 		}
 		
 		addEncounterAndObservationCounts(visit, null, model);
@@ -299,7 +300,7 @@ public class VisitFormController {
 	
 	/**
 	 * Processes requests to purge a visit
-	 *
+	 * 
 	 * @param request the {@link WebRequest} object
 	 * @param visit the visit object to purge
 	 * @param status the {@link SessionStatus}
@@ -321,8 +322,8 @@ public class VisitFormController {
 		}
 		catch (APIException e) {
 			log.warn("Error occurred while attempting to purge visit", e);
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "Visit.purge.error"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("Visit.purge.error"), WebRequest.SCOPE_SESSION);
 		}
 		//there was an exception thrown
 		return "redirect:" + VISIT_FORM_URL + ".form?visitId=" + visit.getVisitId() + "&patientId="

@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegexValidatedTextDatatypeHandler implements FieldGenDatatypeHandler<RegexValidatedTextDatatype, java.lang.String> {
 	
-	
 	private static final Log log = LogFactory.getLog(RegexValidatedTextDatatypeHandler.class);
 	
 	/**

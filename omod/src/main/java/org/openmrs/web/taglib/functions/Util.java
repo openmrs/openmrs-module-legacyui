@@ -17,7 +17,7 @@ import org.apache.commons.lang.BooleanUtils;
  * Functions used within taglibs in a webapp jsp page. <br>
  * <br>
  * Example:
- *
+ * 
  * <pre>
  * &lt;c:forEach items="${openmrs:sort(someListObject)}" var="o" end="0"&gt;
  *   ....
@@ -29,7 +29,7 @@ public class Util {
 	
 	/**
 	 * This method will make untrusted strings safe for use as JavaScript strings
-	 *
+	 * 
 	 * @param s
 	 * @return a JS-escaped version of s
 	 */
@@ -39,24 +39,24 @@ public class Util {
 	
 	/**
 	 * This method will make untrusted strings safe for use as JavaScript booleans
-	 *
+	 * 
 	 * @param s
 	 * @return string representation of a boolean (guaranteed safe for use in JS)
 	 */
-	public static String getSafeJsBoolean(String s){
+	public static String getSafeJsBoolean(String s) {
 		return Boolean.toString(BooleanUtils.toBooleanObject(s));
 	}
 	
 	/**
 	 * This method will make untrusted strings safe for use as JavaScript integers
-	 *
+	 * 
 	 * @param s
 	 * @return either the original value (if an int) or 'null'
 	 */
-	public static String getSafeJsInt(String s){
-		if(NumberUtils.isNumber(s)){
+	public static String getSafeJsInt(String s) {
+		if (NumberUtils.isNumber(s)) {
 			return s;
-		}else{
+		} else {
 			return "null";
 		}
 	}

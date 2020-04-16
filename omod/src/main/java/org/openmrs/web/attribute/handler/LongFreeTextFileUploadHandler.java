@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 /**
  * Handler for the {@link LongFreeTextDatatype} that displays as a file upload input.
+ * 
  * @since 1.9
  */
 @Component
@@ -39,7 +40,8 @@ public class LongFreeTextFileUploadHandler implements WebDatatypeHandler<LongFre
 	}
 	
 	/**
-	 * @see org.openmrs.web.attribute.handler.HtmlDisplayableDatatypeHandler#toHtmlSummary(org.openmrs.customdatatype.CustomDatatype, java.lang.String)
+	 * @see org.openmrs.web.attribute.handler.HtmlDisplayableDatatypeHandler#toHtmlSummary(org.openmrs.customdatatype.CustomDatatype,
+	 *      java.lang.String)
 	 */
 	@Override
 	public CustomDatatype.Summary toHtmlSummary(CustomDatatype<String> datatype, String valueReference) {
@@ -49,7 +51,8 @@ public class LongFreeTextFileUploadHandler implements WebDatatypeHandler<LongFre
 	}
 	
 	/**
-	 * @see org.openmrs.web.attribute.handler.HtmlDisplayableDatatypeHandler#toHtml(org.openmrs.customdatatype.CustomDatatype, java.lang.String)
+	 * @see org.openmrs.web.attribute.handler.HtmlDisplayableDatatypeHandler#toHtml(org.openmrs.customdatatype.CustomDatatype,
+	 *      java.lang.String)
 	 */
 	@Override
 	public String toHtml(CustomDatatype<String> datatype, String valueReference) {
@@ -57,7 +60,8 @@ public class LongFreeTextFileUploadHandler implements WebDatatypeHandler<LongFre
 	}
 	
 	/**
-	 * @see org.openmrs.web.attribute.handler.WebDatatypeHandler#getWidgetHtml(org.openmrs.customdatatype.CustomDatatype, java.lang.String, java.lang.String, java.lang.Object)
+	 * @see org.openmrs.web.attribute.handler.WebDatatypeHandler#getWidgetHtml(org.openmrs.customdatatype.CustomDatatype,
+	 *      java.lang.String, java.lang.String, java.lang.Object)
 	 */
 	@Override
 	public String getWidgetHtml(LongFreeTextDatatype datatype, String formFieldName, String widgetId, String startingValue) {
@@ -71,7 +75,8 @@ public class LongFreeTextFileUploadHandler implements WebDatatypeHandler<LongFre
 	}
 	
 	/**
-	 * @see org.openmrs.web.attribute.handler.WebDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype, javax.servlet.http.HttpServletRequest, java.lang.String)
+	 * @see org.openmrs.web.attribute.handler.WebDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype,
+	 *      javax.servlet.http.HttpServletRequest, java.lang.String)
 	 */
 	@Override
 	public String getValue(LongFreeTextDatatype datatype, HttpServletRequest request, String formFieldName)
@@ -91,7 +96,8 @@ public class LongFreeTextFileUploadHandler implements WebDatatypeHandler<LongFre
 	}
 	
 	/**
-	 * @see org.openmrs.customdatatype.DownloadableDatatypeHandler#getContentType(org.openmrs.customdatatype.CustomDatatype, java.lang.String)
+	 * @see org.openmrs.customdatatype.DownloadableDatatypeHandler#getContentType(org.openmrs.customdatatype.CustomDatatype,
+	 *      java.lang.String)
 	 */
 	@Override
 	public String getContentType(CustomDatatype<String> dt, String valueReference) {
@@ -99,7 +105,8 @@ public class LongFreeTextFileUploadHandler implements WebDatatypeHandler<LongFre
 	}
 	
 	/**
-	 * @see org.openmrs.customdatatype.DownloadableDatatypeHandler#getFilename(org.openmrs.customdatatype.CustomDatatype, java.lang.String)
+	 * @see org.openmrs.customdatatype.DownloadableDatatypeHandler#getFilename(org.openmrs.customdatatype.CustomDatatype,
+	 *      java.lang.String)
 	 */
 	@Override
 	public String getFilename(CustomDatatype<String> dt, String valueReference) {
@@ -107,7 +114,8 @@ public class LongFreeTextFileUploadHandler implements WebDatatypeHandler<LongFre
 	}
 	
 	/**
-	 * @see org.openmrs.customdatatype.DownloadableDatatypeHandler#writeToStream(org.openmrs.customdatatype.CustomDatatype, java.lang.String, java.io.OutputStream)
+	 * @see org.openmrs.customdatatype.DownloadableDatatypeHandler#writeToStream(org.openmrs.customdatatype.CustomDatatype,
+	 *      java.lang.String, java.io.OutputStream)
 	 */
 	@Override
 	public void writeToStream(CustomDatatype<String> dt, String valueReference, OutputStream os) throws IOException {

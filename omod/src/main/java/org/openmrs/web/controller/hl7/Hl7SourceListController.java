@@ -25,9 +25,8 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
- *  This is the controlling class for hl7SourceList.jsp page. It initBinder and formBackingObject
- * are called before page load
- *
+ * This is the controlling class for hl7SourceList.jsp page. It initBinder and formBackingObject are
+ * called before page load
  */
 public class Hl7SourceListController extends SimpleFormController {
 	

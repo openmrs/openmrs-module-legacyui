@@ -67,7 +67,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * Patient-specific form controller. Creates the model/view etc for editing patients.
- *
+ * 
  * @see org.openmrs.web.controller.person.PersonFormController
  */
 public class PatientFormController extends PersonFormController {
@@ -81,7 +81,7 @@ public class PatientFormController extends PersonFormController {
 	/**
 	 * Allows for other Objects to be used as values in input tags. Normally, only strings and lists
 	 * are expected
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest,
 	 *      org.springframework.web.bind.ServletRequestDataBinder)
 	 */
@@ -229,7 +229,7 @@ public class PatientFormController extends PersonFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
@@ -415,8 +415,7 @@ public class PatientFormController extends PersonFormController {
 							}
 						}
 					} else {
-						log
-						        .debug("Cause of death is null - should not have gotten here without throwing an error on the form.");
+						log.debug("Cause of death is null - should not have gotten here without throwing an error on the form.");
 					}
 					
 				}
@@ -439,7 +438,7 @@ public class PatientFormController extends PersonFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
@@ -505,7 +504,7 @@ public class PatientFormController extends PersonFormController {
 	
 	/**
 	 * Called prior to form display. Allows for data to be put in the request to be used in the view
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override

@@ -35,7 +35,7 @@ public class ConceptReferenceTermListItem {
 	
 	/**
 	 * Most common constructor
-	 *
+	 * 
 	 * @param conceptReferenceTerm the search to use to construct this conceptReferenceTermListItem
 	 */
 	public ConceptReferenceTermListItem(ConceptReferenceTerm conceptReferenceTerm) {

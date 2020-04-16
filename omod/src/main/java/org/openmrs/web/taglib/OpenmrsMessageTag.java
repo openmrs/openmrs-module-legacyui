@@ -29,22 +29,26 @@ import org.springframework.web.util.JavaScriptUtils;
 import org.springframework.web.util.TagUtils;
 
 /**
- * Custom JSP tag to look up a message in the scope of the page. This is based on the Spring message tag. It extends functionality
- * of Spring's message tag by adding the ability to place text inside the tag body and specifying the locale of the text. Any text,
- * placed between start and end tags will be treated as the default message within the locale specified in within the locale
- * attribute (or the system default locale if the locale attribute is not specified).
+ * Custom JSP tag to look up a message in the scope of the page. This is based on the Spring message
+ * tag. It extends functionality of Spring's message tag by adding the ability to place text inside
+ * the tag body and specifying the locale of the text. Any text, placed between start and end tags
+ * will be treated as the default message within the locale specified in within the locale attribute
+ * (or the system default locale if the locale attribute is not specified).
  * <p>
- * As spring:message tag, this also retrieves the message from bundle with the given code, but (in addition) this tag uses its body
- * text when the code cannot be resolved. If the body value also is not specified, the value of the text attribute is used. If there
- * is no message in the bundle and no text attribute value or tag body text, then the message code is displayed, if it is set;
- * otherwise null. If both text attribute and body text are present (shouldn't happen, but could by mistake), then this tag uses the
- * body text before checking the text attribute. With this tag user can define default text for a locale other than the system
- * default by using locale attribute. If locale attribute is not specified, then the system default locale (e.g., "en") will be
- * used. HTML escaping is also supported by this tag.
+ * As spring:message tag, this also retrieves the message from bundle with the given code, but (in
+ * addition) this tag uses its body text when the code cannot be resolved. If the body value also is
+ * not specified, the value of the text attribute is used. If there is no message in the bundle and
+ * no text attribute value or tag body text, then the message code is displayed, if it is set;
+ * otherwise null. If both text attribute and body text are present (shouldn't happen, but could by
+ * mistake), then this tag uses the body text before checking the text attribute. With this tag user
+ * can define default text for a locale other than the system default by using locale attribute. If
+ * locale attribute is not specified, then the system default locale (e.g., "en") will be used. HTML
+ * escaping is also supported by this tag.
  * </p>
  * <p>
- * This tag also supports customization of messages writing behavior. To change its default behavior, set the TagWriterBehavior
- * property with a custom implementation of the {@link TagMessageWriterBehavior} interface.
+ * This tag also supports customization of messages writing behavior. To change its default
+ * behavior, set the TagWriterBehavior property with a custom implementation of the
+ * {@link TagMessageWriterBehavior} interface.
  * </p>
  * <p>
  * For example, if you put the following:
@@ -53,19 +57,21 @@ import org.springframework.web.util.TagUtils;
  * 	 &lt;openmrs:message code="wrong.code" &gt;Some text &lt;/openmrs:message&gt;
  * </code>
  * <p>
- * and there is no message that can be resolved by given code, then output will be "Some text". You may also specify the fallback in
- * spring-ish style using text attribute as follows:
+ * and there is no message that can be resolved by given code, then output will be "Some text". You
+ * may also specify the fallback in spring-ish style using text attribute as follows:
  * </p>
  * <code>
  * &lt;openmrs:message code="wrong.code" text="Some other text" /&gt;
  * </code>
  * <p>
- * Using locale attribute of tag you can specify the locale of fallback text provided by message tag. You could write the tag like:
+ * Using locale attribute of tag you can specify the locale of fallback text provided by message
+ * tag. You could write the tag like:
  * </p>
  * &lt;openmrs:message code="foo.greeting" locale="fr"&gt;Bonjour&lt;/openmrs:message&gt;
  * <p>
- * meaning that the message supplied with the tag is in the "fr" locale. If the user is viewing in English, then the message within
- * the English message bundle with the code foo.greeting would be displayed.
+ * meaning that the message supplied with the tag is in the "fr" locale. If the user is viewing in
+ * English, then the message within the English message bundle with the code foo.greeting would be
+ * displayed.
  * </p>
  */
 public class OpenmrsMessageTag extends OpenmrsHtmlEscapingAwareTag {
@@ -151,11 +157,10 @@ public class OpenmrsMessageTag extends OpenmrsHtmlEscapingAwareTag {
 	}
 	
 	/**
-	 * Sets the locale of the supplied message. If no text passed in or given text can not be recognized as locale, then default
-	 * value of locale attribute of this tag will not be changed
+	 * Sets the locale of the supplied message. If no text passed in or given text can not be
+	 * recognized as locale, then default value of locale attribute of this tag will not be changed
 	 * 
-	 * @param locale
-	 *            the locale string to set
+	 * @param locale the locale string to set
 	 */
 	public void setLocale(String locale) {
 		if (StringUtils.hasText(locale) && LocaleUtility.fromSpecification(locale) != null) {
@@ -207,8 +212,8 @@ public class OpenmrsMessageTag extends OpenmrsHtmlEscapingAwareTag {
 	}
 	
 	/**
-	 * Resolve the specified message or code or text or tag body into a concrete message string. The returned message string should
-	 * be unescaped.
+	 * Resolve the specified message or code or text or tag body into a concrete message string. The
+	 * returned message string should be unescaped.
 	 */
 	protected String resolveMessage() throws JspException {
 		MessageSource messageSource = getMessageSource();
@@ -288,13 +293,11 @@ public class OpenmrsMessageTag extends OpenmrsHtmlEscapingAwareTag {
 	}
 	
 	/**
-	 * Writes the message to the page. Before actual writing occurs, it calls method on static instance of tag writer behavior to
-	 * customize the message which will be written.
+	 * Writes the message to the page. Before actual writing occurs, it calls method on static
+	 * instance of tag writer behavior to customize the message which will be written.
 	 * 
-	 * @param message
-	 *            the message to write
-	 * @throws IOException
-	 *             if writing error occurs
+	 * @param message the message to write
+	 * @throws IOException if writing error occurs
 	 */
 	protected void writeMessage(String message) throws IOException {
 		pageContext.getOut().write(tagWriterBehavior.renderMessage(String.valueOf(message), code, locale, text));
@@ -317,16 +320,15 @@ public class OpenmrsMessageTag extends OpenmrsHtmlEscapingAwareTag {
 	/**
 	 * Sets tag writer behavior to customize rendering of resolved messages
 	 * 
-	 * @param tagWriterBehavior
-	 *            the tagWriterBehavior to set
+	 * @param tagWriterBehavior the tagWriterBehavior to set
 	 */
 	public static void setTagWriterBehavior(TagMessageWriterBehavior tagWriterBehavior) {
 		OpenmrsMessageTag.tagWriterBehavior = tagWriterBehavior;
 	}
 	
 	/**
-	 * Very simple implementation of {@link TagMessageWriterBehavior} interface that is used by this class by default. It actually
-	 * does not customize passed in message during output rendering.
+	 * Very simple implementation of {@link TagMessageWriterBehavior} interface that is used by this
+	 * class by default. It actually does not customize passed in message during output rendering.
 	 */
 	static final class DefaultTagWriterBehavior implements TagMessageWriterBehavior {
 		

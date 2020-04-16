@@ -42,7 +42,7 @@ public class ShortPatientFormValidator implements Validator {
 	
 	/**
 	 * Returns whether or not this validator supports validating a given class.
-	 *
+	 * 
 	 * @param c The class to check for support.
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
 	 */
@@ -53,7 +53,7 @@ public class ShortPatientFormValidator implements Validator {
 	
 	/**
 	 * Validates the given Patient.
-	 *
+	 * 
 	 * @param obj The patient to validate.
 	 * @param errors The patient to validate.
 	 * @see org.springframework.validation.Validator#validate(java.lang.Object,

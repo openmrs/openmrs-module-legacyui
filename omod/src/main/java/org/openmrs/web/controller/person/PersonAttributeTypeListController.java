@@ -56,16 +56,16 @@ public class PersonAttributeTypeListController {
 		AdministrationService as = Context.getAdministrationService();
 		
 		// some helpful information that gets displayed
-		modelMap.put("patientListingAttributeTypes", as
-		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_PATIENT_LISTING_ATTRIBUTES));
-		modelMap.put("patientViewingAttributeTypes", as
-		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_PATIENT_VIEWING_ATTRIBUTES));
-		modelMap.put("patientHeaderAttributeTypes", as
-		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_PATIENT_HEADER_ATTRIBUTES));
-		modelMap.put("userListingAttributeTypes", as
-		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_USER_LISTING_ATTRIBUTES));
-		modelMap.put("userViewingAttributeTypes", as
-		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_USER_VIEWING_ATTRIBUTES));
+		modelMap.put("patientListingAttributeTypes",
+		    as.getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_PATIENT_LISTING_ATTRIBUTES));
+		modelMap.put("patientViewingAttributeTypes",
+		    as.getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_PATIENT_VIEWING_ATTRIBUTES));
+		modelMap.put("patientHeaderAttributeTypes",
+		    as.getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_PATIENT_HEADER_ATTRIBUTES));
+		modelMap.put("userListingAttributeTypes",
+		    as.getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_USER_LISTING_ATTRIBUTES));
+		modelMap.put("userViewingAttributeTypes",
+		    as.getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_USER_VIEWING_ATTRIBUTES));
 		
 		List<PersonAttributeType> attributeTypeList = new Vector<PersonAttributeType>();
 		

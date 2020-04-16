@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
  * Functions used within taglibs in a webapp jsp page. <br>
  * <br>
  * Example:
- *
+ * 
  * <pre>
  * &lt;c:forEach items="${openmrs:sort(someListObject)}" var="o" end="0"&gt;
  *   ....
@@ -35,7 +35,7 @@ public class Sort {
 	
 	/**
 	 * This method will sort a collection based on the natural order of it's elements
-	 *
+	 * 
 	 * @param c
 	 * @return a new, sorted copy of the collection
 	 */
@@ -45,7 +45,7 @@ public class Sort {
 	
 	/**
 	 * This method will sort a collection based on the natural order of it's elements
-	 *
+	 * 
 	 * @param c
 	 * @param reverseOrder
 	 * @return a new, sorted copy of the collection
@@ -58,7 +58,7 @@ public class Sort {
 	
 	/**
 	 * This method will sort a passed Collection
-	 *
+	 * 
 	 * @param c The collection to sort
 	 * @param sortProperty The javabean property to sort the elements of the Collection by
 	 * @param reverseOrder Boolean indicating whether or not to reverse the order of the collection

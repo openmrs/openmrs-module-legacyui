@@ -42,7 +42,7 @@ import org.openmrs.web.user.UserProperties;
 /**
  * This servlet accepts the username and password from the login form and authenticates the user to
  * OpenMRS
- *
+ * 
  * @see org.openmrs.api.context.Context#authenticate(String, String)
  */
 public class LoginServlet extends HttpServlet {
@@ -192,7 +192,7 @@ public class LoginServlet extends HttpServlet {
 	
 	/**
 	 * Convenience method for pulling the correct page to redirect to out of the request
-	 *
+	 * 
 	 * @param request the current request
 	 * @return the page to redirect to as determined by parameters in the request
 	 */
@@ -222,27 +222,26 @@ public class LoginServlet extends HttpServlet {
 		if (StringUtils.isEmpty(redirect)) {
 			redirect = request.getContextPath();
 		}
-
+		
 		// don't redirect back to the login page on success. (I assume the login page is {something}login.{something}
 		else if (redirect.contains("login.")) {
 			log.debug("Redirect contains 'login.', redirecting to main page");
 			redirect = request.getContextPath();
 		}
-
+		
 		// don't redirect to pages outside of openmrs
 		else if (!redirect.startsWith(request.getContextPath())) {
 			log.debug("redirect is outside of openmrs, redirecting to main page");
 			redirect = request.getContextPath();
 		}
-
+		
 		// don't redirect back to the initialsetup page
 		else if (redirect.endsWith(WebConstants.SETUP_PAGE_URL)) {
 			log.debug("redirect is back to the setup page because this is their first ever login");
 			redirect = request.getContextPath();
 		} else if (redirect.contains("/options.form") || redirect.contains("/changePassword.form")
 		        || redirect.contains("/forgotPassword.form")) {
-			log
-			        .debug("The user was on a page for setting/changing passwords. Send them to the homepage to reduce confusion");
+			log.debug("The user was on a page for setting/changing passwords. Send them to the homepage to reduce confusion");
 			redirect = request.getContextPath();
 		}
 		
@@ -253,6 +252,7 @@ public class LoginServlet extends HttpServlet {
 	
 	/**
 	 * Regenerates session id after each login attempt.
+	 * 
 	 * @param request
 	 */
 	private void regenerateSession(HttpServletRequest request) {

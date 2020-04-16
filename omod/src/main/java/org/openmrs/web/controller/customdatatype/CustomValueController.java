@@ -42,7 +42,7 @@ public class CustomValueController {
 	
 	/**
 	 * Displays a custom value, as HTML, in its own page.
-	 *
+	 * 
 	 * @param handlerClassname
 	 * @param datatypeClassname
 	 * @param valueReference
@@ -70,7 +70,7 @@ public class CustomValueController {
 	
 	/**
 	 * Downloads a custom value
-	 *
+	 * 
 	 * @param response
 	 * @param handlerClassname
 	 * @param datatypeClassname

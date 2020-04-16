@@ -41,7 +41,7 @@ public class PatientListItem extends PersonListItem {
 		if (patient != null) {
 			
 			patientId = patient.getPatientId();
-
+			
 			identifier = patient.getPatientIdentifier().getIdentifier();
 			// get patient's identifiers
 			for (PatientIdentifier pi : patient.getIdentifiers()) {

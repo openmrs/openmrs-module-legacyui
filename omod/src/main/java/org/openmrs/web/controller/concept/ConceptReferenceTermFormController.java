@@ -64,7 +64,8 @@ public class ConceptReferenceTermFormController {
 	}
 	
 	@ModelAttribute("conceptReferenceTermModel")
-	public ConceptReferenceTermModel getConceptReferenceTermFormModel(@RequestParam(value = "conceptReferenceTermId", required = false) Integer conceptReferenceTermId) {
+	public ConceptReferenceTermModel getConceptReferenceTermFormModel(
+	        @RequestParam(value = "conceptReferenceTermId", required = false) Integer conceptReferenceTermId) {
 		
 		ConceptReferenceTerm conceptReferenceTerm = null;
 		if (conceptReferenceTermId != null) {
@@ -79,7 +80,8 @@ public class ConceptReferenceTermFormController {
 	
 	@SuppressWarnings("unchecked")
 	@ModelAttribute("referenceTermMappingsToThisTerm")
-	public List<ConceptReferenceTermMap> getConceptMappingsToThisTerm(@ModelAttribute ConceptReferenceTerm conceptReferenceTerm) {
+	public List<ConceptReferenceTermMap> getConceptMappingsToThisTerm(
+	        @ModelAttribute ConceptReferenceTerm conceptReferenceTerm) {
 		if (conceptReferenceTerm.getConceptReferenceTermId() != null) {
 			return Context.getConceptService().getReferenceTermMappingsTo(conceptReferenceTerm);
 		}
@@ -89,7 +91,7 @@ public class ConceptReferenceTermFormController {
 	
 	/**
 	 * Processes requests to save/update a concept reference term
-	 *
+	 * 
 	 * @param request the {@link WebRequest} object
 	 * @param conceptReferenceTermModel the concept reference term object to save/update
 	 * @param result the {@link BindingResult} object
@@ -97,8 +99,8 @@ public class ConceptReferenceTermFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = CONCEPT_REFERENCE_TERM_FORM_URL)
 	public String saveConceptReferenceTerm(WebRequest request,
-	                                       @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
-	                                       BindingResult result) {
+	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
+	        BindingResult result) {
 		
 		ConceptReferenceTerm conceptReferenceTerm = conceptReferenceTermModel.getConceptReferenceTerm();
 		// add all the term maps
@@ -172,7 +174,7 @@ public class ConceptReferenceTermFormController {
 	
 	/**
 	 * Processes requests to retire concept reference terms
-	 *
+	 * 
 	 * @param request the {@link WebRequest} object
 	 * @param conceptReferenceTermModel the concept reference term model for the term to retire
 	 * @param retireReason the reason why the concept reference term is being retired
@@ -180,8 +182,8 @@ public class ConceptReferenceTermFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/retireConceptReferenceTerm")
 	public String retireConceptReferenceTerm(WebRequest request,
-	                                         @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
-	                                         @RequestParam(required = false, value = "retireReason") String retireReason) {
+	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
+	        @RequestParam(required = false, value = "retireReason") String retireReason) {
 		
 		if (!StringUtils.hasText(retireReason)) {
 			retireReason = Context.getMessageSourceService().getMessage("general.default.retireReason");
@@ -210,7 +212,7 @@ public class ConceptReferenceTermFormController {
 	
 	/**
 	 * Processes requests to unretire concept reference terms
-	 *
+	 * 
 	 * @param request the {@link WebRequest} object
 	 * @param conceptReferenceTermModel the concept reference term model object for the term to
 	 *            unretire
@@ -218,7 +220,7 @@ public class ConceptReferenceTermFormController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/unretireConceptReferenceTerm")
 	public String unretireConceptReferenceTerm(WebRequest request,
-	                                           @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
+	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
 		
 		try {
 			ConceptReferenceTerm conceptReferenceTerm = conceptReferenceTermModel.getConceptReferenceTerm();
@@ -245,14 +247,14 @@ public class ConceptReferenceTermFormController {
 	
 	/**
 	 * Processes requests to purge a concept reference term
-	 *
+	 * 
 	 * @param request the {@link WebRequest} object
 	 * @param conceptReferenceTermModel
 	 * @return the url to forward to
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/purgeConceptReferenceTerm")
 	public String purgeTerm(WebRequest request,
-	                        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
+	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
 		Integer id = conceptReferenceTermModel.getConceptReferenceTerm().getId();
 		try {
 			Context.getConceptService().purgeConceptReferenceTerm(conceptReferenceTermModel.getConceptReferenceTerm());
@@ -284,7 +286,7 @@ public class ConceptReferenceTermFormController {
 		
 		/**
 		 * Constructor that creates a concept reference term model object from the specified term
-		 *
+		 * 
 		 * @param conceptReferenceTerm
 		 */
 		@SuppressWarnings("unchecked")

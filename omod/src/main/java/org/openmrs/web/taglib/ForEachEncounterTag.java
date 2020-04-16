@@ -56,7 +56,7 @@ public class ForEachEncounterTag extends BodyTagSupport {
 	 * @should sort encounters by encounterDatetime in descending order
 	 * @should pass for a patient with no encounters
 	 */
-	@SuppressWarnings( { "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public int doStartTag() {
 		if (encounters == null || encounters.isEmpty()) {

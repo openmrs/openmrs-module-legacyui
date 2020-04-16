@@ -27,24 +27,24 @@ import org.openmrs.web.WebConstants;
  * Filters dwr requests and forwards them to the legacyui module dwr servlet
  */
 public class DwrFilter implements Filter {
-
+	
 	protected final Log log = LogFactory.getLog(getClass());
-
+	
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		
-		String uri = ((HttpServletRequest)req).getRequestURI();
+		String uri = ((HttpServletRequest) req).getRequestURI();
 		uri = uri.replace("/dwr/", "/ms/legacyui/dwr-invoker/");
 		uri = uri.replace("/ms/call/plaincall/", "/ms/legacyui/dwr-invoker/call/plaincall/");
 		uri = uri.replace("/" + WebConstants.WEBAPP_NAME, "");
 		
 		req.getRequestDispatcher(uri).forward(req, res);
 	}
-
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
 	}
-
+	
 	@Override
 	public void destroy() {
 		

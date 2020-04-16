@@ -271,16 +271,16 @@ public class PersonFormController extends SimpleFormController {
 		} else if (action.equals(msa.getMessage("Person.void"))) {
 			String voidReason = request.getParameter("voidReason");
 			if (StringUtils.isBlank(voidReason)) {
-				voidReason = msa.getMessage("PersonForm.default.voidReason", null, "Voided from person form", Context
-				        .getLocale());
+				voidReason = msa.getMessage("PersonForm.default.voidReason", null, "Voided from person form",
+				    Context.getLocale());
 			}
 			if (linkedProvidersString.isEmpty()) {
 				ps.voidPerson(person, voidReason);
 				httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "Person.voided");
 			} else {
-				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-				    "Person.cannot.void.linkedTo.providers")
-				        + " " + linkedProviders);
+				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+				    Context.getMessageSourceService().getMessage("Person.cannot.void.linkedTo.providers") + " "
+				            + linkedProviders);
 			}
 			return new ModelAndView(new RedirectView(getSuccessView() + "?personId=" + person.getPersonId()));
 		} else if (action.equals(msa.getMessage("Person.unvoid"))) {

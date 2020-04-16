@@ -37,7 +37,7 @@ public class DWRUserService {
 	
 	/**
 	 * Find users in the database that match the given search values.
-	 *
+	 * 
 	 * @see UserService#getUsers(String, List, boolean)
 	 * @param searchValue a query string like 'john doe'
 	 * @param rolesStrings list of role names to restrict to like '[Provider, Manager]'
@@ -133,7 +133,7 @@ public class DWRUserService {
 	
 	/**
 	 * Get the user identified by <code>userId</code>
-	 *
+	 * 
 	 * @param userId
 	 * @return found user item or, if the current user is not authenticated, a dummy user object
 	 */

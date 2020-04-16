@@ -26,7 +26,7 @@
 						
 					pageContext.setAttribute("qs", qs.substring(0, i) + s);
 					pageContext.setAttribute("locales", org.openmrs.api.context.Context.getAdministrationService().getPresentationLocales());
-					pageContext.setAttribute("openmrsVersion", org.openmrs.util.OpenmrsConstants.OPENMRS_VERSION);
+					pageContext.setAttribute("openmrsPlatformVersion", org.openmrs.util.OpenmrsConstants.OPENMRS_VERSION);
 					pageContext.setAttribute("locale", org.openmrs.api.context.Context.getLocale());
 				%>
 		
@@ -43,7 +43,7 @@
 	
 			<span id="buildDate"><openmrs:message code="footer.lastBuild"/>: <%= org.openmrs.web.WebConstants.BUILD_TIMESTAMP %></span>
 			
-			<span id="codeVersion"><openmrs:message code="footer.version"/>: ${openmrsVersion}</span>
+			<span id="codeVersion"><openmrs:message code="footer.version"/>: ${openmrsPlatformVersion}</span>
 			
 			<span id="poweredBy"><a href="http://openmrs.org"><openmrs:message code="footer.poweredBy"/> <img border="0" align="top" src="<%= request.getContextPath() %>/moduleResources/legacyui/images/openmrs_logo_tiny.png"/></a></span>
 		</div>

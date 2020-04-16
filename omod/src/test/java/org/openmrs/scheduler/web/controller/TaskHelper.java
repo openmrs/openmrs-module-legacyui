@@ -20,8 +20,8 @@ import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Provides helper methods for creating scheduled and unscheduled tasks. Also provides methods for waiting until
- * a task has reached a given state, such as executing or having been stopped.
+ * Provides helper methods for creating scheduled and unscheduled tasks. Also provides methods for
+ * waiting until a task has reached a given state, such as executing or having been stopped.
  */
 public class TaskHelper {
 	
@@ -36,9 +36,7 @@ public class TaskHelper {
 	/**
 	 * @param unit defines the unit of the offset
 	 * @param value defines the value of the offset
-	 *
 	 * @return a date object based on an offset relative to the current date and time
-	 *
 	 * @should get a time in the future
 	 * @should get a time in the past
 	 */
@@ -49,11 +47,9 @@ public class TaskHelper {
 	}
 	
 	/**
-	 *
 	 * @param startTime defines the start time for a scheduled task
 	 * @return a task that has been scheduled and started
 	 * @throws SchedulerException if the task cannot be scheduled
-	 *
 	 * @should return a task that has been started
 	 */
 	public TaskDefinition getScheduledTaskDefinition(Date startTime) throws SchedulerException {
@@ -65,7 +61,6 @@ public class TaskHelper {
 	/**
 	 * @param startTime defines the start time for a scheduled task
 	 * @return a task that has not been scheduled and has not started
-	 *
 	 * @should return a task that has not been started
 	 */
 	public TaskDefinition getUnscheduledTaskDefinition(Date startTime) {
@@ -83,13 +78,11 @@ public class TaskHelper {
 	
 	/**
 	 * Waits until a task is executing or until a timeout occurs.
-	 *
+	 * 
 	 * @param task the task that is expected to be executing
 	 * @param timeoutInMilliseconds defines how long to wait before raising a timeout exception
-	 *
 	 * @throws InterruptedException if an interrupt occurs while waiting
 	 * @throws TimeoutException if the task is not executing after the specified timeout
-	 *
 	 * @should wait until task is executing
 	 * @should raise a timeout exception when the timeout is exceeded
 	 */

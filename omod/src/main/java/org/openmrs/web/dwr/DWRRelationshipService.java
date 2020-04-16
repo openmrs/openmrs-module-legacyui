@@ -92,8 +92,8 @@ public class DWRRelationshipService {
 		    Context.getPersonService().getPerson(personId));
 		for (Relationship rel : rels) {
 			if (!rel.isVoided()
-			        && (relationshipTypeId == null || rel.getRelationshipType().getRelationshipTypeId().equals(
-			            relationshipTypeId))) {
+			        && (relationshipTypeId == null || rel.getRelationshipType().getRelationshipTypeId()
+			                .equals(relationshipTypeId))) {
 				ret.add(new RelationshipListItem(rel));
 			}
 		}

@@ -179,14 +179,14 @@ public class SchedulerListController extends SimpleFormController {
 			if (interval < 60) {
 				intervals.put(task, interval + " " + msa.getMessage("Scheduler.scheduleForm.repeatInterval.units.seconds"));
 			} else if (interval < 3600) {
-				intervals.put(task, interval / 60 + " "
-				        + msa.getMessage("Scheduler.scheduleForm.repeatInterval.units.minutes"));
+				intervals.put(task,
+				    interval / 60 + " " + msa.getMessage("Scheduler.scheduleForm.repeatInterval.units.minutes"));
 			} else if (interval < 86400) {
-				intervals.put(task, interval / 3600 + " "
-				        + msa.getMessage("Scheduler.scheduleForm.repeatInterval.units.hours"));
+				intervals.put(task,
+				    interval / 3600 + " " + msa.getMessage("Scheduler.scheduleForm.repeatInterval.units.hours"));
 			} else {
-				intervals.put(task, interval / 86400 + " "
-				        + msa.getMessage("Scheduler.scheduleForm.repeatInterval.units.days"));
+				intervals.put(task,
+				    interval / 86400 + " " + msa.getMessage("Scheduler.scheduleForm.repeatInterval.units.days"));
 			}
 		}
 		map.put("intervals", intervals);

@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Controller which allows users to identify dependencies between modules for shutdown/restart purposes.
+ * Controller which allows users to identify dependencies between modules for shutdown/restart
+ * purposes.
  */
 @Controller
 @RequestMapping(value = "/admin/modules/manage/")

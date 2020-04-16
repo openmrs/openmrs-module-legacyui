@@ -47,13 +47,13 @@ public class AddressTemplateController {
 	public String add(@RequestParam("xml") String xml, WebRequest request) {
 		
 		if (!StringUtils.hasText(xml) || "".equals(xml.trim())) {
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "AddressTemplate.error.empty"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("AddressTemplate.error.empty"), WebRequest.SCOPE_SESSION);
 		} else {
 			try {
 				//To test whether this is a valid conversion
-				AddressTemplate test = Context.getSerializationService().getDefaultSerializer().deserialize(xml,
-				    AddressTemplate.class);
+				AddressTemplate test = Context.getSerializationService().getDefaultSerializer()
+				        .deserialize(xml, AddressTemplate.class);
 				
 				List<String> requiredElements = test.getRequiredElements();
 				if (requiredElements != null) {
@@ -63,17 +63,19 @@ public class AddressTemplateController {
 						}
 						catch (Exception e) {
 							//wrong field declared in template
-							request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService()
-							        .getMessage("AddressTemplate.error.fieldNotDeclaredInTemplate",
-							            new Object[] { fieldName }, Context.getLocale()), WebRequest.SCOPE_SESSION);
+							request.setAttribute(
+							    WebConstants.OPENMRS_ERROR_ATTR,
+							    Context.getMessageSourceService().getMessage(
+							        "AddressTemplate.error.fieldNotDeclaredInTemplate", new Object[] { fieldName },
+							        Context.getLocale()), WebRequest.SCOPE_SESSION);
 							return "redirect:addressTemplate.form";
 						}
 					}
 				}
 				
 				Context.getLocationService().saveAddressTemplate(xml);
-				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-				    "AddressTemplate.saved"), WebRequest.SCOPE_SESSION);
+				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+				    Context.getMessageSourceService().getMessage("AddressTemplate.saved"), WebRequest.SCOPE_SESSION);
 			}
 			catch (Exception e) {
 				String errmsg1 = e.getCause().toString();
@@ -81,16 +83,18 @@ public class AddressTemplateController {
 				if (errmsg1.contains("must be terminated by the matching")) {
 					String errmsg2 = e.getCause().getCause().toString();
 					
-					request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-					    "AddressTemplate.error.elementInvalid",
-					    new Object[] { errmsg1.split("\"")[1], errmsg2.split(";")[1].split(":")[1] }, Context.getLocale()),
-					    WebRequest.SCOPE_SESSION);
+					request.setAttribute(
+					    WebConstants.OPENMRS_ERROR_ATTR,
+					    Context.getMessageSourceService().getMessage("AddressTemplate.error.elementInvalid",
+					        new Object[] { errmsg1.split("\"")[1], errmsg2.split(";")[1].split(":")[1] },
+					        Context.getLocale()), WebRequest.SCOPE_SESSION);
 				} else if (errmsg1.split("\n")[0].endsWith("null")) {
 					for (String part : errmsg1.split("\n")) {
 						if (part.startsWith("path")) {
-							request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService()
-							        .getMessage("AddressTemplate.error.nameOrValueInvalid",
-							            new Object[] { part.split(":")[1] }, Context.getLocale()), WebRequest.SCOPE_SESSION);
+							request.setAttribute(
+							    WebConstants.OPENMRS_ERROR_ATTR,
+							    Context.getMessageSourceService().getMessage("AddressTemplate.error.nameOrValueInvalid",
+							        new Object[] { part.split(":")[1] }, Context.getLocale()), WebRequest.SCOPE_SESSION);
 							break;
 						}
 					}
@@ -98,16 +102,17 @@ public class AddressTemplateController {
 				        || errmsg1.contains("must be terminated by the matching")) {
 					for (String part : errmsg1.split("\n")) {
 						if (part.startsWith("path")) {
-							request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService()
-							        .getMessage("AddressTemplate.error.wrongFieldName",
-							            new Object[] { part.split("/")[part.split("/").length - 1] }, Context.getLocale()),
+							request.setAttribute(
+							    WebConstants.OPENMRS_ERROR_ATTR,
+							    Context.getMessageSourceService().getMessage("AddressTemplate.error.wrongFieldName",
+							        new Object[] { part.split("/")[part.split("/").length - 1] }, Context.getLocale()),
 							    WebRequest.SCOPE_SESSION);
 							break;
 						}
 					}
 				} else {
-					request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-					    "AddressTemplate.error"), WebRequest.SCOPE_SESSION);
+					request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+					    Context.getMessageSourceService().getMessage("AddressTemplate.error"), WebRequest.SCOPE_SESSION);
 				}
 				
 				request.setAttribute(WebConstants.OPENMRS_ADDR_TMPL, xml, WebRequest.SCOPE_SESSION);

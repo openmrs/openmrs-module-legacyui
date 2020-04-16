@@ -28,7 +28,7 @@ import org.springframework.web.context.request.WebRequest;
 
 /**
  * Controller for creating/editing a location attribute type.
- *
+ * 
  * @since 1.9
  */
 @Controller
@@ -94,8 +94,8 @@ public class LocationAttributeTypeFormController {
 			
 			if (request.getParameter("save") != null) {
 				Context.getLocationService().saveLocationAttributeType(attributeType);
-				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-				    "LocationAttributeType.saved"), WebRequest.SCOPE_SESSION);
+				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+				    Context.getMessageSourceService().getMessage("LocationAttributeType.saved"), WebRequest.SCOPE_SESSION);
 			} else if (request.getParameter("retire") != null) {
 				String retireReason = request.getParameter("retireReason");
 				if (attributeType.getId() != null && !(StringUtils.hasText(retireReason))) {
@@ -103,12 +103,13 @@ public class LocationAttributeTypeFormController {
 					return null;
 				}
 				Context.getLocationService().retireLocationAttributeType(attributeType, retireReason);
-				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-				    "LocationAttributeType.retired"), WebRequest.SCOPE_SESSION);
+				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+				    Context.getMessageSourceService().getMessage("LocationAttributeType.retired"), WebRequest.SCOPE_SESSION);
 			} else if (request.getParameter("unretire") != null) {
 				Context.getLocationService().unretireLocationAttributeType(attributeType);
-				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-				    "LocationAttributeType.unretired"), WebRequest.SCOPE_SESSION);
+				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+				    Context.getMessageSourceService().getMessage("LocationAttributeType.unretired"),
+				    WebRequest.SCOPE_SESSION);
 			}
 			return "redirect:/admin/locations/locationAttributeTypes.list";
 		}

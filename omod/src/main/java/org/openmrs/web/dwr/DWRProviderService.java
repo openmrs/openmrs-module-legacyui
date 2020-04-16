@@ -52,7 +52,8 @@ public class DWRProviderService {
 		
 		if (providerList.size() == 0) {
 			MessageSourceService mss = Context.getMessageSourceService();
-			providerListItem.add(mss.getMessage("Provider.noMatchesFound", new Object[] { WebUtil.escapeHTML(name) }, Context.getLocale()));
+			providerListItem.add(mss.getMessage("Provider.noMatchesFound", new Object[] { WebUtil.escapeHTML(name) },
+			    Context.getLocale()));
 		} else {
 			for (Provider p : providerList) {
 				providerListItem.add(new ProviderListItem(p));

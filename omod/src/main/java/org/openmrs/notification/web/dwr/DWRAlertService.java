@@ -30,7 +30,7 @@ public class DWRAlertService {
 	/**
 	 * Calls the corresponding AlertService.getAlertsByUser(null) method to get alerts for the
 	 * current user or for the authenticated role
-	 *
+	 * 
 	 * @return list of alerts
 	 */
 	public List<AlertListItem> getAlerts() {
@@ -56,7 +56,7 @@ public class DWRAlertService {
 	
 	/**
 	 * Calls the corresponding AlertService.markAlertRead(Alert) method
-	 *
+	 * 
 	 * @param alertId
 	 */
 	public void markAlertRead(Integer alertId) {
@@ -90,7 +90,7 @@ public class DWRAlertService {
 	
 	/**
 	 * Creates and saves a new {@link Alert}
-	 *
+	 * 
 	 * @param text the string to set as the alert text
 	 * @return true if the alert was successfully created and saved otherwise false
 	 */

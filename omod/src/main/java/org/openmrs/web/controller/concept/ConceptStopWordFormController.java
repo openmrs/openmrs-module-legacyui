@@ -29,11 +29,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
- * This is the controlling class for the conceptStopWordForm.jsp page. This class used to
- * add a new ConceptStopWord.
+ * This is the controlling class for the conceptStopWordForm.jsp page. This class used to add a new
+ * ConceptStopWord.
  * 
  * @see org.openmrs.ConceptStopWord
- * 
  * @since 1.8
  */
 @Controller
@@ -47,7 +46,7 @@ public class ConceptStopWordFormController {
 	
 	/**
 	 * Handle the add new ConceptStopWord
-	 *
+	 * 
 	 * @param httpSession
 	 * @param conceptStopWord
 	 * @param errors

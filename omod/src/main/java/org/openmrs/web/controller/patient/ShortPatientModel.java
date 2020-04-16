@@ -53,7 +53,7 @@ public class ShortPatientModel {
 	
 	/**
 	 * Constructor that creates a shortPatientModel object from a given patient object
-	 *
+	 * 
 	 * @param patient
 	 */
 	@SuppressWarnings("unchecked")
@@ -70,8 +70,8 @@ public class ShortPatientModel {
 				        .getDefaultLocation()));
 			}
 			
-			identifiers = ListUtils.lazyList(new ArrayList<PatientIdentifier>(activeIdentifiers), FactoryUtils
-			        .instantiateFactory(PatientIdentifier.class));
+			identifiers = ListUtils.lazyList(new ArrayList<PatientIdentifier>(activeIdentifiers),
+			    FactoryUtils.instantiateFactory(PatientIdentifier.class));
 			
 			List<PersonAttributeType> viewableAttributeTypes = Context.getPersonService().getPersonAttributeTypes(
 			    PERSON_TYPE.PATIENT, ATTR_VIEW_TYPE.VIEWING);

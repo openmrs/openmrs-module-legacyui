@@ -72,9 +72,9 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	ConceptService conceptService;
 	
 	private Locale britishEn;
-
+	
 	protected static final String CONCEPT_ATTRIBUTES_XML = "org/openmrs/api/include/ConceptServiceTest-conceptAttributeType.xml";
-
+	
 	@Before
 	public void updateSearchIndex() {
 		super.updateSearchIndex();
@@ -504,7 +504,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	
 	/**
 	 * Test removing short name by adding a blank short name
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -1185,7 +1185,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(shortConceptName);
 		assertEquals(newShortName, shortConceptName.getName());
 	}
-
+	
 	/**
 	 * @verifies should add new concept attributes
 	 * @throws Exception
@@ -1195,22 +1195,22 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		executeDataSet(CONCEPT_ATTRIBUTES_XML);
 		ConceptService cs = Context.getConceptService();
 		ConceptAttributeType conceptAttributeType = cs.getConceptAttributeType(1);
-
+		
 		final Integer conceptId = 5089;
-
+		
 		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-
+		
 		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-
+		
 		mockRequest.setMethod("POST");
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("conceptId", conceptId.toString());
-		mockRequest.setParameter("attribute." + conceptAttributeType.getId()+".new[1]", "2014-03-12");
-
+		mockRequest.setParameter("attribute." + conceptAttributeType.getId() + ".new[1]", "2014-03-12");
+		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
-
+		
 		Concept actualConcept = cs.getConcept(conceptId);
 		assertNotNull(actualConcept);
 		final Collection<ConceptAttribute> attributes = actualConcept.getAttributes();
@@ -1218,7 +1218,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		final ConceptAttribute conceptAttribute = attributes.iterator().next();
 		assertEquals("2014-03-12", conceptAttribute.getValueReference());
 	}
-
+	
 	/**
 	 * @verifies should add new concept attributes on creating concept
 	 * @throws Exception
@@ -1227,15 +1227,15 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	public void shouldSaveConceptAttributeOnCreatingConcept() throws Exception {
 		executeDataSet(CONCEPT_ATTRIBUTES_XML);
 		final String EXPECTED_PREFERRED_NAME = "concept with attribute";
-
+		
 		ConceptService cs = Context.getConceptService();
-
+		
 		// make sure the concept doesn't already exist
 		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
 		assertNull(conceptToAdd);
-
+		
 		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-
+		
 		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
 		mockRequest.setMethod("POST");
 		mockRequest.setParameter("action", "");
@@ -1243,11 +1243,11 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
 		mockRequest.setParameter("attribute.1.new[0]", "2011-04-25");
-
+		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
-
+		
 		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
 		assertNotNull(actualConcept);
 		final Collection<ConceptAttribute> attributes = actualConcept.getAttributes();
@@ -1255,7 +1255,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		final ConceptAttribute conceptAttribute = attributes.iterator().next();
 		assertEquals("2011-04-25", conceptAttribute.getValueReference());
 	}
-
+	
 	/**
 	 * @verifies not void or change attributeList if the attribute values are same
 	 */
@@ -1264,30 +1264,30 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		executeDataSet(CONCEPT_ATTRIBUTES_XML);
 		Concept concept = Context.getConceptService().getConcept(3);
 		final int existingConceptAttributeId = 1;
-		ConceptAttributeType conceptAttributeType = Context.getConceptService().getConceptAttributeType(existingConceptAttributeId);
+		ConceptAttributeType conceptAttributeType = Context.getConceptService().getConceptAttributeType(
+		    existingConceptAttributeId);
 		conceptAttributeType.setName("concept joined date");
-
+		
 		//assert there is one concept attribute
 		assertEquals(1, concept.getAttributes().size());
 		assertEquals("2011-04-25", concept.getAttributes().iterator().next().getValueReference());
-
+		
 		MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 		mockHttpServletRequest.setMethod("POST");
 		mockHttpServletRequest.setParameter("action", "");
 		mockHttpServletRequest.setParameter("conceptId", "3");
-		mockHttpServletRequest.setParameter("attribute." + conceptAttributeType.getId()+".existing["+existingConceptAttributeId+"]", "2011-04-25");
+		mockHttpServletRequest.setParameter("attribute." + conceptAttributeType.getId() + ".existing["
+		        + existingConceptAttributeId + "]", "2011-04-25");
 		BindException errors = new BindException(concept, "concept");
-
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext
-				.getBean("conceptForm");
+		
+		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
 		conceptFormController.handleRequest(mockHttpServletRequest, new MockHttpServletResponse());
-
-
+		
 		Assert.assertEquals(1, concept.getAttributes().size());
 		Assert.assertFalse(((ConceptAttribute) (concept.getAttributes().toArray()[0])).getVoided());
 		Assert.assertFalse(errors.hasErrors());
 	}
-
+	
 	/**
 	 * @verifies set attributes to void if the values is not set
 	 */
@@ -1296,19 +1296,20 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		executeDataSet(CONCEPT_ATTRIBUTES_XML);
 		Concept concept = Context.getConceptService().getConcept(3);
 		final int existingConceptAttributeId = 1;
-		ConceptAttributeType conceptAttributeType = Context.getConceptService().getConceptAttributeType(existingConceptAttributeId);
+		ConceptAttributeType conceptAttributeType = Context.getConceptService().getConceptAttributeType(
+		    existingConceptAttributeId);
 		conceptAttributeType.setName("concept type");
 		MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 		//If value is not set then void all the attributes.
 		mockHttpServletRequest.setMethod("POST");
 		mockHttpServletRequest.setParameter("action", "");
 		mockHttpServletRequest.setParameter("conceptId", "3");
-		mockHttpServletRequest.setParameter("attribute." + conceptAttributeType.getId() + ".existing["+existingConceptAttributeId+"]", "");
+		mockHttpServletRequest.setParameter("attribute." + conceptAttributeType.getId() + ".existing["
+		        + existingConceptAttributeId + "]", "");
 		BindException errors = new BindException(concept, "concept");
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext
-				.getBean("conceptForm");
+		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
 		conceptFormController.handleRequest(mockHttpServletRequest, new MockHttpServletResponse());
-
+		
 		Assert.assertEquals(1, concept.getAttributes().size());
 		Assert.assertTrue(((ConceptAttribute) (concept.getAttributes().toArray()[0])).getVoided());
 		Assert.assertFalse(errors.hasErrors());

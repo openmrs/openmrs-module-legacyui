@@ -73,8 +73,7 @@ public class SampleFlowsheetServlet extends HttpServlet {
 		
 		out.println("<style>");
 		out.println(".header { font-family:Arial; font-weight:bold; text-align: center; font-size: 1.5em;}");
-		out
-		        .println(".label { font-family:Arial; text-align:right; color:#808080; font-style:italic; font-size: 0.6em; vertical-align: top;}");
+		out.println(".label { font-family:Arial; text-align:right; color:#808080; font-style:italic; font-size: 0.6em; vertical-align: top;}");
 		out.println(".value { font-family:Arial; text-align:left; vertical-align:top; }");
 		out.println("</style>");
 		out.println("<table cellspacing=0 cellpadding=3>");

@@ -13,8 +13,9 @@ import org.openmrs.annotation.AddOnStartup;
 import org.openmrs.annotation.HasAddOnStartupPrivileges;
 
 /**
- * Contains application privilege names and their descriptions. Some of privilege names may be marked with
- * AddOnStartup annotation to indicate that they should be put into the database at app startup.
+ * Contains application privilege names and their descriptions. Some of privilege names may be
+ * marked with AddOnStartup annotation to indicate that they should be put into the database at app
+ * startup.
  * 
  * @see org.openmrs.annotation.AddOnStartup
  * @since 1.10

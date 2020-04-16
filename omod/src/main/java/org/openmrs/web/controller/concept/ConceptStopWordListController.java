@@ -24,11 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * This is the controlling class for the conceptStopWordList.jsp page. This class used to view the list of 
- * ConceptStopWords with the Locale information. And also to delete ConceptStopWord(s).
+ * This is the controlling class for the conceptStopWordList.jsp page. This class used to view the
+ * list of ConceptStopWords with the Locale information. And also to delete ConceptStopWord(s).
  * 
  * @see org.openmrs.ConceptStopWord
- * 
  * @since 1.8
  */
 @Controller

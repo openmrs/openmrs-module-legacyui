@@ -70,7 +70,8 @@ public class Filter {
 		int intConceptId = 0;
 		try {
 			intConceptId = Integer.parseInt(concept);
-		} catch(NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			log.debug("concept is not Integer: ", e);
 		}
 		String conceptUuid = null;

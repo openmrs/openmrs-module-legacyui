@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PatientDashboardController {
 	
-	
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
 	
@@ -101,8 +100,8 @@ public class PatientDashboardController {
 			patientVariation = "Dead";
 		}
 		
-		Concept reasonForExitConcept = Context.getConceptService()
-		        .getConcept(Context.getAdministrationService().getGlobalProperty("concept.reasonExitedCare"));
+		Concept reasonForExitConcept = Context.getConceptService().getConcept(
+		    Context.getAdministrationService().getGlobalProperty("concept.reasonExitedCare"));
 		
 		if (reasonForExitConcept != null) {
 			List<Obs> patientExitObs = Context.getObsService().getObservationsByPersonAndConcept(patient,

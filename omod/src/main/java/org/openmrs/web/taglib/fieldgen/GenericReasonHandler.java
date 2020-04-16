@@ -78,8 +78,7 @@ public class GenericReasonHandler extends AbstractFieldGenHandler implements Fie
 					possibleReasons.add(answer.getAnswerConcept());
 				}
 			} else {
-				log
-				        .debug("No reason concept found, either as global property or override.  Cannot generate list of possible reasons.");
+				log.debug("No reason concept found, either as global property or override.  Cannot generate list of possible reasons.");
 			}
 			
 			Map<String, String> reasons = new HashMap<String, String>();

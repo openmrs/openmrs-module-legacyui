@@ -29,15 +29,15 @@ import org.openmrs.web.user.UserProperties;
 import org.springframework.util.StringUtils;
 
 /**
- * Controller for the &lt;openmrs:require&gt; taglib used on jsp pages. This taglib restricts the page
- * view to currently logged in (or anonymous) users that have the given privileges. <br>
+ * Controller for the &lt;openmrs:require&gt; taglib used on jsp pages. This taglib restricts the
+ * page view to currently logged in (or anonymous) users that have the given privileges. <br>
  * <br>
  * Example use case:
- *
+ * 
  * <pre>
  * &lt;openmrs:require privilege="Manage Concept Classes" otherwise="/login.htm" redirect="/admin/concepts/conceptClass.form" /&gt;
  * </pre>
- *
+ * 
  * This will demand that the user have the "Manage Concept Classes" privilege. If they don't, kick
  * the user back to the "/login.htm" page. Then, after they log in on that page, send the user to
  * "/admin/concepts/conceptClass.form".
@@ -68,7 +68,7 @@ public class RequireTag extends TagSupport {
 	 * need be. <br>
 	 * <br>
 	 * Returns SKIP_PAGE if the user doesn't have the privilege and SKIP_BODY if it does.
-	 *
+	 * 
 	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
 	 * @should allow user with the privilege
 	 * @should allow user to have any privilege
@@ -185,7 +185,7 @@ public class RequireTag extends TagSupport {
 	
 	/**
 	 * Determines if the given ip addresses are the same.
-	 *
+	 * 
 	 * @param session_ip_addr
 	 * @param request_ip_addr
 	 * @return true/false whether these IPs are different
@@ -222,7 +222,7 @@ public class RequireTag extends TagSupport {
 	 * <li>allPrivileges is not defined OR user has every privilege in allPrivileges</li>
 	 * <li>anyPrivilege is not defined OR user has at least one of the privileges in anyPrivileges</li>
 	 * </ul>
-	 *
+	 * 
 	 * @param userContext current user context
 	 * @param privilege a single required privilege
 	 * @param allPrivilegesArray an array of required privileges
@@ -246,7 +246,7 @@ public class RequireTag extends TagSupport {
 	
 	/**
 	 * Returns true if user has all privileges
-	 *
+	 * 
 	 * @param userContext current user context
 	 * @param allPrivilegesArray list of privileges
 	 * @return true if user has all of the privileges
@@ -263,7 +263,7 @@ public class RequireTag extends TagSupport {
 	
 	/**
 	 * Returns true if user has any of the privileges
-	 *
+	 * 
 	 * @param userContext current user context
 	 * @param anyPriviegeArray list of privileges
 	 * @return true if user has at least one of the privileges

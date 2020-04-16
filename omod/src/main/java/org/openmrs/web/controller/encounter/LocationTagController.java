@@ -43,7 +43,7 @@ public class LocationTagController {
 	
 	/**
 	 * Set up automatic primitive-to-class mappings
-	 *
+	 * 
 	 * @param wdb
 	 */
 	@InitBinder
@@ -68,16 +68,16 @@ public class LocationTagController {
 	public String add(@RequestParam("name") String name, @RequestParam("description") String description, WebRequest request) {
 		
 		if (!StringUtils.hasText(name)) {
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "LocationTag.error.name.required"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("LocationTag.error.name.required"), WebRequest.SCOPE_SESSION);
 		} else if (Context.getLocationService().getLocationTagByName(name) != null) {
-			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, Context.getMessageSourceService().getMessage(
-			    "LocationTag.error.name.duplicate"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+			    Context.getMessageSourceService().getMessage("LocationTag.error.name.duplicate"), WebRequest.SCOPE_SESSION);
 		} else {
 			LocationTag tag = new LocationTag(name, description);
 			Context.getLocationService().saveLocationTag(tag);
-			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-			    "LocationTag.saved"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+			    Context.getMessageSourceService().getMessage("LocationTag.saved"), WebRequest.SCOPE_SESSION);
 		}
 		
 		return "redirect:locationTag.list";
@@ -107,8 +107,8 @@ public class LocationTagController {
 			return "/admin/locations/locationTagEdit";
 		} else {
 			Context.getLocationService().saveLocationTag(locationTag);
-			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-			    "LocationTag.saved"), WebRequest.SCOPE_SESSION);
+			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+			    Context.getMessageSourceService().getMessage("LocationTag.saved"), WebRequest.SCOPE_SESSION);
 			status.setComplete();
 			return "redirect:/admin/locations/locationTag.list";
 		}
@@ -120,8 +120,8 @@ public class LocationTagController {
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagPurge")
 	public String purge(WebRequest request, @RequestParam("id") LocationTag locationTag) {
 		Context.getLocationService().purgeLocationTag(locationTag);
-		request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-		    "LocationTag.purged"), WebRequest.SCOPE_SESSION);
+		request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+		    Context.getMessageSourceService().getMessage("LocationTag.purged"), WebRequest.SCOPE_SESSION);
 		return "redirect:/admin/locations/locationTag.list";
 	}
 	
@@ -132,8 +132,8 @@ public class LocationTagController {
 	public String retire(WebRequest request, @RequestParam("id") LocationTag locationTag,
 	        @RequestParam("retireReason") String retireReason) {
 		Context.getLocationService().retireLocationTag(locationTag, retireReason);
-		request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-		    "LocationTag.retired"), WebRequest.SCOPE_SESSION);
+		request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+		    Context.getMessageSourceService().getMessage("LocationTag.retired"), WebRequest.SCOPE_SESSION);
 		return "redirect:/admin/locations/locationTag.list";
 	}
 	
@@ -143,8 +143,8 @@ public class LocationTagController {
 	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagUnretire")
 	public String unretire(WebRequest request, @RequestParam("id") LocationTag locationTag) {
 		Context.getLocationService().unretireLocationTag(locationTag);
-		request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, Context.getMessageSourceService().getMessage(
-		    "LocationTag.unretired"), WebRequest.SCOPE_SESSION);
+		request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
+		    Context.getMessageSourceService().getMessage("LocationTag.unretired"), WebRequest.SCOPE_SESSION);
 		return "redirect:/admin/locations/locationTag.list";
 	}
 	

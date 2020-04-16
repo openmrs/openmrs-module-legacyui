@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Controller for listing all concept attribute types.
- *
+ * 
  * @since 2.0
  */
 @Controller
 public class ConceptAttributeTypeListController {
-
-    /**
-     * Show existing
-     */
-    @RequestMapping("/admin/concepts/conceptAttributeTypes")
-    public void list(Model model) {
-        model.addAttribute("attributeTypes", Context.getConceptService().getAllConceptAttributeTypes());
-    }
-
+	
+	/**
+	 * Show existing
+	 */
+	@RequestMapping("/admin/concepts/conceptAttributeTypes")
+	public void list(Model model) {
+		model.addAttribute("attributeTypes", Context.getConceptService().getAllConceptAttributeTypes());
+	}
+	
 }

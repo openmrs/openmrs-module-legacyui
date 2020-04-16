@@ -86,7 +86,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * This is the controlling class for the conceptForm.jsp page. It initBinder and formBackingObject
  * are called before page load. After submission, formBackingObject (because we're not a session
  * form), processFormSubmission, and onSubmit methods are called
- *
+ * 
  * @see org.openmrs.Concept
  */
 public class ConceptFormController extends SimpleFormController {
@@ -97,7 +97,7 @@ public class ConceptFormController extends SimpleFormController {
 	/**
 	 * Allows for other Objects to be used as values in input tags. Normally, only strings and lists
 	 * are expected
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest,
 	 *      org.springframework.web.bind.ServletRequestDataBinder)
 	 */
@@ -130,7 +130,7 @@ public class ConceptFormController extends SimpleFormController {
 	 */
 	@Override
 	protected ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object object,
-	                                             BindException errors) throws Exception {
+	        BindException errors) throws Exception {
 		
 		if (getMessageSourceAccessor().getMessage("Concept.cancel").equals(request.getParameter("action"))) {
 			return new ModelAndView(new RedirectView("index.htm"));
@@ -161,7 +161,7 @@ public class ConceptFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
@@ -179,7 +179,7 @@ public class ConceptFormController extends SimpleFormController {
 	 */
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
-	                                BindException errors) throws Exception {
+	        BindException errors) throws Exception {
 		
 		HttpSession httpSession = request.getSession();
 		ConceptService cs = Context.getConceptService();
@@ -262,9 +262,9 @@ public class ConceptFormController extends SimpleFormController {
 				}
 				
 				try {
-					WebAttributeUtil.handleSubmittedAttributesForType(conceptBackingObject.getConcept(), errors, ConceptAttribute.class, request,
-							cs.getAllConceptAttributeTypes());
-
+					WebAttributeUtil.handleSubmittedAttributesForType(conceptBackingObject.getConcept(), errors,
+					    ConceptAttribute.class, request, cs.getAllConceptAttributeTypes());
+					
 					errors.pushNestedPath("concept");
 					ValidateUtil.validate(concept, errors);
 					errors.popNestedPath();
@@ -331,7 +331,7 @@ public class ConceptFormController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
@@ -356,7 +356,7 @@ public class ConceptFormController extends SimpleFormController {
 	
 	/**
 	 * Called prior to form display. Allows for data to be put in the request to be used in the view
-	 *
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
@@ -404,7 +404,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		// make spring locale available to jsp
 		map.put("locale", Context.getLocale()); // should be same string format as conceptNamesByLocale map keys
-
+		
 		map.put("attributeTypes", cs.getAllConceptAttributeTypes());
 		return map;
 	}
@@ -458,10 +458,10 @@ public class ConceptFormController extends SimpleFormController {
 		public Map<Locale, String> preferredNamesByLocale = new HashMap<Locale, String>();
 		
 		public Collection<ConceptAttribute> activeAttributes;
-
+		
 		/**
 		 * Default constructor must take in a Concept object to create itself
-		 *
+		 * 
 		 * @param concept The concept for this page
 		 */
 		@SuppressWarnings("unchecked")
@@ -525,14 +525,14 @@ public class ConceptFormController extends SimpleFormController {
 			if (concept.getConceptClass() != null && OpenmrsUtil.nullSafeEquals(concept.getConceptClass().getName(), "Drug")) {
 				this.conceptDrugList.addAll(Context.getConceptService().getDrugsByConcept(concept));
 			}
-
+			
 			this.activeAttributes = concept.getActiveAttributes();
 		}
 		
 		/**
 		 * This method takes all the form data from the input boxes and puts it onto the concept
 		 * object so that it can be saved to the database
-		 *
+		 * 
 		 * @return the concept to be saved to the database
 		 * @should set concept on concept answers
 		 */
@@ -931,7 +931,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		/**
 		 * Get the forms that this concept is declared to be used in
-		 *
+		 * 
 		 * @return list of forms
 		 */
 		public List<Form> getFormsInUse() {
@@ -941,7 +941,7 @@ public class ConceptFormController extends SimpleFormController {
 		/**
 		 * Get the list of extensions/metadata and the specific instances of them that use this
 		 * concept.
-		 *
+		 * 
 		 * @return list of {@link ConceptUsageExtension}
 		 */
 		public List<ConceptUsageExtension> getConceptUsage() {
@@ -1004,7 +1004,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		/**
 		 * Get the number of observations that use this concept.
-		 *
+		 * 
 		 * @return number of obs using this concept
 		 */
 		public int getNumberOfObsUsingThisConcept() {
@@ -1015,7 +1015,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		/**
 		 * Get the other concept questions that this concept is declared as an answer for
-		 *
+		 * 
 		 * @return list of concepts
 		 */
 		public List<Concept> getQuestionsAnswered() {
@@ -1024,7 +1024,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		/**
 		 * Get the sets that this concept is declared to be a child member of
-		 *
+		 * 
 		 * @return list of concept sets
 		 */
 		public List<ConceptSet> getContainedInSets() {
@@ -1034,7 +1034,7 @@ public class ConceptFormController extends SimpleFormController {
 		/**
 		 * Get the answers for this concept with decoded names. The keys to this map are the
 		 * conceptIds or the conceptIds^drugId if applicable
-		 *
+		 * 
 		 * @return a map with localized concept answers
 		 */
 		private Map<String, String> getConceptAnswers(Locale locale) {
@@ -1093,7 +1093,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		/**
 		 * Sets the list of drugs for its concept object
-		 *
+		 * 
 		 * @param conceptDrugList the value to be set
 		 */
 		public void setConceptDrugList(List<Drug> conceptDrugList) {
@@ -1125,7 +1125,7 @@ public class ConceptFormController extends SimpleFormController {
 		public Collection<ConceptAttribute> getActiveAttributes() {
 			return activeAttributes;
 		}
-
+		
 		public void setActiveAttributes(Collection<ConceptAttribute> activeAttributes) {
 			this.activeAttributes = activeAttributes;
 		}

@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * This factory stores and returns the fieldgen handlers These variables are set in the
  * openmrs-servlet.xml and are populated via spring injection
- *
+ * 
  * @see FieldGenHandler
  */
 public class FieldGenHandlerFactory {
@@ -52,7 +52,7 @@ public class FieldGenHandlerFactory {
 	
 	/**
 	 * Appends the given handlers to the current map of handlers
-	 *
+	 * 
 	 * @param handlers The handlers to set.
 	 */
 	public void setHandlers(Map<String, String> handlers) {

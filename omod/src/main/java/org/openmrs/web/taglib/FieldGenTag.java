@@ -106,8 +106,8 @@ public class FieldGenTag extends TagSupport {
 					String fieldLength = this.parameterMap != null ? (String) this.parameterMap.get("fieldLength") : null;
 					fieldLength = (fieldLength == null) ? DEFAULT_INPUT_CHAR_LENGTH : fieldLength;
 					output.setLength(0);
-					output.append("<input type=\"text\" name=\"").append(formFieldName).append("\" id=\"").append(
-					    formFieldName).append("\" value=\"");
+					output.append("<input type=\"text\" name=\"").append(formFieldName).append("\" id=\"")
+					        .append(formFieldName).append("\" value=\"");
 					output.append(startVal).append("\" size=\"").append(fieldLength).append("\" maxlength=\"1\" />");
 				} else if (type.equals("int") || type.indexOf("java.lang.Integer") >= 0 || type.equals("long")
 				        || type.indexOf("java.lang.Long") >= 0) {
@@ -118,8 +118,8 @@ public class FieldGenTag extends TagSupport {
 					String fieldLength = this.parameterMap != null ? (String) this.parameterMap.get("fieldLength") : null;
 					fieldLength = (fieldLength == null) ? DEFAULT_INPUT_INT_LENGTH : fieldLength;
 					output.setLength(0);
-					output.append("<input type=\"text\" name=\"").append(formFieldName).append("\" id=\"").append(
-					    formFieldName).append("\" value=\"");
+					output.append("<input type=\"text\" name=\"").append(formFieldName).append("\" id=\"")
+					        .append(formFieldName).append("\" value=\"");
 					output.append(startVal).append("\" size=\"").append(fieldLength).append("\" />");
 				} else if (type.equals("float") || type.indexOf("java.lang.Float") >= 0 || type.equals("double")
 				        || type.indexOf("java.lang.Double") >= 0 || type.indexOf("java.lang.Number") >= 0) {
@@ -131,8 +131,8 @@ public class FieldGenTag extends TagSupport {
 					String fieldLength = this.parameterMap != null ? (String) this.parameterMap.get("fieldLength") : null;
 					fieldLength = (fieldLength == null) ? DEFAULT_INPUT_FLOAT_LENGTH : fieldLength;
 					output.setLength(0);
-					output.append("<input type=\"text\" name=\"").append(formFieldName).append("\" id=\"").append(
-					    formFieldName).append("\" value=\"");
+					output.append("<input type=\"text\" name=\"").append(formFieldName).append("\" id=\"")
+					        .append(formFieldName).append("\" value=\"");
 					output.append(startVal).append("\" size=\"").append(fieldLength).append("\" />");
 				} else if (type.equals("boolean") || type.indexOf("java.lang.Boolean") >= 0) {
 					String startVal = "";
@@ -163,8 +163,8 @@ public class FieldGenTag extends TagSupport {
 					
 					if ("checkbox".equals(forceInputType)) {
 						output.setLength(0);
-						output.append("<input type=\"checkbox\" name=\"").append(formFieldName).append("\" id=\"").append(
-						    formFieldName);
+						output.append("<input type=\"checkbox\" name=\"").append(formFieldName).append("\" id=\"")
+						        .append(formFieldName);
 						output.append("\" value=\"true\"").append(("true".equals(startVal) ? " checked" : "")).append("/> ");
 					} else {
 						if (isNullable == null) {
@@ -183,33 +183,33 @@ public class FieldGenTag extends TagSupport {
 						if ("false".equalsIgnoreCase(isNullable) || "f".equalsIgnoreCase(isNullable)
 						        || "0".equals(isNullable)) {
 							output.setLength(0);
-							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"").append(
-							    formFieldName);
+							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"")
+							        .append(formFieldName);
 							output.append("_f\" value=\"false\"").append(("false".equals(startVal) ? " checked" : ""))
 							        .append("/> ");
 							output.append(falseLabel);
 							output.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"").append(
-							    formFieldName);
-							output.append("_t\" value=\"true\"").append(("true".equals(startVal) ? " checked" : "")).append(
-							    "/> ");
+							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"")
+							        .append(formFieldName);
+							output.append("_t\" value=\"true\"").append(("true".equals(startVal) ? " checked" : ""))
+							        .append("/> ");
 							output.append(trueLabel);
 						} else {
 							output.setLength(0);
-							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"").append(
-							    formFieldName);
+							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"")
+							        .append(formFieldName);
 							output.append("_f\" value=\"false\"").append(("false".equals(startVal) ? " checked" : ""))
 							        .append("/> ");
 							output.append(falseLabel);
 							output.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"").append(
-							    formFieldName);
-							output.append("_t\" value=\"true\"").append(("true".equals(startVal) ? " checked" : "")).append(
-							    "/> ");
+							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"")
+							        .append(formFieldName);
+							output.append("_t\" value=\"true\"").append(("true".equals(startVal) ? " checked" : ""))
+							        .append("/> ");
 							output.append(trueLabel);
 							output.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"").append(
-							    formFieldName);
+							output.append("<input type=\"radio\" name=\"").append(formFieldName).append("\" id=\"")
+							        .append(formFieldName);
 							output.append("_u\" value=\"unknown\"").append(("unknown".equals(startVal) ? " checked" : ""))
 							        .append("/> ");
 							output.append(unknownLabel);
@@ -247,9 +247,9 @@ public class FieldGenTag extends TagSupport {
 							        .append("\">");
 							StringBuilder options = new StringBuilder();
 							for (int i = 0; i < enumConstants.length; i++) {
-								options.append("<option value=\"").append(enumConstants[i].toString()).append("\"").append(
-								    startVal.equals(enumConstants[i].toString()) ? " selected" : "").append(">").append(
-								    enumConstants[i].toString()).append("</option>");
+								options.append("<option value=\"").append(enumConstants[i].toString()).append("\"")
+								        .append(startVal.equals(enumConstants[i].toString()) ? " selected" : "").append(">")
+								        .append(enumConstants[i].toString()).append("</option>");
 							}
 							output.append(options.toString());
 							output.append("</select> ");
@@ -265,17 +265,17 @@ public class FieldGenTag extends TagSupport {
 					String items = this.parameterMap != null ? (String) this.parameterMap.get("items") : null;
 					
 					output.setLength(0);
-					output.append("<select name=\"").append(formFieldName).append("\" id=\"").append(formFieldName).append(
-					    "\">");
+					output.append("<select name=\"").append(formFieldName).append("\" id=\"").append(formFieldName)
+					        .append("\">");
 					
 					if (items != null && !items.isEmpty()) {
 						StringBuilder options = new StringBuilder();
 						for (String item : items.split(",")) {
 							String escapedItem = StringEscapeUtils.escapeHtml(item);
 							escapedItem = StringEscapeUtils.escapeJavaScript(escapedItem);
-							options.append("<option value=\"").append(escapedItem).append("\"").append(
-							    startVal.equals(escapedItem) ? " selected" : "").append(">").append(escapedItem).append(
-							    "</option>");
+							options.append("<option value=\"").append(escapedItem).append("\"")
+							        .append(startVal.equals(escapedItem) ? " selected" : "").append(">").append(escapedItem)
+							        .append("</option>");
 						}
 						output.append(options.toString());
 					}
@@ -341,7 +341,7 @@ public class FieldGenTag extends TagSupport {
 			log.error("IOException while attempting to pass control to FieldGenController in FieldGenTag");
 		}
 		*/
-
+		
 		resetValues();
 		
 		return SKIP_BODY;
@@ -384,7 +384,7 @@ public class FieldGenTag extends TagSupport {
 	
 	/**
 	 * This is the initial value or the stored value for this tag.
-	 *
+	 * 
 	 * @return Returns the startVal.
 	 */
 	public Object getVal() {
@@ -475,7 +475,7 @@ public class FieldGenTag extends TagSupport {
 	 * previous user and the current user is only editing. Therefore, the
 	 * FieldGenTag.java#setAllowUserDefault() should only be set to true if creating an object for
 	 * the first time)
-	 *
+	 * 
 	 * @param allowUserDefault the allowUserDefault to set
 	 */
 	public void setAllowUserDefault(Boolean allowUserDefault) {

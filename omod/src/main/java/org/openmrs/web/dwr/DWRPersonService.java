@@ -46,7 +46,7 @@ public class DWRPersonService {
 	 * method contains a non-backwards-compatible change between 1.5 and 1.6, since DWR has trouble
 	 * with method overloading. The String personType parameter was removed, since User no longer
 	 * extends Person
-	 *
+	 * 
 	 * @param name
 	 * @param birthdate
 	 * @param age
@@ -114,7 +114,7 @@ public class DWRPersonService {
 	
 	/**
 	 * Find Person objects based on the given searchPhrase
-	 *
+	 * 
 	 * @param searchPhrase partial name or partial identifier
 	 * @param includeVoided true/false whether to include the voided objects
 	 * @param roles if not null, restricts search to only users and only users with these roles
@@ -131,7 +131,7 @@ public class DWRPersonService {
 	
 	/**
 	 * Creates a new person stub.
-	 *
+	 * 
 	 * @param given
 	 * @param middle
 	 * @param family
@@ -195,7 +195,7 @@ public class DWRPersonService {
 	
 	/**
 	 * Private method to handle birth date and age input.
-	 *
+	 * 
 	 * @param birthdate
 	 * @param dateformat
 	 * @param age
@@ -234,7 +234,7 @@ public class DWRPersonService {
 	
 	/**
 	 * Find Person objects based on the given searchPhrase
-	 *
+	 * 
 	 * @param searchPhrase partial name or partial identifier
 	 * @param includeRetired true/false whether to include the voided objects
 	 * @param roles if not null, restricts search to only users and only users with these roles
@@ -297,7 +297,7 @@ public class DWRPersonService {
 	 * matching people (depending on values of start and length parameters) while the keys are are
 	 * 'count' and 'objectList' respectively, if the length parameter is not specified, then all
 	 * matches will be returned from the start index if specified.
-	 *
+	 * 
 	 * @param phrase is the string used to search for people
 	 * @param includeRetired Specifies if retired people should be included or not
 	 * @param roles If not null, restricts search to only users and only users with these roles

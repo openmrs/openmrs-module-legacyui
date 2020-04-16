@@ -31,7 +31,7 @@ import org.openmrs.util.OpenmrsUtil;
 /**
  * Extension point tag. Loops over all extensions defined for point "pointId". Makes the variable
  * "extension" Usage:
- *
+ * 
  * <pre>
  *  &lt;openmrs:extensionPoint pointId=&quot;org.openmrs.cohortbuilder.links&quot; type=&quot;html&quot; varStatus=&quot;stat&quot;&gt;
  *     &lt;c:if test=&quot;${stat.first}&quot;&gt;
@@ -52,7 +52,7 @@ import org.openmrs.util.OpenmrsUtil;
  *    &lt;/c:if&gt;
  *  &lt;/openmrs:extensionPoint&gt;
  * </pre>
- *
+ * 
  * @see org.openmrs.module.Extension available in the loop.
  */
 public class ExtensionPointTag extends TagSupport implements BodyTag {
