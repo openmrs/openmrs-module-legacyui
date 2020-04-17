@@ -198,6 +198,12 @@
 				</tr>
 			</c:if>
 			<tr><td colspan="2">&nbsp;</td></tr>
+
+			<tr>
+				<openmrs:extensionPoint pointId="org.openmrs.userForm.custom.extension" type="html"
+										parameters="userId=${user.userId}">
+				</openmrs:extensionPoint>
+			</tr>
 			
 			<tr>
 				<td valign="top"><openmrs:message code="User.roles"/></td>
