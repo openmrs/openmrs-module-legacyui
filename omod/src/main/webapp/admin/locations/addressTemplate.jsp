@@ -6,8 +6,8 @@
 <%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 <%
-	pageContext.setAttribute("addrTmpl", session.getAttribute(WebConstants.OPENMRS_ADDR_TMPL));
-	session.removeAttribute(WebConstants.OPENMRS_ADDR_TMPL);
+    pageContext.setAttribute("addrTmpl", session.getAttribute(WebConstants.OPENMRS_ADDR_TMPL));
+    session.removeAttribute(WebConstants.OPENMRS_ADDR_TMPL);
 %>
 
 <h2><openmrs:message code="AddressTemplate.Manage"/></h2>
@@ -22,17 +22,19 @@
             <tr>
                 <td valign="top">
                     <c:choose>
-                      <c:when test="${addrTmpl != null}">
-                        <textarea name="xml" rows="20" cols="60">${addrTmpl}</textarea><span class="required">*</span>
-                      </c:when>
-                      <c:otherwise>
-                        <textarea name="xml" rows="20" cols="60">${addressTemplateXml}</textarea><span class="required">*</span>
-                      </c:otherwise>
+                        <c:when test="${addrTmpl != null}">
+                            <textarea name="xml" rows="20" cols="60">${addrTmpl}</textarea><span class="required">*</span>
+                        </c:when>
+                        <c:otherwise>
+                            <textarea name="xml" rows="20" cols="60">${addressTemplateXml}</textarea><span
+                                class="required">*</span>
+                        </c:otherwise>
                     </c:choose>
                 </td>
                 <td valign="top">
                     <span class="description"> <p><openmrs:message htmlEscape="false" code="AddressTemplate.copy.form.wiki"/>: <a
-                            href="http://wiki.openmrs.org/display/docs/Administering+Address+Templates" TARGET="_blank"><openmrs:message
+                            href="http://wiki.openmrs.org/display/docs/Administering+Address+Templates"
+                            TARGET="_blank"><openmrs:message
                             code="AddressTemplate.wiki.title"/></a></p> </span>
                 </td>
             </tr>

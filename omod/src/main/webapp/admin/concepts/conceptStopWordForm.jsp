@@ -10,7 +10,8 @@
 <h2><openmrs:message code="ConceptStopWord.title"/></h2>
 
 <spring:hasBindErrors name="command">
-    <div class="error"><openmrs:message code="fix.error"/></div><br/>
+    <div class="error"><openmrs:message code="fix.error"/></div>
+    <br/>
 </spring:hasBindErrors>
 
 <form method="post">

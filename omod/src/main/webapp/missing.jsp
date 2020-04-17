@@ -6,14 +6,14 @@
 
 <h2>Error 404</h2>
 
-<br /><br />
+<br/><br/>
 
 <openmrs:message code="Missing.start"/> "<b><%= request.getAttribute("javax.servlet.error.request_uri") %></b>"
 <openmrs:message code="Missing.end"/>
 
 <br/><br/>
 
-<openmrs:extensionPoint pointId="org.openmrs.missing" type="html" />
+<openmrs:extensionPoint pointId="org.openmrs.missing" type="html"/>
 
 
 <%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %> 

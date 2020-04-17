@@ -8,11 +8,10 @@
 <form method="post" action="">
 
 <table>
-	<tr>
-		<td><openmrs:message code="">
+<tr>
+<td><openmrs:message code="">
 
 
+    </form>
 
-</form>
-
-<%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>
+    <%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

@@ -1,17 +1,17 @@
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
-<openmrs:require privilege="View Current Users" otherwise="/login.htm" redirect="/admin/maintenance/currentUsers.list" />
+<openmrs:require privilege="View Current Users" otherwise="/login.htm" redirect="/admin/maintenance/currentUsers.list"/>
 <%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
 
 <h2><openmrs:message code="ViewCurrentUsers.title"/></h2>
 
-<openmrs:message code="ViewCurrentUsers.help" />
-<br />
-<br />
+<openmrs:message code="ViewCurrentUsers.help"/>
+<br/>
+<br/>
 
 <table class="box">
     <tr>
-        <th><openmrs:message code="ViewCurrentUsers.users" /></th>
+        <th><openmrs:message code="ViewCurrentUsers.users"/></th>
     </tr>
     <c:if test="${not empty currentUsers}">
         <c:forEach var="username" varStatus="status" items="${currentUsers}">

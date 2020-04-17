@@ -28,7 +28,8 @@
 
 <h2><openmrs:message code="EncounterRole.title"/></h2>
 
-<openmrs:extensionPoint pointId="org.openmrs.admin.encounters.encounterRoleForm.belowTitle" type="html" parameters="encounterRoleId=${encounterRole.encounterRoleId}"/>
+<openmrs:extensionPoint pointId="org.openmrs.admin.encounters.encounterRoleForm.belowTitle" type="html"
+                        parameters="encounterRoleId=${encounterRole.encounterRoleId}"/>
 
 <spring:hasBindErrors name="encounterRole">
     <openmrs:message htmlEscape="false" code="fix.error"/>
@@ -59,23 +60,25 @@
                 <tr>
                     <td><openmrs:message code="general.createdBy"/></td>
                     <td>
-                      <c:out value="${encounterRole.creator.personName}"/> - <openmrs:formatDate date="${encounterRole.dateCreated}" type="long"/>
+                        <c:out value="${encounterRole.creator.personName}"/> - <openmrs:formatDate
+                            date="${encounterRole.dateCreated}" type="long"/>
                     </td>
                 </tr>
             </c:if>
             <tr>
-         		<c:if test="${encounterRole.encounterRoleId != null}">
-           			<td><font color="#D0D0D0"><sub><openmrs:message code="general.uuid"/></sub></font></td>
-           			<td colspan="${fn:length(locales)}"><font color="#D0D0D0"><sub>
-           			<spring:bind path="encounterRole.uuid">
-               			${status.value}
-           			</spring:bind></sub></font>
-           			</td>
-           		</c:if>
-    	   </tr>
+                <c:if test="${encounterRole.encounterRoleId != null}">
+                    <td><font color="#D0D0D0"><sub><openmrs:message code="general.uuid"/></sub></font></td>
+                    <td colspan="${fn:length(locales)}"><font color="#D0D0D0"><sub>
+                        <spring:bind path="encounterRole.uuid">
+                            ${status.value}
+                        </spring:bind></sub></font>
+                    </td>
+                </c:if>
+            </tr>
         </table>
         <br/>
-<openmrs:extensionPoint pointId="org.openmrs.admin.encounters.encounterRoleForm.inForm" type="html" parameters="encounterRoleId=${encounterRole.encounterRoleId}" />
+        <openmrs:extensionPoint pointId="org.openmrs.admin.encounters.encounterRoleForm.inForm" type="html"
+                                parameters="encounterRoleId=${encounterRole.encounterRoleId}"/>
 
         <input type="submit" value="<openmrs:message code="EncounterRole.save"/>" name="saveEncounterRole">
     </fieldset>
@@ -84,46 +87,48 @@
 <br/>
 
 <c:if test="${not encounterRole.retired && not empty encounterRole.encounterRoleId}">
-	<form method="post">
-		<fieldset>
-			<h4><openmrs:message code="EncounterRole.retireEncounterRole"/></h4>
-			
-			<b><openmrs:message code="general.reason"/></b>
-			<input type="text" value="" size="40" name="retireReason" />
-			<spring:hasBindErrors name="encounterRole">
-				<c:forEach items="${errors.allErrors}" var="error">
-					<c:if test="${error.code == 'retireReason'}"><span class="error"><openmrs:message code="${error.defaultMessage}" text="${error.defaultMessage}"/></span></c:if>
-				</c:forEach>
-			</spring:hasBindErrors>
-			<br/>
-			<input type="submit" value='<openmrs:message code="EncounterRole.retireEncounterRole"/>' name="retire"/>
-		</fieldset>
-	</form>
+    <form method="post">
+        <fieldset>
+            <h4><openmrs:message code="EncounterRole.retireEncounterRole"/></h4>
+
+            <b><openmrs:message code="general.reason"/></b>
+            <input type="text" value="" size="40" name="retireReason"/>
+            <spring:hasBindErrors name="encounterRole">
+                <c:forEach items="${errors.allErrors}" var="error">
+                    <c:if test="${error.code == 'retireReason'}"><span class="error"><openmrs:message
+                            code="${error.defaultMessage}" text="${error.defaultMessage}"/></span></c:if>
+                </c:forEach>
+            </spring:hasBindErrors>
+            <br/>
+            <input type="submit" value='<openmrs:message code="EncounterRole.retireEncounterRole"/>' name="retire"/>
+        </fieldset>
+    </form>
 </c:if>
 
 <br/>
 
 <c:if test="${encounterRole.retired == true && not empty encounterRole.encounterRoleId}">
-	<openmrs:hasPrivilege privilege="Manage Encounter Roles">
-		<form id="unretire" method="post">
-		<fieldset>
-		<h4><openmrs:message code="EncounterRole.unretire" /></h4>
-		<input type="submit" value='<openmrs:message code="EncounterRole.unretire"/>' name="unretire" /></fieldset>
-		</form>
-	</openmrs:hasPrivilege>
+    <openmrs:hasPrivilege privilege="Manage Encounter Roles">
+        <form id="unretire" method="post">
+            <fieldset>
+                <h4><openmrs:message code="EncounterRole.unretire"/></h4>
+                <input type="submit" value='<openmrs:message code="EncounterRole.unretire"/>' name="unretire"/></fieldset>
+        </form>
+    </openmrs:hasPrivilege>
 </c:if>
-<br />
+<br/>
 
 <c:if test="${not empty encounterRole.encounterRoleId}">
-	<openmrs:hasPrivilege privilege="Purge Encounter Types">
-		<form id="purge" method="post" onsubmit="return confirmPurge()">
-			<fieldset>
-				<h4><openmrs:message code="EncounterRole.purgeEncounterRole"/></h4>
-				<input type="submit" value='<openmrs:message code="EncounterRole.purgeEncounterRole"/>' name="purge" />
-			</fieldset>
-		</form>
-	</openmrs:hasPrivilege>
+    <openmrs:hasPrivilege privilege="Purge Encounter Types">
+        <form id="purge" method="post" onsubmit="return confirmPurge()">
+            <fieldset>
+                <h4><openmrs:message code="EncounterRole.purgeEncounterRole"/></h4>
+                <input type="submit" value='<openmrs:message code="EncounterRole.purgeEncounterRole"/>' name="purge"/>
+            </fieldset>
+        </form>
+    </openmrs:hasPrivilege>
 </c:if>
 
-<openmrs:extensionPoint pointId="org.openmrs.admin.encounters.encounterRoleForm.footer" type="html" parameters="encounterRoleId=${encounterRole.encounterRoleId}" />
+<openmrs:extensionPoint pointId="org.openmrs.admin.encounters.encounterRoleForm.footer" type="html"
+                        parameters="encounterRoleId=${encounterRole.encounterRoleId}"/>
 <%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>

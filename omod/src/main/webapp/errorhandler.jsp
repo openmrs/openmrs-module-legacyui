@@ -8,16 +8,16 @@
 	root cause exception to see if it is an authentication related exception and handle it appropriately.
 --%>
 <%
-if (exception.getCause() != null && (ContextAuthenticationException.class.equals(exception.getCause().getClass())
-		        || APIAuthenticationException.class.equals(exception.getCause().getClass()))) {
-	//convert it back to the actual exception that was thrown
-	exception = exception.getCause();
+    if (exception.getCause() != null && (ContextAuthenticationException.class.equals(exception.getCause().getClass())
+            || APIAuthenticationException.class.equals(exception.getCause().getClass()))) {
+        //convert it back to the actual exception that was thrown
+        exception = exception.getCause();
 %>
 
 <%@ include file="/WEB-INF/view/module/legacyui/authorizationHandlerInclude.jsp" %>
 
 <%
-}
+    }
 %>
 <%--
 else{
@@ -25,33 +25,32 @@ else{
 
 <%-- Otherwise the Exception Handler retains control --%>
 <font color="red">
-<h2>An error has occurred!</h2>
-The following error happened somewhere on this page:<br/>
-<%= exception.toString() %>
+    <h2>An error has occurred!</h2>
+    The following error happened somewhere on this page:<br/>
+    <%= exception.toString() %>
 
-<br/><br/>
-(The full error stack trace output is in the source of this page.)
+    <br/><br/>
+    (The full error stack trace output is in the source of this page.)
 </font>
 
-<openmrs:extensionPoint pointId="org.openmrs.errorHandler" type="html" />
+<openmrs:extensionPoint pointId="org.openmrs.errorHandler" type="html"/>
 <%
-org.apache.commons.logging.LogFactory.getLog(getClass()).error("Error on page " + request.getRequestURI(), exception);
+    org.apache.commons.logging.LogFactory.getLog(getClass()).error("Error on page " + request.getRequestURI(), exception);
 
-org.openmrs.api.context.Context.openSession();
+    org.openmrs.api.context.Context.openSession();
 
-if (org.openmrs.api.context.Context.isAuthenticated() == false) {
-	out.println("<!-- There is no stack trace here because you are not authenticated -->");
-}
-else {
-	out.println("<!--");
-	StringWriter sw = new StringWriter();
-	PrintWriter pw = new PrintWriter(sw);
-	exception.printStackTrace(pw);
-	out.print(sw);
-	sw.close();
-	pw.close();
-	out.println("-->");
-}
-org.openmrs.api.context.Context.closeSession();
+    if (org.openmrs.api.context.Context.isAuthenticated() == false) {
+        out.println("<!-- There is no stack trace here because you are not authenticated -->");
+    } else {
+        out.println("<!--");
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        exception.printStackTrace(pw);
+        out.print(sw);
+        sw.close();
+        pw.close();
+        out.println("-->");
+    }
+    org.openmrs.api.context.Context.closeSession();
 
-//end else%>
+    //end else%>
