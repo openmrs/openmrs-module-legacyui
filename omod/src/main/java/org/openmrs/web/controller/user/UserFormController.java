@@ -9,13 +9,6 @@
  */
 package org.openmrs.web.controller.user;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
@@ -35,6 +28,7 @@ import org.openmrs.validator.UserValidator;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.user.UserProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -46,6 +40,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 /**
  * Used for creating/editing User
@@ -109,7 +110,7 @@ public class UserFormController {
 	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
 	        @ModelAttribute("user") User user, ModelMap model) {
 		
-		// the formBackingObject method above sets up user, depending on userId and personId parameters   
+		// the formBackingObject method above sets up user, depending on userId and personId parameters
 		
 		model.addAttribute("isNewUser", isNewUser(user));
 		if (isNewUser(user) || Context.hasPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS)) {
@@ -153,7 +154,7 @@ public class UserFormController {
 	        @RequestParam(required = false, value = "roleStrings") String[] roles,
 	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
 	        @RequestParam(required = false, value = "providerCheckBox") String addToProviderTableOption,
-	        @ModelAttribute("user") User user, BindingResult errors) {
+	        @ModelAttribute("user") User user, BindingResult errors, HttpServletResponse response) {
 		
 		UserService us = Context.getUserService();
 		MessageSourceService mss = Context.getMessageSourceService();
@@ -273,6 +274,7 @@ public class UserFormController {
 			userValidator.validate(user, errors);
 			
 			if (errors.hasErrors()) {
+				response.setStatus(HttpStatus.BAD_REQUEST.value());
 				return showForm(user.getUserId(), createNewPerson, user, model);
 			}
 			
