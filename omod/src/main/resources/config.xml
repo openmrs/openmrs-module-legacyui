@@ -294,7 +294,10 @@
 			]]>
 		</signatures>
 	</dwr>
-	
+	<servlet>
+		<servlet-name>logout</servlet-name>
+		<servlet-class>org.openmrs.web.servlet.LogoutServlet</servlet-class>
+	</servlet>
 	<servlet>
 		<servlet-name>showGraphServlet</servlet-name>
 		<servlet-class>org.openmrs.web.servlet.ShowGraphServlet</servlet-class>
