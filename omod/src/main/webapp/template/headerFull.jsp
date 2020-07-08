@@ -104,7 +104,7 @@
 						<openmrs:message code="header.logged.in"/> <c:out value="${authenticatedUser.personName}" />
 					</span>
 					<span id="userLogout">
-						<a href='${pageContext.request.contextPath}/logout'><openmrs:message code="header.logout" /></a>
+						<a href='${pageContext.request.contextPath}/ms/logout'><openmrs:message code="header.logout" /></a>
 					</span>
 					<span>
 						<a href="${pageContext.request.contextPath}/options.form"><openmrs:message code="Navigation.options"/></a>
