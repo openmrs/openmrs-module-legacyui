@@ -118,6 +118,9 @@ public class AlertFormController extends SimpleFormController {
 						Integer userId = recipient.getRecipient().getUserId();
 						if (!userIds.contains(userId)) {
 							recipientsToRemove.add(recipient);
+						} else {
+							//To remove the users that have already been scheduled
+							userIds.remove(userId);
 						}
 					}
 				}
