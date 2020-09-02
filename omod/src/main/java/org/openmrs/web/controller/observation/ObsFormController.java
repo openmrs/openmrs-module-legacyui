@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -140,7 +141,12 @@ public class ObsFormController extends SimpleFormController {
 						errors.reject("editReason", "Obs.edit.reason.empty");
 						return showForm(request, response, errors);
 					}
-					
+					if (obs.getPerson() != null && obs.getEncounter() != null && obs.getEncounter().getPatient() != null) {
+						if (!Objects.equals(obs.getPerson(),obs.getEncounter().getPatient().getPerson())) {
+							errors.reject("Person objects of the obs and the encounter do not match");
+							return showForm(request, response, errors);
+						}
+					}
 					if (obs.getConcept().isComplex()) {
 						if (request instanceof MultipartHttpServletRequest) {
 							InputStream complexDataInputStream = setComplexData(obs, request);
