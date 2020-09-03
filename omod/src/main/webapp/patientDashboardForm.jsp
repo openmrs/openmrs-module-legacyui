@@ -118,7 +118,17 @@
 		<openmrs:hasPrivilege privilege="Patient Dashboard - View Overview Section">
 			<li><a id="patientOverviewTab" href="#" onclick="return changeTab(this);" hidefocus="hidefocus"><openmrs:message code="patientDashboard.overview"/></a></li>
 		</openmrs:hasPrivilege>
-		
+
+		<openmrs:extensionPoint pointId="org.openmrs.patientDashboardTab" type="html">
+			<openmrs:hasPrivilege privilege="${extension.requiredPrivilege}">
+				<c:if test="${extension.tabId == 'patientRegimen'}">
+					<li>
+						<a id="${extension.tabId}Tab" href="#" onclick="return changeTab(this);" hidefocus="hidefocus"><openmrs:message code="${extension.tabName}"/></a>
+					</li>
+				</c:if>
+			</openmrs:hasPrivilege>
+		</openmrs:extensionPoint>
+
 		<openmrs:globalProperty key="visits.enabled" defaultValue="true" var="visitsEnabled"/>
 		<c:choose>		
 			<c:when test='${visitsEnabled}'>
@@ -147,9 +157,11 @@
 		</c:if>
 		<openmrs:extensionPoint pointId="org.openmrs.patientDashboardTab" type="html">
 			<openmrs:hasPrivilege privilege="${extension.requiredPrivilege}">
-				<li>
-					<a id="${extension.tabId}Tab" href="#" onclick="return changeTab(this);" hidefocus="hidefocus"><openmrs:message code="${extension.tabName}"/></a>
-				</li>
+				<c:if test="${extension.tabId != 'patientRegimen'}">
+					<li>
+						<a id="${extension.tabId}Tab" href="#" onclick="return changeTab(this);" hidefocus="hidefocus"><openmrs:message code="${extension.tabName}"/></a>
+					</li>
+				</c:if>
 			</openmrs:hasPrivilege>
 		</openmrs:extensionPoint>
 	</ul>
