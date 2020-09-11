@@ -60,9 +60,12 @@ public class ForEachDisplayAttributeTag extends LoopTagSupport {
 				viewType = ATTR_VIEW_TYPE.valueOf(getDisplayType());
 			}
 			
-			List<PersonAttributeType> types = ps.getPersonAttributeTypes(personType, viewType);
+			if (Context.isAuthenticated()) {
+				List<PersonAttributeType> types = ps.getPersonAttributeTypes(personType, viewType);
+				
+				attrTypes = types.iterator();
+			}
 			
-			attrTypes = types.iterator();
 			setVarStatus("varStatus");
 			
 		}
