@@ -232,19 +232,19 @@ public class PortletController implements Controller {
 							if (latestWeight != null && latestHeight != null) {
 								double weightInKg;
 								double heightInM;
-								if (weightConcept.getUnits().equals("kg")) {
+								if (weightConcept.getUnits().equalsIgnoreCase("kg")) {
 									weightInKg = latestWeight.getValueNumeric();
-								} else if (weightConcept.getUnits().equals("lb")) {
+								} else if (weightConcept.getUnits().equalsIgnoreCase("lb")) {
 									weightInKg = latestWeight.getValueNumeric() * 0.45359237;
 								} else {
 									throw new IllegalArgumentException("Can't handle units of weight concept: "
 									        + weightConcept.getUnits());
 								}
-								if (heightConcept.getUnits().equals("cm")) {
+								if (heightConcept.getUnits().equalsIgnoreCase("cm")) {
 									heightInM = latestHeight.getValueNumeric() / 100;
-								} else if (heightConcept.getUnits().equals("m")) {
+								} else if (heightConcept.getUnits().equalsIgnoreCase("m")) {
 									heightInM = latestHeight.getValueNumeric();
-								} else if (heightConcept.getUnits().equals("in")) {
+								} else if (heightConcept.getUnits().equalsIgnoreCase("in")) {
 									heightInM = latestHeight.getValueNumeric() * 0.0254;
 								} else {
 									throw new IllegalArgumentException("Can't handle units of height concept: "
