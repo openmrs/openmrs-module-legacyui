@@ -158,8 +158,11 @@ public class PatientFormController extends PersonFormController {
 							if (idPrefStatus != null && idPrefStatus.length > i) {
 								pi.setPreferred(new Boolean(idPrefStatus[i]));
 							}
-							new PatientIdentifierValidator().validate(pi, errors);
-							if (errors.hasErrors()) {
+							
+							BindException piErrors = new BindException(pi, "patientIdentifier");
+							new PatientIdentifierValidator().validate(pi, piErrors);
+							if (piErrors.hasErrors()) {
+								errors.rejectValue("identifiers", piErrors.getMessage());
 								return showForm(request, response, errors);
 							}
 							patient.addIdentifier(pi);
