@@ -380,7 +380,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 			}
 		}
 		catch (Exception e) {
-			log.error(e);
+			log.error("Error while attempting to find duplicate patients", e);
 			patientList.add("Error while attempting to find duplicate patients - " + e.getMessage());
 		}
 		

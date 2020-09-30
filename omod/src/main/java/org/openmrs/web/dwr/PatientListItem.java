@@ -42,17 +42,19 @@ public class PatientListItem extends PersonListItem {
 			
 			patientId = patient.getPatientId();
 			
-			identifier = patient.getPatientIdentifier().getIdentifier();
-			// get patient's identifiers
-			for (PatientIdentifier pi : patient.getIdentifiers()) {
-				if (!pi.getIdentifier().equals(identifier)) {
-					if (!"".equals(otherIdentifiers)) {
-						otherIdentifiers += ",";
+			PatientIdentifier patientIdentifier = patient.getPatientIdentifier();
+			if (patientIdentifier != null) {
+				identifier = patientIdentifier.getIdentifier();
+				// get patient's identifiers
+				for (PatientIdentifier pi : patient.getIdentifiers()) {
+					if (!pi.getIdentifier().equals(identifier)) {
+						if (!"".equals(otherIdentifiers)) {
+							otherIdentifiers += ",";
+						}
+						otherIdentifiers += " " + pi.getIdentifier();
 					}
-					otherIdentifiers += " " + pi.getIdentifier();
 				}
 			}
-			
 		}
 	}
 	
