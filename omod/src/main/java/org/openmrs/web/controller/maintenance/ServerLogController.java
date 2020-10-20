@@ -9,7 +9,10 @@
  */
 package org.openmrs.web.controller.maintenance;
 
-import java.util.ArrayList;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -20,7 +23,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
+import org.openmrs.module.ModuleUtil;
 import org.openmrs.util.MemoryAppender;
+import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.OpenmrsUtil;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -35,6 +41,8 @@ import org.springframework.web.servlet.view.RedirectView;
 public class ServerLogController extends SimpleFormController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
+	
+	private volatile MethodHandle getMemoryAppenderHandle = null;
 	
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
@@ -56,13 +64,31 @@ public class ServerLogController extends SimpleFormController {
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	protected List<String> formBackingObject(HttpServletRequest request) throws ServletException {
+		if (ModuleUtil.matchRequiredVersions(OpenmrsConstants.OPENMRS_VERSION_SHORT, "2.4.* - 2.*")) {
+			try {
+				if (getMemoryAppenderHandle == null) {
+					synchronized (ServerLogController.class) {
+						if (getMemoryAppenderHandle == null) {
+							getMemoryAppenderHandle = MethodHandles.publicLookup().findStatic(OpenmrsUtil.class,
+							    "getMemoryAppender", MethodType.methodType(MemoryAppender.class));
+						}
+					}
+				}
+				
+				MemoryAppender memoryAppender = (MemoryAppender) getMemoryAppenderHandle.invoke();
+				return memoryAppender.getLogLines();
+			}
+			catch (Throwable e) {
+				log.error("Error while loading memoryAppender", e);
+			}
+		}
+		
 		Appender appender = Logger.getRootLogger().getAppender("MEMORY_APPENDER");
 		if (appender instanceof MemoryAppender) {
 			MemoryAppender memoryAppender = (MemoryAppender) appender;
 			return memoryAppender.getLogLines();
-			
-		} else {
-			return new ArrayList<String>();
 		}
+		
+		return Collections.emptyList();
 	}
 }
