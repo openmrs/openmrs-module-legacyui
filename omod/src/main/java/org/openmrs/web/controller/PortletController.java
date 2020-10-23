@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -28,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.ConceptNumeric;
+import org.openmrs.DrugOrder;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
@@ -265,6 +267,34 @@ public class PortletController implements Controller {
 					} else {
 						model.put("patientObs", new HashSet<Obs>());
 					}
+					// information about whether or not the patient has exited care
+					Obs reasonForExitObs = null;
+					String reasonForExitConceptString = as.getGlobalProperty("concept.reasonExitedCare");
+					if (StringUtils.hasLength(reasonForExitConceptString)) {
+						Concept reasonForExitConcept = cs.getConcept(reasonForExitConceptString);
+						if (reasonForExitConcept != null) {
+							List<Obs> patientExitObs = Context.getObsService().getObservationsByPersonAndConcept(p,
+							    reasonForExitConcept);
+							if (patientExitObs != null) {
+								log.debug("Exit obs is size " + patientExitObs.size());
+								if (patientExitObs.size() == 1) {
+									reasonForExitObs = patientExitObs.iterator().next();
+									Concept exitReason = reasonForExitObs.getValueCoded();
+									Date exitDate = reasonForExitObs.getObsDatetime();
+									if (exitReason != null && exitDate != null) {
+										patientVariation = "Exited";
+									}
+								} else {
+									if (patientExitObs.size() == 0) {
+										log.debug("Patient has no reason for exit");
+									} else {
+										log.error("Too many reasons for exit - not putting data into model");
+									}
+								}
+							}
+						}
+					}
+					model.put("patientReasonForExit", reasonForExitObs);
 					
 					if (Context.hasPrivilege(PrivilegeConstants.GET_PROGRAMS)
 					        && Context.hasPrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)) {
