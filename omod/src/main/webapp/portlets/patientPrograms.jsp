@@ -129,10 +129,6 @@
 				alert('<openmrs:message code="State.error.invalidDate" javaScriptEscape="true"/>');
 				return;
 			}
-			if (!isEmpty(lastStateEndDate)) {
-				alert('<openmrs:message code="State.error.invalidChangeState" javaScriptEscape="true"/>');
-				return;
-			}
 		}
 
 		DWRProgramWorkflowService.changeToState(ppId, wfId, stateId,
@@ -468,7 +464,7 @@
 												<c:set var="stateStart" value="" />
 												<c:set var="retired" value="" />
 												<c:forEach var="state" items="${program.states}">
-													<c:if test="${!state.voided && state.state.programWorkflow.programWorkflowId == workflow.programWorkflowId && state.active}">
+													<c:if test="${!state.voided && state.state.programWorkflow.programWorkflowId == workflow.programWorkflowId}">
 														<c:set var="stateId" value="${state.state.concept.conceptId}" />
 														<c:set var="stateStart" value="${state.startDate}" />
 														<c:set var="retired" value="${state.state.retired}" />
