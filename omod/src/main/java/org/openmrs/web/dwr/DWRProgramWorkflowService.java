@@ -85,11 +85,31 @@ public class DWRProgramWorkflowService {
 		return ret;
 	}
 	
-	public Vector<ListItem> getStatesByWorkflow(String uuid) {
-		log.debug("In getStatesByWorkflow with workflow uuid of " + uuid);
+	/**
+	 * @return the ProgramWorkflow matching the given workflowLookup
+	 */
+	public ProgramWorkflow getProgramWorkflow(String workflowLookup) {
+		ProgramWorkflow workflow = Context.getProgramWorkflowService().getWorkflowByUuid(workflowLookup);
+
+		if (workflow == null) {
+			try {
+				workflow = Context.getProgramWorkflowService().getWorkflow(Integer.parseInt(workflowLookup));
+			}
+			catch (NumberFormatException e) {
+				log.error("Error while converting a workflow lookup value to an integer: " + workflowLookup, e);
+			}
+		}
+		if (workflow == null) {
+			throw new IllegalArgumentException("Unable to find workflow using " + workflowLookup);
+		}
+		return workflow;
+	}
+	
+	public Vector<ListItem> getStatesByWorkflow(String workflowLookup) {
+		log.debug("In getStatesByWorkflow with workflow uuid of " + workflowLookup);
 		Vector<ListItem> ret = new Vector<ListItem>();
 		
-		ProgramWorkflow workflow = Context.getProgramWorkflowService().getWorkflowByUuid(uuid);
+		ProgramWorkflow workflow = getProgramWorkflow(workflowLookup);
 		if (workflow != null) {
 			Set<ProgramWorkflowState> states = workflow.getSortedStates();
 			
