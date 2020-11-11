@@ -54,14 +54,14 @@ import org.springframework.validation.ObjectError;
  * This class exposes some of the methods in org.openmrs.api.ConceptService via the dwr package
  */
 public class DWRConceptService {
-
+	
 	protected static final Log log = LogFactory.getLog(DWRConceptService.class);
-
+	
 	private static final Pattern NUMERIC = Pattern.compile("^\\d+$");
-
+	
 	/**
 	 * Gets a list of conceptListItems matching the given arguments
-	 *
+	 * 
 	 * @param phrase the concept name string to match against
 	 * @param includeRetired boolean if false, will exclude retired concepts
 	 * @param includeClassNames List of ConceptClasses to restrict to
@@ -77,10 +77,10 @@ public class DWRConceptService {
 		return findBatchOfConcepts(phrase, includeRetired, includeClassNames, excludeClassNames, includeDatatypeNames,
 		    excludeDatatypeNames, null, null);
 	}
-
+	
 	/**
 	 * Gets a list of conceptListItems matching the given arguments
-	 *
+	 * 
 	 * @param phrase the concept name string to match against
 	 * @param includeRetired boolean if false, will exclude retired concepts
 	 * @param includeClassNames List of ConceptClasses to restrict to
@@ -108,14 +108,14 @@ public class DWRConceptService {
 		// List to return
 		// Object type gives ability to return error strings
 		List<Object> objectList = new ArrayList<Object>();
-
+		
 		// TODO add localization for messages
-
+		
 		Locale defaultLocale = Context.getLocale();
-
+		
 		// get the list of locales to search on
 		List<Locale> searchLocales = Context.getAdministrationService().getSearchLocales();
-
+		
 		// debugging output
 		if (log.isDebugEnabled()) {
 			StringBuffer searchLocalesString = new StringBuffer();
@@ -124,7 +124,7 @@ public class DWRConceptService {
 			}
 			log.debug("searching locales: " + searchLocalesString);
 		}
-
+		
 		if (includeClassNames == null) {
 			includeClassNames = new ArrayList<String>();
 		}
@@ -137,22 +137,22 @@ public class DWRConceptService {
 		if (excludeDatatypeNames == null) {
 			excludeDatatypeNames = new ArrayList<String>();
 		}
-
+		
 		try {
 			ConceptService cs = Context.getConceptService();
 			Set<ConceptSearchResult> searchResults = new HashSet<ConceptSearchResult>();
-
+			
 			if (!StringUtils.isBlank(phrase)) {
 				// search by id or uuid
 				Concept c = null;
-
+				
 				Matcher m = NUMERIC.matcher(phrase);
 				if (m.matches()) {
 					c = cs.getConcept(Integer.valueOf(phrase));
 				} else if (phrase.length() == 36) {
 					c = cs.getConceptByUuid(phrase);
 				}
-
+				
 				if (c != null) {
 					if (!c.getRetired() || includeRetired) {
 						String conceptClassName = null;
@@ -163,18 +163,18 @@ public class DWRConceptService {
 						if (c.getDatatype() != null) {
 							conceptDatatypeName = c.getDatatype().getName();
 						}
-
+						
 						if ((includeClassNames.isEmpty() || includeClassNames.contains(conceptClassName))
-								&& (excludeClassNames.isEmpty() || !excludeClassNames.contains(conceptClassName))
-								&& (includeDatatypeNames.isEmpty() || includeDatatypeNames.contains(conceptDatatypeName))
-								&& (excludeDatatypeNames.isEmpty() || !excludeDatatypeNames.contains(conceptDatatypeName))) {
+						        && (excludeClassNames.isEmpty() || !excludeClassNames.contains(conceptClassName))
+						        && (includeDatatypeNames.isEmpty() || includeDatatypeNames.contains(conceptDatatypeName))
+						        && (excludeDatatypeNames.isEmpty() || !excludeDatatypeNames.contains(conceptDatatypeName))) {
 							ConceptName cn = c.getName(defaultLocale);
 							ConceptSearchResult searchResult = new ConceptSearchResult(phrase, c, cn);
 							searchResults.add(searchResult);
 						}
 					}
 				}
-
+				
 				// turn classnames into class objects
 				List<ConceptClass> includeClasses = new ArrayList<ConceptClass>();
 				for (String name : includeClassNames) {
@@ -182,7 +182,7 @@ public class DWRConceptService {
 						includeClasses.add(cs.getConceptClassByName(name));
 					}
 				}
-
+				
 				// turn classnames into class objects
 				List<ConceptClass> excludeClasses = new ArrayList<ConceptClass>();
 				for (String name : excludeClassNames) {
@@ -190,7 +190,7 @@ public class DWRConceptService {
 						excludeClasses.add(cs.getConceptClassByName(name));
 					}
 				}
-
+				
 				// turn classnames into class objects
 				List<ConceptDatatype> includeDatatypes = new ArrayList<ConceptDatatype>();
 				for (String name : includeDatatypeNames) {
@@ -198,7 +198,7 @@ public class DWRConceptService {
 						includeDatatypes.add(cs.getConceptDatatypeByName(name));
 					}
 				}
-
+				
 				// turn classnames into class objects
 				List<ConceptDatatype> excludeDatatypes = new ArrayList<ConceptDatatype>();
 				for (String name : excludeDatatypeNames) {
@@ -206,19 +206,19 @@ public class DWRConceptService {
 						excludeDatatypes.add(cs.getConceptDatatypeByName(name));
 					}
 				}
-
+				
 				// perform the search
 				searchResults.addAll(cs.getConcepts(phrase, searchLocales, includeRetired, includeClasses, excludeClasses,
 				    includeDatatypes, excludeDatatypes, null, start, length));
-
+				
 				//TODO Should we still include drugs, if yes, smartly harmonize the paging between the two different DB tables
 				//look ups to match the values of start and length not to go over the value of count of matches returned to the search widget
 				//List<Drug> drugs = null;
 				//if (includeDrugConcepts)
 				//	drugs = cs.getDrugs(phrase, null, false, includeRetired, null, null);
-
+				
 			}
-
+			
 			if (searchResults.size() < 1) {
 				objectList.add(Context.getMessageSourceService().getMessage("general.noMatchesFoundInLocale",
 				    new Object[] { "<b>" + phrase + "</b>", OpenmrsUtil.join(searchLocales, ", ") }, Context.getLocale()));
@@ -234,18 +234,18 @@ public class DWRConceptService {
 			log.error("Error while finding concepts + " + e.getMessage(), e);
 			objectList.add(Context.getMessageSourceService().getMessage("Concept.search.error") + " - " + e.getMessage());
 		}
-
+		
 		if (objectList.size() == 0) {
 			objectList.add(Context.getMessageSourceService().getMessage("general.noMatchesFoundInLocale",
 			    new Object[] { "<b>" + phrase + "</b>", defaultLocale }, Context.getLocale()));
 		}
-
+		
 		return objectList;
 	}
-
+	
 	/**
 	 * Get a {@link ConceptListItem} by its internal database id.
-	 *
+	 * 
 	 * @param conceptId the id to look for
 	 * @return a {@link ConceptListItem} or null if conceptId is not found
 	 */
@@ -256,16 +256,16 @@ public class DWRConceptService {
 		if (c == null) {
 			return null;
 		}
-
+		
 		ConceptName cn = c.getName(locale);
-
+		
 		return new ConceptListItem(c, cn, locale);
 	}
-
+	
 	public List<ConceptListItem> findProposedConcepts(String text) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
-
+		
 		List<Concept> concepts = cs.getProposedConcepts(text);
 		List<ConceptListItem> cli = new ArrayList<ConceptListItem>();
 		for (Concept c : concepts) {
@@ -274,11 +274,11 @@ public class DWRConceptService {
 		}
 		return cli;
 	}
-
+	
 	/**
 	 * Find a list of {@link ConceptListItem} or {@link ConceptDrugListItem}s that are answers to
 	 * the given question. The given question is determined by the given <code>conceptId</code>
-	 *
+	 * 
 	 * @param text the text to search for within the answers
 	 * @param conceptId the conceptId of the question concept
 	 * @param includeVoided (this argument is ignored now. searching for voided answers is not
@@ -293,43 +293,43 @@ public class DWRConceptService {
 	 */
 	public List<Object> findConceptAnswers(String text, Integer conceptId, boolean includeVoided, boolean includeDrugConcepts)
 	        throws Exception {
-
+		
 		if (includeVoided) {
 			throw new APIException("You should not include voideds in the search.");
 		}
-
+		
 		ConceptService cs = Context.getConceptService();
-
+		
 		Concept concept = cs.getConcept(conceptId);
-
+		
 		if (concept == null) {
 			throw new Exception("Unable to find a concept with id: " + conceptId);
 		}
-
+		
 		List<ConceptSearchResult> searchResults = new ArrayList<ConceptSearchResult>();
 		List<Locale> locales = Context.getAdministrationService().getSearchLocales();
-
+		
 		for (Locale lc : locales) {
 			List<ConceptSearchResult> results = cs.findConceptAnswers(text, lc, concept);
 			if (results != null) {
 				searchResults.addAll(results);
 			}
 		}
-
+		
 		List<Drug> drugAnswers = new ArrayList<Drug>();
 		for (ConceptAnswer conceptAnswer : concept.getAnswers(false)) {
 			if (conceptAnswer.getAnswerDrug() != null) {
 				drugAnswers.add(conceptAnswer.getAnswerDrug());
 			}
 		}
-
+		
 		List<Object> items = new ArrayList<Object>();
 		Set<Integer> uniqueItems = new HashSet<Integer>();
 		for (ConceptSearchResult searchResult : searchResults) {
 			if (!uniqueItems.add(searchResult.getConcept().getConceptId())) {
 				continue; //Skip already added items
 			}
-
+			
 			items.add(new ConceptListItem(searchResult));
 			// add drugs for concept if desired
 			if (includeDrugConcepts) {
@@ -343,19 +343,19 @@ public class DWRConceptService {
 				}
 			}
 		}
-
+		
 		return items;
 	}
-
+	
 	public List<Object> getConceptSet(Integer conceptId) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
 		FormService fs = Context.getFormService();
-
+		
 		Concept concept = cs.getConcept(conceptId);
-
+		
 		List<Object> returnList = new ArrayList<Object>();
-
+		
 		if (concept.isSet()) {
 			for (ConceptSet set : concept.getConceptSets()) {
 				Field field = null;
@@ -370,7 +370,7 @@ public class DWRConceptService {
 						}
 					}
 				}
-
+				
 				if (field == null) {
 					returnList.add(new ConceptListItem(set.getConcept(), cn, locale));
 				} else {
@@ -378,42 +378,42 @@ public class DWRConceptService {
 				}
 			}
 		}
-
+		
 		return returnList;
 	}
-
+	
 	public List<ConceptListItem> getQuestionsForAnswer(Integer conceptId) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
-
+		
 		Concept concept = cs.getConcept(conceptId);
-
+		
 		List<Concept> concepts = cs.getConceptsByAnswer(concept);
-
+		
 		List<ConceptListItem> items = new ArrayList<ConceptListItem>();
 		for (Concept c : concepts) {
 			ConceptName cn = c.getName(locale);
 			items.add(new ConceptListItem(c, cn, locale));
 		}
-
+		
 		return items;
 	}
-
+	
 	public ConceptDrugListItem getDrug(Integer drugId) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
 		Drug d = cs.getDrug(drugId);
-
+		
 		return d == null ? null : new ConceptDrugListItem(d, locale);
 	}
-
+	
 	public List<Object> getDrugs(Integer conceptId, boolean showConcept) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
 		Concept concept = cs.getConcept(conceptId);
-
+		
 		List<Object> items = new ArrayList<Object>();
-
+		
 		// Add this concept as the first option in the list
 		// If there are no drugs to choose from, this will be automatically
 		// selected
@@ -423,59 +423,59 @@ public class DWRConceptService {
 			        .getName());
 			items.add(thisConcept);
 		}
-
+		
 		// find drugs for this concept
 		List<Drug> drugs = cs.getDrugsByConcept(concept);
-
+		
 		// if there are drugs to choose from, add some instructions
 		if (drugs.size() > 0 && showConcept) {
 			items.add("Or choose a form of " + concept.getName(locale, false).getName());
 		}
-
+		
 		// miniaturize our drug objects
 		for (Drug drug : drugs) {
 			items.add(new ConceptDrugListItem(drug, locale));
 		}
-
+		
 		return items;
 	}
-
+	
 	public List<Object> findDrugs(String phrase, boolean includeRetired) throws APIException {
 		if (includeRetired) {
 			throw new APIException("you.should.not.included.voideds", (Object[]) null);
 		}
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
-
+		
 		List<Object> items = new ArrayList<Object>();
-
+		
 		// find drugs for this concept
 		Set<Drug> drugs = new HashSet<Drug>();
-
+		
 		// also find drugs by given phrase, assuming that 
 		// this phrase is a list of concept words
 		drugs.addAll(cs.getDrugs(phrase));
-
+		
 		// miniaturize our drug objects
 		for (Drug drug : drugs) {
 			items.add(new ConceptDrugListItem(drug, locale));
 		}
-
+		
 		return items;
 	}
-
+	
 	public boolean isValidNumericValue(Float value, Integer conceptId) {
 		ConceptNumeric conceptNumeric = Context.getConceptService().getConceptNumeric(conceptId);
-
+		
 		return OpenmrsUtil.isValidNumericValue(value, conceptNumeric);
 	}
-
+	
 	public String getConceptNumericUnits(Integer conceptId) {
 		ConceptNumeric conceptNumeric = Context.getConceptService().getConceptNumeric(conceptId);
-
+		
 		return conceptNumeric.getUnits();
 	}
-
+	
 	public List<ConceptListItem> getAnswersForQuestion(Integer conceptId) {
 		List<ConceptListItem> ret = new ArrayList<ConceptListItem>();
 		Concept c = Context.getConceptService().getConcept(conceptId);
@@ -490,16 +490,16 @@ public class DWRConceptService {
 		}
 		return ret;
 	}
-
+	
 	/**
 	 * Converts the datatype of a concept that already has Obs referencing it from boolean to coded
 	 * to support addition of more coded answers
-	 *
+	 * 
 	 * @param conceptId the conceptId of the concept to be converted
 	 * @return String to act as a signal if successfully converted or an error message
 	 */
 	public String convertBooleanConceptToCoded(Integer conceptId) {
-
+		
 		try {
 			Context.getConceptService().convertBooleanConceptToCoded(Context.getConceptService().getConcept(conceptId));
 			//this particular message isn't displayed in the browser rather it acts as
@@ -515,13 +515,13 @@ public class DWRConceptService {
 			return Context.getMessageSourceService().getMessage("Concept.cannot.save");
 		}
 	}
-
+	
 	/**
 	 * Returns a map of results with the values as count of matches and a partial list of the
 	 * matching concepts (depending on values of start and length parameters) while the keys are are
 	 * 'count' and 'objectList' respectively, if the length parameter is not specified, then all
 	 * matches will be returned from the start index if specified.
-	 *
+	 * 
 	 * @param phrase concept name or conceptId
 	 * @param includeRetired boolean if false, will exclude retired concepts
 	 * @param includeClassNames List of ConceptClasses to restrict to
@@ -541,10 +541,10 @@ public class DWRConceptService {
 		//Map to return
 		Map<String, Object> resultsMap = new HashMap<String, Object>();
 		List<Object> objectList = new ArrayList<Object>();
-
+		
 		// get the list of locales to search on
 		List<Locale> searchLocales = Context.getAdministrationService().getSearchLocales();
-
+		
 		// debugging output
 		if (log.isDebugEnabled()) {
 			StringBuffer searchLocalesString = new StringBuffer();
@@ -553,7 +553,7 @@ public class DWRConceptService {
 			}
 			log.debug("searching locales: " + searchLocalesString);
 		}
-
+		
 		if (includeClassNames == null) {
 			includeClassNames = new ArrayList<String>();
 		}
@@ -566,10 +566,10 @@ public class DWRConceptService {
 		if (excludeDatatypeNames == null) {
 			excludeDatatypeNames = new ArrayList<String>();
 		}
-
+		
 		try {
 			ConceptService cs = Context.getConceptService();
-
+			
 			if (!StringUtils.isBlank(phrase)) {
 				// turn classnames into class objects
 				List<ConceptClass> includeClasses = new ArrayList<ConceptClass>();
@@ -578,7 +578,7 @@ public class DWRConceptService {
 						includeClasses.add(cs.getConceptClassByName(name));
 					}
 				}
-
+				
 				// turn classnames into class objects
 				List<ConceptClass> excludeClasses = new ArrayList<ConceptClass>();
 				for (String name : excludeClassNames) {
@@ -586,7 +586,7 @@ public class DWRConceptService {
 						excludeClasses.add(cs.getConceptClassByName(name));
 					}
 				}
-
+				
 				// turn classnames into class objects
 				List<ConceptDatatype> includeDatatypes = new ArrayList<ConceptDatatype>();
 				for (String name : includeDatatypeNames) {
@@ -594,7 +594,7 @@ public class DWRConceptService {
 						includeDatatypes.add(cs.getConceptDatatypeByName(name));
 					}
 				}
-
+				
 				// turn classnames into class objects
 				List<ConceptDatatype> excludeDatatypes = new ArrayList<ConceptDatatype>();
 				for (String name : excludeDatatypeNames) {
@@ -602,13 +602,13 @@ public class DWRConceptService {
 						excludeDatatypes.add(cs.getConceptDatatypeByName(name));
 					}
 				}
-
+				
 				int matchCount = 0;
 				if (getMatchCount) {
 					//get the count of matches
 					matchCount += cs.getCountOfConcepts(phrase, searchLocales, includeRetired, includeClasses,
 					    excludeClasses, includeDatatypes, excludeDatatypes, null);
-
+					
 					if (NUMERIC.matcher(phrase).matches()) {
 						// user searched on a number. Insert concept with
 						// corresponding conceptId
@@ -622,25 +622,25 @@ public class DWRConceptService {
 							matchCount++;
 						}
 					}
-
+					
 					//if (includeDrugs)
 					//	matchCount += cs.getCountOfDrugs(phrase, null, false, includeRetired);
 				}
-
+				
 				//if we have any matches or this isn't the first ajax call when the caller
 				//requests for the count
 				if (matchCount > 0 || !getMatchCount) {
 					objectList.addAll(findBatchOfConcepts(phrase, includeRetired, includeClassNames, excludeClassNames,
 					    includeDatatypeNames, excludeDatatypeNames, start, length));
 				}
-
+				
 				resultsMap.put("count", matchCount);
 				resultsMap.put("objectList", objectList);
 			} else {
 				resultsMap.put("count", 0);
 				objectList.add(Context.getMessageSourceService().getMessage("searchWidget.noMatchesFound"));
 			}
-
+			
 		}
 		catch (Exception e) {
 			log.error("Error while searching for concepts", e);
@@ -649,13 +649,13 @@ public class DWRConceptService {
 			resultsMap.put("count", 0);
 			resultsMap.put("objectList", objectList);
 		}
-
+		
 		return resultsMap;
 	}
-
+	
 	/**
 	 * Get a {@link ConceptReferenceTerm} by its internal database id.
-	 *
+	 * 
 	 * @param conceptReferenceTermId the id to look for
 	 * @return a {@link ConceptReferenceTermListItem} or null if conceptReferenceTermId is not found
 	 */
@@ -664,13 +664,13 @@ public class DWRConceptService {
 		if (term == null) {
 			return null;
 		}
-
+		
 		return new ConceptReferenceTermListItem(term);
 	}
-
+	
 	/**
 	 * Gets a list of conceptListItems matching the given arguments
-	 *
+	 * 
 	 * @param phrase the string to search against
 	 * @param sourceId the id of concept source where to look up reference terms
 	 * @param start the beginning index
@@ -685,7 +685,7 @@ public class DWRConceptService {
 		try {
 			ConceptService cs = Context.getConceptService();
 			List<ConceptReferenceTerm> terms = new ArrayList<ConceptReferenceTerm>();
-
+			
 			if (StringUtils.isEmpty(phrase)) {
 				objectList.add(mss.getMessage("searchWidget.searchPhraseCannotBeNull"));
 				return objectList;
@@ -695,7 +695,7 @@ public class DWRConceptService {
 				source = cs.getConceptSource(sourceId);
 			}
 			terms.addAll(cs.getConceptReferenceTerms(phrase, source, start, length, includeRetired));
-
+			
 			if (terms.size() == 0) {
 				objectList.add(mss.getMessage("general.noMatchesFound", new Object[] { "'" + phrase + "'" },
 				    Context.getLocale()));
@@ -710,10 +710,10 @@ public class DWRConceptService {
 			log.error("Error while searching for concept reference terms", e);
 			objectList.add(mss.getMessage("ConceptReferenceTerm.search.error") + " - " + e.getMessage());
 		}
-
+		
 		return objectList;
 	}
-
+	
 	/**
 	 * @param phrase query the string to match against the reference term names
 	 * @param sourceId the id for the concept source from which the terms should be looked up
@@ -744,7 +744,7 @@ public class DWRConceptService {
 			if (conceptReferenceTermCount > 0 || !getMatchCount) {
 				objectList = findBatchOfConceptReferenceTerms(phrase, sourceId, start, length, includeRetired);
 			}
-
+			
 			resultsMap.put("count", conceptReferenceTermCount);
 			resultsMap.put("objectList", objectList);
 		}
@@ -758,10 +758,10 @@ public class DWRConceptService {
 		}
 		return resultsMap;
 	}
-
+	
 	/**
 	 * Process calls to create new reference terms
-	 *
+	 * 
 	 * @param code the unique code for the reference term
 	 * @param conceptSourceId the concept source for the term
 	 * @param name the unique name for the reference term
@@ -771,17 +771,17 @@ public class DWRConceptService {
 		List<String> errors = new ArrayList<String>();
 		MessageSourceService mss = Context.getMessageSourceService();
 		ConceptService cs = Context.getConceptService();
-
+		
 		ConceptSource source = null;
 		if (conceptSourceId != null) {
 			source = cs.getConceptSource(conceptSourceId);
 		}
-
+		
 		ConceptReferenceTerm term = new ConceptReferenceTerm();
 		term.setCode(code);
 		term.setName(name);
 		term.setConceptSource(source);
-
+		
 		Errors bindErrors = new BindException(term, "term");
 		new ConceptReferenceTermValidator().validate(term, bindErrors);
 		if (bindErrors.hasErrors()) {
@@ -797,7 +797,7 @@ public class DWRConceptService {
 				errors.add(mss.getMessage("ConceptReferenceTerm.save.error"));
 			}
 		}
-
+		
 		return errors;
 	}
 }

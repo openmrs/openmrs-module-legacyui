@@ -286,7 +286,6 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		Assert.assertTrue(isConceptFound(expected, result));
 	}
 	
-	
 	//Tests for search by Concept's UUID
 	
 	/**
@@ -423,8 +422,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 	public void findBatchOfConcepts_shouldNotReturnDuplicatesWhenSearchingByConceptUuid() {
 		String phrase = "957eba27-2b38-43e8-91a9-4dfe3956a32d";
 		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
-		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase,
-				Boolean.FALSE, null, null, null, null, null, null);
+		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null, null, null,
+		    null);
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1, result.size());
 		Assert.assertTrue(isConceptFound(expected, result));
