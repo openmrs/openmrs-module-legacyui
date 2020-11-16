@@ -367,6 +367,14 @@
 		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
+	
+	<globalProperty>
+		<property>legacyui.enableExitFromCare</property>
+		<defaultValue>false</defaultValue>
+		<description>
+			true/false whether or not to show the Exit / Resume Care button on the patient dashboard
+		</description>
+	</globalProperty>
 
 </module>
 

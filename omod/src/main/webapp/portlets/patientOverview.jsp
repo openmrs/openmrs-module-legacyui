@@ -9,6 +9,7 @@
 
 <openmrs:globalProperty var="importantIdentifiers" key="patient_identifier.importantTypes" />
 <openmrs:globalProperty key="use_patient_attribute.healthCenter" defaultValue="false" var="showHealthCenter"/>
+<openmrs:globalProperty key="legacyui.enableExitFromCare" var="exitFromCareEnabled" />
 
 <openmrs:extensionPoint pointId="org.openmrs.patientDashboard.overviewBox" type="html" parameters="patientId=${model.patient.patientId}" requiredClass="org.openmrs.module.web.extension.BoxExt">
 	<openmrs:hasPrivilege privilege="${extension.requiredPrivilege}">
@@ -39,6 +40,7 @@
 	  -->
 	<table id="patientActions">
 		<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.patientActionsContent" type="html" parameters="patientId=${model.patient.patientId}"/> 
+	   <c:if test="${exitFromCareEnabled}">
 		<tr class="patientActionsRow">
 		<openmrs:globalProperty key="concept.reasonExitedCare" var="reasonExitedCare" />
 		<c:if test="${empty model.patientReasonForExit && !empty reasonExitedCare}">
@@ -171,6 +173,7 @@
 			</td>
 		</c:if>
 		</tr>	
+       </c:if>
 	</table>
 </div>
 <br />
