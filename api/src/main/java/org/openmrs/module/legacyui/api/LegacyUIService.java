@@ -13,6 +13,8 @@ import java.util.Date;
 
 import org.openmrs.Concept;
 import org.openmrs.Patient;
+import org.openmrs.Provider;
+import org.openmrs.User;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
@@ -68,4 +70,9 @@ public interface LegacyUIService extends OpenmrsService {
 	 */
 	@Deprecated
 	public void triggerStateConversion(Patient patient, Concept reasonForExit, Date dateConverted) throws APIException;
+	
+	/**
+	 * @see OrderExtensionService#getProviderForUser(User)
+	 */
+	public Provider getProviderForUser(User user) ;
 }

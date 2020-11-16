@@ -9,6 +9,7 @@
  */
 package org.openmrs.module.legacyui.api.impl;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -18,15 +19,19 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.PatientProgram;
 import org.openmrs.PatientState;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
+import org.openmrs.Provider;
+import org.openmrs.User;
 import org.openmrs.api.APIException;
+import org.openmrs.api.OrderService;
+import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.legacyui.GeneralUtils;
 import org.openmrs.module.legacyui.api.LegacyUIService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +91,7 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 		triggerStateConversion(patient, reasonForExit, dateExited);
 		
 		// need to discontinue any open orders for this patient
-		GeneralUtils.discontinueAllDrugOrders(patient, reasonForExit, dateExited);
+		discontinueAllDrugOrders(patient, reasonForExit, dateExited);
 	}
 	
 	/**
@@ -216,6 +221,70 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 				// #1067 - We should explicitly save the patient program rather than let 
 				// Hibernate do so when it flushes the session.
 				Context.getProgramWorkflowService().savePatientProgram(patientProgram);
+			}
+		}
+	}
+	
+	/**
+	 * @see OrderExtensionService#getProviderForUser(User)
+	 */
+	public Provider getProviderForUser(User user) {
+		ProviderService ps = Context.getProviderService();
+		Collection<Provider> providers = ps.getProvidersByPerson(user.getPerson(), true);
+		if (providers.isEmpty()) {
+			throw new IllegalStateException("User " + user + " has no provider accounts, unable to create orders");
+		}
+		return providers.iterator().next();
+	}
+	
+	/**
+	 * Copied from OpenMRS core 1.9.x
+	 * See https://github.com/openmrs/openmrs-core/blob/1.9.x/api/src/main/java/org/openmrs/order/OrderUtil.java#L52
+	 * 
+	 * Discontinues all current orders for the given <code>patient</code>
+	 * 
+	 * @param patient
+	 * @param discontinueReason
+	 * @param discontinueDate
+	 * @see OrderService#discontinueOrder(org.openmrs.Order, Concept, Date)
+	 * @should discontinue all orders for the given patient if none are yet discontinued
+	 * @should not affect orders that were already discontinued on the specified date
+	 * @should not affect orders that end before the specified date
+	 * @should not affect orders that start after the specified date
+	 */
+	public void discontinueAllDrugOrders(Patient patient, Concept discontinueReason, Date discontinueDate) {
+		if (log.isDebugEnabled())
+			log.debug("In discontinueAll with patient " + patient + " and concept " + discontinueReason + " and date "
+			        + discontinueDate);
+		
+		OrderService orderService = Context.getOrderService();
+		int durgOrderType = 2; //Default OpenMRS core drug order type ID
+		try {
+			durgOrderType = Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
+			    "orderextension.drugOrderType"));
+		}
+		catch (Exception e) {
+			log.error("orderextension.drugOrderType global property value should be an integer");
+		}
+		List<Order> drugOrders = orderService.getOrders(patient, orderService.getCareSetting(2), Context.getOrderService()
+		        .getOrderType(durgOrderType), false);
+		// loop over all of this patient's drug orders to discontinue each
+		if (drugOrders != null) {
+			for (Order drugOrder : drugOrders) {
+				if (log.isDebugEnabled())
+					log.debug("discontinuing order: " + drugOrder);
+				// do the stuff to the database
+				if (drugOrder.isActive() || drugOrder.getEffectiveStopDate() == null) {
+					try {
+						Provider provider = Context.getService(LegacyUIService.class).getProviderForUser(Context.getAuthenticatedUser());
+						Context.getOrderService().discontinueOrder(drugOrder, discontinueReason, discontinueDate,provider, drugOrder.getEncounter());
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					
+				}
 			}
 		}
 	}
