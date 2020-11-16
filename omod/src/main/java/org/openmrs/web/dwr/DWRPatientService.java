@@ -40,7 +40,7 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientIdentifierException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.legacyui.GeneralUtils;
+import org.openmrs.module.legacyui.api.LegacyUIService;
 import org.openmrs.patient.IdentifierValidator;
 import org.openmrs.patient.UnallowedIdentifierException;
 import org.openmrs.util.OpenmrsConstants;
@@ -570,7 +570,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 				// Otherwise, we process this as an exit
 				else {
 					try {
-						GeneralUtils.exitFromCare(patient, exitDate, exitReasonConcept);
+						Context.getService(LegacyUIService.class).exitFromCare(patient, exitDate, exitReasonConcept);
 					}
 					catch (Exception e) {
 						log.warn("Caught error", e);
@@ -583,7 +583,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 			// If the system does not recognize death as a concept, then we exit from care
 			else {
 				try {
-					GeneralUtils.exitFromCare(patient, exitDate, exitReasonConcept);
+					Context.getService(LegacyUIService.class).exitFromCare(patient, exitDate, exitReasonConcept);
 				}
 				catch (Exception e) {
 					log.warn("Caught error", e);

@@ -12,26 +12,17 @@ package org.openmrs.module.legacyui;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
-import org.openmrs.Location;
-import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
-import org.openmrs.PatientProgram;
-import org.openmrs.PatientState;
-import org.openmrs.ProgramWorkflow;
-import org.openmrs.ProgramWorkflowState;
 import org.openmrs.Provider;
 import org.openmrs.User;
-import org.openmrs.api.APIException;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.ProviderService;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 public class GeneralUtils {
@@ -94,169 +85,6 @@ public class GeneralUtils {
 	}
 	
 	/**
-	 * TODO: Patients should actually be allowed to exit multiple times
-	 * 
-	 * @param patient
-	 * @param exitDate
-	 * @param cause
-	 */
-	private static void saveReasonForExitObs(Patient patient, Date exitDate, Concept cause) throws APIException {
-		
-		if (patient == null)
-			throw new APIException("Patient supplied to method is null");
-		if (exitDate == null)
-			throw new APIException("Exit date supplied to method is null");
-		if (cause == null)
-			throw new APIException("Cause supplied to method is null");
-		
-		// need to make sure there is an Obs that represents the patient's
-		// exit
-		log.debug("Patient is exiting, so let's make sure there's an Obs for it");
-		
-		String codProp = Context.getAdministrationService().getGlobalProperty("concept.reasonExitedCare");
-		Concept reasonForExit = Context.getConceptService().getConcept(codProp);
-		
-		if (reasonForExit != null) {
-			List<Obs> obssExit = Context.getObsService().getObservationsByPersonAndConcept(patient, reasonForExit);
-			if (obssExit != null) {
-				if (obssExit.size() > 1) {
-					log.error("Multiple reasons for exit (" + obssExit.size() + ")?  Shouldn't be...");
-				} else {
-					Obs obsExit = null;
-					if (obssExit.size() == 1) {
-						// already has a reason for exit - let's edit it.
-						log.debug("Already has a reason for exit, so changing it");
-						
-						obsExit = obssExit.iterator().next();
-						
-					} else {
-						// no reason for exit obs yet, so let's make one
-						log.debug("No reason for exit yet, let's create one.");
-						
-						obsExit = new Obs();
-						obsExit.setPerson(patient);
-						obsExit.setConcept(reasonForExit);
-						
-						Location loc = Context.getLocationService().getDefaultLocation();
-						
-						if (loc != null)
-							obsExit.setLocation(loc);
-						else
-							log.error("Could not find a suitable location for which to create this new Obs");
-					}
-					
-					if (obsExit != null) {
-						// put the right concept and (maybe) text in this
-						// obs
-						obsExit.setValueCoded(cause);
-						obsExit.setValueCodedName(cause.getName()); // ABKTODO: presume current locale?
-						obsExit.setObsDatetime(exitDate);
-						Context.getObsService().saveObs(obsExit, "updated by PatientService.saveReasonForExit");
-					}
-				}
-			}
-		} else {
-			log.debug("Reason for exit is null - should not have gotten here without throwing an error on the form.");
-		}
-		
-	}
-	
-	/**
-	 * Attempts to transition the PatientProgram to the passed {@link ProgramWorkflowState} on the
-	 * passed {@link Date} by ending the most recent {@link PatientState} in the
-	 * {@link PatientProgram} and creating a new one with the passed {@link ProgramWorkflowState}
-	 * This will throw an IllegalArgumentException if the transition is invalid
-	 * 
-	 * @param programWorkflowState - The {@link ProgramWorkflowState} to transition to
-	 * @param onDate - The {@link Date} of the transition
-	 * @throws IllegalArgumentException
-	 */
-	public static void transitionToState(ProgramWorkflowState programWorkflowState, Date onDate,
-			PatientProgram patientProgram) {
-		PatientState lastState = patientProgram.getCurrentState(programWorkflowState.getProgramWorkflow());
-		if (lastState != null && onDate == null) {
-			throw new IllegalArgumentException("You can't change from a non-null state without giving a change date");
-		}
-		if (lastState != null && lastState.getEndDate() != null) {
-			throw new IllegalArgumentException("You can't change out of a state that has an end date already");
-		}
-		if (lastState != null && lastState.getStartDate() != null
-				&& OpenmrsUtil.compare(lastState.getStartDate(), onDate) > 0) {
-			throw new IllegalArgumentException("You can't change out of a state before that state started");
-		}
-		if (lastState != null
-				&& !programWorkflowState.getProgramWorkflow().isLegalTransition(lastState.getState(), programWorkflowState)) {
-			throw new IllegalArgumentException("You can't change from state " + lastState.getState() + " to "
-					+ programWorkflowState);
-		}
-		if (lastState != null) {
-			lastState.setEndDate(onDate);
-		}
-
-		PatientState newState = new PatientState();
-		newState.setPatientProgram(patientProgram);
-		newState.setState(programWorkflowState);
-		newState.setStartDate(onDate);
-
-		if (newState.getPatientProgram() != null && newState.getPatientProgram().getDateCompleted() != null) {
-			newState.setEndDate(newState.getPatientProgram().getDateCompleted());
-		}
-
-		if (programWorkflowState.getTerminal()) {
-			patientProgram.setDateCompleted(onDate);
-		}
-
-		patientProgram.getStates().add(newState);
-	}
-	
-	/**
-	 * @see org.openmrs.api.ProgramWorkflowService#triggerStateConversion(org.openmrs.Patient,
-	 *      org.openmrs.Concept, java.util.Date)
-	 */
-	public static void triggerStateConversion(Patient patient, Concept trigger, Date dateConverted) {
-		
-		// Check input parameters
-		if (patient == null)
-			throw new APIException("Attempting to convert state of an invalid patient");
-		if (trigger == null)
-			throw new APIException("Attempting to convert state for a patient without a valid trigger concept");
-		if (dateConverted == null)
-			throw new APIException("Invalid date for converting patient state");
-		
-		for (PatientProgram patientProgram : Context.getProgramWorkflowService().getPatientPrograms(patient, null, null,
-		    null, null, null, false)) {
-			Set<ProgramWorkflow> workflows = patientProgram.getProgram().getWorkflows();
-			for (ProgramWorkflow workflow : workflows) {
-				// (getWorkflows() is only returning over nonretired workflows)
-				PatientState patientState = patientProgram.getCurrentState(workflow);
-				
-				// #1080 cannot exit patient from care  
-				// Should allow a transition from a null state to a terminal state
-				// Or we should require a user to ALWAYS add an initial workflow/state when a patient is added to a program
-				ProgramWorkflowState currentState = (patientState != null) ? patientState.getState() : null;
-				ProgramWorkflowState transitionState = workflow.getState(trigger);
-				
-				log.debug("Transitioning from current state [" + currentState + "]");
-				log.debug("|---> Transitioning to final state [" + transitionState + "]");
-				
-				if (transitionState != null && workflow.isLegalTransition(currentState, transitionState)) {
-					transitionToState(transitionState, dateConverted, patientProgram);
-					log.debug("State Conversion Triggered: patientProgram=" + patientProgram + " transition from "
-					        + currentState + " to " + transitionState + " on " + dateConverted);
-				}
-			}
-			
-			// #1068 - Exiting a patient from care causes "not-null property references
-			// a null or transient value: org.openmrs.PatientState.dateCreated". Explicitly
-			// calling the savePatientProgram() method will populate the metadata properties.
-			// 
-			// #1067 - We should explicitly save the patient program rather than let 
-			// Hibernate do so when it flushes the session.
-			Context.getProgramWorkflowService().savePatientProgram(patientProgram);
-		}
-	}
-	
-	/**
 	 * @see OrderExtensionService#getProviderForUser(User)
 	 */
 	@Transactional(readOnly = true)
@@ -316,43 +144,5 @@ public class GeneralUtils {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * This is the way to establish that a patient has left the care center. This API call is
-	 * responsible for:
-	 * <ol>
-	 * <li>Closing workflow statuses</li>
-	 * <li>Terminating programs</li>
-	 * <li>Discontinuing orders</li>
-	 * <li>Flagging patient table</li>
-	 * <li>Creating any relevant observations about the patient (if applicable)</li>
-	 * </ol>
-	 * 
-	 * @param patient - the patient who has exited care
-	 * @param dateExited - the declared date/time of the patient's exit
-	 * @param reasonForExit - the concept that corresponds with why the patient has been declared as
-	 *            exited
-	 * @throws APIException
-	 */
-	public static void exitFromCare(Patient patient, Date dateExited, Concept reasonForExit) throws APIException {
-		
-		if (patient == null)
-			throw new APIException("Attempting to exit from care an invalid patient. Cannot proceed");
-		if (dateExited == null)
-			throw new APIException("Must supply a valid dateExited when indicating that a patient has left care");
-		if (reasonForExit == null)
-			throw new APIException(
-			        "Must supply a valid reasonForExit (even if 'Unknown') when indicating that a patient has left care");
-		
-		// need to create an observation to represent this (otherwise how
-		// will we know?)
-		saveReasonForExitObs(patient, dateExited, reasonForExit);
-		
-		// need to terminate any applicable programs
-		triggerStateConversion(patient, reasonForExit, dateExited);
-		
-		// need to discontinue any open orders for this patient
-		discontinueAllDrugOrders(patient, reasonForExit, dateExited);
 	}
 }
