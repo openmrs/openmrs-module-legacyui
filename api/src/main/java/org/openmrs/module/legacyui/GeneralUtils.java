@@ -98,6 +98,9 @@ public class GeneralUtils {
 	}
 	
 	/**
+	 * Copied from OpenMRS core 1.9.x
+	 * See https://github.com/openmrs/openmrs-core/blob/1.9.x/api/src/main/java/org/openmrs/order/OrderUtil.java#L52
+	 * 
 	 * Discontinues all current orders for the given <code>patient</code>
 	 * 
 	 * @param patient

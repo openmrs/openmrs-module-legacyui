@@ -34,6 +34,9 @@
 			</td>
 		</tr>
 	</table>
+	<!--Copied from OpenMRS core 1.9.x
+	See https://github.com/openmrs/openmrs-core/blob/1.9.x/webapp/src/main/webapp/WEB-INF/view/portlets/patientOverview.jsp#L36
+	  -->
 	<table id="patientActions">
 		<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.patientActionsContent" type="html" parameters="patientId=${model.patient.patientId}"/> 
 		<tr class="patientActionsRow">

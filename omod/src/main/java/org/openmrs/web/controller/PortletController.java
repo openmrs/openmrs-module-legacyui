@@ -265,6 +265,10 @@ public class PortletController implements Controller {
 					} else {
 						model.put("patientObs", new HashSet<Obs>());
 					}
+					/**
+					 * Copied from OpenMRS core 1.9.x
+					 * See https://github.com/openmrs/openmrs-core/blob/1.9.x/web/src/main/java/org/openmrs/web/controller/PortletController.java#L267
+					 */
 					// information about whether or not the patient has exited care
 					Obs reasonForExitObs = null;
 					String reasonForExitConceptString = as.getGlobalProperty("concept.reasonExitedCare");
