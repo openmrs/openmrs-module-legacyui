@@ -21,15 +21,7 @@ import org.openmrs.api.OpenmrsService;
 import org.openmrs.util.PrivilegeConstants;
 
 /**
- * Contains methods pertaining to Patients in the system
- * 
- * <pre>
- * Usage:
- * List&lt;Patient&gt; patients = Context.getPatientService().getAllPatients();
- * </pre>
- * 
- * @see org.openmrs.api.context.Context
- * @see org.openmrs.Patient
+ * Defines the services provided by the Legacy UI module
  */
 public interface LegacyUIService extends OpenmrsService {
 	

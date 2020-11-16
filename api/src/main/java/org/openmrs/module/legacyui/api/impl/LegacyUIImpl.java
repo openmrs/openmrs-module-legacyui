@@ -36,13 +36,7 @@ import org.openmrs.module.legacyui.api.LegacyUIService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Default implementation of the patient service. This class should not be used on its own. The
- * current OpenMRS implementation should be fetched from the Context via
- * <code>Context.getPatientService()</code>
- * 
- * @see org.openmrs.api.context.Context
- * @see org.openmrs.api.PatientService
- * @see org.openmrs.api.PersonService
+ * Standard implementation of the LegacyUIService
  */
 @Transactional
 public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService {
