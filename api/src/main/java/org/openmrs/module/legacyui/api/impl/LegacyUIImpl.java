@@ -174,7 +174,8 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 			throw new APIException("Invalid date for converting patient state");
 		}
 		
-		for (PatientProgram patientProgram : Context.getProgramWorkflowService().getPatientPrograms(patient, null, null, null, null, null, false)) {
+		for (PatientProgram patientProgram : Context.getProgramWorkflowService().getPatientPrograms(patient, null, null,
+		    null, null, null, false)) {
 			//skip past patient programs that already completed
 			if (patientProgram.getDateCompleted() == null) {
 				Set<ProgramWorkflow> workflows = patientProgram.getProgram().getWorkflows();

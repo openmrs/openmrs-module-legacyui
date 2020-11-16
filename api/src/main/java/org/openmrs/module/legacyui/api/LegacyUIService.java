@@ -30,7 +30,7 @@ import org.openmrs.util.PrivilegeConstants;
  * @see org.openmrs.Patient
  */
 public interface LegacyUIService extends OpenmrsService {
-
+	
 	/**
 	 * @deprecated as of 1.10 and moved to exit from care module. This method is no longer supported
 	 *             because previously the patient's active orders would get discontinued in the
@@ -49,7 +49,7 @@ public interface LegacyUIService extends OpenmrsService {
 	 * @should be tested more thoroughly
 	 */
 	@Deprecated
-	@Authorized( { PrivilegeConstants.EDIT_PATIENTS })
+	@Authorized({ PrivilegeConstants.EDIT_PATIENTS })
 	public void exitFromCare(Patient patient, Date dateExited, Concept reasonForExit) throws APIException;
 	
 	/**
