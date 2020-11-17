@@ -222,6 +222,7 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	/**
 	 * @see OrderExtensionService#getProviderForUser(User)
 	 */
+	@Transactional(readOnly = true)
 	public Provider getProviderForUser(User user) {
 		ProviderService ps = Context.getProviderService();
 		Collection<Provider> providers = ps.getProvidersByPerson(user.getPerson(), true);
