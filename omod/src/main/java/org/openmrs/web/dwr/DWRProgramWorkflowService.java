@@ -86,21 +86,40 @@ public class DWRProgramWorkflowService {
 	}
 	
 	/**
+	 * @return the ProgramWorkflow matching the given program and workflowLookup
+	 */
+	public ProgramWorkflow getProgramWorkflow(Program program, String workflowLookup) {
+		ProgramWorkflow wf = program.getWorkflowByName(workflowLookup);
+		
+		if (wf == null) {
+			for (ProgramWorkflow programWorkflow : program.getAllWorkflows()) {
+				if (workflowLookup.equalsIgnoreCase(programWorkflow.getConcept().getName().toString())) {
+					wf = programWorkflow;					
+				}
+				else if (workflowLookup.equalsIgnoreCase(programWorkflow.getUuid())) {
+						wf = programWorkflow;						
+				}
+				else if (workflowLookup.equalsIgnoreCase(programWorkflow.getId().toString())) {
+						wf = programWorkflow;
+				}
+			}
+		}
+		return wf;
+	}
+	
+	/**
 	 * @return the ProgramWorkflow matching the given workflowLookup
 	 */
 	public ProgramWorkflow getProgramWorkflow(String workflowLookup) {
 		ProgramWorkflow workflow = Context.getProgramWorkflowService().getWorkflowByUuid(workflowLookup);
-
 		if (workflow == null) {
-			try {
-				workflow = Context.getProgramWorkflowService().getWorkflow(Integer.parseInt(workflowLookup));
+			//TODO Upgrade module to depend on OpenMRS PlatformVersion 2.3.2 and just use #getWorkflow(Integer workflowId);
+			for (Program program : Context.getProgramWorkflowService().getAllPrograms()) {
+				workflow = getProgramWorkflow(program, workflowLookup);
+				if (workflow != null) {
+					return workflow;
+				}
 			}
-			catch (NumberFormatException e) {
-				log.error("Error while converting a workflow lookup value to an integer: " + workflowLookup, e);
-			}
-		}
-		if (workflow == null) {
-			throw new IllegalArgumentException("Unable to find workflow using " + workflowLookup);
 		}
 		return workflow;
 	}
