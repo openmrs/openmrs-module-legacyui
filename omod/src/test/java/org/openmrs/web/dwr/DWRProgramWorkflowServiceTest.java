@@ -11,6 +11,8 @@ package org.openmrs.web.dwr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.Set;
 import java.util.Vector;
@@ -123,6 +125,39 @@ public class DWRProgramWorkflowServiceTest extends BaseModuleWebContextSensitive
 		assertFalse(possibleNextStates.isEmpty());
 		assertEquals(2, possibleNextStates.size());
 		
+	}
+	
+	@Test
+	@Verifies(value = "should return a ProgramWorkflow for the given ID", method = "getProgramWorkflow")
+	public void getWorkflowById_shouldFindObjectGivenValidId() throws Exception {
+		executeDataSet(PROGRAM_NEXT_STATES_XML);
+		int programWorkflowId= 501;
+		ProgramWorkflow programWorkflow = dwrProgramWorkflowService.getProgramWorkflow(String.valueOf(programWorkflowId));
+		assertNotNull(programWorkflow);
+		assertEquals("79fbc48b-215f-41af-982c-5071978be018", programWorkflow.getUuid());
+	}
+	
+	@Test
+	@Verifies(value = "should return a ProgramWorkflow for the given Name", method = "getProgramWorkflow")
+	public void getWorkflowByName_shouldFindObjectGivenValidName() {
+		String programWorkflowName = "TREATMENT STATUS";
+		ProgramWorkflow programWorkflow = dwrProgramWorkflowService.getProgramWorkflow(programWorkflowName);
+		assertEquals(2, (int) programWorkflow.getProgramWorkflowId());
+	}
+	
+	@Test
+	@Verifies(value = "should return a ProgramWorkflow for the given UUID", method = "getProgramWorkflow")
+	public void getWorkflowByUuid_shouldFindObjectGivenValidUuid() {
+		String programWorkflowUuid = "84f0effa-dd73-46cb-b931-7cd6be6c5f81";
+		ProgramWorkflow programWorkflow = dwrProgramWorkflowService.getProgramWorkflow(programWorkflowUuid);
+		assertEquals(1, (int) programWorkflow.getProgramWorkflowId());
+	}
+	
+	@Test
+	@Verifies(value = "should return null when there is no ProgramWorkflow for the given lookup", method = "getProgramWorkflow")
+	public void getProgramByName_shouldReturnNullWhenThereIsNoProgramWorkflowForGivenLookup() {
+		ProgramWorkflow workflow = dwrProgramWorkflowService.getProgramWorkflow("A name");
+		assertNull(workflow);
 	}
 	
 }

@@ -85,11 +85,50 @@ public class DWRProgramWorkflowService {
 		return ret;
 	}
 	
-	public Vector<ListItem> getStatesByWorkflow(String uuid) {
-		log.debug("In getStatesByWorkflow with workflow uuid of " + uuid);
+	/**
+	 * @return the ProgramWorkflow matching the given program and workflowLookup
+	 */
+	public ProgramWorkflow getProgramWorkflow(Program program, String workflowLookup) {
+		ProgramWorkflow wf = program.getWorkflowByName(workflowLookup);
+		
+		if (wf == null) {
+			for (ProgramWorkflow programWorkflow : program.getAllWorkflows()) {
+				if (workflowLookup.equalsIgnoreCase(programWorkflow.getConcept().getName().toString())) {
+					wf = programWorkflow;					
+				}
+				else if (workflowLookup.equalsIgnoreCase(programWorkflow.getUuid())) {
+						wf = programWorkflow;						
+				}
+				else if (workflowLookup.equalsIgnoreCase(programWorkflow.getId().toString())) {
+						wf = programWorkflow;
+				}
+			}
+		}
+		return wf;
+	}
+	
+	/**
+	 * @return the ProgramWorkflow matching the given workflowLookup
+	 */
+	public ProgramWorkflow getProgramWorkflow(String workflowLookup) {
+		ProgramWorkflow workflow = Context.getProgramWorkflowService().getWorkflowByUuid(workflowLookup);
+		if (workflow == null) {
+			//TODO Upgrade module to depend on OpenMRS PlatformVersion 2.3.2 and just use #getWorkflow(Integer workflowId);
+			for (Program program : Context.getProgramWorkflowService().getAllPrograms()) {
+				workflow = getProgramWorkflow(program, workflowLookup);
+				if (workflow != null) {
+					return workflow;
+				}
+			}
+		}
+		return workflow;
+	}
+	
+	public Vector<ListItem> getStatesByWorkflow(String workflowLookup) {
+		log.debug("In getStatesByWorkflow with workflow uuid of " + workflowLookup);
 		Vector<ListItem> ret = new Vector<ListItem>();
 		
-		ProgramWorkflow workflow = Context.getProgramWorkflowService().getWorkflowByUuid(uuid);
+		ProgramWorkflow workflow = getProgramWorkflow(workflowLookup);
 		if (workflow != null) {
 			Set<ProgramWorkflowState> states = workflow.getSortedStates();
 			
