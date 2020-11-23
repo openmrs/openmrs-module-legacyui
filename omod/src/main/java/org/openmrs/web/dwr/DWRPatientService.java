@@ -40,6 +40,7 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.PatientIdentifierException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.legacyui.api.LegacyUIService;
 import org.openmrs.patient.IdentifierValidator;
 import org.openmrs.patient.UnallowedIdentifierException;
 import org.openmrs.util.OpenmrsConstants;
@@ -466,6 +467,9 @@ public class DWRPatientService implements GlobalPropertyListener {
 	}
 	
 	/**
+	 * Copied from OpenMRS core 1.12.1 and modified the method to use {@link LegacyUIService#exitFromCare(Patient, Date, Concept)}
+	 * See https://github.com/openmrs/openmrs-core/blob/1.12.1/web/src/main/java/org/openmrs/web/dwr/DWRPatientService.java#L466
+	 * 
 	 * @param patientId
 	 * @param exitReasonId
 	 * @param exitDateStr
@@ -565,7 +569,32 @@ public class DWRPatientService implements GlobalPropertyListener {
 						ret = "Unable to locate cause of death in dictionary - cannot proceed";
 					}
 				}
+				
+				// Otherwise, we process this as an exit
+				else {
+					try {
+						Context.getService(LegacyUIService.class).exitFromCare(patient, exitDate, exitReasonConcept);
+					}
+					catch (Exception e) {
+						log.warn("Caught error", e);
+						ret = "Internal error while trying to exit patient from care - unable to exit patient from care at this time. Cause: "
+						        + e.getMessage();
+					}
+				}
 			}
+			
+			// If the system does not recognize death as a concept, then we exit from care
+			else {
+				try {
+					Context.getService(LegacyUIService.class).exitFromCare(patient, exitDate, exitReasonConcept);
+				}
+				catch (Exception e) {
+					log.warn("Caught error", e);
+					ret = "Internal error while trying to exit patient from care - unable to exit patient from care at this time. Cause: "
+					        + e.getMessage();
+				}
+			}
+			log.debug("Exited from care, it seems");
 		}
 		
 		return ret;
