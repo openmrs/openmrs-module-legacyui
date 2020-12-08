@@ -467,8 +467,10 @@ public class DWRPatientService implements GlobalPropertyListener {
 	}
 	
 	/**
-	 * Copied from OpenMRS core 1.12.1 and modified the method to use {@link LegacyUIService#exitFromCare(Patient, Date, Concept)}
-	 * See https://github.com/openmrs/openmrs-core/blob/1.12.1/web/src/main/java/org/openmrs/web/dwr/DWRPatientService.java#L466
+	 * Copied from OpenMRS core 1.12.1 and modified the method to use
+	 * {@link LegacyUIService#exitFromCare(Patient, Date, Concept)} See
+	 * https://github.com/openmrs/openmrs
+	 * -core/blob/1.12.1/web/src/main/java/org/openmrs/web/dwr/DWRPatientService.java#L466
 	 * 
 	 * @param patientId
 	 * @param exitReasonId

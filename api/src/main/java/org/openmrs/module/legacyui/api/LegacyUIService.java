@@ -66,5 +66,5 @@ public interface LegacyUIService extends OpenmrsService {
 	/**
 	 * @see OrderExtensionService#getProviderForUser(User)
 	 */
-	public Provider getProviderForUser(User user) ;
+	public Provider getProviderForUser(User user);
 }

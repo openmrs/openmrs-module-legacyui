@@ -266,8 +266,10 @@ public class PortletController implements Controller {
 						model.put("patientObs", new HashSet<Obs>());
 					}
 					/**
-					 * Copied from OpenMRS core 1.9.13
-					 * See https://github.com/openmrs/openmrs-core/blob/1.9.13/web/src/main/java/org/openmrs/web/controller/PortletController.java#L267
+					 * Copied from OpenMRS core 1.9.13 See
+					 * https://github.com/openmrs/openmrs-core/blob
+					 * /1.9.13/web/src/main/java/org/openmrs
+					 * /web/controller/PortletController.java#L267
 					 */
 					// information about whether or not the patient has exited care
 					Obs reasonForExitObs = null;

@@ -131,7 +131,7 @@ public class DWRProgramWorkflowServiceTest extends BaseModuleWebContextSensitive
 	@Verifies(value = "should return a ProgramWorkflow for the given ID", method = "getProgramWorkflow")
 	public void getWorkflowById_shouldFindObjectGivenValidId() throws Exception {
 		executeDataSet(PROGRAM_NEXT_STATES_XML);
-		int programWorkflowId= 501;
+		int programWorkflowId = 501;
 		ProgramWorkflow programWorkflow = dwrProgramWorkflowService.getProgramWorkflow(String.valueOf(programWorkflowId));
 		assertNotNull(programWorkflow);
 		assertEquals("79fbc48b-215f-41af-982c-5071978be018", programWorkflow.getUuid());

@@ -44,12 +44,12 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	private final Log log = LogFactory.getLog(this.getClass());
 	
 	/**
-	 * Copied from OpenMRS core 1.12.1 and added back #discontinueAllDrugOrders from 1.9.13
-	 * See https://github.com/openmrs/openmrs-core/blob/1.12.1/api/src/main/java/org/openmrs/api/impl/PatientServiceImpl.java#L1191
-	 * See https://github.com/openmrs/openmrs-core/blob/1.9.13/api/src/main/java/org/openmrs/api/impl/PatientServiceImpl.java#L1092
-	 * 
-	 * This is the way to establish that a patient has left the care center. This API call is
-	 * responsible for:
+	 * Copied from OpenMRS core 1.12.1 and added back #discontinueAllDrugOrders from 1.9.13 See
+	 * https://github.com/openmrs/openmrs-core/blob/1.12.1/api/src/main/java/org/openmrs/api/impl/
+	 * PatientServiceImpl.java#L1191 See
+	 * https://github.com/openmrs/openmrs-core/blob/1.9.13/api/src/
+	 * main/java/org/openmrs/api/impl/PatientServiceImpl.java#L1092 This is the way to establish
+	 * that a patient has left the care center. This API call is responsible for:
 	 * <ol>
 	 * <li>Closing workflow statuses</li>
 	 * <li>Terminating programs</li>
@@ -89,10 +89,10 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	}
 	
 	/**
-	 * Copied from OpenMRS core 1.12.1 
-	 * See https://github.com/openmrs/openmrs-core/blob/1.12.1/api/src/main/java/org/openmrs/api/impl/PatientServiceImpl.java#L1219
-	 * 
-	 * TODO: Patients should actually be allowed to exit multiple times
+	 * Copied from OpenMRS core 1.12.1 See
+	 * https://github.com/openmrs/openmrs-core/blob/1.12.1/api/src
+	 * /main/java/org/openmrs/api/impl/PatientServiceImpl.java#L1219 TODO: Patients should actually
+	 * be allowed to exit multiple times
 	 * 
 	 * @param patient
 	 * @param exitDate
@@ -164,8 +164,9 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	}
 	
 	/**
-	 * Copied from OpenMRS core 1.12.1
-	 * See https://github.com/openmrs/openmrs-core/blob/1.12.1/api/src/main/java/org/openmrs/api/impl/ProgramWorkflowServiceImpl.java#L450
+	 * Copied from OpenMRS core 1.12.1 See
+	 * https://github.com/openmrs/openmrs-core/blob/1.12.1/api/src
+	 * /main/java/org/openmrs/api/impl/ProgramWorkflowServiceImpl.java#L450
 	 * 
 	 * @see org.openmrs.api.ProgramWorkflowService#triggerStateConversion(org.openmrs.Patient,
 	 *      org.openmrs.Concept, java.util.Date)
@@ -233,10 +234,10 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	}
 	
 	/**
-	 * Copied from OpenMRS core 1.9.13
-	 * See https://github.com/openmrs/openmrs-core/blob/1.9.13/api/src/main/java/org/openmrs/order/OrderUtil.java#L52
-	 * 
-	 * Discontinues all current orders for the given <code>patient</code>
+	 * Copied from OpenMRS core 1.9.13 See
+	 * https://github.com/openmrs/openmrs-core/blob/1.9.13/api/src
+	 * /main/java/org/openmrs/order/OrderUtil.java#L52 Discontinues all current orders for the given
+	 * <code>patient</code>
 	 * 
 	 * @param patient
 	 * @param discontinueReason
@@ -271,8 +272,10 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 				// do the stuff to the database
 				if (drugOrder.isActive() || drugOrder.getEffectiveStopDate() == null) {
 					try {
-						Provider provider = Context.getService(LegacyUIService.class).getProviderForUser(Context.getAuthenticatedUser());
-						Context.getOrderService().discontinueOrder(drugOrder, discontinueReason, discontinueDate,provider, drugOrder.getEncounter());
+						Provider provider = Context.getService(LegacyUIService.class).getProviderForUser(
+						    Context.getAuthenticatedUser());
+						Context.getOrderService().discontinueOrder(drugOrder, discontinueReason, discontinueDate, provider,
+						    drugOrder.getEncounter());
 					}
 					catch (Exception e) {
 						e.printStackTrace();

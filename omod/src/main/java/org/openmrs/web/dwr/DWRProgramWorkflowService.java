@@ -94,13 +94,11 @@ public class DWRProgramWorkflowService {
 		if (wf == null) {
 			for (ProgramWorkflow programWorkflow : program.getAllWorkflows()) {
 				if (workflowLookup.equalsIgnoreCase(programWorkflow.getConcept().getName().toString())) {
-					wf = programWorkflow;					
-				}
-				else if (workflowLookup.equalsIgnoreCase(programWorkflow.getUuid())) {
-						wf = programWorkflow;						
-				}
-				else if (workflowLookup.equalsIgnoreCase(programWorkflow.getId().toString())) {
-						wf = programWorkflow;
+					wf = programWorkflow;
+				} else if (workflowLookup.equalsIgnoreCase(programWorkflow.getUuid())) {
+					wf = programWorkflow;
+				} else if (workflowLookup.equalsIgnoreCase(programWorkflow.getId().toString())) {
+					wf = programWorkflow;
 				}
 			}
 		}
