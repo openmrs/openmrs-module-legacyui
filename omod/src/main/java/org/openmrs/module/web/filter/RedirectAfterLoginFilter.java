@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
@@ -45,19 +46,20 @@ public class RedirectAfterLoginFilter implements Filter {
 			String requestURI = httpReq.getRequestURI();
 			if (!Context.isAuthenticated()) {
 				if ("GET".equalsIgnoreCase(httpReq.getMethod()) && !requestURI.contains("login.")) {
-					if (req.getAttribute(OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR) == null) {
+					HttpSession session = httpReq.getSession(false);
+					if (session != null && session.getAttribute(OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR) == null) {
 						String queryParams = httpReq.getQueryString();
 						String redirectUrl = requestURI + (StringUtils.isNotBlank(queryParams) ? "?" + queryParams : "");
 						httpReq.getSession().setAttribute(OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, redirectUrl);
 						if (log.isDebugEnabled()) {
-							log.debug("Set " + OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR + " = " + redirectUrl);
+							log.debug("Set {} = {}", OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, redirectUrl);
 						}
 					}
 				}
 			}
 		}
 		catch (Exception e) {
-			// Ignore errors here to prevent any failures from disrupting service
+			log.warn("An error occurred while setting session attribute " + OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, e);
 		}
 		chain.doFilter(req, res);
 	}
