@@ -9,17 +9,16 @@
  */
 package org.openmrs.web;
 
-import java.util.EnumSet;
-
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration.Dynamic;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
+import java.util.EnumSet;
 
 import org.directwebremoting.servlet.EfficientShutdownServletContextAttributeListener;
 import org.openmrs.module.web.filter.AdminPageFilter;
 import org.openmrs.module.web.filter.ForcePasswordChangeFilter;
-import org.openmrs.web.servlet.LogoutServlet;
+import org.openmrs.module.web.filter.RedirectAfterLoginFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
@@ -30,13 +29,17 @@ public class WebComponentRegistrar implements ServletContextAware {
 	public void setServletContext(ServletContext servletContext) {
 		
 		try {
+			String[] mappings = { "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet", "*.page", "*.action" };
+			
 			ServletRegistration openmrsServletReg = servletContext.getServletRegistration("openmrs");
-			addMappings(openmrsServletReg, "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet", "*.page",
-			    "*.action");
+			addMappings(openmrsServletReg, mappings);
 			
 			addMappings(servletContext.getServletRegistration("jsp"), "*.withjstl");
 			
-			Dynamic filter = servletContext.addFilter("forcePasswordChangeFilter", new ForcePasswordChangeFilter());
+			Dynamic filter = servletContext.addFilter("redirectAfterLoginFilter", new RedirectAfterLoginFilter());
+			filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, mappings);
+			
+			filter = servletContext.addFilter("forcePasswordChangeFilter", new ForcePasswordChangeFilter());
 			filter.setInitParameter("changePasswordForm", "/admin/users/changePassword.form");
 			filter.setInitParameter("excludeURL", "changePasswordForm,logout,.js,.css,.gif,.jpg,.jpeg,.png");
 			filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
