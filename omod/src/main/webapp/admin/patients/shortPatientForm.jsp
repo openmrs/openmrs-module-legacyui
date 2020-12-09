@@ -445,7 +445,7 @@
 						</select>						
 					</td>
 					<td class="idNumberDataColumn" valign="top">
-						<select name="location" style="display: none;">
+						<select name="location">
 							<option value=""></option>
 							<openmrs:forEachRecord name="location">
 								<option value="${record.locationId}"<c:if test="${identifierLocationUsed && record == defaultLocation}"> selected="selected"</c:if>>
