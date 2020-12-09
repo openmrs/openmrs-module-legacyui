@@ -463,7 +463,7 @@
 												<c:set var="stateId" value="" />
 												<c:set var="stateStart" value="" />
 												<c:set var="retired" value="" />
-												<c:forEach var="state" items="${program.states}">
+												<c:forEach var="state" items="${program.mostRecentStateInEachWorkflow}">
 													<c:if test="${!state.voided && state.state.programWorkflow.programWorkflowId == workflow.programWorkflowId}">
 														<c:set var="stateId" value="${state.state.concept.conceptId}" />
 														<c:set var="stateStart" value="${state.startDate}" />
