@@ -32,7 +32,10 @@
 				</c:if>
 			</td>
 			<td style="white-space: nowrap">
-				<a href="role.form?roleName=<c:out value="${map.key.role}"/>">
+				<c:url value="role.form" var="url">
+					<c:param name="roleName" value="${map.key.role}" />
+				</c:url>
+				<a href="${url}">
 					<c:out value="${map.key.role}"/>
 				</a>
 			</td>
