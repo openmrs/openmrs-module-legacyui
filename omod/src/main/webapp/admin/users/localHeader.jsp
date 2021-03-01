@@ -3,7 +3,7 @@
 		<a href="${pageContext.request.contextPath}/admin/index.htm"><openmrs:message code="admin.title.short"/></a>
 	</li>
 	<openmrs:hasPrivilege privilege="Edit Users">
-		<li id="legacyui-mangeUsers" <c:if test='<%= request.getRequestURI().contains("users/users") %>'>class="active"</c:if>>
+		<li id="legacyui-manageUsers" <c:if test='<%= request.getRequestURI().contains("users/users") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/users/users.list">
 				<openmrs:message code="User.manage"/>
 			</a>
