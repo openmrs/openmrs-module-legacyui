@@ -96,7 +96,6 @@
 
 <body>
 	<div id="pageBody">
-        
 		<div id="userBar">
 			<openmrs:authentication>
 				<c:if test="${authenticatedUser != null}">
@@ -145,7 +144,6 @@
 		--%>
 
 		<div id="content">
-
 			<openmrs:forEachAlert>
 				<c:if test="${varStatus.first}"><div id="alertOuterBox"></c:if>
 				<c:if test="${varStatus.last}">
@@ -178,7 +176,7 @@
 				<div id="openmrs_msg"><openmrs:message code="${msg}" text="${msg}" arguments="${msgArgs}"  htmlEscape="false" /></div>
 			</c:if>
 			<c:if test="${err != null}">
-				<div id="openmrs_error"><openmrs:message code="${err}" text="${err}" arguments="${errArgs}" htmlEscape="false"/></div>
+				<div id="openmrs_error"><openmrs:message code="${err}" text="${err}" arguments="${errArgs}" htmlEscape="true"/></div>
 			</c:if>
 			<div id="openmrs_dwr_error" style="display:none" class="error">
 				<div id="openmrs_dwr_error_msg"></div>
