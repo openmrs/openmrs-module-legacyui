@@ -90,7 +90,7 @@
 			<td><c:out value="${user.familyName}"/></td>
 			<td>
 				<c:if test="${fn:length(userRolesMap[user]) > 3}">
-				<span title="${userRolesMap[user]}">
+				<span title="<c:out value='${userRolesMap[user]}'/>">
 				</c:if>
 				<c:forEach var="r" items="${userRolesMap[user]}" varStatus="varStatus" end="2">
 					<c:choose>
@@ -102,14 +102,14 @@
 								<c:when test="${r != role && role != null}">
 									<span class='bold_text'>
 										<c:forEach var="inheritedRole" items="${userInheritanceLineMap[user]}" varStatus="inheritanceStatus">
-										${inheritedRole} <c:if test="${inheritanceStatus.index ne fn:length(userInheritanceLineMap[user]) - 1}"> -> </c:if>
+										<c:out value='${inheritedRole}'/> <c:if test="${inheritanceStatus.index ne fn:length(userInheritanceLineMap[user]) - 1}"> -> </c:if>
 										</c:forEach>
 									</span>
 								</c:when>
-								<c:otherwise>${r}</c:otherwise>
+								<c:otherwise><c:out value='${r}'/></c:otherwise>
 							</c:choose>
 						</c:when>
-						<c:otherwise>, ${r}</c:otherwise>
+						<c:otherwise>, <c:out value='${r}'/></c:otherwise>
 					</c:choose>
 				</c:forEach>
 				<c:if test="${fn:length(userRolesMap[user]) > 3}">
