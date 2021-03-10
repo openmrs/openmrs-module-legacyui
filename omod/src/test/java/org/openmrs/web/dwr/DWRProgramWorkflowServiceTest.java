@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 import java.util.Vector;
@@ -22,6 +23,7 @@ import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.PatientProgram;
+import org.openmrs.PatientState;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
@@ -160,4 +162,22 @@ public class DWRProgramWorkflowServiceTest extends BaseModuleWebContextSensitive
 		assertNull(workflow);
 	}
 	
+	@Test
+	@Verifies(value = "last state should be voided", method = "voidLastState")
+	public void voidLastState_shouldVoidTheLastState() throws Exception {
+		executeDataSet(PROGRAM_NEXT_STATES_XML);
+		
+		Integer programId = 11;
+		Integer workflowId = 501;
+		String voidReason = "Remove it";
+		String patientStateUuid = "e2d62091-7b57-11eb-b6f7-0242c0a82003";
+		
+		PatientState patientState = Context.getProgramWorkflowService().getPatientStateByUuid(patientStateUuid);
+		
+		assertFalse(patientState.getVoided());
+		
+		dwrProgramWorkflowService.voidLastState(programId, workflowId, voidReason);
+		patientState = Context.getProgramWorkflowService().getPatientStateByUuid(patientStateUuid);
+		assertTrue(patientState.getVoided());
+	}
 }

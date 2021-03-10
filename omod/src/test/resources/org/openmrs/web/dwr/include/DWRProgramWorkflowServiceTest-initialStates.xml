@@ -31,15 +31,16 @@
 
 	<program program_id="4" concept_id="9" outcomes_concept_id="25" creator="1" date_created="2008-08-15 16:07:11.0" changed_by="1" date_changed="2008-08-15 17:04:50.0" retired="false" name="HIV Program" description="hiv program" uuid="5dc2a3b0-863c-4074-8f84-45762c3aa04c"/>
 
-    <patient_program patient_program_id="11" patient_id="2" program_id="4" creator="1" voided="false" date_created="2012-01-10 12:00:00.0" uuid="9a0533e3-bc52-49e8-b4fe-fc7e96173266"/>
+    <patient_program patient_program_id="11" patient_id="2" program_id="4" date_enrolled="2012-01-10 12:00:00.0" creator="1" voided="false" date_created="2012-01-10 12:00:00.0" uuid="9a0533e3-bc52-49e8-b4fe-fc7e96173266"/>
 
     <program_workflow  program_id="4" program_workflow_id="501" concept_id="9" retired="false" creator="1"  date_created="2012-01-10 12:00:00.0" uuid="79fbc48b-215f-41af-982c-5071978be018"/>
-	
-    <program_workflow_state program_workflow_state_id="1001" program_workflow_id="501" initial="true" terminal="false" concept_id="121" retired="false" creator="1" date_created="2012-01-10 12:00:00.0" uuid="b7257555-2b2e-11e1-bbc8-00218679225a" /> 
-    <program_workflow_state program_workflow_state_id="1002" program_workflow_id="501" initial="false" terminal="false" concept_id="122" retired="false" creator="1" date_created="2012-01-10 12:00:00.0" uuid="79fbc48b-215f-41af-982c-5071978be018" /> 
-    <program_workflow_state program_workflow_state_id="1003" program_workflow_id="501" initial="false" terminal="false" concept_id="123" retired="false" creator="1" date_created="2012-01-10 12:00:00.0" uuid="8c8d6f7e-4c5d-42b9-a23c-2c4a4202ae56" /> 
-    <program_workflow_state program_workflow_state_id="1004" program_workflow_id="501" initial="false" terminal="true" concept_id="124" retired="false" creator="1" date_created="2012-01-10 12:00:00.0" uuid="685882f6-cb7a-4562-9e75-9f2c74619639" /> 
+
+    <program_workflow_state program_workflow_state_id="1001" program_workflow_id="501" initial="true" terminal="false" concept_id="121" retired="false" creator="1" date_created="2012-01-10 12:00:00.0" uuid="b7257555-2b2e-11e1-bbc8-00218679225a" />
+    <program_workflow_state program_workflow_state_id="1002" program_workflow_id="501" initial="false" terminal="false" concept_id="122" retired="false" creator="1" date_created="2012-01-10 12:00:00.0" uuid="79fbc48b-215f-41af-982c-5071978be018" />
+    <program_workflow_state program_workflow_state_id="1003" program_workflow_id="501" initial="false" terminal="false" concept_id="123" retired="false" creator="1" date_created="2012-01-10 12:00:00.0" uuid="8c8d6f7e-4c5d-42b9-a23c-2c4a4202ae56" />
+    <program_workflow_state program_workflow_state_id="1004" program_workflow_id="501" initial="false" terminal="true" concept_id="124" retired="false" creator="1" date_created="2012-01-10 12:00:00.0" uuid="685882f6-cb7a-4562-9e75-9f2c74619639" />
 
     <patient_state patient_state_id="1001" patient_program_id="11" state="1001" start_date="2012-01-11" creator="1" date_created="2012-01-11 12:00:00.0" voided="false" uuid="0f4de7d0-26b1-4b76-afe1-2d307196af68" />
+    <patient_state patient_state_id="1120" patient_program_id="11" state="1002" start_date="2013-02-10" creator="1" date_created="2013-02-10 13:07:00.0" voided="false" uuid="e2d62091-7b57-11eb-b6f7-0242c0a82003" />
 
 </dataset>

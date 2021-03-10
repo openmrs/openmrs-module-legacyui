@@ -269,10 +269,10 @@ public class DWRProgramWorkflowService {
 		s.savePatientProgram(pp);
 	}
 	
-	public void voidLastState(Integer patientProgramId, String programWorkflowUuid, String voidReason) {
+	public void voidLastState(Integer patientProgramId, Integer programWorkflowId, String voidReason) {
 		ProgramWorkflowService s = Context.getProgramWorkflowService();
 		PatientProgram pp = s.getPatientProgram(patientProgramId);
-		ProgramWorkflow wf = s.getWorkflowByUuid(programWorkflowUuid);
+		ProgramWorkflow wf = pp.getProgram().getWorkflow(programWorkflowId);
 		pp.voidLastState(wf, Context.getAuthenticatedUser(), new Date(), voidReason);
 		Context.getProgramWorkflowService().savePatientProgram(pp);
 	}

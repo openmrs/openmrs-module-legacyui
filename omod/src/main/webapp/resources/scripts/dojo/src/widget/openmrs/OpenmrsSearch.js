@@ -765,10 +765,11 @@ dojo.widget.defineWidget(
 			lastItemDisplayed = this.objectsFound.length;
 		}
 		
-		this.infoBar.innerHTML = '';
-		if (this.lastPhraseSearched != null)
-			this.infoBar.innerHTML = ' &nbsp; ' + omsgs.resultsFor + ' "' + this.lastPhraseSearched + '". &nbsp;';
-		
+		if (this.lastPhraseSearched != null) {
+			resultsText = omsgs.resultsFor + ' "' + this.lastPhraseSearched + '".';
+			this.infoBar.innerHTML = $j('<div/>').text(resultsText).html();
+		}
+
 		if (this.objectsFound.length > 0)
 			this.infoBar.innerHTML += omsgs.searchResultsViewing + " <b>" + this.firstItemDisplayed + "-" + lastItemDisplayed + "</b> " + omsgs.searchResultsOf + " <b>" + total + "</b> &nbsp; ";
 		
