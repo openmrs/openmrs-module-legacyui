@@ -210,11 +210,11 @@
 <c:choose>
     <c:when test="${not empty patient}">
         <c:set var="voided" value="${patient.voided}" />
-        <c:set var="voidReason" value="${patient.voidReason}" />
+        <c:set var="voidReason" value="<c:out value='${patient.voidReason}'/>" />
     </c:when>
     <c:otherwise>
         <c:set var="voided" value="${person.voided}" />
-        <c:set var="voidReason" value="${person.voidReason}" />
+        <c:set var="voidReason" value="<c:out value='${person.voidReason}'/>" />
     </c:otherwise>
 </c:choose>
 
