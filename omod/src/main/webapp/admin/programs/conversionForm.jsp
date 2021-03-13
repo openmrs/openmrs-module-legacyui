@@ -32,7 +32,7 @@
 		<td><openmrs:message code="Program.conversion.concept"/>:<span class="required">*</span></td>
 		<td>
 			<spring:bind path="conversion.concept">
-				<openmrs:fieldGen type="org.openmrs.Concept" formFieldName="concept" val="<c:out value='${status.editor.value}' />" parameters="" />
+				<openmrs:fieldGen type="org.openmrs.Concept" formFieldName="concept" val="${status.editor.value}" parameters="" />
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 			</spring:bind>
 		</td>
