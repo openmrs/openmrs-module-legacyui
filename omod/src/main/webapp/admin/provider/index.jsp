@@ -51,6 +51,7 @@
 
 
 <br/><br/>
+<h1>Bye bye</h1>
 
 <div>
 	<b class="boxHeader"><openmrs:message code="Provider.find"/></b>
