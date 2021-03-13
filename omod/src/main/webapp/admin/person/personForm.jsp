@@ -249,7 +249,7 @@
     <div>
     	<c:if test="${person.personVoidedBy.personName != null}"><openmrs:message code="general.byPerson"/> <c:out value="${person.personVoidedBy.personName}" /></c:if>
     	<c:if test="${person.personDateVoided != null}"> <openmrs:message code="general.onDate"/> <openmrs:formatDate date="${person.personDateVoided}" type="long" /> </c:if> 
-   		<c:if test="${person.personVoidReason != ''}"> - ${person.personVoidReason} </c:if>
+   		<c:if test="${person.personVoidReason != ''}"> - <c:out value='${person.personVoidReason}'/> </c:if>
     </div>
 	<div>
 		<form action="" method="post" ><input type="submit" name="action" value="<openmrs:message code="Person.unvoid"/>" /></form></div> 
