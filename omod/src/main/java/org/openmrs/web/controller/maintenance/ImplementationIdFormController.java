@@ -23,6 +23,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * This controller controls all uploading and syncing the Implementation Id with the implementation
@@ -59,7 +60,7 @@ public class ImplementationIdFormController extends SimpleFormController {
 		catch (APIException e) {
 			log.warn("Unable to set implementation id", e);
 			exceptions.reject(e.getMessage());
-			req.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, e.getMessage());
+			req.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, StringEscapeUtils.escapeHtml(e.getMessage()));
 			return showForm(req, response, exceptions);
 		}
 		

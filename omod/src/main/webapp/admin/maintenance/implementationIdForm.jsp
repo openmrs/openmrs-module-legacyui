@@ -18,7 +18,7 @@
 				<td style="white-space: nowrap">
 				    <input type="text" name="${status.expression}" value="${status.value}" size="40" />
 				    <c:if test="${status.errorMessage != ''}">
-                        <span class="error">$<c:out value="${status.errorMessage}"/></span>
+                        <span class="error">${status.errorMessage}</span>
                     </c:if>
 				</td>
 				<td class="description"><openmrs:message code="ImplementationId.name.help"/></td>
@@ -30,7 +30,7 @@
 				<td style="white-space: nowrap">
 					<input type="text" value="${status.value}" name="${status.expression}" maxlength="20" size="8"/>
 					<c:if test="${status.errorMessage != ''}">
-						<span class="error"><c:out value="${status.errorMessage}"/></span>
+						<span class="error">${status.errorMessage}</span>
 					</c:if>
 				</td>
 				<td class="description"><openmrs:message code="ImplementationId.sourceId.help"/></td>
@@ -42,7 +42,7 @@
 				<td style="white-space: nowrap">
 					<input type="text" value="${status.value}" name="${status.expression}" maxlength="255" size="40"/>
 					<c:if test="${status.errorMessage != ''}">
-						<span class="error"><c:out value="${status.errorMessage}"/></span>
+						<span class="error">${status.errorMessage}</span>
 					</c:if>
 				</td>
 				<td class="description"><openmrs:message code="ImplementationId.passphrase.help"/></td>
