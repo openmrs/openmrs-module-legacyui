@@ -23,6 +23,7 @@ import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
+import org.owasp.encoder.Encode;
 
 public class DWREncounterService {
 	
@@ -115,7 +116,9 @@ public class DWREncounterService {
 			} else {
 				objectList = new Vector<Object>(encs.size());
 				for (Encounter e : encs) {
-					objectList.add(new EncounterListItem(e));
+					EncounterListItem htmlSafeEncounter = new EncounterListItem(e);
+					htmlSafeEncounter.setEncounterType(Encode.forHtml(htmlSafeEncounter.getEncounterType()));
+					objectList.add(htmlSafeEncounter);
 				}
 			}
 		}
