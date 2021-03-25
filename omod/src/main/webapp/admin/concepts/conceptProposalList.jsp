@@ -87,7 +87,7 @@
     						onclick="selectProposal('${conceptProposal.conceptProposalId}')"
     						onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"> 
 							<td valign="top">${conceptProposal.encounter.encounterId}</td>
-							<td valign="top">${conceptProposal.originalText}</td>
+							<td valign="top"><c:out value='${conceptProposal.originalText}'/></td>
 							<td valign="top"><openmrs:format user="${conceptProposal.creator}"/></td>
 							<td valign="top">${conceptProposal.dateCreated}</td>
 							<td valign="top">${map.value}</td>
