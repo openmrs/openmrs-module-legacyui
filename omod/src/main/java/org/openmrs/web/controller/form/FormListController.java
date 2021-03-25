@@ -75,7 +75,7 @@ public class FormListController extends SimpleFormController {
 					catch (APIException e) {
 						log.warn("Error deleting form", e);
 						if (!"".equals(error.toString())) {
-							error.append("<br/>");
+							error.append(", ");
 						}
 						error.append(textForm).append(" ").append(p).append(" ").append(notDeleted);
 					}

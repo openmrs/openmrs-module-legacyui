@@ -167,7 +167,7 @@ public class PatientProgramFormController {
 		if (errors.hasErrors()) {
 			StringBuilder message = new StringBuilder();
 			for (FieldError error : errors.getFieldErrors()) {
-				message.append(Context.getMessageSourceService().getMessage(error.getCode())).append("<br />");
+				message.append(Context.getMessageSourceService().getMessage(error.getCode())).append(", ");
 			}
 			return message.toString();
 		}

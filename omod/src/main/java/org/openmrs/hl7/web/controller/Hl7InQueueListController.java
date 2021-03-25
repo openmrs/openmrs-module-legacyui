@@ -92,14 +92,14 @@ public class Hl7InQueueListController {
 			
 			//Display a message for the operation
 			if (hl7InQueue.getMessageState().equals(HL7Constants.HL7_STATUS_PENDING)) {
-				success.append(mss.getMessage("Hl7inQueue.queueList.restored", args, Context.getLocale()) + "<br/>");
+				success.append(mss.getMessage("Hl7inQueue.queueList.restored", args, Context.getLocale()) + ", ");
 			} else {
-				success.append(mss.getMessage("Hl7inQueue.queueList.held", args, Context.getLocale()) + "<br/>");
+				success.append(mss.getMessage("Hl7inQueue.queueList.held", args, Context.getLocale()) + ", ");
 			}
 		}
 		catch (APIException e) {
 			log.warn("Error updating a queue entry", e);
-			error.append(mss.getMessage("Hl7inQueue.queueList.error", args, Context.getLocale()) + "<br/>");
+			error.append(mss.getMessage("Hl7inQueue.queueList.error", args, Context.getLocale()) + ", ");
 		}
 		
 		Map<String, Object> results = new HashMap<String, Object>();

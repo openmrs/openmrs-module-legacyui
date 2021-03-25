@@ -128,7 +128,7 @@ public class RoleListController extends SimpleFormController {
 	private void handleRoleIntegrityException(Exception e, StringBuilder error, String notDeleted, String role) {
 		log.warn("Error deleting role", e);
 		if (!error.toString().isEmpty()) {
-			error.append("<br/>");
+			error.append(", ");
 		}
 		error.append(role).append(": ").append(notDeleted);
 	}

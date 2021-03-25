@@ -76,7 +76,7 @@ public class FieldTypeListController extends SimpleFormController {
 					catch (APIException e) {
 						log.warn("Error deleting field type", e);
 						if (!"".equals(error)) {
-							error += "<br/>";
+							error += ", ";
 						}
 						error += textFieldType + " " + fieldTypeId + " " + notDeleted;
 					}
