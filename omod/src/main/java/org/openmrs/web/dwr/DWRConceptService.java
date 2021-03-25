@@ -46,6 +46,7 @@ import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.validator.ConceptReferenceTermValidator;
+import org.owasp.encoder.Encode;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -220,8 +221,11 @@ public class DWRConceptService {
 			}
 			
 			if (searchResults.size() < 1) {
-				objectList.add(Context.getMessageSourceService().getMessage("general.noMatchesFoundInLocale",
-				    new Object[] { "<b>" + phrase + "</b>", OpenmrsUtil.join(searchLocales, ", ") }, Context.getLocale()));
+				String htmlSafePhrase = "<b>" + Encode.forHtml(phrase) + "</b>";
+				objectList.add(Context.getMessageSourceService()
+				        .getMessage("general.noMatchesFoundInLocale",
+				            new Object[] { htmlSafePhrase, OpenmrsUtil.join(searchLocales, ", ") },
+				            Context.getLocale()));
 			} else {
 				// turn searchResults into concept list items
 				// if user wants drug concepts included, append those
@@ -236,8 +240,9 @@ public class DWRConceptService {
 		}
 		
 		if (objectList.size() == 0) {
+			String htmlSafePhrase = "<b>" + Encode.forHtml(phrase) + "</b>";
 			objectList.add(Context.getMessageSourceService().getMessage("general.noMatchesFoundInLocale",
-			    new Object[] { "<b>" + phrase + "</b>", defaultLocale }, Context.getLocale()));
+			    new Object[] { htmlSafePhrase, defaultLocale }, Context.getLocale()));
 		}
 		
 		return objectList;
