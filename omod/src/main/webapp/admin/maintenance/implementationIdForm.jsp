@@ -54,7 +54,7 @@
 				<td style="white-space: nowrap">
 					<textarea name="${status.expression}" rows="3" cols="43">${status.value}</textarea>
 					<c:if test="${status.errorMessage != ''}">
-						<span class="error"><c:out value="${status.errorMessage}"/></span>
+						<span class="error">${status.errorMessage}</span>
 					</c:if>
 				</td>
 				<td class="description" valign="top"><openmrs:message code="ImplementationId.description.help"/></td>
