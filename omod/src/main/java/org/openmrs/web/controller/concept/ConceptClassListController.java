@@ -119,7 +119,7 @@ public class ConceptClassListController extends SimpleFormController {
 	private String handleConceptClassIntegrityException(Exception e, String error, String notDeleted) {
 		log.warn("Error deleting concept class", e);
 		if (!"".equals(error)) {
-			error += "<br/>";
+			error += ", ";
 		}
 		error += notDeleted;
 		return error;
