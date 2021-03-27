@@ -78,7 +78,7 @@ public class ListPickerTag extends TagSupport {
 				str += "<input type='checkbox'";
 				str += " name='" + WebUtil.encodeForHtmlAttribute(name) + "'";
 				str += " id='" + id + "'";
-				str += " value='" + item + "'";
+				str += " value='" + WebUtil.encodeForHtmlAttribute(item.toString()) + "'";
 				str += " onclick='this.parentNode.className=\"listItem \" + (this.checked == true ? \"listItemChecked\" : \"\");'";
 				if (checked) {
 					str += "  checked='checked' ";
