@@ -31,7 +31,7 @@
 		<tr>
 			<td><openmrs:message code="LocalesAndThemes.theme"/></td>
 			<td>
-				<input type="text" value="${theme}" name="theme"/>
+				<input type="text" value="<c:out value='${theme}'/>" name="theme"/>
 			</td>
 			<td class="description">
 				<openmrs:message code="LocalesAndThemes.theme.help"/>
