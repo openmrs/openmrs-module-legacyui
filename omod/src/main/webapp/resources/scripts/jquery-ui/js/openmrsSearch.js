@@ -841,8 +841,7 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
                 var data = rowData[c.fieldName];
                 if(data == null)
                     data = " ";
-
-                return data;
+                return $j('<div/>').text(data).html();
             });
 
             //include the attributes
