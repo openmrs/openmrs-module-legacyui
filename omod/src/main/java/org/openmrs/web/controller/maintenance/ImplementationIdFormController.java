@@ -23,7 +23,6 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
-import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * This controller controls all uploading and syncing the Implementation Id with the implementation
