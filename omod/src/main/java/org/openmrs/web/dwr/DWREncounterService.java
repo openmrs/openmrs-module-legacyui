@@ -112,7 +112,9 @@ public class DWREncounterService {
 			}
 			
 			if (encs.size() == 0) {
-				objectList.add(mss.getMessage("Encounter.noMatchesFound", new Object[] { phrase }, Context.getLocale()));
+				String htmlSafePhrase = "<b>" + Encode.forHtml(phrase) + "</b>";
+				objectList.add(mss.getMessage("Encounter.noMatchesFound", new Object[] { htmlSafePhrase },
+				    Context.getLocale()));
 			} else {
 				objectList = new Vector<Object>(encs.size());
 				for (Encounter e : encs) {
