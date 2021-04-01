@@ -166,7 +166,7 @@
 						<a href="#markRead" onClick="return markAlertRead(this, '${alert.alertId}')" HIDEFOCUS class="markAlertRead">
 							<img src="${pageContext.request.contextPath}/images/markRead.gif" alt='<openmrs:message code="Alert.mark"/>' title='<openmrs:message code="Alert.mark"/>'/> <span class="markAlertText"><openmrs:message code="Alert.markAsRead"/></span>
 						</a>
-						${alert.text} ${alert.dateToExpire} 
+						<c:out value='${alert.text}'/> ${alert.dateToExpire}
 					</div>
 				<c:if test="${varStatus.last}">
 					</div>
