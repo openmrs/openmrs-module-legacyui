@@ -75,7 +75,7 @@ public class StateConversionListController extends SimpleFormController {
 					catch (APIException e) {
 						log.warn("Error deleting concept state conversion", e);
 						if (!"".equals(error.toString())) {
-							error.append("<br/>");
+							error.append(", ");
 						}
 						error.append(textConversion).append(" ").append(id).append(" ").append(notDeleted);
 					}

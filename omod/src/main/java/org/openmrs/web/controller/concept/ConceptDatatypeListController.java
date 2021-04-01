@@ -77,7 +77,7 @@ public class ConceptDatatypeListController extends SimpleFormController {
 			if (cdList.length != 0) {
 				log.warn("Deleting concept datatype is not supported");
 				if (!"".equals(error.toString())) {
-					error.append("<br/>");
+					error.append(", ");
 				}
 				error.append("ConceptDatatype").append(" ").append(notDeleted);
 			}

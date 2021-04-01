@@ -75,11 +75,11 @@ public class Hl7InErrorListController {
 			hL7Service.purgeHL7InError(hl7InError);
 			
 			//Display a message for the operation
-			success.append(mss.getMessage("Hl7inError.errorList.restored", args, Context.getLocale()) + "<br/>");
+			success.append(mss.getMessage("Hl7inError.errorList.restored", args, Context.getLocale()) + ", ");
 		}
 		catch (APIException e) {
 			log.warn("Error Processing erred message", e);
-			error.append(mss.getMessage("Hl7inError.errorList.error", args, Context.getLocale()) + "<br/>");
+			error.append(mss.getMessage("Hl7inError.errorList.error", args, Context.getLocale()) + ", ");
 		}
 		
 		Map<String, Object> results = new HashMap<String, Object>();

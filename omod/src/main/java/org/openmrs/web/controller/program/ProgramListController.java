@@ -90,7 +90,7 @@ public class ProgramListController extends SimpleFormController {
 					catch (APIException e) {
 						log.warn("Error deleting program", e);
 						if (!"".equals(error.toString())) {
-							error.append("<br/>");
+							error.append(", ");
 						}
 						error.append(textProgram).append(" ").append(p).append(" ").append(notDeleted);
 					}

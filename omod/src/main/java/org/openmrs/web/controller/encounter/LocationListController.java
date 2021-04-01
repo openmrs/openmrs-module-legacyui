@@ -120,7 +120,7 @@ public class LocationListController extends SimpleFormController {
 	private String handleLocationIntegrityException(Exception e, String error, String notDeleted) {
 		log.warn("Error deleting location", e);
 		if (!"".equals(error)) {
-			error += "<br/>";
+			error += ", ";
 		}
 		error += notDeleted;
 		return error;

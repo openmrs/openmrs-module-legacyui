@@ -120,7 +120,7 @@ public class PrivilegeListController extends SimpleFormController {
 	private String handlePrivilegeIntegrityException(Exception e, String error, String notDeleted) {
 		log.warn("Error deleting privilege", e);
 		if (!"".equals(error)) {
-			error += "<br/>";
+			error += ", ";
 		}
 		error += notDeleted;
 		return error;
