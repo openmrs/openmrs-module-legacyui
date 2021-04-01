@@ -32,6 +32,7 @@ import org.openmrs.api.FormService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.FormUtil;
 import org.openmrs.web.WebUtil;
+import org.owasp.encoder.Encode;
 
 /**
  * A collection of methods used by DWR for access forms, fields, and FormFields. These methods are
@@ -106,7 +107,9 @@ public class DWRFormService {
 		List<FieldListItem> fields = new Vector<FieldListItem>();
 		
 		for (Field field : Context.getFormService().getFields(txt)) {
-			fields.add(new FieldListItem(field, Context.getLocale()));
+			FieldListItem htmlSafeField = new FieldListItem(field, Context.getLocale());
+			htmlSafeField.setName(Encode.forHtml(htmlSafeField.getName()));
+			fields.add(htmlSafeField);
 		}
 		
 		return fields;
