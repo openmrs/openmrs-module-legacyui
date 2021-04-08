@@ -11,6 +11,7 @@ package org.openmrs.web.dwr;
 
 import org.openmrs.Person;
 import org.openmrs.Provider;
+import org.openmrs.web.WebUtil;
 
 /**
  * A mini/simplified provider object. Used as the return object from DWR methods to allow javascript
@@ -37,7 +38,7 @@ public class ProviderListItem {
 		} else {
 			displayName = provider.getName();
 		}
-		identifier = provider.getIdentifier();
+		identifier = WebUtil.escapeHTML(provider.getIdentifier());
 		providerId = provider.getProviderId();
 		retired = provider.isRetired();
 	}
