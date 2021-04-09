@@ -109,6 +109,14 @@ public class DWRFormService {
 		for (Field field : Context.getFormService().getFields(txt)) {
 			FieldListItem htmlSafeField = new FieldListItem(field, Context.getLocale());
 			htmlSafeField.setName(Encode.forHtml(htmlSafeField.getName()));
+			htmlSafeField.setFieldTypeName(Encode.forHtml(htmlSafeField.getFieldTypeName()));
+			
+			// Add the description only if it was given
+			String description = htmlSafeField.getDescription();
+			if (description != null) {
+				htmlSafeField.setDescription(Encode.forHtml(description));
+			}
+			
 			fields.add(htmlSafeField);
 		}
 		
