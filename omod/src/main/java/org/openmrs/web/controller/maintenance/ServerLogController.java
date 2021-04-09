@@ -76,6 +76,7 @@ public class ServerLogController extends SimpleFormController {
 				}
 				
 				MemoryAppender memoryAppender = (MemoryAppender) getMemoryAppenderHandle.invoke();
+				log.info("Server log was accessed");
 				return memoryAppender.getLogLines();
 			}
 			catch (Throwable e) {
@@ -86,9 +87,10 @@ public class ServerLogController extends SimpleFormController {
 		Appender appender = Logger.getRootLogger().getAppender("MEMORY_APPENDER");
 		if (appender instanceof MemoryAppender) {
 			MemoryAppender memoryAppender = (MemoryAppender) appender;
+			log.info("Server log was accessed");
 			return memoryAppender.getLogLines();
 		}
-		
+		log.info("Server log was accessed");
 		return Collections.emptyList();
 	}
 }
