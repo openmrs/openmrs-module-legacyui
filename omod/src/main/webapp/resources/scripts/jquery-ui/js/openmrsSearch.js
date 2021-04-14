@@ -823,7 +823,7 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
                 $j('#openmrsSearchTable_paginate').show();
             }
 
-            this._updatePageInfo($j('<div/>').text(searchText).html());
+            this._updatePageInfo(searchText);
             if(matchCount == 0){
                 if($j('#openmrsSearchTable_info').is(":visible"))
                     $j('#openmrsSearchTable_info').hide();
@@ -841,7 +841,7 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
                 var data = rowData[c.fieldName];
                 if(data == null)
                     data = " ";
-                return $j('<div/>').text(data).html();
+                return data;
             });
 
             //include the attributes
