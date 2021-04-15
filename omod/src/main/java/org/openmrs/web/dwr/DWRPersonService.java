@@ -32,6 +32,7 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
+import org.openmrs.web.WebUtil;
 
 /**
  * DWR methods for ajaxy effects on {@link Person} objects.
@@ -271,14 +272,22 @@ public class DWRPersonService {
 				// if no roles were given, search for normal people
 				PersonService ps = Context.getPersonService();
 				for (Person p : ps.getPeople(searchPhrase, null, includeVoided)) {
-					personList.add(PersonListItem.createBestMatch(p));
+					PersonListItem personListItem = PersonListItem.createBestMatch(p);
+					personListItem.setGivenName(WebUtil.escapeHTML(personListItem.getGivenName()));
+					personListItem.setMiddleName(WebUtil.escapeHTML(personListItem.getMiddleName()));
+					personListItem.setFamilyName(WebUtil.escapeHTML(personListItem.getFamilyName()));
+					personList.add(personListItem);
 				}
 				
 				// also search on patient identifier if the query contains a number
 				if (searchPhrase.matches(".*\\d+.*")) {
 					PatientService patientService = Context.getPatientService();
 					for (Patient p : patientService.getPatients(searchPhrase, null, null, false)) {
-						personList.add(PersonListItem.createBestMatch(p));
+						PersonListItem personListItem = PersonListItem.createBestMatch(p);
+						personListItem.setGivenName(WebUtil.escapeHTML(personListItem.getGivenName()));
+						personListItem.setMiddleName(WebUtil.escapeHTML(personListItem.getMiddleName()));
+						personListItem.setFamilyName(WebUtil.escapeHTML(personListItem.getFamilyName()));
+						personList.add(personListItem);
 					}
 				}
 				
