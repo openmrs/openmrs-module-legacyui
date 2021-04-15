@@ -50,7 +50,7 @@ import org.owasp.encoder.Encode;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-
+import org.openmrs.web.WebUtil;
 /**
  * This class exposes some of the methods in org.openmrs.api.ConceptService via the dwr package
  */
@@ -707,7 +707,10 @@ public class DWRConceptService {
 			} else {
 				objectList = new ArrayList<Object>(terms.size());
 				for (ConceptReferenceTerm term : terms) {
-					objectList.add(new ConceptReferenceTermListItem(term));
+					ConceptReferenceTermListItem conceptReferenceTermListItem = new ConceptReferenceTermListItem(term);
+					conceptReferenceTermListItem.setCode(WebUtil.escapeHTML(conceptReferenceTermListItem.getCode()));
+					conceptReferenceTermListItem.setName(WebUtil.escapeHTML(conceptReferenceTermListItem.getName()));
+					objectList.add(conceptReferenceTermListItem);
 				}
 			}
 		}
