@@ -222,8 +222,10 @@ public class DWRConceptService {
 			
 			if (searchResults.size() < 1) {
 				String htmlSafePhrase = "<b>" + Encode.forHtml(phrase) + "</b>";
-				objectList.add(Context.getMessageSourceService().getMessage("general.noMatchesFoundInLocale",
-				    new Object[] { htmlSafePhrase, OpenmrsUtil.join(searchLocales, ", ") }, Context.getLocale()));
+				objectList.add(Context.getMessageSourceService()
+				        .getMessage("general.noMatchesFoundInLocale",
+				            new Object[] { htmlSafePhrase, OpenmrsUtil.join(searchLocales, ", ") },
+				            Context.getLocale()));
 			} else {
 				// turn searchResults into concept list items
 				// if user wants drug concepts included, append those
