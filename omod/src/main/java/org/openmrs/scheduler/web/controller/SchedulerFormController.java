@@ -26,6 +26,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.web.WebConstants;
+import org.openmrs.web.WebUtil;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.validation.BindException;
@@ -145,7 +146,7 @@ public class SchedulerFormController extends SimpleFormController {
 		
 		view = getSuccessView();
 		
-		Object[] args = new Object[] { task.getName() };
+		Object[] args = new Object[] { WebUtil.escapeHTML(task.getName()) };
 		String success = getMessageSourceAccessor().getMessage("Scheduler.taskForm.saved", args);
 		httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, success);
 		
