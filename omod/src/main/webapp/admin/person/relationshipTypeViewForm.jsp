@@ -23,7 +23,7 @@
 		<c:forEach var="relationshipType" items="${relationshipTypeList}">
 			<tr>
 				<td><a href="relationshipType.form?relationshipTypeId=${relationshipType.relationshipTypeId}">
-					   ${relationshipType}
+					<c:out value="${relationshipType}"/>
 					</a>
 				</td>
 				<td>

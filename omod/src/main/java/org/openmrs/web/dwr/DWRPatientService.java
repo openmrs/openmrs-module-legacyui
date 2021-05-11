@@ -44,6 +44,7 @@ import org.openmrs.module.legacyui.api.LegacyUIService;
 import org.openmrs.patient.IdentifierValidator;
 import org.openmrs.patient.UnallowedIdentifierException;
 import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.web.WebUtil;
 
 /**
  * DWR patient methods. The methods in here are used in the webapp to get data from the database via
@@ -117,7 +118,11 @@ public class DWRPatientService implements GlobalPropertyListener {
 		
 		patientList = new Vector<Object>(patients.size());
 		for (Patient p : patients) {
-			patientList.add(new PatientListItem(p, searchValue));
+			PatientListItem PatientLI = new PatientListItem(p, searchValue);
+			PatientListItem htmlSafePatientLI = PatientLI;
+			htmlSafePatientLI.setGivenName(WebUtil.escapeHTML(PatientLI.getGivenName()));
+			htmlSafePatientLI.setFamilyName(WebUtil.escapeHTML(PatientLI.getFamilyName()));
+			patientList.add(htmlSafePatientLI);
 		}
 		//no results found and a number was in the search --
 		//should check whether the check digit is correct.
