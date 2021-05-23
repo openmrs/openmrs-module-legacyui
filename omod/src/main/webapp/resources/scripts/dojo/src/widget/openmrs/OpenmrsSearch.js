@@ -766,8 +766,8 @@ dojo.widget.defineWidget(
 		}
 		
 		if (this.lastPhraseSearched != null) {
-			resultsText = omsgs.resultsFor + ' "' + this.lastPhraseSearched + '".';
-			this.infoBar.innerHTML = $j('<div/>').text(resultsText).html();
+			resultsText = omsgs.resultsFor + ' "' + $j('<div/>').text(this.lastPhraseSearched).html() + '".';
+			this.infoBar.innerHTML = resultsText;
 		}
 
 		if (this.objectsFound.length > 0)
