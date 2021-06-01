@@ -94,7 +94,7 @@
 	<div id="pageBody">
 		<div id="contentMinimal">
 			<c:if test="${msg != null}">
-				<div id="openmrs_msg"><openmrs:message code="${msg}" text="${msg}" arguments="${msgArgs}" htmlEscape="false" /></div>
+				<div id="openmrs_msg"><openmrs:message code="<c:out value='${msg}'/>" text="<c:out value='${msg}'/>" arguments="<c:out value='${msgArgs}'/>" htmlEscape="false" /></div>
 			</c:if>
 			<c:if test="${err != null}">
 				<div id="openmrs_error"><openmrs:message code="${err}" text="${err}" arguments="${errArgs}"/></div>

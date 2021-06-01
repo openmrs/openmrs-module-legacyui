@@ -851,14 +851,15 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
                     attributeValue = rowData.attributes[a.name];
                     if(attributeValue == null)
                         attributeValue = '';
-
                     rRowData.push(attributeValue);
                 });
             }
-
+            for (k in rRowData)
+            {
+                rRowData[k] = $j("<div>").text(rRowData[k]).html();
+            }
             return rRowData;
         },
-
         _fireEvent: function(eventType, data) {
             //TODO also pass 'this'
         },
