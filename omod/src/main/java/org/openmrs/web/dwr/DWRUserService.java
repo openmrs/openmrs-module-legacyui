@@ -25,6 +25,7 @@ import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
+import org.openmrs.web.WebUtil;
 
 /**
  * A collection of methods used by DWR for access users. These methods are similar to the
@@ -119,7 +120,10 @@ public class DWRUserService {
 				userList = new Vector(users.size());
 				
 				for (User u : users) {
-					userList.add(new UserListItem(u));
+					UserListItem safeUser = new UserListItem(u);
+					safeUser.setFamilyName(WebUtil.escapeHTML(safeUser.getFamilyName()));
+					safeUser.setGivenName(WebUtil.escapeHTML(safeUser.getGivenName()));
+					userList.add(safeUser);
 				}
 				
 			}
