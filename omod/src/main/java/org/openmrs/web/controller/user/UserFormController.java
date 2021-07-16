@@ -33,6 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -273,7 +274,23 @@ public class UserFormController {
 			
 			userValidator.validate(user, errors);
 			
+			
 			if (errors.hasErrors()) {
+
+				//check if length exceeded in DemographicInfo fields
+				List<FieldError> fieldErrorList = errors.getFieldErrors();
+				for (FieldError fieldError : fieldErrorList) {
+					String[] errorCodes = fieldError.getCodes();
+					for (String value : errorCodes) {
+						if (value.contains("error.exceededMaxLengthOfField")) {
+							httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,"legacyui.manageuser.DemographicInfo.lengthExceeded");
+							httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ARGS, "50");
+							return "redirect:/admin/users/user.form?userId=" + request.getParameter("userId");
+						}
+					}
+				}
+				
+				//check and inform the user for errors
 				response.setStatus(HttpStatus.BAD_REQUEST.value());
 				return showForm(user.getUserId(), createNewPerson, user, model);
 			}
