@@ -52,10 +52,10 @@
 							<c:if test="${status.last && fn:length(map.key.inheritedRoles) > 2}"> ... </c:if>
 						</c:forEach>
 					</td>
-					<td style="white-space: nowrap" <c:if test="${fn:length(map.key.privileges)>2}">title="<c:out value="${map.key.privileges}"/>"</c:if>>
+					<td style="white-space: nowrap" <c:if test="${fn:length(map.key.privileges)>2}">title="<c:out value='${map.key.privileges}'/>"</c:if>>
 						<c:forEach items="${map.key.privileges}" var="priv" begin="0" end="1" varStatus="status">
 							<c:if test="${!status.first}">,</c:if>
-							${priv}
+							<c:out value='${priv}' />
 							<c:if test="${status.last && fn:length(map.key.privileges) > 2}"> ... </c:if>
 						</c:forEach>
 					</td>
