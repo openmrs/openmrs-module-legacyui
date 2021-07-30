@@ -17,6 +17,7 @@ import java.util.EnumSet;
 
 import org.directwebremoting.servlet.EfficientShutdownServletContextAttributeListener;
 import org.openmrs.module.web.filter.AdminPageFilter;
+import org.openmrs.module.web.filter.AdminAuthorisationFilter;
 import org.openmrs.module.web.filter.ForcePasswordChangeFilter;
 import org.openmrs.module.web.filter.RedirectAfterLoginFilter;
 import org.springframework.stereotype.Component;
@@ -46,6 +47,9 @@ public class WebComponentRegistrar implements ServletContextAware {
 			
 			filter = servletContext.addFilter("adminPageFilter", new AdminPageFilter());
 			filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/admin");
+			
+			filter = servletContext.addFilter("adminAuthorisationFilter", new AdminAuthorisationFilter());
+			filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/admin/*");
 			
 			servletContext.addListener(new SessionListener());
 			/*
