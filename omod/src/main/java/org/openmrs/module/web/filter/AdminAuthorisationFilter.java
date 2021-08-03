@@ -10,6 +10,7 @@
 package org.openmrs.module.web.filter;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -22,7 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.Module;
+import org.openmrs.module.ModuleFactory;
 import org.openmrs.web.WebConstants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,37 +36,43 @@ import org.slf4j.LoggerFactory;
  * its url. Unauthorised user will be redirected to the home page.
  */
 public class AdminAuthorisationFilter implements Filter {
-
+	
 	private static final Logger log = LoggerFactory.getLogger(AdminAuthorisationFilter.class);
-
+	
+	private static final String COREAPPS_MODULE_ID = "coreapps";
+	
+	private static final String COREAPPS_SYSTEM_ADMINISTRATOR_PRIVELEGE = "App: coreapps.systemAdministration";
+	
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig filterConfig) throws ServletException {
-
+		
 	}
-
+	
 	/**
 	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
 	 *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
 	 */
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest) req;
-		User user = Context.getAuthenticatedUser();
-
-		if (!(user.isSuperUser() || user.hasRole("Organizational: System Administrator") || user.hasRole("Organizational: Hospital Administrator"))) {
-			httpReq.getSession().setAttribute(WebConstants.DENIED_PAGE, httpReq.getRequestURI());
-			HttpServletResponse httpRes = (HttpServletResponse) res;
-			log.info("User " + user + " is not a System Developer or has no Organisational Administrator roles");
-			httpRes.sendRedirect(httpReq.getContextPath() + "/login.htm");
+		Collection<Module> modules = ModuleFactory.getLoadedModules();
+		if (modules.contains(ModuleFactory.getModuleById(COREAPPS_MODULE_ID))) {
+			User user = Context.getAuthenticatedUser();
+			if (user != null && !user.hasPrivilege(COREAPPS_SYSTEM_ADMINISTRATOR_PRIVELEGE)) {
+				httpReq.getSession().setAttribute(WebConstants.DENIED_PAGE, httpReq.getRequestURI());
+				HttpServletResponse httpRes = (HttpServletResponse) res;
+				log.info("User " + user + " has no privilage \"" + COREAPPS_SYSTEM_ADMINISTRATOR_PRIVELEGE + "\"");
+				httpRes.sendRedirect(httpReq.getContextPath() + "/login.htm");
+			}
 		}
 		chain.doFilter(req, res);
 	}
-
+	
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-
+		
 	}
 }
