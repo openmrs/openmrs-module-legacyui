@@ -37,6 +37,6 @@ public class SessionListener implements HttpSessionListener {
 	 * @see HttpSessionListener#sessionDestroyed(HttpSessionEvent)
 	 */
 	public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-		CurrentUsers.removeUser(httpSessionEvent.getSession());
+		CurrentUsers.removeSessionFromList(httpSessionEvent.getSession());
 	}
 }
