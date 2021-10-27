@@ -25,7 +25,7 @@
 <link href="<openmrs:contextPath/>/scripts/jquery-ui/css/<spring:theme code='jqueryui.theme.name' />/jquery-ui.custom.css" type="text/css" rel="stylesheet" />
 
 <openmrs:htmlInclude file="/scripts/flot/jquery.flot.js" />
-<openmrs:htmlInclude file="/scripts/flot/jquery.flot.multiple.threshold.js"/> 
+<openmrs:htmlInclude file="/scripts/flot/jquery.flot.multiple.threshold.js"/>
 <%-- /end file imports for portlets --%>
 
 <script type="text/javascript">
@@ -43,11 +43,11 @@
 		}
 		changeTab(c);
 	});
-	
+
 	function setTabCookie(tabType) {
 		document.cookie = "dashboardTab-" + userId + "="+escape(tabType);
 	}
-	
+
 	function getTabCookie() {
 		var cookies = document.cookie.match('dashboardTab-' + userId + '=(.*?)(;|$)');
 		if (cookies) {
@@ -55,12 +55,12 @@
 		}
 		return null;
 	}
-	
+
 	function changeTab(tabObj) {
 		if (!document.getElementById || !document.createTextNode) {return;}
 		if (typeof tabObj == "string")
 			tabObj = document.getElementById(tabObj);
-		
+
 		if (tabObj) {
 			var tabs = tabObj.parentNode.parentNode.getElementsByTagName('a');
 			for (var i=0; i<tabs.length; i++) {
@@ -77,7 +77,7 @@
 				}
 			}
 			addClass(tabObj, 'current');
-			
+
 			setTabCookie(tabObj.id);
 		}
 		return false;
@@ -101,7 +101,7 @@
 			<c:if test="${not empty patient.causeOfDeath}">
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				<openmrs:message code="Person.causeOfDeath"/>: <openmrs:format concept="${patient.causeOfDeath}"/>
-				<c:if test="${not empty causeOfDeathOther}"> 
+				<c:if test="${not empty causeOfDeathOther}">
 					  &nbsp;:&nbsp;<c:out value="${causeOfDeathOther}"></c:out>
 				</c:if>
 			</c:if>
@@ -130,7 +130,7 @@
 		</openmrs:extensionPoint>
 
 		<openmrs:globalProperty key="visits.enabled" defaultValue="true" var="visitsEnabled"/>
-		<c:choose>		
+		<c:choose>
 			<c:when test='${visitsEnabled}'>
 				<openmrs:hasPrivilege privilege="Patient Dashboard - View Visits Section">
 					<li><a id="patientVisitsTab" href="#" onclick="return changeTab(this);" hidefocus="hidefocus"><openmrs:message code="patientDashboard.visits"/></a></li>
@@ -141,9 +141,9 @@
 					<li><a id="patientEncountersTab" href="#" onclick="return changeTab(this);" hidefocus="hidefocus"><openmrs:message code="patientDashboard.encounters"/></a></li>
 				</openmrs:hasPrivilege>
 			</c:otherwise>
-			
+
 		</c:choose>
-		
+
 		<openmrs:hasPrivilege privilege="Patient Dashboard - View Demographics Section">
 			<li><a id="patientDemographicsTab" href="#" onclick="return changeTab(this);" hidefocus="hidefocus"><openmrs:message code="patientDashboard.demographics"/></a></li>
 		</openmrs:hasPrivilege>
@@ -170,65 +170,65 @@
 <div id="patientSections">
 	<openmrs:hasPrivilege privilege="Patient Dashboard - View Overview Section">
 		<div id="patientOverview" style="display:none;">
-			
+
 			<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.OverviewTabHeader" type="html" parameters="patientId=${patient.patientId}" />
 			<openmrs:portlet url="patientOverview" id="patientDashboardOverview" patientId="${patient.patientId}"/>
-			
+
 		</div>
 	</openmrs:hasPrivilege>
-	
+
 	<openmrs:globalProperty key="visits.enabled" defaultValue="true" var="visitsEnabled"/>
-	<c:choose>		
+	<c:choose>
 			<c:when test='${visitsEnabled}'>
 				<openmrs:hasPrivilege privilege="Patient Dashboard - View Visits Section">
 					<div id="patientVisits" style="display:none;">
-						
+
 						<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.VisitsTabHeader" type="html" parameters="patientId=${patient.patientId}" />
 						<openmrs:portlet url="patientVisits" id="patientDashboardVisits" patientId="${patient.patientId}" />
-						
+
 					</div>
 				</openmrs:hasPrivilege>
 			</c:when>
 			<c:otherwise>
 				<openmrs:hasPrivilege privilege="Patient Dashboard - View Encounters Section">
 					<div id="patientEncounters" style="display:none;">
-						
+
 						<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.EncountersTabHeader" type="html" parameters="patientId=${patient.patientId}" />
 						<openmrs:globalProperty var="maxEncs" key="dashboard.encounters.maximumNumberToShow" defaultValue="" />
 						<openmrs:portlet url="patientEncounters" id="patientDashboardEncounters" patientId="${patient.patientId}" parameters="num=${maxEncs}|showPagination=true|formEntryReturnUrl=${pageContext.request.contextPath}/patientDashboard.form"/>
-						
+
 					</div>
 				</openmrs:hasPrivilege>
 			</c:otherwise>
-			
+
 	</c:choose>
-	
+
 	<openmrs:hasPrivilege privilege="Patient Dashboard - View Demographics Section">
 		<div id="patientDemographics" style="display:none;">
-			
+
 			<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.DemographicsTabHeader" type="html" parameters="patientId=${patient.patientId}" />
 			<openmrs:portlet url="patientDemographics" id="patientDashboardDemographics" patientId="${patient.patientId}"/>
-			
+
 		</div>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="Patient Dashboard - View Graphs Section">
 		<div id="patientGraphs" style="display:none;">
-		
+
 			<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.GraphsTabHeader" type="html" parameters="patientId=${patient.patientId}" />
 			<openmrs:portlet url="patientGraphs" id="patientGraphsPortlet" patientId="${patient.patientId}"/>
-			
+
 		</div>
 	</openmrs:hasPrivilege>
 	<c:if test="${enableFormEntryTab}">
 		<openmrs:hasPrivilege privilege="Form Entry">
 			<div id="formEntry" style="display:none;">
-			
+
 				<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.FormEntryTabHeader" type="html" parameters="patientId=${patient.patientId}" />
 				<openmrs:portlet url="personFormEntry" id="formEntryPortlet" personId="${patient.personId}" parameters="showDecoration=true|showDefinedNumberOfEncounters=true|returnUrl=${pageContext.request.contextPath}/patientDashboard.form"/>
-				
+
 			</div>
 		</openmrs:hasPrivilege>
-	</c:if>		
+	</c:if>
 	<openmrs:extensionPoint pointId="org.openmrs.patientDashboardTab" type="html">
 		<openmrs:hasPrivilege privilege="${extension.requiredPrivilege}">
 			<div id="${extension.tabId}" style="display:none;">
@@ -238,10 +238,10 @@
 							portletId is null: '${extension.extensionId}'
 						</c:when>
 						<c:otherwise>
-						
+
 							<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.${extension.tabId}TabHeader" type="html" parameters="patientId=${patient.patientId}" />
-							<openmrs:portlet url="${extension.portletUrl}" id="${extension.tabId}" moduleId="${extension.moduleId}"/>
-							
+							<openmrs:portlet url="${extension.portletUrl}" id="${extension.tabId}" moduleId="${extension.moduleId}" patientId="${patient.patientId}"/>
+
 						</c:otherwise>
 					</c:choose>
 				</c:catch>
@@ -259,7 +259,7 @@
 			</div>
 		</openmrs:hasPrivilege>
 	</openmrs:extensionPoint>
-	
+
 </div>
 
 <%@ include file="/WEB-INF/view/module/legacyui/template/footer.jsp" %>
