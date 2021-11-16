@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public 
-	License, v. 2.0. If a copy of the MPL was not distributed with this file, 
-	You can obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed 
-	under the terms of the Healthcare Disclaimer located at http://openmrs.org/license. 
-	Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS 
-	graphic logo is a trademark of OpenMRS Inc. -->
+<!--
+
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -23,10 +28,7 @@
 	<name>Legacy UI Module</name>
 	<description>Provides the legacy UI which was removed from the platform since version 2.0</description>
 	<url>https://wiki.openmrs.org/x/8g8zBQ</url>
-	<properties>
-		<sonar.organization>sharif1</sonar.organization>
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-	</properties>
+
 	<developers>
 		<developer>
 			<name>Tharunya</name>
@@ -54,6 +56,8 @@
 		<openmrsPlatformVersion>2.0.0</openmrsPlatformVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javaCompilerVersion>1.8</javaCompilerVersion>
+		<sonar.organization>sharif1</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<dependencyManagement>
