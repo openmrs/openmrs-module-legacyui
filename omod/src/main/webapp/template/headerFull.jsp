@@ -20,6 +20,7 @@
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">
 	<head>
+		<script src="${pageContext.request.contextPath}/csrfguard" type="text/javascript"></script>
 		<openmrs:htmlInclude file="/moduleResources/legacyui/scripts/openmrs.js" />
 		<openmrs:htmlInclude file="/scripts/openmrsmessages.js" appendLocale="true" />
 		<openmrs:htmlInclude file="/moduleResources/legacyui/css/openmrs.css" />
