@@ -375,6 +375,13 @@
 			true/false whether or not to show the Exit / Resume Care button on the patient dashboard
 		</description>
 	</globalProperty>
+	<globalProperty>
+		<property>legacyui.closeProgramsWhenExitingFromCare</property>
+		<defaultValue>false</defaultValue>
+		<description>
+			true/false whether or not to automatically close active programs when exiting from care
+		</description>
+	</globalProperty>
 
 </module>
 
