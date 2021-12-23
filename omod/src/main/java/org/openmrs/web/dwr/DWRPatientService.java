@@ -570,6 +570,16 @@ public class DWRPatientService implements GlobalPropertyListener {
 							ret = "Internal error while trying to process patient death - unable to proceed. Cause: "
 							        + e.getMessage();
 						}
+						
+						try {
+							Context.getService(LegacyUIService.class).exitFromCare(patient, exitDate, exitReasonConcept);
+						}
+						catch (Exception e) {
+							log.warn("Caught error", e);
+							ret = "Internal error while trying to exit patient from care - unable to exit patient from care at this time. Cause: "
+							        + e.getMessage();
+						}
+						
 					}
 					// cause of death concept does not exist
 					else {
