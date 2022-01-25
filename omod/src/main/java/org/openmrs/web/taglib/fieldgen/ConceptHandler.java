@@ -20,8 +20,10 @@ public class ConceptHandler extends AbstractFieldGenHandler implements FieldGenH
 		checkEmptyVal((Concept) null);
 		if (fieldGenTag != null) {
 			Object initialValue = this.fieldGenTag.getVal();
+			if (initialValue instanceof Concept) {
+				initialValue = ((Concept) initialValue).getConceptId();
+			}
 			setParameter("initialValue", initialValue == null ? "" : initialValue.toString());
-			
 		}
 	}
 }
