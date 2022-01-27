@@ -64,7 +64,7 @@ public class ServerLogController extends SimpleFormController {
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	protected List<String> formBackingObject(HttpServletRequest request) throws ServletException {
-		if (ModuleUtil.matchRequiredVersions(OpenmrsConstants.OPENMRS_VERSION_SHORT, "2.4.* - 2.*")) {
+		if (ModuleUtil.matchRequiredVersions(OpenmrsConstants.OPENMRS_VERSION_SHORT, "2.1.5 - 2.1.*, 2.4.* - 2.*")) {
 			try {
 				if (getMemoryAppenderHandle == null) {
 					synchronized (ServerLogController.class) {
