@@ -54,7 +54,6 @@
 		<openmrsPlatformVersion>2.0.0</openmrsPlatformVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javaCompilerVersion>1.8</javaCompilerVersion>
-		<log4j2Version>2.17.1</log4j2Version>
 	</properties>
 
 	<dependencyManagement>
@@ -116,12 +115,6 @@
             </dependency>
 						
 			<!-- End OpenMRS core -->
-
-			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-1.2-api</artifactId>
-				<version>${log4j2Version}</version>
-			</dependency>
 
 		</dependencies>
 	</dependencyManagement>

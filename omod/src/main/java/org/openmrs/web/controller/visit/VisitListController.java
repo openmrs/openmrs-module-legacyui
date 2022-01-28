@@ -18,6 +18,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.openmrs.Encounter;
 import org.openmrs.Form;
 import org.openmrs.Patient;
@@ -39,6 +40,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class VisitListController {
+	
+	protected final Logger log = Logger.getLogger(getClass());
 	
 	public static final String VISITS_PATH = "/admin/visits/datatable";
 	
