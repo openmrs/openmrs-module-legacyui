@@ -19,8 +19,8 @@ public class ConceptHandler extends AbstractFieldGenHandler implements FieldGenH
 		setUrl(defaultUrl);
 		checkEmptyVal((Concept) null);
 		if (fieldGenTag != null) {
-			Concept initialValue = (Concept) this.fieldGenTag.getVal();
-			setParameter("initialValue", initialValue == null ? "" : initialValue.getConceptId());
+			Object initialValue = this.fieldGenTag.getVal();
+			setParameter("initialValue", initialValue == null ? "" : initialValue.toString());
 			
 		}
 	}
