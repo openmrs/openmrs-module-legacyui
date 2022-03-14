@@ -11,7 +11,7 @@
 			</a>
 		</li>
 	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="Edit Forms">
+	<openmrs:hasPrivilege privilege="<%= PrivilegeConstants.MANAGE_FORMS %>">
 		<li <c:if test='<%= request.getRequestURI().contains("fieldForm") || request.getRequestURI().contains("fieldList") %>'>class="active"</c:if>>
 			<a href="${pageContext.request.contextPath}/admin/forms/field.list">
 				<openmrs:message code="Field.manage"/>
