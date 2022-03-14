@@ -1,7 +1,7 @@
 <%@page import="org.openmrs.customdatatype.CustomDatatype"%>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
-<openmrs:require privilege="Edit Forms" otherwise="/login.htm" redirect="/admin/forms/form.list" />
+<openmrs:require privilege="Manage Forms" otherwise="/login.htm" redirect="/admin/forms/form.list" />
 
 <%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
