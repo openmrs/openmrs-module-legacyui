@@ -375,6 +375,13 @@
 			true/false whether or not to show the Exit / Resume Care button on the patient dashboard
 		</description>
 	</globalProperty>
+	<globalProperty>
+		<property>dashboard.formEntry.maximumNumberEncountersToShow</property>
+		<defaultValue></defaultValue>
+		<description>
+			Allows one to limit the number of encounters shown on the form entry tab of the patient dashboard specifically
+		</description>
+	</globalProperty>
 
 </module>
 
