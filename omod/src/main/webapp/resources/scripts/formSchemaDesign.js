@@ -19,6 +19,21 @@ var selectedNode = null;
 var nodesToAdd = [];		// nodes not added on first pass (because their parent wasn't loaded yet)
 var searchTreeNodes = [];	// saves tree nodes created during search (in order to delete them)
 
+//TRUNK-6051 Adds CSRF Protection
+//http://ericsheridan.blogspot.com/2010/12/how-csrfguard-protects-ajax.html
+//CSRFGuard protects Ajax calls by dynamically hooking the XMLHttpRequest object in the hijackStandard function 
+//https://github.com/openmrs/openmrs-core/blob/master/webapp/src/main/webapp/WEB-INF/csrfguard.js#L99-L118
+//with the goal of intercepting the "open" and "send" events.
+//This interferes with dojo's loading of the form schema tree.
+//So i temporarily disable this by reverting to the original copies of the open and send methods which
+//csrfguard stores in the _open and _send instance variables and then restore csrfguard's functionality
+//just before we load the form design schema tree in DWRFormService.getJSTree Ajax call
+var xmlHttpRequestOpen = XMLHttpRequest.prototype.open;
+var xmlHttpRequestSend = XMLHttpRequest.prototype.send;
+
+XMLHttpRequest.prototype.open = XMLHttpRequest.prototype._open;
+XMLHttpRequest.prototype.send = XMLHttpRequest.prototype._send;
+
 dojo.addOnLoad( function(){
 
 	useLoadingMessage();
@@ -42,6 +57,9 @@ dojo.addOnLoad( function(){
 	searchTreeSelector = dojo.widget.manager.getWidgetById('searchTreeSelector');
 	fieldSearch = dojo.widget.manager.getWidgetById('fieldSearch');
 	cSelection = dojo.widget.manager.getWidgetById('cSelection');
+	
+	XMLHttpRequest.prototype.open = xmlHttpRequestOpen;
+	XMLHttpRequest.prototype.send = xmlHttpRequestSend;
 	
 	DWRFormService.getJSTree(formId, evalTreeJS);
 	
