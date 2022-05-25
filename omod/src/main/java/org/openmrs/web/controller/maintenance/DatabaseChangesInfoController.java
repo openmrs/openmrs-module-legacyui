@@ -32,7 +32,7 @@ public class DatabaseChangesInfoController {
 	 * @param model the key value pair that will be accessible from the jsp page
 	 * @throws Exception if there is trouble getting the database changes from liquibase
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/databaseChangesInfo")
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/databaseChangesInfo.list")
 	public String showPage(ModelMap model) throws Exception {
 		model.addAttribute("databaseChanges", DatabaseUpdater.getDatabaseChanges());
 		model.addAttribute("updateLogFile", OpenmrsUtil.getApplicationDataDirectory()

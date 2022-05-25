@@ -45,7 +45,7 @@ public class SettingsController {
 	
 	protected final Logger log = Logger.getLogger(getClass());
 	
-	public static final String SETTINGS_PATH = "admin/maintenance/settings";
+	public static final String SETTINGS_PATH = "admin/maintenance/settings.list";
 	
 	public static final String SETTINGS_VIEW_PATH = "/module/legacyui/admin/maintenance/settings";
 	

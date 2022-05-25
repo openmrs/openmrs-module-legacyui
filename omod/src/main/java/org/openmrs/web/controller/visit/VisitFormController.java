@@ -56,7 +56,7 @@ public class VisitFormController {
 	
 	private static final Log log = LogFactory.getLog(VisitFormController.class);
 	
-	private static final String VISIT_FORM_URL = "/admin/visits/visit";
+	private static final String VISIT_FORM_URL = "/admin/visits/visit.form";
 	
 	private static final String VISIT_FORM = "/admin/visits/visitForm";
 	

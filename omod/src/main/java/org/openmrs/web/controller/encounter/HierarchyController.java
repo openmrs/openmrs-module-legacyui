@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HierarchyController {
 	
-	@RequestMapping("/admin/locations/hierarchy")
+	@RequestMapping("/admin/locations/hierarchy.list")
 	public void showHierarchy(ModelMap model) throws IOException {
 		model.addAttribute("json", getHierarchyAsJson());
 		model.addAttribute(
@@ -46,7 +46,7 @@ public class HierarchyController {
 		        "default"));
 	}
 	
-	@RequestMapping("/admin/locations/changeLocationWidgetType")
+	@RequestMapping("/admin/locations/changeLocationWidgetType.form")
 	public String setWidgetType(@RequestParam("locationWidgetType") String widgetType) {
 		Context.getAdministrationService().saveGlobalProperty(
 		    new GlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_LOCATION_WIDGET_TYPE, widgetType));

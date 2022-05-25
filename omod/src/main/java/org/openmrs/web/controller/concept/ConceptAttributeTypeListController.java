@@ -25,7 +25,7 @@ public class ConceptAttributeTypeListController {
 	/**
 	 * Show existing
 	 */
-	@RequestMapping("/admin/concepts/conceptAttributeTypes")
+	@RequestMapping("/admin/concepts/conceptAttributeTypes.list")
 	public void list(Model model) {
 		model.addAttribute("attributeTypes", Context.getConceptService().getAllConceptAttributeTypes());
 	}

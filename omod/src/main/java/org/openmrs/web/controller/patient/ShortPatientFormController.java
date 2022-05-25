@@ -64,7 +64,7 @@ public class ShortPatientFormController {
 	
 	private static final Log log = LogFactory.getLog(ShortPatientFormController.class);
 	
-	private static final String SHORT_PATIENT_FORM_URL = "/admin/patients/shortPatientForm";
+	private static final String SHORT_PATIENT_FORM_URL = "/admin/patients/shortPatientForm.form";
 	
 	private static final String FIND_PATIENT_PAGE = "findPatient";
 	

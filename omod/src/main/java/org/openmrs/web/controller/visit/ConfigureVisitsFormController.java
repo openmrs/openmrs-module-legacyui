@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ConfigureVisitsFormController {
 	
-	public static final String CONFIGURE_VISITS_PATH = "/admin/visits/configureVisits";
+	public static final String CONFIGURE_VISITS_PATH = "/admin/visits/configureVisits.list";
 	
 	public static final String VISIT_ENCOUNTER_HANDLER_FORM = "configureVisitsForm";
 	

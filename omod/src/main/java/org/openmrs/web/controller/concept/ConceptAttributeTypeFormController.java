@@ -60,11 +60,11 @@ public class ConceptAttributeTypeFormController {
 	/**
 	 * Show existing (or instantiate blank)
 	 */
-	@RequestMapping(value = "/admin/concepts/conceptAttributeType", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/concepts/conceptAttributeType.form", method = RequestMethod.GET)
 	public void showForm() {
 	}
 	
-	@RequestMapping(value = "/admin/concepts/conceptAttributeType", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/concepts/conceptAttributeType.form", method = RequestMethod.POST)
 	public String handleSubmit(WebRequest request,
 	        @ModelAttribute("attributeType") ConceptAttributeType conceptAttributeType, BindingResult errors) {
 		if (Context.isAuthenticated()) {

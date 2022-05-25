@@ -35,7 +35,7 @@ public class AddressTemplateController {
 	/**
 	 * Show AddressTemplate
 	 */
-	@RequestMapping("/admin/locations/addressTemplate")
+	@RequestMapping("/admin/locations/addressTemplate.form")
 	public void show(ModelMap model) {
 		model.addAttribute("addressTemplateXml", Context.getLocationService().getAddressTemplate());
 	}
@@ -43,7 +43,7 @@ public class AddressTemplateController {
 	/**
 	 * Add a new AddressTemplate (quickly, without a dedicated page)
 	 */
-	@RequestMapping("/admin/locations/addressTemplateAdd")
+	@RequestMapping("/admin/locations/addressTemplateAdd.form")
 	public String add(@RequestParam("xml") String xml, WebRequest request) {
 		
 		if (!StringUtils.hasText(xml) || "".equals(xml.trim())) {

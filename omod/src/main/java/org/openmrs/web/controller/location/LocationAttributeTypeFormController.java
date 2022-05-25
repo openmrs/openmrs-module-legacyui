@@ -59,14 +59,14 @@ public class LocationAttributeTypeFormController {
 	/**
 	 * Show existing (or instantiate blank)
 	 */
-	@RequestMapping(value = "/admin/locations/locationAttributeType", method = RequestMethod.GET)
+	@RequestMapping(value = { "/admin/locations/locationAttributeTypes.list", "/admin/locations/locationAttributeType.form" }, method = RequestMethod.GET)
 	public void showForm() {
 	}
 	
 	/**
 	 * Handle submission for create or edit
 	 */
-	@RequestMapping(value = "/admin/locations/locationAttributeType", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/locations/locationAttributeType.form", method = RequestMethod.POST)
 	public String handleSubmit(WebRequest request, @ModelAttribute("attributeType") LocationAttributeType attributeType,
 	        BindingResult errors) {
 		
