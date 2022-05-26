@@ -37,7 +37,7 @@ public class SystemInformationController {
 	 * @should add memory information attribute to the model map
 	 * @should add module information attribute to the model map
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/systemInfo")
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/systemInfo.htm")
 	public String showPage(ModelMap model) {
 		model.addAttribute("systemInfo", Context.getAdministrationService().getSystemInformation());
 		return "/module/legacyui/admin/maintenance/systemInfo";
