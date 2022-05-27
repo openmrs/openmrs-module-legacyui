@@ -35,7 +35,7 @@ public class LocalesAndThemesFormController {
 	 * @param model the key value pair that will be accessible from the jsp page
 	 * @throws Exception if there is trouble getting the database changes from liquibase
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/localesAndThemes")
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/localesAndThemes.form")
 	public String showPage(ModelMap model) throws Exception {
 		String theme = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_THEME);
 		model.addAttribute("theme", theme);
@@ -57,7 +57,7 @@ public class LocalesAndThemesFormController {
 	 * @param locale the locale to save (en, en_GB, es, etc)
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/localesAndThemes")
+	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/localesAndThemes.form")
 	public String saveDefaults(WebRequest request, @RequestParam("theme") String theme, @RequestParam("locale") String locale)
 	        throws Exception {
 		boolean localeInList = false;

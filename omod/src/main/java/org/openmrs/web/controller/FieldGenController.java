@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -57,7 +58,12 @@ public class FieldGenController implements Controller {
 			
 			model.put("type", type);
 			model.put("formFieldName", formFieldName);
-			model.put("obj", request.getAttribute("org.openmrs.fieldGen.object"));
+			Object fieldGenObj = request.getAttribute("org.openmrs.fieldGen.object");
+			if (fieldGenObj instanceof Concept) {
+				model.put("obj", ((Concept) fieldGenObj).getConceptId().toString());
+			} else {
+				model.put("obj", fieldGenObj);
+			}
 			model.put("request", request.getAttribute("org.openmrs.fieldGen.request"));
 			model.putAll(params);
 			if (moreParams != null) {

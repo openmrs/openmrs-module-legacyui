@@ -21,7 +21,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>legacyui</artifactId>
-	<version>1.10.0-SNAPSHOT</version>
+	<version>1.13.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Legacy UI Module</name>
 	<description>Provides the legacy UI which was removed from the platform since version 2.0</description>

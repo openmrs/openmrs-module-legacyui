@@ -51,6 +51,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.openmrs.web.WebUtil;
+
 /**
  * This class exposes some of the methods in org.openmrs.api.ConceptService via the dwr package
  */
@@ -222,10 +223,8 @@ public class DWRConceptService {
 			
 			if (searchResults.size() < 1) {
 				String htmlSafePhrase = "<b>" + Encode.forHtml(phrase) + "</b>";
-				objectList.add(Context.getMessageSourceService()
-				        .getMessage("general.noMatchesFoundInLocale",
-				            new Object[] { htmlSafePhrase, OpenmrsUtil.join(searchLocales, ", ") },
-				            Context.getLocale()));
+				objectList.add(Context.getMessageSourceService().getMessage("general.noMatchesFoundInLocale",
+				    new Object[] { htmlSafePhrase, OpenmrsUtil.join(searchLocales, ", ") }, Context.getLocale()));
 			} else {
 				// turn searchResults into concept list items
 				// if user wants drug concepts included, append those

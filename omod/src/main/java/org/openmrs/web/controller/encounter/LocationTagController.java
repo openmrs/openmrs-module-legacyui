@@ -54,7 +54,7 @@ public class LocationTagController {
 	/**
 	 * List all LocationTags
 	 */
-	@RequestMapping("/admin/locations/locationTag")
+	@RequestMapping("/admin/locations/locationTag.list")
 	public void list(ModelMap model) {
 		List<LocationTag> list = new ArrayList<LocationTag>(Context.getLocationService().getAllLocationTags());
 		Collections.sort(list, new MetadataComparator(Context.getLocale()));
@@ -64,7 +64,7 @@ public class LocationTagController {
 	/**
 	 * Add a new LocationTag (quickly, without a dedicated page)
 	 */
-	@RequestMapping("/admin/locations/locationTagAdd")
+	@RequestMapping("/admin/locations/locationTagAdd.form")
 	public String add(@RequestParam("name") String name, @RequestParam("description") String description, WebRequest request) {
 		
 		if (!StringUtils.hasText(name)) {
@@ -86,7 +86,7 @@ public class LocationTagController {
 	/**
 	 * Display the edit page for LocationTag
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "/admin/locations/locationTagEdit")
+	@RequestMapping(method = RequestMethod.GET, value = "/admin/locations/locationTagEdit.form")
 	public void showEdit(@RequestParam("locationTagId") LocationTag locationTag, ModelMap model) {
 		model.addAttribute("locationTag", locationTag); // this will go in the session
 		List<Location> locations = Context.getLocationService().getLocationsByTag(locationTag);
@@ -98,7 +98,7 @@ public class LocationTagController {
 	/**
 	 * Handle submission for editing a LocationTag (for editing its name/description)
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagEdit")
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagEdit.form")
 	public String handleEditSubmission(WebRequest request, @ModelAttribute("locationTag") LocationTag locationTag,
 	        BindingResult result, SessionStatus status) {
 		
@@ -117,7 +117,7 @@ public class LocationTagController {
 	/**
 	 * Purge a locationTag
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagPurge")
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagPurge.form")
 	public String purge(WebRequest request, @RequestParam("id") LocationTag locationTag) {
 		Context.getLocationService().purgeLocationTag(locationTag);
 		request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
@@ -128,7 +128,7 @@ public class LocationTagController {
 	/**
 	 * Retire a locationTag
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagRetire")
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagRetire.form")
 	public String retire(WebRequest request, @RequestParam("id") LocationTag locationTag,
 	        @RequestParam("retireReason") String retireReason) {
 		Context.getLocationService().retireLocationTag(locationTag, retireReason);
@@ -140,7 +140,7 @@ public class LocationTagController {
 	/**
 	 * Unretire a locationTag
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagUnretire")
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/locations/locationTagUnretire.form")
 	public String unretire(WebRequest request, @RequestParam("id") LocationTag locationTag) {
 		Context.getLocationService().unretireLocationTag(locationTag);
 		request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,

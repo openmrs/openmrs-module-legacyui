@@ -45,7 +45,7 @@ public class ConceptReferenceTermFormController {
 	 */
 	private static final Log log = LogFactory.getLog(ConceptReferenceTermFormController.class);
 	
-	private static final String CONCEPT_REFERENCE_TERM_FORM_URL = "/admin/concepts/conceptReferenceTerm";
+	private static final String CONCEPT_REFERENCE_TERM_FORM_URL = "/admin/concepts/conceptReferenceTerm.form";
 	
 	private static final String CONCEPT_REFERENCE_TERM_FORM = "/admin/concepts/conceptReferenceTermForm";
 	
@@ -159,7 +159,7 @@ public class ConceptReferenceTermFormController {
 					log.debug("Saved concept reference term: " + conceptReferenceTerm.toString());
 				}
 				request.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "ConceptReferenceTerm.saved", WebRequest.SCOPE_SESSION);
-				return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + ".form?conceptReferenceTermId="
+				return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + "?conceptReferenceTermId="
 				        + conceptReferenceTerm.getConceptReferenceTermId();
 			}
 			catch (APIException e) {
@@ -180,7 +180,7 @@ public class ConceptReferenceTermFormController {
 	 * @param retireReason the reason why the concept reference term is being retired
 	 * @return the url to redirect to
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/retireConceptReferenceTerm")
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/retireConceptReferenceTerm.htm")
 	public String retireConceptReferenceTerm(WebRequest request,
 	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel,
 	        @RequestParam(required = false, value = "retireReason") String retireReason) {
@@ -218,7 +218,7 @@ public class ConceptReferenceTermFormController {
 	 *            unretire
 	 * @return the url to redirect to
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/unretireConceptReferenceTerm")
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/unretireConceptReferenceTerm.htm")
 	public String unretireConceptReferenceTerm(WebRequest request,
 	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
 		
@@ -231,7 +231,7 @@ public class ConceptReferenceTermFormController {
 			request.setAttribute(WebConstants.OPENMRS_MSG_ATTR,
 			    Context.getMessageSourceService().getMessage("ConceptReferenceTerm.unretired"), WebRequest.SCOPE_SESSION);
 			
-			return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + ".form?conceptReferenceTermId="
+			return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + "?conceptReferenceTermId="
 			        + conceptReferenceTerm.getConceptReferenceTermId();
 		}
 		catch (APIException e) {
@@ -252,7 +252,7 @@ public class ConceptReferenceTermFormController {
 	 * @param conceptReferenceTermModel
 	 * @return the url to forward to
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/purgeConceptReferenceTerm")
+	@RequestMapping(method = RequestMethod.POST, value = "/admin/concepts/purgeConceptReferenceTerm.htm")
 	public String purgeTerm(WebRequest request,
 	        @ModelAttribute(value = "conceptReferenceTermModel") ConceptReferenceTermModel conceptReferenceTermModel) {
 		Integer id = conceptReferenceTermModel.getConceptReferenceTerm().getId();
@@ -272,7 +272,7 @@ public class ConceptReferenceTermFormController {
 		}
 		
 		//send the user back to form
-		return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + ".form?conceptReferenceTermId=" + id;
+		return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + "?conceptReferenceTermId=" + id;
 	}
 	
 	/**
