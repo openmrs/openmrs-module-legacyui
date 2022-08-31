@@ -151,13 +151,11 @@
 				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>	
 
 				<prop key="**/*.htm">springController</prop>
-				<prop key="/">indexController</prop>
  			</props>
 		</property>
 	</bean>
 	
 	<bean id="springController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
-	<bean id="indexController" class="org.springframework.web.servlet.mvc.OpenmrsUrlFilenameViewController" />
 
     <!-- Pages with no controllers - begin -->
 
