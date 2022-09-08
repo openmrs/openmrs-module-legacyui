@@ -82,6 +82,11 @@
 		}
 		return false;
     }
+	
+	//hide the feature, cause of death if the global property is not defined.
+	
+	if(GlobalProperty("concept.causeOfDeath", "5002", "Concept id of the concept defining the CAUSE OF DEATH concept"))) {
+		   document.getElementById("patientDashboardDeceased").style.display = "none"
 </script>
 
 <c:if test="${patient.voided}">
@@ -98,6 +103,8 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				<openmrs:message code="Person.deathDate"/>: <openmrs:formatDate date="${patient.deathDate}"/>
 			</c:if>
+			<%--removed global concept id and property:causeOfDeath --%>
+			
 			<c:if test="${not empty patient.causeOfDeath}">
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				<openmrs:message code="Person.causeOfDeath"/>: <openmrs:format concept="${patient.causeOfDeath}"/>
