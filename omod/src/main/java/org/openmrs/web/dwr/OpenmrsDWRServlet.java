@@ -48,7 +48,8 @@ public class OpenmrsDWRServlet extends DwrServlet {
 	
 	@Override
 	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-		
+		Thread.currentThread().setContextClassLoader(OpenmrsClassLoader.getInstance());
+
 		HttpServletRequest request = (HttpServletRequest) req;
 		
 		String uri = request.getRequestURI();
