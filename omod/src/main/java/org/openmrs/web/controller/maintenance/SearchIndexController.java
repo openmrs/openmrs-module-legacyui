@@ -36,7 +36,7 @@ public class SearchIndexController {
 	 * @should return the search index view
 	 * @return the searchIndex view
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/searchIndex")
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/searchIndex.htm")
 	public String showPage() {
 		return "/module/legacyui/admin/maintenance/searchIndex";
 	}
@@ -46,7 +46,7 @@ public class SearchIndexController {
 	 * @should return false for success if a RuntimeException is thrown
 	 * @return a marker indicating success
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/rebuildSearchIndex")
+	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/rebuildSearchIndex.htm")
 	public @ResponseBody
 	Map<String, Object> rebuildSearchIndex() {
 		boolean success = true;
@@ -73,7 +73,7 @@ public class SearchIndexController {
 	 * @return hashMap of String, String holds a key named "status" indicating the status of rebuild
 	 *         search index
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/rebuildSearchIndexStatus")
+	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/rebuildSearchIndexStatus.htm")
     public @ResponseBody Map<String, String> getStatus() {
         if (updateSearchIndexAsync == null) {
             throw new APIException("There was a problem rebuilding the search index");
