@@ -60,7 +60,8 @@
 				<prop key="admin/users/alert.form">alertForm</prop>
 				<prop key="admin/users/privilege.list">privilegeList</prop>
 				<prop key="admin/users/privilege.form">privilegeForm</prop>
-				
+				<prop key="admin/users/user.htm">userView</prop>
+
 				<prop key="admin/person/addPerson.htm">addPerson</prop>
 				
 				<prop key="**/*.portlet">portletController</prop>
@@ -128,6 +129,7 @@
 				<prop key="admin/maintenance/globalProps.form">globalPropertyController</prop>
 				<prop key="admin/maintenance/serverLog.form">serverLogController</prop>
 				<prop key="admin/maintenance/implementationid.form">implementationIdFormController</prop>
+				<prop key="admin/maintenance/currentUsers.list">currentUsersFormController</prop>
 				
 				<prop key="forgotPassword.form">forgotPasswordForm</prop>
 
@@ -242,6 +244,12 @@
 	<!-- =========================== -->
 	<!-- ======  User Sector  ====== -->
 	<!-- =========================== -->
+
+	<bean id="userView" class="org.openmrs.web.controller.user.UserController">
+		<property name="commandName"><value>command</value></property>
+		<property name="formView"><value>/module/legacyui/admin/users/user</value></property>
+		<property name="successView"><value>user.htm</value></property>
+	</bean>
 
 	<!-- ** Role  ** -->
 	<bean id="roleList" class="org.openmrs.web.controller.user.RoleListController">
@@ -668,6 +676,12 @@
 		<property name="commandName"><value>implId</value></property>
 		<property name="formView"><value>/module/legacyui/admin/maintenance/implementationIdForm</value></property>
 		<property name="successView"><value>implementationid.form</value></property>
+	</bean>
+	<bean id="currentUsersFormController"
+		  class="org.openmrs.web.controller.maintenance.CurrentUsersController">
+		<property name="commandName"><value>currentUsers</value></property>
+		<property name="formView"><value>/module/legacyui/admin/maintenance/currentUsers</value></property>
+		<property name="successView"><value>currentUsers.list</value></property>
 	</bean>
 	
 	<bean id="forgotPasswordForm"

@@ -81,7 +81,7 @@
 	<c:forEach var="user" items="${users}" varStatus="rowStatus">
 		<tr class='${rowStatus.index % 2 == 0 ? "evenRow" : "oddRow" } ${user.retired ? "retired" : "" }'>
 			<td style="white-space: nowrap">
-				<a href="user.form?userId=<c:out value="${user.userId}"/>">
+				<a href="user.htm?userId=<c:out value="${user.userId}"/>">
 					<c:out value="${user.systemId}"/>
 				</a>
 			</td>

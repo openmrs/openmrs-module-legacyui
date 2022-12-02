@@ -9,8 +9,6 @@
  */
 package org.openmrs.web.controller.maintenance;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.APIAuthenticationException;
@@ -18,10 +16,11 @@ import org.openmrs.api.context.Context;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.servlet.LoginServlet;
 import org.openmrs.web.user.CurrentUsers;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Display the current users logged in the system.
@@ -30,26 +29,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @see LoginServlet
  * @see org.openmrs.web.SessionListener
  */
-@Controller
-public class CurrentUsersController {
+public class CurrentUsersController extends SimpleFormController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	/**
-	 * Lists current users.
-	 * 
-	 * @param request
-	 * @param modelMap
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/currentUsers.list")
-	public String listCurrentUsers(HttpServletRequest request, ModelMap modelMap) {
+	protected List<String> formBackingObject(HttpServletRequest request) throws ServletException {
 		log.debug("List current users");
 		if (!Context.hasPrivilege(PrivilegeConstants.GET_USERS)) {
 			throw new APIAuthenticationException("Privilege required: " + PrivilegeConstants.GET_USERS);
 		}
-		
-		modelMap.put("currentUsers", CurrentUsers.getCurrentUsernames(request.getSession()));
-		return "/module/legacyui/admin/maintenance/currentUsers";
+		return CurrentUsers.getCurrentUsernames(request.getSession());
 	}
-	
 }
