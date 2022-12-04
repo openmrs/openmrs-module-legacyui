@@ -72,12 +72,15 @@ public class UserFormController {
 	public User formBackingObject(WebRequest request, @RequestParam(required = false, value = "person_id") Integer personId) {
 		String userId = request.getParameter("userId");
 		User u = null;
-		try {
-			u = Context.getUserService().getUser(Integer.valueOf(userId));
+		if (!StringUtils.isEmpty(userId)) {
+			try {
+				u = Context.getUserService().getUser(Integer.valueOf(userId));
+			}
+			catch (Exception ex) {
+				log.error("Error while getting user", ex);
+			}
 		}
-		catch (Exception ex) {
-			log.error("Error while getting user", ex);
-		}
+		
 		if (u == null) {
 			u = new User();
 		}
