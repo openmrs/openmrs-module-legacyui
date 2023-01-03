@@ -31,8 +31,13 @@ var searchTreeNodes = [];	// saves tree nodes created during search (in order to
 var xmlHttpRequestOpen = XMLHttpRequest.prototype.open;
 var xmlHttpRequestSend = XMLHttpRequest.prototype.send;
 
-XMLHttpRequest.prototype.open = XMLHttpRequest.prototype._open;
-XMLHttpRequest.prototype.send = XMLHttpRequest.prototype._send;
+if (XMLHttpRequest.prototype._open) {
+	XMLHttpRequest.prototype.open = XMLHttpRequest.prototype._open;
+}
+
+if (XMLHttpRequest.prototype._send) {
+	XMLHttpRequest.prototype.send = XMLHttpRequest.prototype._send;
+}
 
 dojo.addOnLoad( function(){
 
