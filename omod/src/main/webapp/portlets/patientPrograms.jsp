@@ -480,7 +480,13 @@
 														<i>(<openmrs:message code="general.none" />)</i>
 													</c:otherwise>
 												</c:choose>
-																					  <c:if test="${program.dateCompleted == null}">
+												<br/>
+												<c:forEach var="prgAttr" items="${program.activeAttributes}">
+													<small>${prgAttr.attributeType.name}: </small>
+													<b>${prgAttr.value}</b>
+													<br/>
+												</c:forEach>
+                                                <c:if test="${program.dateCompleted == null}">
 													<a href="javascript:showEditWorkflowPopup('<openmrs:concept conceptId="${workflow.concept.conceptId}" nameVar="n" var="v" numericVar="nv"><c:out value="${n.name}"/></openmrs:concept>', ${program.patientProgramId}, ${workflow.programWorkflowId})">[<openmrs:message code="general.edit"/>]</a>
 												</c:if>
 											</td>
