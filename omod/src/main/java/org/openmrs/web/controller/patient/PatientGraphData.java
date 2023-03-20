@@ -142,4 +142,12 @@ public class PatientGraphData {
 	public void setConceptName(String conceptName) {
 		graph.put("name", conceptName);
 	}
+	
+	public Map<String, Object> getGraph() {
+		return graph;
+	}
+	
+	public void setGraph(Map<String, Object> graph) {
+		this.graph = graph;
+	}
 }
