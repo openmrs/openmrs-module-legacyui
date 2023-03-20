@@ -43,7 +43,7 @@ public class VisitListController {
 	
 	protected final Logger log = Logger.getLogger(getClass());
 	
-	public static final String VISITS_PATH = "/admin/visits/datatable";
+	public static final String VISITS_PATH = "/admin/visits/datatable.list";
 	
 	public static final String PATIENT = "patient";
 	
