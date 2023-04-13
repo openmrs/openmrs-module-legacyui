@@ -1,4 +1,5 @@
 /* Used for getting jstl code into the javascript files */
+<%@page contentType="text/javascript" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 var omsgs = new Array();
 var gp = new Array();

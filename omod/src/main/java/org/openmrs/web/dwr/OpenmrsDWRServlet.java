@@ -20,8 +20,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.iterators.IteratorEnumeration;
+import org.apache.commons.lang3.StringUtils;
 import org.directwebremoting.servlet.DwrServlet;
 import org.openmrs.util.OpenmrsClassLoader;
 
@@ -64,6 +66,29 @@ public class OpenmrsDWRServlet extends DwrServlet {
 		request = new DwrServletRequest(request, uri, url, pathInfo);
 		
 		super.service(request, res);
+		
+		// Try to set Content-Type header
+		if (!res.isCommitted()) {
+			int idx = uri.lastIndexOf('/');
+			if (idx >= 0) {
+				int endIdx = url.indexOf('?', idx);
+				
+				String filename;
+				if (endIdx >= 0) {
+					filename = uri.substring(idx, endIdx);
+				} else {
+					filename = uri.substring(idx);
+				}
+				
+				if (StringUtils.isNotBlank(filename)) {
+					String contentType = req.getServletContext().getMimeType(filename);
+					if (contentType != null) {
+						HttpServletResponse response = (HttpServletResponse) res;
+						response.addHeader("Content-Type", contentType);
+					}
+				}
+			}
+		}
 	}
 	
 	/**
