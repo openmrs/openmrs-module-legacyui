@@ -37,7 +37,7 @@ public class ModuleManagementController {
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	@RequestMapping(value = "/checkdependencies", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkdependencies.form", method = RequestMethod.GET)
 	@ResponseBody
 	public List<String> manage(@RequestParam(value = "moduleId") String moduleId, HttpServletRequest request,
 	        HttpServletResponse response) throws IOException {
