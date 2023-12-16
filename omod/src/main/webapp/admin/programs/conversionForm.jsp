@@ -17,6 +17,7 @@
 <openmrs:htmlInclude file="/dwr/util.js" />
 	
 <form method="post" id="theForm">
+	
 <table>
 	<tr>
 		<td><openmrs:message code="Program.conversion.programWorkflow"/>:<span class="required">*</span></td>
