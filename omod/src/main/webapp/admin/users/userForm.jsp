@@ -91,6 +91,10 @@
 				<openmrs:portlet url="nameLayout" id="namePortlet" size="full" parameters="layoutMode=edit|layoutShowTable=false|layoutShowExtended=false" />
 			</spring:nestedPath>
 			<tr>
+				<td><openmrs:message code="Email" /><span class="required">*</span></td>
+				<td><input type="email" size="30" name="email" value="${email}"/></td>
+			</tr>
+			<tr>
 				<td><openmrs:message code="Person.gender"/><span class="required">*</span></td>
 				<td><spring:bind path="user.person.gender">
 						<openmrs:forEachRecord name="gender">

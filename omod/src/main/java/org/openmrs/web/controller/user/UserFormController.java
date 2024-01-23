@@ -11,6 +11,7 @@ package org.openmrs.web.controller.user;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.validator.EmailValidator;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.Provider;
@@ -43,6 +44,8 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -112,6 +115,13 @@ public class UserFormController {
 	public String showForm(@RequestParam(required = false, value = "userId") Integer userId,
 	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
 	        @ModelAttribute("user") User user, ModelMap model) {
+
+		try {
+			Field emailField = getEmailField("email", user);
+			model.addAttribute("email", emailField.get(user));
+		} catch (IllegalArgumentException | IllegalAccessException | NullPointerException e) {
+			log.warn("Email field not available for setting", e);
+		}
 		
 		// the formBackingObject method above sets up user, depending on userId and personId parameters
 		
@@ -157,6 +167,7 @@ public class UserFormController {
 	        @RequestParam(required = false, value = "roleStrings") String[] roles,
 	        @RequestParam(required = false, value = "createNewPerson") String createNewPerson,
 	        @RequestParam(required = false, value = "providerCheckBox") String addToProviderTableOption,
+	        @RequestParam(required = false, value = "email") String email,
 	        @ModelAttribute("user") User user, BindingResult errors, HttpServletResponse response) {
 		
 		UserService us = Context.getUserService();
@@ -227,6 +238,19 @@ public class UserFormController {
 				}
 			}
 			
+			//check validity of email then save it
+			if (isEmailValid(email)) {
+				Field emailField;
+				try {
+					emailField = getEmailField("email", user);
+					emailField.set(user, email);
+				} catch (IllegalArgumentException | IllegalAccessException | NullPointerException e) {
+					log.error("Error while setting the email field", e);
+				}
+			} else {
+				log.warn("Invalid or unspecified email: " + (email != null ? "'" + email + "'" : "not provided"));
+			}
+
 			Set<Role> newRoles = new HashSet<Role>();
 			if (roles != null) {
 				for (String r : roles) {
@@ -321,4 +345,27 @@ public class UserFormController {
 		return user == null ? true : user.getUserId() == null;
 	}
 	
+	/**
+	 * @return true if email is valid or false otherwise
+	 * @param email
+	 */
+	private boolean isEmailValid(String email) {
+		return StringUtils.hasLength(email) && EmailValidator.getInstance().isValid(email);
+	}
+	
+	/**
+	 * @return an email field
+	 * @param emailFieldName
+	 * @param user
+	 */
+	private Field getEmailField(String emailFieldName, User user) {
+		try {
+			Field emailField = user.getClass().getDeclaredField(emailFieldName);
+			emailField.setAccessible(true);
+			return emailField;
+		} catch (NoSuchFieldException | SecurityException e) {
+			log.warn("Email field not available for setting", e);
+			return null;
+		}
+	}
 }
