@@ -117,10 +117,12 @@ public class UserFormController {
 	        @ModelAttribute("user") User user, ModelMap model) {
 
 		try {
-			Field emailField = getEmailField("email", user);
+			Field emailField = getEmailField();
 			model.addAttribute("email", emailField.get(user));
+			model.addAttribute("hasEmailField", true);
 		} catch (IllegalArgumentException | IllegalAccessException | NullPointerException e) {
 			log.warn("Email field not available for setting", e);
+			model.addAttribute("hasEmailField", false);
 		}
 		
 		// the formBackingObject method above sets up user, depending on userId and personId parameters
@@ -242,7 +244,7 @@ public class UserFormController {
 			if (isEmailValid(email)) {
 				Field emailField;
 				try {
-					emailField = getEmailField("email", user);
+					emailField = getEmailField();
 					emailField.set(user, email);
 				} catch (IllegalArgumentException | IllegalAccessException | NullPointerException e) {
 					log.error("Error while setting the email field", e);
@@ -355,12 +357,11 @@ public class UserFormController {
 	
 	/**
 	 * @return an email field
-	 * @param emailFieldName
 	 * @param user
 	 */
-	private Field getEmailField(String emailFieldName, User user) {
+	private Field getEmailField() {
 		try {
-			Field emailField = user.getClass().getDeclaredField(emailFieldName);
+			Field emailField = User.class.getDeclaredField("email");
 			emailField.setAccessible(true);
 			return emailField;
 		} catch (NoSuchFieldException | SecurityException e) {
