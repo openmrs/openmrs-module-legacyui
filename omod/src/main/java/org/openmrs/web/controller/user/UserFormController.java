@@ -117,12 +117,14 @@ public class UserFormController {
 	        @ModelAttribute("user") User user, ModelMap model) {
 
 		try {
-			Field emailField = getEmailField();
-			model.addAttribute("email", emailField.get(user));
-			model.addAttribute("hasEmailField", true);
+			boolean isPlatformTwoPointTwoOrAbove = isPlatform22OrNewer();
+			model.addAttribute("hasEmailField", isPlatformTwoPointTwoOrAbove);
+			if (isPlatformTwoPointTwoOrAbove) {
+				Field emailField = getEmailField();
+				model.addAttribute("email", emailField.get(user));	
+			}
 		} catch (IllegalArgumentException | IllegalAccessException | NullPointerException e) {
 			log.warn("Email field not available for setting", e);
-			model.addAttribute("hasEmailField", false);
 		}
 		
 		// the formBackingObject method above sets up user, depending on userId and personId parameters
@@ -241,7 +243,7 @@ public class UserFormController {
 			}
 			
 			//check validity of email then save it
-			if (isEmailValid(email)) {
+			if (isPlatform22OrNewer() && isEmailValid(email)) {
 				Field emailField;
 				try {
 					emailField = getEmailField();
@@ -368,5 +370,22 @@ public class UserFormController {
 			log.warn("Email field not available for setting", e);
 			return null;
 		}
+	}
+	
+	/**
+	 * @return true if the platform version is 2.2 or higher
+	 */
+	private boolean isPlatform22OrNewer() {
+		String platformVersion = OpenmrsConstants.OPENMRS_VERSION_SHORT.substring(0, 3);
+		try {
+			float versionFloat = Float.parseFloat(platformVersion);
+			if (versionFloat >= 2.2) {
+				return true;
+			}
+		}
+		catch (NumberFormatException e) {
+			log.error("Unable to parse platform value text to float", e);
+		}
+		return false;
 	}
 }
