@@ -92,7 +92,7 @@
 			</spring:nestedPath>
 			<c:if test="${hasEmailField}">
 				<tr>
-					<td><openmrs:message code="Email" /><span class="required">*</span></td>
+					<td><openmrs:message code="Email" /></td>
 					<td><input type="email" size="30" name="email" value="${email}"/></td>
 				</tr>
 			</c:if>
