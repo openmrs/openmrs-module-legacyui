@@ -117,10 +117,10 @@ public class UserFormController {
 	        @ModelAttribute("user") User user, ModelMap model) {
 
 		try {
-			boolean isPlatformTwoPointTwoOrAbove = isPlatform22OrNewer();
-			model.addAttribute("hasEmailField", isPlatformTwoPointTwoOrAbove);
-			if (isPlatformTwoPointTwoOrAbove) {
+			boolean isPlatform22OrNewer = isPlatform22OrNewer();
+			if (isPlatform22OrNewer) {
 				Field emailField = getEmailField();
+				model.addAttribute("hasEmailField", isPlatform22OrNewer);
 				model.addAttribute("email", emailField.get(user));	
 			}
 		} catch (IllegalArgumentException | IllegalAccessException | NullPointerException e) {
