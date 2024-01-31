@@ -242,7 +242,6 @@ public class UserFormController {
 				}
 			}
 			
-			//check validity of email then save it
 			if (isPlatform22OrNewer() && isEmailValid(email)) {
 				Field emailField;
 				try {
