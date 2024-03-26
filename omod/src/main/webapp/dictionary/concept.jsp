@@ -224,13 +224,16 @@
 		<c:if test="${command.concept.datatype != null && command.concept.datatype.name == 'Coded'}">
 			<tr class="localeSpecific">
 				<th valign="top"><openmrs:message code="Concept.answers"/></th>
-                <c:forEach items="${command.locales}" var="loc">
-                    <td class="${loc}">
-                        <c:forEach items="${command.conceptAnswersByLocale[loc]}" var="answer">
-                            <a href="concept.htm?conceptId=${fn:substring(answer.key, 0, fn:indexOf(answer.key, '^'))}"><c:out value="${answer.value}" /> (${fn:substring(answer.key, 0, fn:indexOf(answer.key, '^'))})</a><br/>
-                        </c:forEach>
-                    </td>
-                </c:forEach>
+				<c:forEach items="${command.locales}" var="locale">
+					<td class="${locale}">
+						<c:forEach items="${command.conceptAnswersByLocale[locale]}" var="conceptAnswer">
+							<c:set var="conceptId" value="${fn:substring(conceptAnswer.key, 0, fn:indexOf(conceptAnswer.key, '^'))}" />
+							<a href="concept.htm?conceptId=${conceptId}">
+								<c:out value="${conceptAnswer.value}" escapeXml="true"/> (${conceptId})
+							</a><br/>
+						</c:forEach>
+					</td>
+				</c:forEach>
 			</tr>
 		</c:if>
 		<c:if test="${command.concept.numeric}">
