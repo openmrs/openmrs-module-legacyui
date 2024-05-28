@@ -33,6 +33,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.context.ContextAuthenticationException;
 import org.openmrs.util.LocaleUtility;
 import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.OpenmrsCookieLocaleResolver;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.WebUtil;
@@ -81,8 +82,16 @@ public class LoginServlet extends HttpServlet {
 		// look up the allowed # of attempts per IP
 		Integer allowedLockoutAttempts = 100;
 		
-		String allowedLockoutAttemptsGP = Context.getAdministrationService().getGlobalProperty(
-		    GP_ALLOWED_LOGIN_ATTEMPTS_PER_IP, "100");
+		String allowedLockoutAttemptsGP = "100";
+		try {
+			Context.addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+			allowedLockoutAttemptsGP = Context.getAdministrationService().getGlobalProperty(
+			    GP_ALLOWED_LOGIN_ATTEMPTS_PER_IP, "100");
+		}
+		finally {
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+		}
+		
 		try {
 			allowedLockoutAttempts = Integer.valueOf(allowedLockoutAttemptsGP.trim());
 		}
