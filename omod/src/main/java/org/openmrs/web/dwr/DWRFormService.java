@@ -323,20 +323,22 @@ public class DWRFormService {
 		int size = Context.getFormService().getFormCount(null, null, null, null, null, null, fields);
 		
 		return "addNode(tree, {formFieldId: " + ff.getFormFieldId() + ", " + "parent: " + parent + ", " + "fieldId: "
-		        + field.getFieldId() + ", " + "fieldName: \"" + WebUtil.escapeQuotesAndNewlines(field.getName()) + "\", "
-		        + "description: \"" + WebUtil.escapeQuotesAndNewlines(field.getDescription()) + "\", " + "fieldType: "
-		        + field.getFieldType().getFieldTypeId() + ", " + "conceptId: " + concept.getConceptId() + ", "
-		        + "conceptName: \"" + WebUtil.escapeQuotesAndNewlines(conceptName.getName()) + "\", " + "tableName: \""
-		        + field.getTableName() + "\", " + "attributeName: \"" + field.getAttributeName() + "\", "
-		        + "defaultValue: \"" + WebUtil.escapeQuotesAndNewlines(field.getDefaultValue()) + "\", "
-		        + "selectMultiple: " + field.getSelectMultiple() + ", " + "isCodedDatatype: " + isCodedDatatype + ", "
-		        + "numForms: " + size + ", " + "isSet: " + isSet + ", " +
+		        + field.getFieldId() + ", " + "fieldName: \"" + sanitize(field.getName()) + "\", " + "description: \""
+		        + sanitize(field.getDescription()) + "\", " + "fieldType: " + field.getFieldType().getFieldTypeId() + ", "
+		        + "conceptId: " + concept.getConceptId() + ", " + "conceptName: \"" + sanitize(conceptName.getName())
+		        + "\", " + "tableName: \"" + field.getTableName() + "\", " + "attributeName: \"" + field.getAttributeName()
+		        + "\", " + "defaultValue: \"" + sanitize(field.getDefaultValue()) + "\", " + "selectMultiple: "
+		        + field.getSelectMultiple() + ", " + "isCodedDatatype: " + isCodedDatatype + ", " + "numForms: " + size
+		        + ", " + "isSet: " + isSet + ", " +
 		        
 		        "fieldNumber: " + ff.getFieldNumber() + ", " + "fieldPart: \""
-		        + (ff.getFieldPart() == null ? "" : WebUtil.escapeQuotesAndNewlines(ff.getFieldPart())) + "\", "
-		        + "pageNumber: " + ff.getPageNumber() + ", " + "minOccurs: " + ff.getMinOccurs() + ", " + "maxOccurs: "
-		        + ff.getMaxOccurs() + ", " + "isRequired: " + ff.isRequired() + ", " + "sortWeight: " + ff.getSortWeight()
-		        + "});";
+		        + (ff.getFieldPart() == null ? "" : sanitize(ff.getFieldPart())) + "\", " + "pageNumber: "
+		        + ff.getPageNumber() + ", " + "minOccurs: " + ff.getMinOccurs() + ", " + "maxOccurs: " + ff.getMaxOccurs()
+		        + ", " + "isRequired: " + ff.isRequired() + ", " + "sortWeight: " + ff.getSortWeight() + "});";
+	}
+	
+	private String sanitize(String str) {
+		return WebUtil.escapeHTML(WebUtil.escapeQuotesAndNewlines(str));
 	}
 	
 	/**

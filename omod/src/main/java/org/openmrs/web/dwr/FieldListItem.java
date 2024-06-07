@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.ConceptName;
 import org.openmrs.Field;
 import org.openmrs.api.context.Context;
+import org.openmrs.web.WebUtil;
 
 /**
  * A mini/simplified Field object. Used as the return object from DWR methods to allow javascript
@@ -63,18 +64,18 @@ public class FieldListItem {
 		
 		if (field != null) {
 			fieldId = field.getFieldId();
-			name = field.getName();
-			description = field.getDescription();
+			name = WebUtil.escapeHTML(field.getName());
+			description = WebUtil.escapeHTML(field.getDescription());
 			if (field.getFieldType() != null) {
-				fieldTypeName = field.getFieldType().getName();
+				fieldTypeName = WebUtil.escapeHTML(field.getFieldType().getName());
 				fieldTypeId = field.getFieldType().getFieldTypeId();
 			}
 			if (field.getConcept() != null) {
 				ConceptName cn = field.getConcept().getName(locale);
 				concept = new ConceptListItem(field.getConcept(), cn, locale);
 			}
-			table = field.getTableName();
-			attribute = field.getAttributeName();
+			table = WebUtil.escapeHTML(field.getTableName());
+			attribute = WebUtil.escapeHTML(field.getAttributeName());
 			selectMultiple = field.isSelectMultiple() ? "yes" : "no";
 			//if (field.getCreator() != null)
 			//	creator = field.getCreator().getFirstName() + " " + field.getCreator().getLastName();
@@ -83,7 +84,7 @@ public class FieldListItem {
 			List<Field> fields = new Vector<Field>();
 			fields.add(field);
 			numForms = Context.getFormService().getForms(null, null, null, null, null, null, fields).size();
-			defaultValue = field.getDefaultValue();
+			defaultValue = WebUtil.escapeHTML(field.getDefaultValue());
 		}
 	}
 	
