@@ -116,7 +116,7 @@
 	</c:if>
 	<tr>
 		<th><openmrs:message code="ConceptProposal.originalText"/></th>
-		<td>${conceptProposal.originalText}</td>
+		<td><c:out value="${conceptProposal.originalText}"/></td>
 	</tr>
 	<tr>
 		<th></th>
@@ -158,7 +158,7 @@
 		<th><openmrs:message code="ConceptProposal.finalText"/></th>
 		<td>
 			<spring:bind path="conceptProposal.finalText">
-				<input type="text" name="${status.expression}" id="finalText" value="<c:if test="${(status.value == null || status.value == '') && conceptProposal.mappedConcept == null}">${conceptProposal.originalText} </c:if><c:if test="${status.value != ''}">${status.value}</c:if>" size="50" />
+				<input type="text" name="${status.expression}" id="finalText" value="<c:if test="${(status.value == null || status.value == '') && conceptProposal.mappedConcept == null}"><c:out value="${conceptProposal.originalText}"/> </c:if><c:if test="${status.value != ''}">${status.value}</c:if>" size="50" />
 				<c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
 			</spring:bind>
 		</td>
