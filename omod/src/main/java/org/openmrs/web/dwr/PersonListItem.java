@@ -118,15 +118,16 @@ public class PersonListItem {
 			boolean first = true;
 			for (PersonName pn : person.getNames()) {
 				if (first) {
-					familyName = pn.getFamilyName();
-					middleName = pn.getMiddleName();
-					givenName = pn.getGivenName();
+					familyName = WebUtil.escapeHTML(pn.getFamilyName());
+					middleName = WebUtil.escapeHTML(pn.getMiddleName());
+					givenName = WebUtil.escapeHTML(pn.getGivenName());
 					first = false;
 				} else {
 					if (!StringUtils.isBlank(otherNames)) {
 						otherNames += ",";
 					}
-					otherNames += " " + pn.getGivenName() + " " + pn.getMiddleName() + " " + pn.getFamilyName();
+					otherNames += " "
+					        + WebUtil.escapeHTML(pn.getGivenName() + " " + pn.getMiddleName() + " " + pn.getFamilyName());
 				}
 			}
 			
@@ -144,7 +145,7 @@ public class PersonListItem {
 			
 			// add in the person attributes
 			for (PersonAttribute attribute : person.getActiveAttributes()) {
-				attributes.put(attribute.getAttributeType().getName(), attribute.toString());
+				attributes.put(attribute.getAttributeType().getName(), WebUtil.escapeHTML(attribute.toString()));
 			}
 			
 		}
@@ -173,16 +174,16 @@ public class PersonListItem {
 			for (PersonName personName : person.getNames()) {
 				fullName = personName.getFullName();
 				if (!foundABestMatch && containsAll(fullName, searchNames)) {
-					familyName = personName.getFamilyName();
-					givenName = personName.getGivenName();
-					middleName = personName.getMiddleName();
+					familyName = WebUtil.escapeHTML(personName.getFamilyName());
+					givenName = WebUtil.escapeHTML(personName.getGivenName());
+					middleName = WebUtil.escapeHTML(personName.getMiddleName());
 					foundABestMatch = true;
 					continue; // process the next name
 				}
 				if (!StringUtils.isBlank(otherNames)) {
 					otherNames += ",";
 				}
-				otherNames += " " + fullName;
+				otherNames += " " + WebUtil.escapeHTML(fullName);
 			}
 		}
 	}
