@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
+import org.openmrs.web.WebUtil;
 
 import java.util.Set;
 
@@ -44,14 +45,14 @@ public class PatientListItem extends PersonListItem {
 			
 			PatientIdentifier patientIdentifier = patient.getPatientIdentifier();
 			if (patientIdentifier != null) {
-				identifier = patientIdentifier.getIdentifier();
+				identifier = WebUtil.escapeHTML(patientIdentifier.getIdentifier());
 				// get patient's identifiers
 				for (PatientIdentifier pi : patient.getIdentifiers()) {
 					if (!pi.getIdentifier().equals(identifier)) {
 						if (!"".equals(otherIdentifiers)) {
 							otherIdentifiers += ",";
 						}
-						otherIdentifiers += " " + pi.getIdentifier();
+						otherIdentifiers += " " + WebUtil.escapeHTML(pi.getIdentifier());
 					}
 				}
 			}

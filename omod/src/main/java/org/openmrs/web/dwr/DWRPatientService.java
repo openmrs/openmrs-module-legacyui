@@ -118,11 +118,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 		
 		patientList = new Vector<Object>(patients.size());
 		for (Patient p : patients) {
-			PatientListItem PatientLI = new PatientListItem(p, searchValue);
-			PatientListItem htmlSafePatientLI = PatientLI;
-			htmlSafePatientLI.setGivenName(WebUtil.escapeHTML(PatientLI.getGivenName()));
-			htmlSafePatientLI.setFamilyName(WebUtil.escapeHTML(PatientLI.getFamilyName()));
-			patientList.add(htmlSafePatientLI);
+			patientList.add(new PatientListItem(p, searchValue));
 		}
 		//no results found and a number was in the search --
 		//should check whether the check digit is correct.
