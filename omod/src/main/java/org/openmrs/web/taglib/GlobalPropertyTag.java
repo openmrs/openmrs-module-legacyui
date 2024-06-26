@@ -17,6 +17,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.PrivilegeConstants;
 import org.springframework.util.StringUtils;
 
 public class GlobalPropertyTag extends TagSupport {
@@ -45,15 +46,22 @@ public class GlobalPropertyTag extends TagSupport {
 			value = defaultValue;
 		}
 		
-		if (StringUtils.hasText(listSeparator)) {
-			String stringVal = (String) Context.getAdministrationService().getGlobalProperty(key, defaultValue);
-			if (stringVal.trim().length() == 0) {
-				value = Collections.emptyList();
+		try {
+			Context.addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+			
+			if (StringUtils.hasText(listSeparator)) {
+				String stringVal = (String) Context.getAdministrationService().getGlobalProperty(key, defaultValue);
+				if (stringVal.trim().length() == 0) {
+					value = Collections.emptyList();
+				} else {
+					value = Arrays.asList(stringVal.split(listSeparator));
+				}
 			} else {
-				value = Arrays.asList(stringVal.split(listSeparator));
+				value = (String) Context.getAdministrationService().getGlobalProperty(key, defaultValue);
 			}
-		} else {
-			value = (String) Context.getAdministrationService().getGlobalProperty(key, defaultValue);
+		}
+		finally {
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
 		}
 		
 		try {
