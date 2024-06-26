@@ -29,7 +29,7 @@
 					
 					org.openmrs.api.context.Context.addProxyPrivilege(org.openmrs.util.PrivilegeConstants.GET_GLOBAL_PROPERTIES);
 					pageContext.setAttribute("locales", org.openmrs.api.context.Context.getAdministrationService().getPresentationLocales());
-					org.openmrs.api.context.Context.addProxyPrivilege(org.openmrs.util.PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+					org.openmrs.api.context.Context.removeProxyPrivilege(org.openmrs.util.PrivilegeConstants.GET_GLOBAL_PROPERTIES);
 					
 					pageContext.setAttribute("openmrsPlatformVersion", org.openmrs.util.OpenmrsConstants.OPENMRS_VERSION);
 					pageContext.setAttribute("locale", org.openmrs.api.context.Context.getLocale());
