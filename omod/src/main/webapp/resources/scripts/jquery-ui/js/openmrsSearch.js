@@ -841,7 +841,8 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
                 var data = rowData[c.fieldName];
                 if(data == null)
                     data = " ";
-
+                //Escape html
+                data = $j('<div/>').text(data).html();
                 return data;
             });
 
@@ -851,7 +852,8 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
                     attributeValue = rowData.attributes[a.name];
                     if(attributeValue == null)
                         attributeValue = '';
-
+                    //Escape html
+                    attributeValue = $j('<div/>').text(attributeValue).html();
                     rRowData.push(attributeValue);
                 });
             }

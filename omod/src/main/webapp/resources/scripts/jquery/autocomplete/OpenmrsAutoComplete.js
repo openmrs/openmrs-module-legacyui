@@ -232,11 +232,11 @@ function CreateCallback(options) {
 		var textShown = " ";
 		
 		if (person.identifier)
-			textShown += $j('<div/>').text(person.identifier).html();
+			textShown += person.identifier;
 		
 		textShown += " ";
 		
-		textShown += $j('<div/>').text(person.personName).html();
+		textShown += person.personName;
 
 		// highlight each search term in the results
 		textShown = highlightWords(textShown, origQuery);
@@ -244,12 +244,13 @@ function CreateCallback(options) {
 		var ageText = "";
 		if (person.age) {
 			ageText = " (" + person.age + " " + omsgs.yearsOld + ")";
-			ageText = $j('<div/>').text(ageText).html();
 		}
 		
 		// append the gender image and age AFTER word highlighting so regex doesn't match it
 		
 		textShown = imageText + textShown + ageText; // space was inserted into beginning of 'textShown' var
+
+		textShown = $j('<div/>').text(textShown).html()
 		
 		// wrap each result in a span tag (needed?)
 		textShown = "<span class='autocompleteresult'>" + textShown + "</span>";
@@ -274,6 +275,8 @@ function CreateCallback(options) {
 			textShown += provider.identifier + " ";
 		
 		textShown += provider.displayName;
+
+		textShown = $j('<div/>').text(textShown).html()
 		
 		// wrap each result in a span tag (needed?)
 		textShown = "<span class='autocompleteresult'>" + textShown + "</span>";
@@ -291,13 +294,15 @@ function CreateCallback(options) {
 		// item is a ConceptListItem or LocationListItem object
 		// add a space so the term highlighter below thinks the first word is a word
 		var textShown = " " + item.name;
+
+		textShown = $j('<div/>').text(textShown).html()
 		
 		// highlight each search term in the results
 		textShown = highlightWords(textShown, origQuery);
 		
 		var value = item.name;
 		if (item.preferredName) {
-			textShown += "<span class='preferredname'> &rArr; " + item.preferredName + "</span>";
+			textShown += "<span class='preferredname'> &rArr; " + $j('<div/>').text(item.preferredName).html() + "</span>";
 			//value = item.preferredName;
 		}
 		
@@ -315,6 +320,8 @@ function CreateCallback(options) {
 			
 		// add a space so the term highlighter below thinks the first word is a word
 		var textShown = " " + item.fullName;
+
+		textShown = $j('<div/>').text(textShown).html()
 		
 		// highlight each search term in the results
 		textShown = highlightWords(textShown, origQuery);
@@ -342,6 +349,8 @@ function CreateCallback(options) {
 		if (enc.location) {
 			textShown += " - " + enc.location;
 		}
+
+		textShown = $j('<div/>').text(textShown).html()
 		
 		// highlight each search term in the results
 		textShown = highlightWords(textShown, origQuery);
@@ -384,7 +393,9 @@ function CreateCallback(options) {
 			return { label: item, value: "" };
 			
 		var textShown = " " + item.code+((item.name != null && $j.trim(item.name) != '') ? " - "+item.name : "")+" ["+item.conceptSourceName+"]";
-		
+
+		textShown = $j('<div/>').text(textShown).html()
+
 		// highlight each search term in the results
 		textShown = highlightWords(textShown, origQuery);
 		

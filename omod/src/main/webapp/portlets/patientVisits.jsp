@@ -65,6 +65,10 @@ tr.bottom-encounter-in-visit td:last-child {
 	$j(document)
 			.ready(
 					function() {
+						function renderData(data) {
+							// Escape html for each cell
+							return $j('<div/>').text(data['aData'][data['iDataColumn']]).html();
+						}
 						$j('#patientVisitsTable')
 								.dataTable(
 										{
@@ -76,23 +80,46 @@ tr.bottom-encounter-in-visit td:last-child {
 												"sInfo": ""//hack to hide the text but keep the element to maintain the UI
 											},
 											"aoColumns" : [ {
-												"bVisible" : false
+												"bVisible" : false,
+												"fnRender": renderData
 											}, {
-												"bVisible" : false
-											}, null, {
-												"bVisible" : false
+												"bVisible" : false,
+												"fnRender": renderData
 											}, {
-												"bVisible" : false
+												"fnRender": renderData
 											}, {
-												"bVisible" : false
+												"bVisible" : false,
+												"fnRender": renderData
 											}, {
-												"bVisible" : false
+												"bVisible" : false,
+												"fnRender": renderData
 											}, {
-												"bVisible" : false
+												"bVisible" : false,
+												"fnRender": renderData
 											}, {
-												"bVisible" : false
-											}, null, null, null, null, null, null, {
-												"bVisible" : false
+												"bVisible" : false,
+												"fnRender": renderData
+											}, {
+												"bVisible" : false,
+												"fnRender": renderData
+											}, {
+												"bVisible" : false,
+												"fnRender": renderData
+											}, {
+												"fnRender": renderData
+											}, {
+												"fnRender": renderData
+											}, {
+												"fnRender": renderData
+											}, {
+												"fnRender": renderData
+											}, {
+												"fnRender": renderData
+											}, {
+												"fnRender": renderData
+											}, {
+												"bVisible" : false,
+												"fnRender": renderData
 											} ],
 											"fnRowCallback" : function(nRow,
 													aData, iDisplayIndex) {
