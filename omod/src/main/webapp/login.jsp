@@ -22,7 +22,7 @@
 	function goToPreviousPage(){
 		<c:choose>
 			<c:when test="${not empty refererUrl}">
-			window.location= "${refererUrl}";
+            window.location = '<c:out value="${refererUrl}" />';
 			</c:when>
 			<c:otherwise>
 			//unfortunately this can bring us back to the login page, probably should go to index page
@@ -54,7 +54,7 @@
 	<openmrs:message code="general.unableToViewPage" />
 	<c:if test="${not empty reason}">
 		<br />
-		<span>${reason}</span>
+        <span><c:out value="${reason}" /></span>
 	</c:if>
 	
 	<br /><br />
