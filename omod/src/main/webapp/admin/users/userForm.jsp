@@ -90,6 +90,12 @@
 			<spring:nestedPath path="user.person.names[0]">
 				<openmrs:portlet url="nameLayout" id="namePortlet" size="full" parameters="layoutMode=edit|layoutShowTable=false|layoutShowExtended=false" />
 			</spring:nestedPath>
+			<c:if test="${hasEmailField}">
+				<tr>
+					<td><openmrs:message code="Email" /></td>
+					<td><input type="email" size="30" name="email" value="${email}"/></td>
+				</tr>
+			</c:if>
 			<tr>
 				<td><openmrs:message code="Person.gender"/><span class="required">*</span></td>
 				<td><spring:bind path="user.person.gender">
