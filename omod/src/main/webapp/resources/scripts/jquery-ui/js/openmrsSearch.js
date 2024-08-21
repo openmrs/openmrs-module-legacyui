@@ -1075,7 +1075,8 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
             return Math.ceil(this._table.fnSettings()._iDisplayStart / this._table.fnSettings()._iDisplayLength) + 1;
         },
         _updatePageInfo: function(searchText) {
-            textToDisplay = omsgs.viewingResultsFor.replace("_SEARCH_TEXT_", "'<b>"+searchText+"</b>'");
+            if ((/^[a-zA-Z0-9_\-]+$/.test(searchText))) {
+            textToDisplay = omsgs.viewingResultsFor.replace("_SEARCH_TEXT_", "'<b>"+sanitizeHtml(searchText)+"</b>'");
             if($j.trim(searchText) == '')
                 textToDisplay = omsgs.viewingAll;
 
@@ -1083,6 +1084,7 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
 
             if($j('#pageInfo').css("visibility") != 'visible')
                 $j('#pageInfo').css("visibility", "visible");
+            }
         },
 
         //This function adds the data returned by the second ajax call that fetches the remaining rows
