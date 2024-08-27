@@ -459,6 +459,8 @@ public class ConceptFormController extends SimpleFormController {
 		
 		public Collection<ConceptAttribute> activeAttributes;
 		
+		//		public List<ConceptReferenceRange> conceptReferenceRanges = new ArrayList<>();
+		
 		/**
 		 * Default constructor must take in a Concept object to create itself
 		 * 

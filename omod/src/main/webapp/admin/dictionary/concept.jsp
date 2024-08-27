@@ -319,6 +319,34 @@
 				</table>
 			</td>
 		</tr>
+		<tr id="referenceRangeRow">
+            <th valign="top" style="padding-top: 8px" title="<openmrs:message code="Concept.references"/>">
+                <openmrs:message code="Concept.references"/>
+            </th>
+            <td>
+                <table cellpadding="5" cellspacing="3" align="left" class="lightBorderBox">
+                <tr <c:if test="${fn:length(command.referenceRange) == 0}">style="display:none"</c:if>>
+                    <th style="text-align: center"><openmrs:message code="Concept.referenceRange.hiAbsolute"/></th>
+                    <th style="text-align: center"><openmrs:message code="Concept.referenceRange.lowAbsolute"/></th>
+                    <th style="text-align: center"><openmrs:message code="Concept.referenceRange.hiNormal"/></th>
+                    <th style="text-align: center"><openmrs:message code="Concept.referenceRange.lowNormal"/></th>
+                    <th style="text-align: center"><openmrs:message code="Concept.referenceRange.hiCritical"/></th>
+                    <th style="text-align: center"><openmrs:message code="Concept.referenceRange.lowCritical"/></th>
+                </tr>
+                <c:forEach var="reference" items="${reference.referenceRanges}" varStatus="mapStatus">
+                    <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                        <td><c:out value="${reference.conceptReference.hiAbsolute}"/></td>
+                        <td><c:out value="${reference.conceptReference.lowAbsolute}"/></td>
+                        <td><c:out value="${reference.conceptReference.hiNormal}"/></td>
+                        <td><c:out value="${reference.conceptReference.lowNormal}"/></td>
+                        <td><c:out value="${reference.conceptReference.hiCritical}"/></td>
+                        <td><c:out value="${reference.conceptReference.lowCritical}"/></td>
+                    </tr>
+                </c:forEach>
+
+                </table>
+            </td>
+        </tr>
 		
         <c:if test="${command.concept.complex}">
             <tr>
