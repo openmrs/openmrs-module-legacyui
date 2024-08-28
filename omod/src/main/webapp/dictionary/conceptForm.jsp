@@ -153,6 +153,7 @@
 	#addAnswerError{ margin-bottom: 0.5em; border: 1px dashed black; background: #FAA; line-height: 2em; text-align: center; display: none; }
 	#headerRow th { text-align: center; }
 	#footer { clear:both; }
+	#newReferenceRange { display: none; }
 </style>
 
 <c:choose>
@@ -789,7 +790,7 @@
 					<td colspan="3" valign="top" align="left">
 					<c:choose>
 				           <c:when test="${sourceID != null}">
-						<input id="addMapButton" type="button" value='<openmrs:message code="Concept.mappings.sourceCodeRequired"/>' class="smallButton"
+						<input id="addMapButton" type="button" value='<openmrs:message code="Concept.mapping.add"/>' class="smallButton"
 							   onClick="addConceptMapping(${fn:length(command.conceptMappings)})" />
 							    </c:when>
 							    <c:otherwise>
@@ -816,32 +817,47 @@
 		</td>
 	</tr>
 	<tr id="referenceRangeRow">Concept.referenceRanges
-        <th valign="top" style="padding-top: 8px" title="<openmrs:message code="Concept.referenceRanges.help"/>">
-            <openmrs:message code="Concept.referenceRanges"/>
+        <th valign="top" style="padding-top: 8px">
+            <openmrs:message code="Concept.referenceRanges"/> <img class="help_icon" src="${pageContext.request.contextPath}/images/help.gif" border="0" title="<openmrs:message code="Concept.referenceRanges.help"/>"/>
         </th>
         <td>
-            <table cellpadding="5" cellspacing="3" align="left" class="lightBorderBox">
-            <tr id="conceptReferenceRangeHeadersRow" <c:if test="${fn:length(command.referenceRanges) == 0}">style="display:none"</c:if>>
-                <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteHigh"/></th>
-                <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteLow"/></th>
-                <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalHigh"/></th>
-                <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalLow"/></th>
-                <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalHigh"/></th>
-                <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalLow"/></th>
-                <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalLow"/></th>
-                <th style="text-align: center"><openmrs:message code="Concept.referenceRanges.criteria"/></th>
-            </tr>
-            <c:forEach var="reference" items="${reference.referenceRanges}" varStatus="mapStatus">
-                <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                    <td><c:out value="${reference.conceptReference.hiAbsolute}"/></td>
-                    <td><c:out value="${reference.conceptReference.lowAbsolute}"/></td>
-                    <td><c:out value="${reference.conceptReference.hiNormal}"/></td>
-                    <td><c:out value="${reference.conceptReference.lowNormal}"/></td>
-                    <td><c:out value="${reference.conceptReference.hiCritical}"/></td>
-                    <td><c:out value="${reference.conceptReference.lowCritical}"/></td>
-                    <td><c:out value="${reference.conceptReference.criteria}"/></td>
+            <table id="referenceTable" cellpadding="3" cellspacing="1" class="lightBorderBox">
+                <tr id="headerRow" class="headerRow hideableEle">
+                    <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteHigh"/></th>
+                    <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteLow"/></th>
+                    <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalHigh"/></th>
+                    <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalLow"/></th>
+                    <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalHigh"/></th>
+                    <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalLow"/></th>
+                    <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalLow"/></th>
+                    <th style="text-align: center"><openmrs:message code="Concept.referenceRanges.criteria"/></th>
+                    <th class="removeButtonCol">&nbsp;</th>
                 </tr>
-            </c:forEach>
+                <c:forEach var="reference" items="${reference.referenceRanges}" varStatus="mapStatus">
+                    <spring:nestedPath path="command.conceptMappings[${mapStatus.index}]">
+                        <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                            <td><c:out value="${reference.conceptReference.hiAbsolute}"/></td>
+                            <td><c:out value="${reference.conceptReference.lowAbsolute}"/></td>
+                            <td><c:out value="${reference.conceptReference.hiNormal}"/></td>
+                            <td><c:out value="${reference.conceptReference.lowNormal}"/></td>
+                            <td><c:out value="${reference.conceptReference.hiCritical}"/></td>
+                            <td><c:out value="${reference.conceptReference.lowCritical}"/></td>
+                            <td><c:out value="${reference.conceptReference.criteria}"/></td>
+                        </tr>
+                    </spring:nestedPath>
+                </c:forEach>
+                <tr id="newReferenceRange" style="display: none">
+                    <td valign="top">
+                        <input type="text" name="term.code" size="25" />
+                        <input type="hidden" name="termId" />
+                    </td>
+                    <td>
+                        <input type="text" name="term.name" size="25" readonly="readonly" />
+                    </td>
+                    <td>
+                        <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeParentElement(this.parentNode)" />
+                    </td>
+                </tr>
 
             </table>
         </td>

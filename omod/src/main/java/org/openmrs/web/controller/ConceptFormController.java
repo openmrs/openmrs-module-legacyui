@@ -531,8 +531,7 @@ public class ConceptFormController extends SimpleFormController {
 			
 			this.activeAttributes = concept.getActiveAttributes();
 
-			if (concept.getDatatype().getName().equals("Numeric")
-					&& concept instanceof ConceptNumeric) {
+			if (concept.isNumeric() && concept instanceof ConceptNumeric) {
                 this.referenceRanges = ((ConceptNumeric) concept).getReferenceRanges();
 			}
 		}
