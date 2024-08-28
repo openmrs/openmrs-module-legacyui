@@ -40,6 +40,7 @@ import org.openmrs.ConceptMap;
 import org.openmrs.ConceptMapType;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNumeric;
+import org.openmrs.ConceptReferenceRange;
 import org.openmrs.ConceptReferenceTerm;
 import org.openmrs.ConceptSet;
 import org.openmrs.Drug;
@@ -459,7 +460,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		public Collection<ConceptAttribute> activeAttributes;
 		
-		//		public List<ConceptReferenceRange> conceptReferenceRanges = new ArrayList<>();
+		public Set<ConceptReferenceRange> referenceRanges = new HashSet<>();
 		
 		/**
 		 * Default constructor must take in a Concept object to create itself
@@ -529,6 +530,11 @@ public class ConceptFormController extends SimpleFormController {
 			}
 			
 			this.activeAttributes = concept.getActiveAttributes();
+
+			if (concept.getDatatype().getName().equals("Numeric")
+					&& concept instanceof ConceptNumeric) {
+                this.referenceRanges = ((ConceptNumeric) concept).getReferenceRanges();
+			}
 		}
 		
 		/**
@@ -663,6 +669,7 @@ public class ConceptFormController extends SimpleFormController {
 				cn.setAllowDecimal(allowDecimal);
 				cn.setDisplayPrecision(displayPrecision);
 				cn.setUnits(units);
+				cn.setReferenceRanges(referenceRanges);
 				
 				concept = cn;
 				

@@ -789,7 +789,7 @@
 					<td colspan="3" valign="top" align="left">
 					<c:choose>
 				           <c:when test="${sourceID != null}">
-						<input id="addMapButton" type="button" value='<openmrs:message code="Concept.mapping.add"/>' class="smallButton" 
+						<input id="addMapButton" type="button" value='<openmrs:message code="Concept.mappings.sourceCodeRequired"/>' class="smallButton"
 							   onClick="addConceptMapping(${fn:length(command.conceptMappings)})" />
 							    </c:when>
 							    <c:otherwise>
@@ -815,6 +815,37 @@
 			</table>
 		</td>
 	</tr>
+	<tr id="referenceRangeRow">Concept.referenceRanges
+        <th valign="top" style="padding-top: 8px" title="<openmrs:message code="Concept.referenceRanges.help"/>">
+            <openmrs:message code="Concept.referenceRanges"/>
+        </th>
+        <td>
+            <table cellpadding="5" cellspacing="3" align="left" class="lightBorderBox">
+            <tr id="conceptReferenceRangeHeadersRow" <c:if test="${fn:length(command.referenceRanges) == 0}">style="display:none"</c:if>>
+                <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteHigh"/></th>
+                <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteLow"/></th>
+                <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalHigh"/></th>
+                <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalLow"/></th>
+                <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalHigh"/></th>
+                <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalLow"/></th>
+                <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalLow"/></th>
+                <th style="text-align: center"><openmrs:message code="Concept.referenceRanges.criteria"/></th>
+            </tr>
+            <c:forEach var="reference" items="${reference.referenceRanges}" varStatus="mapStatus">
+                <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                    <td><c:out value="${reference.conceptReference.hiAbsolute}"/></td>
+                    <td><c:out value="${reference.conceptReference.lowAbsolute}"/></td>
+                    <td><c:out value="${reference.conceptReference.hiNormal}"/></td>
+                    <td><c:out value="${reference.conceptReference.lowNormal}"/></td>
+                    <td><c:out value="${reference.conceptReference.hiCritical}"/></td>
+                    <td><c:out value="${reference.conceptReference.lowCritical}"/></td>
+                    <td><c:out value="${reference.conceptReference.criteria}"/></td>
+                </tr>
+            </c:forEach>
+
+            </table>
+        </td>
+    </tr>
 
 	<spring:bind path="command.activeAttributes">
 		<c:if test="${status.error}">
