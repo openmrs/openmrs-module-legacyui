@@ -78,6 +78,11 @@
 			$j(".hideableEle").hide();
 	});
 
+	$j(document).ready(function(){
+        if(${fn:length(command.referenceRanges)} == 0)
+            $j(".referenceRangeHeader").hide();
+    });
+
 </script>
 
 <script src="<openmrs:contextPath/>/dwr/interface/DWRConceptService.js"></script>

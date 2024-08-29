@@ -74,13 +74,13 @@
 	}
 	
 	$j(document).ready(function(){
-		if(${fn:length(command.conceptMappings)} == 0)
+		if(${fn:length(command.referenceRanges)} == 0)
 			$j(".hideableEle").hide();
 	});
 
 	$j(document).ready(function(){
         if(${fn:length(command.referenceRanges)} == 0)
-            $j(".hideable").hide();
+            $j(".referenceRangeHeader").hide();
     });
 
 </script>
@@ -827,7 +827,7 @@
         </th>
         <td>
             <table id="referenceTable" cellpadding="3" cellspacing="1">
-                <tr id="headerRow" class="headerRow hideable">
+                <tr id="headerRow" class="headerRow referenceRangeHeader">
                     <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteHigh"/></th>
                     <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteLow"/></th>
                     <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalHigh"/></th>
@@ -838,51 +838,56 @@
                     <th style="text-align: center"><openmrs:message code="Concept.referenceRanges.criteria"/></th>
                     <th class="removeButtonCol">&nbsp;</th>
                 </tr>
-                <c:forEach var="reference" items="${reference.referenceRanges}" varStatus="mapStatus">
-                    <spring:nestedPath path="command.referenceRanges[${reference.id}]">
-                        <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.hiAbsolute}"/>" readonly="readonly" />
-                            </td>
-                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.lowAbsolute}"/>" readonly="readonly" />
-                            </td>
-                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.hiNormal}"/>" readonly="readonly" />
-                            </td>
-                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.lowNormal}"/>" readonly="readonly" />
-                            </td>
-                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.hiCritical}"/>" readonly="readonly" />
-                            </td>
-                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.lowCritical}"/>" readonly="readonly" />
-                            </td>
-                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.criteria}"/>" readonly="readonly" />
-                            </td>
-                            <td>
-                                <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeParentElement(this.parentNode)" />
-                                <spring:bind path="command.conceptReferences[${reference.id}]" ignoreNestedPath="true">
-                                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
-                                </spring:bind>
-                            </td>
-                        </tr>
-                    </spring:nestedPath>
+                <c:forEach var="reference" items="${command.referenceRanges}">
+                    <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                        <td>
+                            <input type="text" size="25" value="${reference.hiAbsolute}" readonly="readonly" />
+                        </td>
+                        <td>
+                            <input type="text" size="25" value="${reference.lowAbsolute}" readonly="readonly" />
+                        </td>
+                        <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                            <input type="text" size="25" value="${reference.conceptReference.hiNormal}" readonly="readonly" />
+                        </td>
+                        <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                            <input type="text" size="25" value="${reference.conceptReference.lowNormal}" readonly="readonly" />
+                        </td>
+                        <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                            <input type="text" size="25" value="${reference.conceptReference.hiCritical}" readonly="readonly" />
+                        </td>
+                        <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                            <input type="text" size="25" value="${reference.conceptReference.lowCritical}" readonly="readonly" />
+                        </td>
+                        <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                            <input type="text" size="25" value="${reference.conceptReference.criteria}" readonly="readonly" />
+                        </td>
+                        <td>
+                            <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeParentElement(this.parentNode)" />
+                            <spring:bind path="command.referenceRanges[${reference.id}]" ignoreNestedPath="true">
+                                <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
+                            </spring:bind>
+                        </td>
+                    </tr>
                 </c:forEach>
                 <tr id="newReferenceRange" style="display: none">
+                    <td><input type="text" name="referenceRanges[0].conceptReference.hiAbsolute" /></td>
+                    <td><input type="text" name="referenceRanges[0].conceptReference.lowAbsolute" /></td>
+                    <td><input type="text" name="referenceRanges[0].conceptReference.hiNormal" /></td>
+                    <td><input type="text" name="referenceRanges[0].conceptReference.lowNormal" /></td>
+                    <td><input type="text" name="referenceRanges[0].conceptReference.hiCritical" /></td>
+                    <td><input type="text" name="referenceRanges[0].conceptReference.lowCritical" /></td>
+                    <td><input type="text" name="referenceRanges[0].conceptReference.criteria" /></td>
                     <td>
                         <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton"
                         onClick="removeParentElement(this.parentNode)" />
                     </td>
                 </tr>
-                <tr>
+                <tr id="addButton">
                     <td colspan="3" valign="top" align="left">
                         <c:choose>
                             <c:when test="${sourceID != null}">
                                 <input type="button" value='<openmrs:message code="Concept.referenceRanges.add"/>' class="smallButton"
-                                   onClick="addConceptReferences(${fn:length(command.referenceRanges)})" />
+                                   onClick="addReferenceRanges(${fn:length(command.referenceRanges)})" />
                             </c:when>
                             <c:otherwise>
                                 <span>

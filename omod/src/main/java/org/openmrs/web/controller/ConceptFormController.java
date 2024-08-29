@@ -520,6 +520,8 @@ public class ConceptFormController extends SimpleFormController {
 				this.allowDecimal = cn.getAllowDecimal();
 				this.displayPrecision = cn.getDisplayPrecision();
 				this.units = cn.getUnits();
+
+				this.referenceRanges = cn.getReferenceRanges();
 			} else if (concept instanceof ConceptComplex) {
 				ConceptComplex complex = (ConceptComplex) concept;
 				this.handlerKey = complex.getHandler();
@@ -530,10 +532,6 @@ public class ConceptFormController extends SimpleFormController {
 			}
 			
 			this.activeAttributes = concept.getActiveAttributes();
-
-			if (concept.isNumeric() && concept instanceof ConceptNumeric) {
-                this.referenceRanges = ((ConceptNumeric) concept).getReferenceRanges();
-			}
 		}
 		
 		/**
@@ -669,6 +667,9 @@ public class ConceptFormController extends SimpleFormController {
 				cn.setDisplayPrecision(displayPrecision);
 				cn.setUnits(units);
 				cn.setReferenceRanges(referenceRanges);
+
+				// Set the reference ranges from the form data
+				cn.setReferenceRanges(this.referenceRanges);
 				
 				concept = cn;
 				
