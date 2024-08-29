@@ -78,6 +78,11 @@
 			$j(".hideableEle").hide();
 	});
 
+	$j(document).ready(function(){
+        if(${fn:length(command.referenceRanges)} == 0)
+            $j(".hideable").hide();
+    });
+
 </script>
 
 <script src="<openmrs:contextPath/>/dwr/interface/DWRConceptService.js"></script>
@@ -816,13 +821,13 @@
 			</table>
 		</td>
 	</tr>
-	<tr id="referenceRangeRow">Concept.referenceRanges
+	<tr id="referenceRangeRow">
         <th valign="top" style="padding-top: 8px">
             <openmrs:message code="Concept.referenceRanges"/> <img class="help_icon" src="${pageContext.request.contextPath}/images/help.gif" border="0" title="<openmrs:message code="Concept.referenceRanges.help"/>"/>
         </th>
         <td>
-            <table id="referenceTable" cellpadding="3" cellspacing="1" class="lightBorderBox">
-                <tr id="headerRow" class="headerRow hideableEle">
+            <table id="referenceTable" cellpadding="3" cellspacing="1">
+                <tr id="headerRow" class="headerRow hideable">
                     <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteHigh"/></th>
                     <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteLow"/></th>
                     <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalHigh"/></th>
@@ -834,28 +839,60 @@
                     <th class="removeButtonCol">&nbsp;</th>
                 </tr>
                 <c:forEach var="reference" items="${reference.referenceRanges}" varStatus="mapStatus">
-                    <spring:nestedPath path="command.conceptMappings[${mapStatus.index}]">
+                    <spring:nestedPath path="command.referenceRanges[${reference.id}]">
                         <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
-                            <td><c:out value="${reference.conceptReference.hiAbsolute}"/></td>
-                            <td><c:out value="${reference.conceptReference.lowAbsolute}"/></td>
-                            <td><c:out value="${reference.conceptReference.hiNormal}"/></td>
-                            <td><c:out value="${reference.conceptReference.lowNormal}"/></td>
-                            <td><c:out value="${reference.conceptReference.hiCritical}"/></td>
-                            <td><c:out value="${reference.conceptReference.lowCritical}"/></td>
-                            <td><c:out value="${reference.conceptReference.criteria}"/></td>
+                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.hiAbsolute}"/>" readonly="readonly" />
+                            </td>
+                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.lowAbsolute}"/>" readonly="readonly" />
+                            </td>
+                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.hiNormal}"/>" readonly="readonly" />
+                            </td>
+                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.lowNormal}"/>" readonly="readonly" />
+                            </td>
+                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.hiCritical}"/>" readonly="readonly" />
+                            </td>
+                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.lowCritical}"/>" readonly="readonly" />
+                            </td>
+                            <td <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                                <input type="text" id="term[${mapStatus.index}].name" size="25" value="<c:out value="${reference.conceptReference.criteria}"/>" readonly="readonly" />
+                            </td>
+                            <td>
+                                <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeParentElement(this.parentNode)" />
+                                <spring:bind path="command.conceptReferences[${reference.id}]" ignoreNestedPath="true">
+                                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
+                                </spring:bind>
+                            </td>
                         </tr>
                     </spring:nestedPath>
                 </c:forEach>
                 <tr id="newReferenceRange" style="display: none">
-                    <td valign="top">
-                        <input type="text" name="term.code" size="25" />
-                        <input type="hidden" name="termId" />
-                    </td>
                     <td>
-                        <input type="text" name="term.name" size="25" readonly="readonly" />
+                        <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton"
+                        onClick="removeParentElement(this.parentNode)" />
                     </td>
-                    <td>
-                        <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeParentElement(this.parentNode)" />
+                </tr>
+                <tr>
+                    <td colspan="3" valign="top" align="left">
+                        <c:choose>
+                            <c:when test="${sourceID != null}">
+                                <input type="button" value='<openmrs:message code="Concept.referenceRanges.add"/>' class="smallButton"
+                                   onClick="addConceptReferences(${fn:length(command.referenceRanges)})" />
+                            </c:when>
+                            <c:otherwise>
+                                <span>
+                                    <openmrs:message code="Concept.mapping.sourceUnavailable"/>
+                                    <a href="${pageContext.request.contextPath}/admin/concepts/conceptSource.list">
+                                        <openmrs:message code="Concept.mapping.sourceAdd"/>
+                                    </a>
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                 </tr>
 

@@ -945,6 +945,28 @@ public class ConceptFormController extends SimpleFormController {
 		public List<Form> getFormsInUse() {
 			return Context.getFormService().getFormsContainingConcept(concept);
 		}
+
+		/**
+		 * Get reference ranges
+		 *
+		 * @return the referenceRanges
+		 *
+		 * @since 1.17.0
+		 */
+		public Set<ConceptReferenceRange> getReferenceRanges() {
+			return referenceRanges;
+		}
+
+		/**
+		 * Sets reference ranges
+		 *
+		 * @param referenceRanges the referenceRanges to set
+		 *
+		 * @since 1.17.0
+		 */
+		public void setReferenceRanges(Set<ConceptReferenceRange> referenceRanges) {
+			this.referenceRanges = referenceRanges;
+		}
 		
 		/**
 		 * Get the list of extensions/metadata and the specific instances of them that use this

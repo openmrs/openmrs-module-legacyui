@@ -433,7 +433,7 @@ function addConceptMapping(initialSizeOfClonedSiblings){
 				input.id = 'term[' + index + '].name';
 			}
 		}
-		
+
 		//find the select element and set the name attribute for the conceptSource and map type
 		for (var i in selects) {
 			var select = selects[i];
@@ -467,6 +467,34 @@ function addAutoComplete(displayInputId, sourceSelectElementId, hiddenElementId,
 		},
 		placeholder:omsgs.referencTermSearchPlaceholder
 	});
+}
+
+/**
+ * Method is invoked to add a new reference range
+ * @param initialSizeOfReferenceRanges the number of mappings on page load
+ */
+function addReferenceRanges(initialSizeOfReferenceRanges){
+
+	var inputNamePrefix = 'referenceRanges';
+	var newRow = cloneElement('newReferenceRange', initialSizeOfReferenceRanges, inputNamePrefix);
+
+	if(newRow){
+		newRow.id = "";
+		var index = numberOfClonedElements['newReferenceRange'];
+		var inputs = newRow.getElementsByTagName("input");
+
+		for (var x = 0; x < inputs.length; x++) {
+			var input = inputs[x];
+
+			if (input && input.name == 'termId' && input.type == 'hidden') {
+				input.name = inputNamePrefix+'[' + index + '].conceptReference';
+				input.id = inputNamePrefix+'[' + index + '].conceptReference';
+			}
+		}
+
+		if(!$j("#headerRow").is(":visible"))
+			$j(".hideable").show();
+	}
 }
 
 document.onkeypress = hotkeys;
