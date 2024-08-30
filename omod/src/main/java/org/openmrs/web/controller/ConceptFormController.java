@@ -668,7 +668,10 @@ public class ConceptFormController extends SimpleFormController {
 				cn.setUnits(units);
 				cn.setReferenceRanges(referenceRanges);
 
-				// Set the reference ranges from the form data
+				System.out.println("****************** setting reference ranges");
+				System.out.println("****************** size: " + this.referenceRanges.size());
+
+
 				cn.setReferenceRanges(this.referenceRanges);
 				
 				concept = cn;

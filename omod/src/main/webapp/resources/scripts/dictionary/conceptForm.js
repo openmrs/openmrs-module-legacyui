@@ -471,9 +471,9 @@ function addReferenceRanges(initialSizeOfReferenceRanges) {
 		for (var x = 0; x < inputs.length; x++) {
 			var input = inputs[x];
 
-			if (input && input.name == 'termId' && input.type == 'hidden') {
-				input.name = inputNamePrefix+'[' + index + '].conceptReference';
-				input.id = inputNamePrefix+'[' + index + '].conceptReference';
+			if (input) {
+				input.name = inputNamePrefix+'[' + index + '].' + input.name.split('.')[1];
+				input.id = inputNamePrefix+'[' + index + '].' + input.id.split('.')[1];
 			}
 		}
 
