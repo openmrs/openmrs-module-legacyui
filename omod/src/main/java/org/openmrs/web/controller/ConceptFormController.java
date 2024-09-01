@@ -460,7 +460,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		public Collection<ConceptAttribute> activeAttributes;
 		
-		public Set<ConceptReferenceRange> referenceRanges = new HashSet<>();
+		public List<ConceptReferenceRange> referenceRanges;
 		
 		/**
 		 * Default constructor must take in a Concept object to create itself
@@ -521,7 +521,8 @@ public class ConceptFormController extends SimpleFormController {
 				this.displayPrecision = cn.getDisplayPrecision();
 				this.units = cn.getUnits();
 
-				this.referenceRanges = cn.getReferenceRanges();
+				this.referenceRanges = ListUtils.lazyList(new ArrayList<>(cn.getReferenceRanges()),
+						FactoryUtils.instantiateFactory(ConceptReferenceRange.class));
 			} else if (concept instanceof ConceptComplex) {
 				ConceptComplex complex = (ConceptComplex) concept;
 				this.handlerKey = complex.getHandler();
@@ -666,13 +667,11 @@ public class ConceptFormController extends SimpleFormController {
 				cn.setAllowDecimal(allowDecimal);
 				cn.setDisplayPrecision(displayPrecision);
 				cn.setUnits(units);
-				cn.setReferenceRanges(referenceRanges);
-
-				System.out.println("****************** setting reference ranges");
-				System.out.println("****************** size: " + this.referenceRanges.size());
-
-
-				cn.setReferenceRanges(this.referenceRanges);
+				
+				for (ConceptReferenceRange referenceRange : this.referenceRanges) {
+					referenceRange.setConceptNumeric(cn);
+					cn.addReferenceRange(referenceRange);
+				}
 				
 				concept = cn;
 				
@@ -949,27 +948,35 @@ public class ConceptFormController extends SimpleFormController {
 		public List<Form> getFormsInUse() {
 			return Context.getFormService().getFormsContainingConcept(concept);
 		}
-
+		
 		/**
 		 * Get reference ranges
-		 *
+		 * 
 		 * @return the referenceRanges
-		 *
 		 * @since 1.17.0
 		 */
-		public Set<ConceptReferenceRange> getReferenceRanges() {
+		public List<ConceptReferenceRange> getReferenceRanges() {
 			return referenceRanges;
 		}
-
+		
 		/**
 		 * Sets reference ranges
-		 *
+		 * 
 		 * @param referenceRanges the referenceRanges to set
-		 *
 		 * @since 1.17.0
 		 */
-		public void setReferenceRanges(Set<ConceptReferenceRange> referenceRanges) {
+		public void setReferenceRanges(List<ConceptReferenceRange> referenceRanges) {
 			this.referenceRanges = referenceRanges;
+		}
+		
+		/**
+		 * Adds a new reference range to the list of reference ranges
+		 * 
+		 * @param referenceRange the referenceRange to add
+		 * @since 1.17.0
+		 */
+		public void addReferenceRange(ConceptReferenceRange referenceRange) {
+			getReferenceRanges().add(referenceRange);
 		}
 		
 		/**

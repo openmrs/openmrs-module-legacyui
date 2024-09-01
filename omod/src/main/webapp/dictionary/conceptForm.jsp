@@ -838,41 +838,43 @@
                     <th class="removeButtonCol">&nbsp;</th>
                 </tr>
                 <c:forEach var="reference" items="${command.referenceRanges}" varStatus="status">
-                    <tr <c:if test="${status.index % 2 == 0}">class='evenRow'</c:if>>
-                        <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiAbsolute" value="${reference.hiAbsolute}" readonly="readonly" /></td>
-                        <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowAbsolute" value="${reference.lowAbsolute}" readonly="readonly" /></td>
-                        <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiNormal" value="${reference.hiNormal}" readonly="readonly" /></td>
-                        <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowNormal" value="${reference.lowNormal}" readonly="readonly" /></td>
-                        <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiCritical" value="${reference.hiCritical}" readonly="readonly" /></td>
-                        <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowCritical" value="${reference.lowCritical}" readonly="readonly" /></td>
-                        <td><input type="text" size="25" name="command.referenceRanges[${status.index}].criteria" value="${reference.criteria}" readonly="readonly" /></td>
-                        <td>
-                            <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeParentElement(this.parentNode)" />
-                            <spring:bind path="command.referenceRanges[${status.index}]" ignoreNestedPath="true">
-                                <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
-                            </spring:bind>
-                        </td>
-                    </tr>
+                    <spring:nestedPath path="command.referenceRanges[${status.index}]">
+                        <tr>
+                            <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiAbsolute" value="${reference.hiAbsolute}" readonly="readonly" /></td>
+                            <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowAbsolute" value="${reference.lowAbsolute}" readonly="readonly" /></td>
+                            <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiNormal" value="${reference.hiNormal}" readonly="readonly" /></td>
+                            <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowNormal" value="${reference.lowNormal}" readonly="readonly" /></td>
+                            <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiCritical" value="${reference.hiCritical}" readonly="readonly" /></td>
+                            <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowCritical" value="${reference.lowCritical}" readonly="readonly" /></td>
+                            <td><input type="text" size="25" name="command.referenceRanges[${status.index}].criteria" value="${reference.criteria}" readonly="readonly" /></td>
+                            <td>
+                                <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeParentElement(this.parentNode)" />
+                                <spring:bind path="command.referenceRanges[${status.index}]" ignoreNestedPath="true">
+                                    <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
+                                </spring:bind>
+                            </td>
+                        </tr>
+                    </spring:nestedPath>
                 </c:forEach>
+                <tr id="newReferenceRange" style="display: none" varStatus="status">
+                    <td><input type="text" name="[x].hiAbsolute" size="20" /></td>
+                    <td><input type="text" name="[x].lowAbsolute" size="20" /></td>
+                    <td><input type="text" name="[x].hiCritical" size="20" /></td>
+                    <td><input type="text" name="[x].lowCritical" size="20" /></td>
+                    <td><input type="text" name="[x].hiNormal" size="20" /></td>
+                    <td><input type="text" name="[x].lowNormal" size="20" /></td>
+                    <td><input type="text" name="[x].criteria" size="20" /></td>
+                    <td>
+                        <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeReferenceRangeElement(this, 'newReferenceRange')" />
+                    </td>
+                    <td><input type="hidden" id="referenceRangesSize" name="refId" /></td>
+                </tr>
                 <tr id="addButton">
                     <td colspan="3" valign="top" align="left">
-                        <c:choose>
-                            <c:when test="${sourceID != null}">
-                                <input type="button" value='<openmrs:message code="Concept.referenceRanges.add"/>' class="smallButton"
-                                   onClick="addReferenceRanges(${fn:length(command.referenceRanges)})" />
-                            </c:when>
-                            <c:otherwise>
-                                <span>
-                                    <openmrs:message code="Concept.mapping.sourceUnavailable"/>
-                                    <a href="${pageContext.request.contextPath}/admin/concepts/conceptSource.list">
-                                        <openmrs:message code="Concept.mapping.sourceAdd"/>
-                                    </a>
-                                </span>
-                            </c:otherwise>
-                        </c:choose>
+                        <input type="button" value='<openmrs:message code="Concept.referenceRanges.add"/>' class="smallButton"
+                           onClick="addReferenceRanges(${fn:length(command.referenceRanges)})" />
                     </td>
                 </tr>
-
             </table>
         </td>
     </tr>

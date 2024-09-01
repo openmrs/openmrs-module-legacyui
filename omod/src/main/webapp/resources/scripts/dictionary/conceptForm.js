@@ -466,26 +466,32 @@ function addReferenceRanges(initialSizeOfReferenceRanges) {
 		var index = numberOfClonedElements['newReferenceRange'];
 		var inputs = newRow.getElementsByTagName("input");
 
-		console.log("Index of cloned element:", index);
-
 		for (var x = 0; x < inputs.length; x++) {
 			var input = inputs[x];
 
-			if (input) {
-				input.name = inputNamePrefix+'[' + index + '].' + input.name.split('.')[1];
-				input.id = inputNamePrefix+'[' + index + '].' + input.id.split('.')[1];
-			}
+            if (input && input.type == 'text') {
+                input.id = inputNamePrefix + '[' + index + '].' + input.name.split('.')[1]
+                input.name = inputNamePrefix + '[' + index + '].' + input.name.split('.')[1]
+            }
 		}
 
-		// Insert the new row before the last row
-        var referenceTable = document.getElementById("referenceTable");
-        // referenceTable.insertBefore(newRow, referenceTable.lastElementChild);
-        referenceTable.appendChild(newRow);
-        console.log("New row inserted into the table.");
-	}
 
-	if(!$j("#headerRow").is(":visible"))
-        $j(".referenceRangeHeader").show();
+		if(!$j("#headerRow").is(":visible"))
+            $j(".referenceRangeHeader").show();
+	}
+}
+
+/**
+ * Handles deleting and update visibility of reference range fields
+ *
+ * @param btn
+ *           the source object of event
+ * @param key
+ *           the key object for receiving the save key
+*/
+function removeReferenceRangeElement(btn, key) {
+    removeParentElement(btn.parentNode);
+    numberOfClonedElements[key]--;
 }
 
 function addAutoComplete(displayInputId, sourceSelectElementId, hiddenElementId, nameInputId){
