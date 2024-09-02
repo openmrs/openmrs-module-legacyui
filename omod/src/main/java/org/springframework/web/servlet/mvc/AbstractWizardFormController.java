@@ -654,7 +654,9 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * @see #PARAM_TARGET
 	 */
 	protected int getTargetPage(HttpServletRequest request, int currentPage) {
-		return WebUtils.getTargetPage(request, PARAM_TARGET, currentPage);
+		return 0;
+		// TODO REVERT THIS AFTER TESTING IS DONE
+		//		return WebUtils.getTargetPage(request, PARAM_TARGET, currentPage);
 	}
 	
 	/**
