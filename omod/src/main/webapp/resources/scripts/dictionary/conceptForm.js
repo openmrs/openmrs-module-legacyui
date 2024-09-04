@@ -494,6 +494,22 @@ function removeReferenceRangeElement(btn, key) {
     numberOfClonedElements[key]--;
 }
 
+/**
+ * Handles deleting and updating visibility of reference range fields.
+ * The removed row is marked for deletion.
+ *
+ * @param btn
+ *           the source object of event
+ * @param index
+ *           the index of the row to be deleted
+*/
+function removeReferenceRangeElementByIndex(btn, index) {
+    var row = document.getElementById('row-' + index);
+    removeParentElement(btn.parentNode);
+
+    document.getElementById('removeMarker-' + index).value = "";
+}
+
 function addAutoComplete(displayInputId, sourceSelectElementId, hiddenElementId, nameInputId){
 	var selectOption = document.getElementById(sourceSelectElementId);
 	// set up the autocomplete on the conceptReferenceTerm input box for the new mapping

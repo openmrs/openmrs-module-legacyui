@@ -840,21 +840,22 @@
                     </tr>
                     <c:forEach var="reference" items="${command.referenceRanges}" varStatus="status">
                         <spring:nestedPath path="command.referenceRanges[${status.index}]">
-                            <tr>
-                                <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiAbsolute" value="${reference.hiAbsolute}" readonly="readonly" /></td>
-                                <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowAbsolute" value="${reference.lowAbsolute}" readonly="readonly" /></td>
-                                <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiNormal" value="${reference.hiNormal}" readonly="readonly" /></td>
-                                <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowNormal" value="${reference.lowNormal}" readonly="readonly" /></td>
-                                <td><input type="text" size="25" name="command.referenceRanges[${status.index}].hiCritical" value="${reference.hiCritical}" readonly="readonly" /></td>
-                                <td><input type="text" size="25" name="command.referenceRanges[${status.index}].lowCritical" value="${reference.lowCritical}" readonly="readonly" /></td>
-                                <td><input type="text" size="25" name="command.referenceRanges[${status.index}].criteria" value="${reference.criteria}" readonly="readonly" /></td>
+                            <tr id="row-${status.index}">
+                                <td><input type="text" size="20" name="command.referenceRanges[${status.index}].hiAbsolute" value="${reference.hiAbsolute}" readonly="readonly" /></td>
+                                <td><input type="text" size="20" name="command.referenceRanges[${status.index}].lowAbsolute" value="${reference.lowAbsolute}" readonly="readonly" /></td>
+                                <td><input type="text" size="20" name="command.referenceRanges[${status.index}].hiNormal" value="${reference.hiNormal}" readonly="readonly" /></td>
+                                <td><input type="text" size="20" name="command.referenceRanges[${status.index}].lowNormal" value="${reference.lowNormal}" readonly="readonly" /></td>
+                                <td><input type="text" size="20" name="command.referenceRanges[${status.index}].hiCritical" value="${reference.hiCritical}" readonly="readonly" /></td>
+                                <td><input type="text" size="20" name="command.referenceRanges[${status.index}].lowCritical" value="${reference.lowCritical}" readonly="readonly" /></td>
+                                <td><input type="text" size="20" name="command.referenceRanges[${status.index}].criteria" value="${reference.criteria}" readonly="readonly" /></td>
                                 <td>
-                                    <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeParentElement(this.parentNode)" />
+                                    <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeReferenceRangeElementByIndex(this, ${status.index})" />
                                     <spring:bind path="command.referenceRanges[${status.index}]" ignoreNestedPath="true">
                                         <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
                                     </spring:bind>
                                 </td>
                             </tr>
+                            <input type="hidden" name="referenceRanges[${status.index}].uuid" id="removeMarker-${status.index}" value="${reference.uuid}" />
                         </spring:nestedPath>
                     </c:forEach>
                     <tr id="newReferenceRange" style="display: none" varStatus="status">

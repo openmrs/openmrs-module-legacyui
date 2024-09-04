@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -669,8 +670,20 @@ public class ConceptFormController extends SimpleFormController {
 				cn.setUnits(units);
 				
 				for (ConceptReferenceRange referenceRange : this.referenceRanges) {
-					referenceRange.setConceptNumeric(cn);
-					cn.addReferenceRange(referenceRange);
+					if (referenceRange != null) {
+						if (referenceRange.getUuid() != null) {
+							// Handle already saved references
+							
+							if (referenceRange.getUuid().isEmpty()) {
+								// reference range was removed
+								cn.getReferenceRanges().remove(referenceRange);
+							}
+						} else {
+							// Add new reference range
+							referenceRange.setConceptNumeric(cn);
+							cn.addReferenceRange(referenceRange);
+						}
+					}
 				}
 				
 				concept = cn;
