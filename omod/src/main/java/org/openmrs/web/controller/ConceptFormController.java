@@ -273,6 +273,8 @@ public class ConceptFormController extends SimpleFormController {
 					
 					validateConceptUsesPersistedObjects(concept, errors);
 					
+					validateConceptReferenceRange(concept, errors);
+					
 					if (!errors.hasErrors()) {
 						if (action.equals(msa.getMessage("Concept.cancel"))) {
 							return new ModelAndView(new RedirectView("index.htm"));
@@ -310,6 +312,35 @@ public class ConceptFormController extends SimpleFormController {
 		}
 		
 		return new ModelAndView(new RedirectView(getFormView()));
+	}
+	
+	void validateConceptReferenceRange(Concept concept, BindException errors) {
+		if (concept.isNumeric()) {
+			ConceptNumeric conceptNumeric = (ConceptNumeric) concept;
+			Set<ConceptReferenceRange> referenceRanges = conceptNumeric.getReferenceRanges();
+			
+			int index = 0;
+			for (ConceptReferenceRange referenceRange : referenceRanges) {
+
+				if (referenceRange.getUuid() == null) {
+					if (conceptNumeric.getHiAbsolute() != null && referenceRange.getHiAbsolute() > conceptNumeric.getHiAbsolute()) {
+						errors.pushNestedPath("referenceRanges[" + index + "].hiAbsolute");
+						errors.rejectValue("conceptSource", "error.value.outOfRange.high",
+								"High Absolute in reference range cannot be higher than high absolute of the concept");
+						errors.popNestedPath();
+					}
+
+					if (conceptNumeric.getLowAbsolute() != null && referenceRange.getHiAbsolute() < conceptNumeric.getHiAbsolute()) {
+						errors.pushNestedPath("referenceRanges[" + index + "].lowAbsolute");
+						errors.rejectValue("conceptSource", "error.value.outOfRange.low",
+								"Low Absolute in reference range cannot be lower than low absolute of the concept");
+						errors.popNestedPath();
+					}
+				}
+				
+				index++;
+			}
+		}
 	}
 	
 	/**
@@ -669,22 +700,7 @@ public class ConceptFormController extends SimpleFormController {
 				cn.setDisplayPrecision(displayPrecision);
 				cn.setUnits(units);
 				
-				for (ConceptReferenceRange referenceRange : this.referenceRanges) {
-					if (referenceRange != null) {
-						if (referenceRange.getUuid() != null) {
-							// Handle already saved references
-							
-							if (referenceRange.getUuid().isEmpty()) {
-								// reference range was removed
-								cn.getReferenceRanges().remove(referenceRange);
-							}
-						} else {
-							// Add new reference range
-							referenceRange.setConceptNumeric(cn);
-							cn.addReferenceRange(referenceRange);
-						}
-					}
-				}
+				setConceptReferenceRanges(cn);
 				
 				concept = cn;
 				
@@ -700,6 +716,28 @@ public class ConceptFormController extends SimpleFormController {
 			}
 			
 			return concept;
+		}
+		
+		/**
+		 * This method adds new reference ranges to concept numeric. If an existing reference range
+		 * was removed, then we remove it from concept numeric
+		 * 
+		 * @param cn ConceptNumeric
+		 */
+		private void setConceptReferenceRanges(ConceptNumeric cn) {
+			for (ConceptReferenceRange referenceRange : this.referenceRanges) {
+				if (referenceRange != null) {
+					if (referenceRange.getUuid() != null) {
+						if (referenceRange.getUuid().isEmpty()) {
+							cn.getReferenceRanges().remove(referenceRange);
+						}
+					} else {
+						// Add new reference range
+						referenceRange.setConceptNumeric(cn);
+						cn.addReferenceRange(referenceRange);
+					}
+				}
+			}
 		}
 		
 		/**
