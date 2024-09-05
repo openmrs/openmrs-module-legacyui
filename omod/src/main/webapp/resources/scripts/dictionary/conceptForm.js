@@ -169,12 +169,22 @@ customDatatypes.push("coded");
 customDatatypes.push("complex");
 
 function changeDatatype(obj) {
+    var selectedType = obj[obj.selectedIndex].text.toLowerCase();
+
 	for (var i=0; i < customDatatypes.length; i++) {
 		var row = document.getElementById(customDatatypes[i] + "DatatypeRow");
-		if (obj[obj.selectedIndex].text.toLowerCase() == customDatatypes[i])
+		if (selectedType == customDatatypes[i])
 			row.style.display = "";
 		else
 			row.style.display = "none";
+	}
+
+    var referenceRangeRow = document.getElementById("referenceRangeRow");
+
+	if (selectedType == "numeric") {
+	    referenceRangeRow.style.display = "";
+	} else {
+	    referenceRangeRow.style.display = "none";
 	}
 }
 
@@ -504,8 +514,8 @@ function removeReferenceRangeElement(btn, key) {
  *           the index of the row to be deleted
 */
 function removeReferenceRangeElementByIndex(btn, index) {
-    var row = document.getElementById('row-' + index);
     removeParentElement(btn.parentNode);
+    var row = document.getElementById('row-' + index);
 
     document.getElementById('removeMarker-' + index).value = "";
 }

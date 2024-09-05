@@ -317,23 +317,30 @@ public class ConceptFormController extends SimpleFormController {
 	void validateConceptReferenceRange(Concept concept, BindException errors) {
 		if (concept.isNumeric()) {
 			ConceptNumeric conceptNumeric = (ConceptNumeric) concept;
+			
 			Set<ConceptReferenceRange> referenceRanges = conceptNumeric.getReferenceRanges();
+			
+			if (referenceRanges == null) {
+				return;
+			}
 			
 			int index = 0;
 			for (ConceptReferenceRange referenceRange : referenceRanges) {
-
+				
 				if (referenceRange.getUuid() == null) {
-					if (conceptNumeric.getHiAbsolute() != null && referenceRange.getHiAbsolute() > conceptNumeric.getHiAbsolute()) {
+					if (conceptNumeric.getHiAbsolute() != null
+					        && referenceRange.getHiAbsolute() > conceptNumeric.getHiAbsolute()) {
 						errors.pushNestedPath("referenceRanges[" + index + "].hiAbsolute");
 						errors.rejectValue("conceptSource", "error.value.outOfRange.high",
-								"High Absolute in reference range cannot be higher than high absolute of the concept");
+						    "High Absolute in reference range cannot be higher than high absolute of the concept");
 						errors.popNestedPath();
 					}
-
-					if (conceptNumeric.getLowAbsolute() != null && referenceRange.getHiAbsolute() < conceptNumeric.getHiAbsolute()) {
+					
+					if (conceptNumeric.getLowAbsolute() != null
+					        && referenceRange.getHiAbsolute() < conceptNumeric.getHiAbsolute()) {
 						errors.pushNestedPath("referenceRanges[" + index + "].lowAbsolute");
 						errors.rejectValue("conceptSource", "error.value.outOfRange.low",
-								"Low Absolute in reference range cannot be lower than low absolute of the concept");
+						    "Low Absolute in reference range cannot be lower than low absolute of the concept");
 						errors.popNestedPath();
 					}
 				}
@@ -725,17 +732,23 @@ public class ConceptFormController extends SimpleFormController {
 		 * @param cn ConceptNumeric
 		 */
 		private void setConceptReferenceRanges(ConceptNumeric cn) {
+			if (this.referenceRanges == null) {
+				return;
+			}
+			
 			for (ConceptReferenceRange referenceRange : this.referenceRanges) {
-				if (referenceRange != null) {
-					if (referenceRange.getUuid() != null) {
-						if (referenceRange.getUuid().isEmpty()) {
-							cn.getReferenceRanges().remove(referenceRange);
-						}
-					} else {
-						// Add new reference range
-						referenceRange.setConceptNumeric(cn);
-						cn.addReferenceRange(referenceRange);
+				if (referenceRange == null) {
+					continue;
+				}
+				
+				if (referenceRange.getUuid() != null) {
+					if (referenceRange.getUuid().isEmpty()) {
+						cn.getReferenceRanges().remove(referenceRange);
 					}
+				} else {
+					// Add new reference range
+					referenceRange.setConceptNumeric(cn);
+					cn.addReferenceRange(referenceRange);
 				}
 			}
 		}

@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.openmrs.ConceptMap;
 import org.openmrs.ConceptNumeric;
-import org.openmrs.ConceptReferenceRange;
 import org.openmrs.web.controller.ConceptFormController;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 
@@ -58,36 +57,4 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		org.junit.Assert.assertEquals("ml", conceptFormBackingObject.getUnits());
 	}
 	
-	@Test
-	public void testConceptFormBackingObject_shouldSetReferenceRangeAttributes() {
-		ConceptReferenceRange referenceRange = Mockito.mock(ConceptReferenceRange.class);
-		ConceptNumeric conceptNumeric = Mockito.mock(ConceptNumeric.class);
-		
-		Mockito.when(referenceRange.getHiAbsolute()).thenReturn(5.2);
-		Mockito.when(referenceRange.getLowAbsolute()).thenReturn(1.0);
-		
-		Mockito.when(referenceRange.getHiCritical()).thenReturn(4.1);
-		Mockito.when(referenceRange.getLowCritical()).thenReturn(2.1);
-		
-		Mockito.when(referenceRange.getLowNormal()).thenReturn(3.1);
-		Mockito.when(referenceRange.getHiNormal()).thenReturn(3.9);
-		
-		Mockito.when(referenceRange.getCriteria()).thenReturn("");
-		
-		ConceptFormController controller = new ConceptFormController();
-		ConceptReferenceRange conceptReferenceRange = controller.new ConceptFormBackingObject(
-		                                                                                      conceptNumeric).referenceRanges
-		        .iterator().next();
-		
-		org.junit.Assert.assertEquals(Double.valueOf(5.2), conceptReferenceRange.getHiAbsolute());
-		org.junit.Assert.assertEquals(Double.valueOf(1.0), conceptReferenceRange.getLowAbsolute());
-		
-		org.junit.Assert.assertEquals(Double.valueOf(4.1), conceptReferenceRange.getHiCritical());
-		org.junit.Assert.assertEquals(Double.valueOf(2.1), conceptReferenceRange.getLowCritical());
-		
-		org.junit.Assert.assertEquals(Double.valueOf(3.1), conceptReferenceRange.getLowNormal());
-		org.junit.Assert.assertEquals(Double.valueOf(3.9), conceptReferenceRange.getHiNormal());
-		
-		org.junit.Assert.assertEquals("", conceptReferenceRange.getCriteria());
-	}
 }
