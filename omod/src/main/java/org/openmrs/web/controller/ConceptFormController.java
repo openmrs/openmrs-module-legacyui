@@ -41,7 +41,6 @@ import org.openmrs.ConceptMap;
 import org.openmrs.ConceptMapType;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNumeric;
-import org.openmrs.ConceptReferenceRange;
 import org.openmrs.ConceptReferenceTerm;
 import org.openmrs.ConceptSet;
 import org.openmrs.Drug;
@@ -71,6 +70,7 @@ import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.validator.ValidateUtil;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.attribute.WebAttributeUtil;
+import org.openmrs.web.controller.concept.ConceptReferenceRange;
 import org.openmrs.web.controller.concept.ConceptReferenceTermWebValidator;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
@@ -318,36 +318,76 @@ public class ConceptFormController extends SimpleFormController {
 		if (concept.isNumeric()) {
 			ConceptNumeric conceptNumeric = (ConceptNumeric) concept;
 			
-			Set<ConceptReferenceRange> referenceRanges = conceptNumeric.getReferenceRanges();
+			Set<org.openmrs.ConceptReferenceRange> referenceRanges = conceptNumeric.getReferenceRanges();
 			
 			if (referenceRanges == null) {
 				return;
 			}
 			
 			int index = 0;
-			for (ConceptReferenceRange referenceRange : referenceRanges) {
+			for (org.openmrs.ConceptReferenceRange referenceRange : referenceRanges) {
 				
-				if (referenceRange.getUuid() == null) {
-					if (conceptNumeric.getHiAbsolute() != null
-					        && referenceRange.getHiAbsolute() > conceptNumeric.getHiAbsolute()) {
-						errors.pushNestedPath("referenceRanges[" + index + "].hiAbsolute");
-						errors.rejectValue("conceptSource", "error.value.outOfRange.high",
-						    "High Absolute in reference range cannot be higher than high absolute of the concept");
-						errors.popNestedPath();
+				if (referenceRange.getId() == null) {
+					if (referenceRange.getHiAbsolute() == null) {
+						setRefernceRangeErrors(errors, index, "hiAbsolute",
+						    "Concept.referenceRanges.error.high.absolute.value.required",
+						    "Concept.referenceRanges.error.absolute.value.required");
+					} else {
+						if (referenceRange.getHiAbsolute() > conceptNumeric.getHiAbsolute()) {
+							setRefernceRangeErrors(errors, index, "hiAbsolute",
+							    "Concept.referenceRanges.error.highAbsolute.value.outOfRange",
+							    "Concept.referenceRanges.error.absolute.value.invalid");
+						} else if (referenceRange.getHiAbsolute() < conceptNumeric.getLowAbsolute()) {
+							setRefernceRangeErrors(errors, index, "hiAbsolute",
+							    "Concept.referenceRanges.error.absolute.value.invalid",
+							    "Concept.referenceRanges.error.absolute.value.invalid");
+						}
+					}
+					if (referenceRange.getLowAbsolute() == null) {
+						setRefernceRangeErrors(errors, index, "lowAbsolute",
+						    "Concept.referenceRanges.error.low.absolute.value.required",
+						    "Concept.referenceRanges.error.absolute.value.required");
+					} else {
+						if (referenceRange.getLowAbsolute() < conceptNumeric.getLowAbsolute()) {
+							setRefernceRangeErrors(errors, index, "lowAbsolute",
+							    "Concept.referenceRanges.error.lowAbsolute.value.outOfRange",
+							    "Concept.referenceRanges.error.absolute.value.invalid");
+						} else if (referenceRange.getLowAbsolute() > conceptNumeric.getHiAbsolute()) {
+							setRefernceRangeErrors(errors, index, "lowAbsolute",
+							    "Concept.referenceRanges.error.absolute.value.invalid",
+							    "Concept.referenceRanges.error.absolute.value.invalid");
+						}
 					}
 					
-					if (conceptNumeric.getLowAbsolute() != null
-					        && referenceRange.getHiAbsolute() < conceptNumeric.getHiAbsolute()) {
-						errors.pushNestedPath("referenceRanges[" + index + "].lowAbsolute");
-						errors.rejectValue("conceptSource", "error.value.outOfRange.low",
-						    "Low Absolute in reference range cannot be lower than low absolute of the concept");
-						errors.popNestedPath();
-					}
+					index++;
 				}
-				
-				index++;
 			}
 		}
+	}
+	
+	public org.openmrs.web.controller.concept.ConceptReferenceRange mapToWebConceptReferenceRange(
+	        org.openmrs.ConceptReferenceRange referenceRange) {
+		org.openmrs.web.controller.concept.ConceptReferenceRange webReferenceRange = new ConceptReferenceRange();
+		
+		webReferenceRange.setConceptReferenceRangeId(referenceRange.getConceptReferenceRangeId());
+		webReferenceRange.setCriteria(referenceRange.getCriteria());
+		webReferenceRange.setConceptNumeric(referenceRange.getConceptNumeric());
+		webReferenceRange.setUuid(referenceRange.getUuid());
+		webReferenceRange.setHiAbsolute(referenceRange.getHiAbsolute());
+		webReferenceRange.setHiCritical(referenceRange.getHiCritical());
+		webReferenceRange.setHiNormal(referenceRange.getHiNormal());
+		webReferenceRange.setLowAbsolute(referenceRange.getLowAbsolute());
+		webReferenceRange.setLowCritical(referenceRange.getLowCritical());
+		webReferenceRange.setLowNormal(referenceRange.getLowNormal());
+		
+		return webReferenceRange;
+	}
+	
+	private static void setRefernceRangeErrors(BindException errors, long index, String hiAbsolute, String errorCode,
+	        String defaultMessage) {
+		errors.pushNestedPath("referenceRanges[" + index + "]");
+		errors.rejectValue(hiAbsolute, errorCode, defaultMessage);
+		errors.popNestedPath();
 	}
 	
 	/**
@@ -499,7 +539,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		public Collection<ConceptAttribute> activeAttributes;
 		
-		public List<ConceptReferenceRange> referenceRanges;
+		public List<org.openmrs.web.controller.concept.ConceptReferenceRange> referenceRanges;
 		
 		/**
 		 * Default constructor must take in a Concept object to create itself
@@ -560,8 +600,12 @@ public class ConceptFormController extends SimpleFormController {
 				this.displayPrecision = cn.getDisplayPrecision();
 				this.units = cn.getUnits();
 
-				this.referenceRanges = ListUtils.lazyList(new ArrayList<>(cn.getReferenceRanges()),
-						FactoryUtils.instantiateFactory(ConceptReferenceRange.class));
+				this.referenceRanges = ListUtils.lazyList(
+						new ArrayList<>(cn.getReferenceRanges()
+								.stream()
+								.map(ConceptFormController.this::mapToWebConceptReferenceRange)
+								.collect(Collectors.toList())),
+						FactoryUtils.instantiateFactory(org.openmrs.web.controller.concept.ConceptReferenceRange.class));
 			} else if (concept instanceof ConceptComplex) {
 				ConceptComplex complex = (ConceptComplex) concept;
 				this.handlerKey = complex.getHandler();
@@ -736,21 +780,39 @@ public class ConceptFormController extends SimpleFormController {
 				return;
 			}
 			
-			for (ConceptReferenceRange referenceRange : this.referenceRanges) {
+			for (org.openmrs.web.controller.concept.ConceptReferenceRange referenceRange : this.referenceRanges) {
 				if (referenceRange == null) {
 					continue;
 				}
 				
-				if (referenceRange.getUuid() != null) {
-					if (referenceRange.getUuid().isEmpty()) {
-						cn.getReferenceRanges().remove(referenceRange);
+				if (referenceRange.getId() != null) {
+					if (referenceRange.getId() <= 0) {
+						cn.getReferenceRanges().remove(mapToReferenceRange(referenceRange));
 					}
 				} else {
 					// Add new reference range
 					referenceRange.setConceptNumeric(cn);
-					cn.addReferenceRange(referenceRange);
+					cn.addReferenceRange(mapToReferenceRange(referenceRange));
 				}
 			}
+		}
+		
+		public org.openmrs.ConceptReferenceRange mapToReferenceRange(
+		        org.openmrs.web.controller.concept.ConceptReferenceRange webReferenceRange) {
+			org.openmrs.ConceptReferenceRange referenceRange = new org.openmrs.ConceptReferenceRange();
+			
+			referenceRange.setConceptReferenceRangeId(webReferenceRange.getConceptReferenceRangeId());
+			referenceRange.setCriteria(webReferenceRange.getCriteria());
+			referenceRange.setConceptNumeric(webReferenceRange.getConceptNumeric());
+			referenceRange.setUuid(webReferenceRange.getUuid());
+			referenceRange.setHiAbsolute(webReferenceRange.getHiAbsolute());
+			referenceRange.setHiCritical(webReferenceRange.getHiCritical());
+			referenceRange.setHiNormal(webReferenceRange.getHiNormal());
+			referenceRange.setLowAbsolute(webReferenceRange.getLowAbsolute());
+			referenceRange.setLowCritical(webReferenceRange.getLowCritical());
+			referenceRange.setLowNormal(webReferenceRange.getLowNormal());
+			
+			return referenceRange;
 		}
 		
 		/**

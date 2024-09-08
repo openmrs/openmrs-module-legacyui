@@ -485,7 +485,6 @@ function addReferenceRanges(initialSizeOfReferenceRanges) {
             }
 		}
 
-
 		if(!$j("#headerRow").is(":visible"))
             $j(".referenceRangeHeader").show();
 	}
@@ -517,7 +516,7 @@ function removeReferenceRangeElementByIndex(btn, index) {
     removeParentElement(btn.parentNode);
     var row = document.getElementById('row-' + index);
 
-    document.getElementById('removeMarker-' + index).value = "";
+    document.getElementById('removeMarker-' + index).value = "0";
 }
 
 function addAutoComplete(displayInputId, sourceSelectElementId, hiddenElementId, nameInputId){

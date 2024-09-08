@@ -1448,6 +1448,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	public void validateReferenceRangeAbsolutes_shouldAddErrorIfAbsolutesAreOutsideConceptAbsoluteBound() {
 		ConceptNumeric conceptNumeric = new ConceptNumeric();
+		conceptNumeric.setHiAbsolute(100.0);
+		conceptNumeric.setLowAbsolute(80.0);
 		ConceptReferenceRange referenceRange = new ConceptReferenceRange();
 		referenceRange.setHiAbsolute(1100.0);
 		referenceRange.setLowAbsolute(1.0);
