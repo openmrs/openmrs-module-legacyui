@@ -9,6 +9,8 @@
  */
 package org.openmrs.web.controller;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -72,6 +73,7 @@ import org.openmrs.web.WebConstants;
 import org.openmrs.web.attribute.WebAttributeUtil;
 import org.openmrs.web.controller.concept.ConceptReferenceRange;
 import org.openmrs.web.controller.concept.ConceptReferenceTermWebValidator;
+import org.openmrs.web.controller.mappper.ConceptFormMapper;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -273,7 +275,7 @@ public class ConceptFormController extends SimpleFormController {
 					
 					validateConceptUsesPersistedObjects(concept, errors);
 					
-					validateConceptReferenceRange(concept, errors);
+					new ConceptFormValidator().validateConceptReferenceRange(concept, errors);
 					
 					if (!errors.hasErrors()) {
 						if (action.equals(msa.getMessage("Concept.cancel"))) {
@@ -312,82 +314,6 @@ public class ConceptFormController extends SimpleFormController {
 		}
 		
 		return new ModelAndView(new RedirectView(getFormView()));
-	}
-	
-	void validateConceptReferenceRange(Concept concept, BindException errors) {
-		if (concept.isNumeric()) {
-			ConceptNumeric conceptNumeric = (ConceptNumeric) concept;
-			
-			Set<org.openmrs.ConceptReferenceRange> referenceRanges = conceptNumeric.getReferenceRanges();
-			
-			if (referenceRanges == null) {
-				return;
-			}
-			
-			int index = 0;
-			for (org.openmrs.ConceptReferenceRange referenceRange : referenceRanges) {
-				
-				if (referenceRange.getId() == null) {
-					if (referenceRange.getHiAbsolute() == null) {
-						setRefernceRangeErrors(errors, index, "hiAbsolute",
-						    "Concept.referenceRanges.error.high.absolute.value.required",
-						    "Concept.referenceRanges.error.absolute.value.required");
-					} else {
-						if (referenceRange.getHiAbsolute() > conceptNumeric.getHiAbsolute()) {
-							setRefernceRangeErrors(errors, index, "hiAbsolute",
-							    "Concept.referenceRanges.error.highAbsolute.value.outOfRange",
-							    "Concept.referenceRanges.error.absolute.value.invalid");
-						} else if (referenceRange.getHiAbsolute() < conceptNumeric.getLowAbsolute()) {
-							setRefernceRangeErrors(errors, index, "hiAbsolute",
-							    "Concept.referenceRanges.error.absolute.value.invalid",
-							    "Concept.referenceRanges.error.absolute.value.invalid");
-						}
-					}
-					if (referenceRange.getLowAbsolute() == null) {
-						setRefernceRangeErrors(errors, index, "lowAbsolute",
-						    "Concept.referenceRanges.error.low.absolute.value.required",
-						    "Concept.referenceRanges.error.absolute.value.required");
-					} else {
-						if (referenceRange.getLowAbsolute() < conceptNumeric.getLowAbsolute()) {
-							setRefernceRangeErrors(errors, index, "lowAbsolute",
-							    "Concept.referenceRanges.error.lowAbsolute.value.outOfRange",
-							    "Concept.referenceRanges.error.absolute.value.invalid");
-						} else if (referenceRange.getLowAbsolute() > conceptNumeric.getHiAbsolute()) {
-							setRefernceRangeErrors(errors, index, "lowAbsolute",
-							    "Concept.referenceRanges.error.absolute.value.invalid",
-							    "Concept.referenceRanges.error.absolute.value.invalid");
-						}
-					}
-					
-					index++;
-				}
-			}
-		}
-	}
-	
-	public org.openmrs.web.controller.concept.ConceptReferenceRange mapToWebConceptReferenceRange(
-	        org.openmrs.ConceptReferenceRange referenceRange) {
-		org.openmrs.web.controller.concept.ConceptReferenceRange webReferenceRange = new ConceptReferenceRange();
-		
-		webReferenceRange.setConceptReferenceRangeId(referenceRange.getConceptReferenceRangeId());
-		webReferenceRange.setCriteria(referenceRange.getCriteria());
-		webReferenceRange.setConceptNumeric(referenceRange.getConceptNumeric());
-		webReferenceRange.setUuid(referenceRange.getUuid());
-		webReferenceRange.setHiAbsolute(referenceRange.getHiAbsolute());
-		webReferenceRange.setHiCritical(referenceRange.getHiCritical());
-		webReferenceRange.setHiNormal(referenceRange.getHiNormal());
-		webReferenceRange.setLowAbsolute(referenceRange.getLowAbsolute());
-		webReferenceRange.setLowCritical(referenceRange.getLowCritical());
-		webReferenceRange.setLowNormal(referenceRange.getLowNormal());
-		
-		return webReferenceRange;
-	}
-	
-	private static void setRefernceRangeErrors(BindException errors, long index, String hiAbsolute, String errorCode,
-	        String defaultMessage) {
-		errors.pushNestedPath("referenceRanges[" + index + "]");
-		errors.rejectValue(hiAbsolute, errorCode, defaultMessage);
-		errors.popNestedPath();
 	}
 	
 	/**
@@ -601,11 +527,8 @@ public class ConceptFormController extends SimpleFormController {
 				this.units = cn.getUnits();
 
 				this.referenceRanges = ListUtils.lazyList(
-						new ArrayList<>(cn.getReferenceRanges()
-								.stream()
-								.map(ConceptFormController.this::mapToWebConceptReferenceRange)
-								.collect(Collectors.toList())),
-						FactoryUtils.instantiateFactory(org.openmrs.web.controller.concept.ConceptReferenceRange.class));
+						new ArrayList<>(new ConceptFormMapper().mapToWebReferenceRanges(cn)),
+						FactoryUtils.instantiateFactory(ConceptReferenceRange.class));
 			} else if (concept instanceof ConceptComplex) {
 				ConceptComplex complex = (ConceptComplex) concept;
 				this.handlerKey = complex.getHandler();
@@ -770,16 +693,17 @@ public class ConceptFormController extends SimpleFormController {
 		}
 		
 		/**
-		 * This method adds new reference ranges to concept numeric. If an existing reference range
-		 * was removed, then we remove it from concept numeric
+		 * This method sets reference ranges to concept numeric. If an existing reference range was
+		 * removed, then we remove it from concept numeric.
 		 * 
 		 * @param cn ConceptNumeric
+		 *
+		 * @since 1.17.0
 		 */
 		private void setConceptReferenceRanges(ConceptNumeric cn) {
 			if (this.referenceRanges == null) {
 				return;
 			}
-			
 			for (org.openmrs.web.controller.concept.ConceptReferenceRange referenceRange : this.referenceRanges) {
 				if (referenceRange == null) {
 					continue;
@@ -787,38 +711,45 @@ public class ConceptFormController extends SimpleFormController {
 				
 				if (referenceRange.getId() != null) {
 					if (referenceRange.getId() <= 0) {
-						cn.getReferenceRanges().remove(mapToReferenceRange(referenceRange));
+						updateConceptReferenceRange(referenceRange, cn, "removeReferenceRange");
 					}
 				} else {
 					// Add new reference range
 					referenceRange.setConceptNumeric(cn);
-					cn.addReferenceRange(mapToReferenceRange(referenceRange));
+					updateConceptReferenceRange(referenceRange, cn, "addReferenceRange");
 				}
 			}
 		}
-		
-		public org.openmrs.ConceptReferenceRange mapToReferenceRange(
-		        org.openmrs.web.controller.concept.ConceptReferenceRange webReferenceRange) {
-			org.openmrs.ConceptReferenceRange referenceRange = new org.openmrs.ConceptReferenceRange();
-			
-			referenceRange.setConceptReferenceRangeId(webReferenceRange.getConceptReferenceRangeId());
-			referenceRange.setCriteria(webReferenceRange.getCriteria());
-			referenceRange.setConceptNumeric(webReferenceRange.getConceptNumeric());
-			referenceRange.setUuid(webReferenceRange.getUuid());
-			referenceRange.setHiAbsolute(webReferenceRange.getHiAbsolute());
-			referenceRange.setHiCritical(webReferenceRange.getHiCritical());
-			referenceRange.setHiNormal(webReferenceRange.getHiNormal());
-			referenceRange.setLowAbsolute(webReferenceRange.getLowAbsolute());
-			referenceRange.setLowCritical(webReferenceRange.getLowCritical());
-			referenceRange.setLowNormal(webReferenceRange.getLowNormal());
-			
-			return referenceRange;
-		}
+
+		/**
+		 * This method updates concept reference range in concept numeric e.g. adding a reference range
+		 *
+		 * @param webReferenceRange the reference range
+		 * @param cn ConceptNumeric
+		 * @param invocationMethod method in ConceptNumeric to invoke
+		 *
+		 * @since 1.17.0
+		 */
+		public void updateConceptReferenceRange(
+		        org.openmrs.web.controller.concept.ConceptReferenceRange webReferenceRange,
+				ConceptNumeric cn,
+				String invocationMethod) {
+			try {
+				Class<?> referenceRangeClass = Class.forName("org.openmrs.ConceptReferenceRange");
+				Object referenceRange = new ConceptFormMapper().mapToConceptReferenceRange(webReferenceRange, cn, referenceRangeClass);
+				Method method = ConceptNumeric.class.getMethod(invocationMethod, referenceRangeClass);
+				method.invoke(cn, referenceRange);
+			} catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException exception) {
+				logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
+			}
+        }
 		
 		/**
 		 * Builds a white-space separated list of concept ids belonging to a concept set
 		 * 
 		 * @return white-space separated list
+		 *
+		 * @since 1.17.0
 		 */
 		public String getSetElements() {
 			StringBuilder result = new StringBuilder();

@@ -10,16 +10,22 @@
 package org.openmrs.web.controller;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
 import org.openmrs.ConceptMap;
 import org.openmrs.ConceptName;
+import org.openmrs.ConceptNumeric;
 import org.openmrs.api.context.Context;
 import org.openmrs.web.controller.ConceptFormController.ConceptFormBackingObject;
+import org.openmrs.web.controller.concept.ConceptReferenceRange;
+import org.openmrs.web.controller.mappper.ConceptFormMapper;
+import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -112,5 +118,81 @@ public class ConceptFormValidator implements Validator {
 			errors.rejectValue("concept", sb.toString());
 		}
 	}
-	
+
+	/**
+	 * Validates reference range fields
+	 *
+	 * @param concept concept
+	 * @param errors errors
+	 *
+	 * @since 1.17.0
+	 */
+	public void validateConceptReferenceRange(Concept concept, BindException errors) {
+		if (concept.isNumeric()) {
+			ConceptNumeric conceptNumeric = (ConceptNumeric) concept;
+			
+			List<ConceptReferenceRange> referenceRanges = new ConceptFormMapper().mapToWebReferenceRanges(conceptNumeric);
+			
+			if (referenceRanges == null || referenceRanges.isEmpty()) {
+				return;
+			}
+			
+			int index = 0;
+			for (ConceptReferenceRange referenceRange : referenceRanges) {
+				
+				if (referenceRange.getId() == null) {
+					if (referenceRange.getHiAbsolute() == null) {
+						setReferenceRangeErrors(errors, index, "hiAbsolute",
+						    "Concept.referenceRanges.error.high.absolute.value.required",
+						    "Concept.referenceRanges.error.absolute.value.required");
+					} else {
+						if (referenceRange.getHiAbsolute() > conceptNumeric.getHiAbsolute()) {
+							setReferenceRangeErrors(errors, index, "hiAbsolute",
+							    "Concept.referenceRanges.error.highAbsolute.value.outOfRange",
+							    "Concept.referenceRanges.error.absolute.value.invalid");
+						} else if (referenceRange.getHiAbsolute() < conceptNumeric.getLowAbsolute()) {
+							setReferenceRangeErrors(errors, index, "hiAbsolute",
+							    "Concept.referenceRanges.error.absolute.value.invalid",
+							    "Concept.referenceRanges.error.absolute.value.invalid");
+						}
+					}
+					if (referenceRange.getLowAbsolute() == null) {
+						setReferenceRangeErrors(errors, index, "lowAbsolute",
+						    "Concept.referenceRanges.error.low.absolute.value.required",
+						    "Concept.referenceRanges.error.absolute.value.required");
+					} else {
+						if (referenceRange.getLowAbsolute() < conceptNumeric.getLowAbsolute()) {
+							setReferenceRangeErrors(errors, index, "lowAbsolute",
+							    "Concept.referenceRanges.error.lowAbsolute.value.outOfRange",
+							    "Concept.referenceRanges.error.absolute.value.invalid");
+						} else if (referenceRange.getLowAbsolute() > conceptNumeric.getHiAbsolute()) {
+							setReferenceRangeErrors(errors, index, "lowAbsolute",
+							    "Concept.referenceRanges.error.absolute.value.invalid",
+							    "Concept.referenceRanges.error.absolute.value.invalid");
+						}
+					}
+					
+					index++;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Set Reference Range Errors
+	 *
+	 * @param errors BindException
+	 * @param index index of referenceRange row
+	 * @param field field of the reference range
+	 * @param errorCode error code
+	 * @param defaultMessage default message
+	 *
+	 * @since 1.17.0
+	 */
+	private static void setReferenceRangeErrors(BindException errors, long index, String field, String errorCode,
+												String defaultMessage) {
+		errors.pushNestedPath("referenceRanges[" + index + "]");
+		errors.rejectValue(field, errorCode, defaultMessage);
+		errors.popNestedPath();
+	}
 }

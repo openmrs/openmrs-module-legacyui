@@ -12,8 +12,8 @@ package org.openmrs.web.controller.concept;
 import org.openmrs.ConceptNumeric;
 
 /**
- * This class is a reflection object of reference range A concept reference range is typically a
- * range of a {@link ConceptNumeric} for certain factor(s) e.g. age, gender e.t.c.
+ * This class is a view object of reference range. A concept reference range is typically a range of
+ * a {@link ConceptNumeric} for certain factor(s) e.g. age, gender e.t.c.
  * 
  * @since 1.17.0
  */
