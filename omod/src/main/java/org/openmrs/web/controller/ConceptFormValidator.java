@@ -118,13 +118,12 @@ public class ConceptFormValidator implements Validator {
 			errors.rejectValue("concept", sb.toString());
 		}
 	}
-
+	
 	/**
 	 * Validates reference range fields
-	 *
+	 * 
 	 * @param concept concept
 	 * @param errors errors
-	 *
 	 * @since 1.17.0
 	 */
 	public void validateConceptReferenceRange(Concept concept, BindException errors) {
@@ -177,10 +176,10 @@ public class ConceptFormValidator implements Validator {
 			}
 		}
 	}
-
+	
 	/**
 	 * Set Reference Range Errors
-	 *
+	 * 
 	 * @param errors BindException
 	 * @param index index of referenceRange row
 	 * @param field field of the reference range
@@ -190,7 +189,7 @@ public class ConceptFormValidator implements Validator {
 	 * @since 1.17.0
 	 */
 	private static void setReferenceRangeErrors(BindException errors, long index, String field, String errorCode,
-												String defaultMessage) {
+	        String defaultMessage) {
 		errors.pushNestedPath("referenceRanges[" + index + "]");
 		errors.rejectValue(field, errorCode, defaultMessage);
 		errors.popNestedPath();

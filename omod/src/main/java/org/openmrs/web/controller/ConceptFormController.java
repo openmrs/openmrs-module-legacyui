@@ -697,7 +697,6 @@ public class ConceptFormController extends SimpleFormController {
 		 * removed, then we remove it from concept numeric.
 		 * 
 		 * @param cn ConceptNumeric
-		 *
 		 * @since 1.17.0
 		 */
 		private void setConceptReferenceRanges(ConceptNumeric cn) {
@@ -720,14 +719,14 @@ public class ConceptFormController extends SimpleFormController {
 				}
 			}
 		}
-
+		
 		/**
-		 * This method updates concept reference range in concept numeric e.g. adding a reference range
-		 *
+		 * This method updates concept reference range in concept numeric e.g. adding a reference
+		 * range
+		 * 
 		 * @param webReferenceRange the reference range
 		 * @param cn ConceptNumeric
 		 * @param invocationMethod method in ConceptNumeric to invoke
-		 *
 		 * @since 1.17.0
 		 */
 		public void updateConceptReferenceRange(
@@ -748,7 +747,6 @@ public class ConceptFormController extends SimpleFormController {
 		 * Builds a white-space separated list of concept ids belonging to a concept set
 		 * 
 		 * @return white-space separated list
-		 *
 		 * @since 1.17.0
 		 */
 		public String getSetElements() {

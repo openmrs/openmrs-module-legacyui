@@ -23,22 +23,21 @@ import java.util.Set;
 /**
  * This class maps the web-based concept attributes to their corresponding internal concepts and
  * vice versa.
- *
+ * 
  * @since 1.17.0
  */
 public class ConceptFormMapper {
 	
 	protected final Log logger = LogFactory.getLog(getClass());
-
-    /**
-     * Maps reference range in openMRS core to web's reference range
-     *
-     * @param webReferenceRange webReferenceRange
-     * @param cn ConceptNumeric
-     * @param referenceRangeClass reference range class
-     *
-     * @return reference range
-     */
+	
+	/**
+	 * Maps reference range in openMRS core to web's reference range
+	 * 
+	 * @param webReferenceRange webReferenceRange
+	 * @param cn ConceptNumeric
+	 * @param referenceRangeClass reference range class
+	 * @return reference range
+	 */
 	public Object mapToConceptReferenceRange(
             ConceptReferenceRange webReferenceRange,
             ConceptNumeric cn,
@@ -65,13 +64,13 @@ public class ConceptFormMapper {
         }
         return null;
     }
-
-    /**
-     * Maps web's reference range to reference range in openMRS core
-     *
-     * @param cn ConceptNumeric
-     * @return list of reference range
-     */
+	
+	/**
+	 * Maps web's reference range to reference range in openMRS core
+	 * 
+	 * @param cn ConceptNumeric
+	 * @return list of reference range
+	 */
 	public List<ConceptReferenceRange> mapToWebReferenceRanges(ConceptNumeric cn) {
         List<ConceptReferenceRange> webReferenceRanges = new ArrayList<>();
 
