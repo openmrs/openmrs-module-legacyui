@@ -1319,11 +1319,14 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		Assert.assertTrue(((ConceptAttribute) (concept.getAttributes().toArray()[0])).getVoided());
 		Assert.assertFalse(errors.hasErrors());
 	}
-	
-	/**
-	 * @see ConceptFormController#onSubmit(HttpServletRequest, HttpServletResponse, Object,
-	 *      BindException)
-	 */
+
+	/** To be uncommented when the openmrs-core version in this module is ultimately changed to 2.7.0 or above
+
+
+//	/**
+//	 * @see ConceptFormController#onSubmit(HttpServletRequest, HttpServletResponse, Object,
+//	 *      BindException)
+//	 /
 	@Test
 	public void onSubmit_shouldAddANewReferenceRangeToAnExistingConceptNumeric() throws Exception {
 		ConceptService cs = Context.getConceptService();
@@ -1347,10 +1350,10 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertEquals(initialConceptMappingCount + 1, getReferenceRangesByConceptId(cs, conceptNumeric.getConceptId()));
 	}
 	
-	/**
-	 * @see ConceptFormController#onSubmit(HttpServletRequest, HttpServletResponse, Object,
-	 *      BindException)
-	 */
+//	/**
+//	 * @see ConceptFormController#onSubmit(HttpServletRequest, HttpServletResponse, Object,
+//	 *      BindException)
+//	 /
 	@Test
 	public void onSubmit_shouldAddANewReferenceRangeWhenCreatingAConceptNumeric() throws Exception {
 		ConceptService cs = Context.getConceptService();
@@ -1387,10 +1390,10 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		Assert.assertEquals(1, listOfReferenceRanges.size());
 	}
 	
-	/**
-	 * @see ConceptFormController#onSubmit(HttpServletRequest, HttpServletResponse, Object,
-	 *      BindException)
-	 */
+//	/**
+//	 * @see ConceptFormController#onSubmit(HttpServletRequest, HttpServletResponse, Object,
+//	 *      BindException)
+//	 /
 	@Test
 	public void onSubmit_shouldIgnoreNewConceptReferenceRowIfTheUserDidNotEnterAnyData() throws Exception {
 		ConceptService cs = Context.getConceptService();
@@ -1418,10 +1421,10 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertEquals(initialConceptMappingCount, getReferenceRangesByConceptId(cs, conceptId).size());
 	}
 	
-	/**
-	 * @see ConceptFormController#onSubmit(HttpServletRequest, HttpServletResponse, Object,
-	 *      BindException)
-	 */
+//	/**
+//	 * @see ConceptFormController#onSubmit(HttpServletRequest, HttpServletResponse, Object,
+//	 *      BindException)
+//	 /
 	@Test
 	public void onSubmit_shouldRemoveAReferenceRangeFromAnExistingConceptNumeric() throws Exception {
 		ConceptService cs = Context.getConceptService();
@@ -1449,9 +1452,9 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		assertEquals(initialConceptMappingCount - 1, getReferenceRangesByConceptId(cs, conceptId).size());
 	}
 	
-	/**
-	 * @see ConceptFormValidator#validateConceptReferenceRange(Concept, BindException)
-	 */
+//	/**
+//	 * @see ConceptFormValidator#validateConceptReferenceRange(Concept, BindException)
+//	 /
 	@Test
 	public void validateReferenceRangeAbsolutes_shouldAddErrorIfAbsolutesAreOutsideConceptAbsoluteBound() {
 		ConceptNumeric conceptNumeric = new ConceptNumeric();
@@ -1460,7 +1463,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		ConceptReferenceRange referenceRange = new ConceptReferenceRange();
 		referenceRange.setHiAbsolute(1100.0);
 		referenceRange.setLowAbsolute(1.0);
-		updateConceptReferenceRange(referenceRange, conceptNumeric, "addReferenceRange");
+		updateConceptReferenceRange(referenceRange, conceptNumeric);
 		BindException errors = new BindException(conceptNumeric, "conceptNumeric");
 		new ConceptFormValidator().validateConceptReferenceRange(conceptNumeric, errors);
 		Assert.assertEquals(1, errors.getErrorCount());
@@ -1469,32 +1472,31 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	}
 	
 	private void updateConceptReferenceRange(
-			org.openmrs.web.controller.concept.ConceptReferenceRange webReferenceRange,
-			ConceptNumeric cn,
-			String invocationMethod) {
+			ConceptReferenceRange webReferenceRange,
+			ConceptNumeric cn) {
 
 		try {
 			Class<?> referenceRangeClass = Class.forName("org.openmrs.ConceptReferenceRange");
 			Object referenceRange = new ConceptFormMapper().mapToConceptReferenceRange(webReferenceRange, cn, referenceRangeClass);
-			Method method = ConceptNumeric.class.getMethod(invocationMethod, referenceRangeClass);
-			method.invoke(cn, referenceRange);
+			Method addReferenceRangeMethod = ConceptNumeric.class.getMethod("addReferenceRange", referenceRangeClass);
+			addReferenceRangeMethod.invoke(cn, referenceRange);
 		} catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | ClassNotFoundException exception) {
 			logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
 		}
 	}
 	
 	private static Set getReferenceRangesByConceptId(ConceptService cs, int conceptId) throws NoSuchMethodException,
-	        IllegalAccessException, InvocationTargetException, ClassNotFoundException {
-		Class<?> referenceRangeClass = Class.forName("org.openmrs.ConceptReferenceRange");
+	        IllegalAccessException, InvocationTargetException {
 		Method getConceptReferenceRangesByConceptIdMethod = ConceptService.class.getMethod(
-		    "getConceptReferenceRangesByConceptId", referenceRangeClass);
+		    "getConceptReferenceRangesByConceptId", Integer.class);
 		return (Set) getConceptReferenceRangesByConceptIdMethod.invoke(cs, conceptId);
 	}
 	
 	private static Set getReferenceRangesFromConceptNumeric(ConceptNumeric conceptNumeric) throws NoSuchMethodException,
-	        IllegalAccessException, InvocationTargetException, ClassNotFoundException {
-		Class<?> referenceRangeClass = Class.forName("org.openmrs.ConceptReferenceRange");
-		Method getReferenceRangesMethod = ConceptNumeric.class.getMethod("getReferenceRanges", referenceRangeClass);
-		return (Set) getReferenceRangesMethod.invoke(conceptNumeric, null);
+	        IllegalAccessException, InvocationTargetException {
+		Method getReferenceRangesMethod = ConceptNumeric.class.getMethod("getReferenceRanges");
+		return (Set) getReferenceRangesMethod.invoke(conceptNumeric);
 	}
+
+	*/
 }
