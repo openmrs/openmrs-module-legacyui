@@ -339,10 +339,10 @@
                             <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
                                 <td><c:out value="${reference.hiAbsolute}"/></td>
                                 <td><c:out value="${reference.lowAbsolute}"/></td>
-                                <td><c:out value="${reference.hiNormal}"/></td>
-                                <td><c:out value="${reference.lowNormal}"/></td>
                                 <td><c:out value="${reference.hiCritical}"/></td>
                                 <td><c:out value="${reference.lowCritical}"/></td>
+                                <td><c:out value="${reference.hiNormal}"/></td>
+                                <td><c:out value="${reference.lowNormal}"/></td>
                                 <td><c:out value="${reference.criteria}"/></td>
                             </tr>
                         </c:forEach>

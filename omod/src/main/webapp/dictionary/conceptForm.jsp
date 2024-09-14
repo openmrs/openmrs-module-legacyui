@@ -158,7 +158,6 @@
 	#addAnswerError{ margin-bottom: 0.5em; border: 1px dashed black; background: #FAA; line-height: 2em; text-align: center; display: none; }
 	#headerRow th { text-align: center; }
 	#footer { clear:both; }
-	#newReferenceRange { display: none; }
 </style>
 
 <c:choose>

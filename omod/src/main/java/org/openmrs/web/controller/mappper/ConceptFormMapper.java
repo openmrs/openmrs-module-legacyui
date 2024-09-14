@@ -35,15 +35,14 @@ public class ConceptFormMapper {
 	 * 
 	 * @param webReferenceRange webReferenceRange
 	 * @param cn ConceptNumeric
-	 * @param referenceRangeClass reference range class
 	 * @return reference range
 	 */
 	public Object mapToConceptReferenceRange(
             ConceptReferenceRange webReferenceRange,
-            ConceptNumeric cn,
-            Class<?> referenceRangeClass) {
+            ConceptNumeric cn) {
 
         try {
+            Class<?> referenceRangeClass = Class.forName("org.openmrs.ConceptReferenceRange");
             Object referenceRange = referenceRangeClass.getDeclaredConstructor().newInstance();
 
             referenceRangeClass.getMethod("setCriteria", String.class).invoke(referenceRange, webReferenceRange.getCriteria());
@@ -59,7 +58,8 @@ public class ConceptFormMapper {
 
             return referenceRange;
 
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException exception) {
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException |
+                 ClassNotFoundException exception) {
             logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
         }
         return null;
@@ -77,7 +77,6 @@ public class ConceptFormMapper {
         try {
             Method getReferenceRangesMethod = ConceptNumeric.class.getMethod("getReferenceRanges");
             Object referenceRanges = getReferenceRangesMethod.invoke(cn);
-            System.out.println("In mapper:- getReferenceRangesMethod name = " + getReferenceRangesMethod);
 
             for (Object referenceRange : (Set<?>) referenceRanges) {
                 ConceptReferenceRange webReferenceRange = new ConceptReferenceRange();

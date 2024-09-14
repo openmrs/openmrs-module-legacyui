@@ -185,7 +185,6 @@ public class ConceptFormValidator implements Validator {
 	 * @param field field of the reference range
 	 * @param errorCode error code
 	 * @param defaultMessage default message
-	 *
 	 * @since 1.17.0
 	 */
 	private static void setReferenceRangeErrors(BindException errors, long index, String field, String errorCode,
