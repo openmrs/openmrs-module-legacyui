@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -24,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -528,7 +530,11 @@ public class ConceptFormController extends SimpleFormController {
 				this.units = cn.getUnits();
 
 				this.referenceRanges = ListUtils.lazyList(
-						new ArrayList<>(new ConceptFormMapper().mapToWebReferenceRanges(cn)),
+						new ArrayList<>(new ConceptFormMapper().mapToWebReferenceRanges(cn)
+								.stream()
+								.sorted(Comparator.comparing(ConceptReferenceRange::getId))
+								.collect(Collectors.toList())
+						),
 						FactoryUtils.instantiateFactory(ConceptReferenceRange.class));
 			} else if (concept instanceof ConceptComplex) {
 				ConceptComplex complex = (ConceptComplex) concept;
