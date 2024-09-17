@@ -530,11 +530,7 @@ public class ConceptFormController extends SimpleFormController {
 				this.units = cn.getUnits();
 
 				this.referenceRanges = ListUtils.lazyList(
-						new ArrayList<>(new ConceptFormMapper().mapToWebReferenceRanges(cn)
-								.stream()
-								.sorted(Comparator.comparing(ConceptReferenceRange::getId))
-								.collect(Collectors.toList())
-						),
+						new ArrayList<>(new ConceptFormMapper().mapToWebReferenceRanges(cn)),
 						FactoryUtils.instantiateFactory(ConceptReferenceRange.class));
 			} else if (concept instanceof ConceptComplex) {
 				ConceptComplex complex = (ConceptComplex) concept;
