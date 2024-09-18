@@ -139,9 +139,8 @@ public class ConceptFormValidator implements Validator {
 			int index = 0;
 			for (ConceptReferenceRange referenceRange : referenceRanges) {
 				
-				if (referenceRange.getId() == null
-						&& conceptNumeric.getHiAbsolute() != null
-						&& conceptNumeric.getLowAbsolute() != null) {
+				if (referenceRange.getId() == null && conceptNumeric.getHiAbsolute() != null
+				        && conceptNumeric.getLowAbsolute() != null) {
 					if (referenceRange.getHiAbsolute() == null) {
 						setReferenceRangeErrors(errors, index, "hiAbsolute",
 						    "Concept.referenceRanges.error.high.absolute.value.required",
