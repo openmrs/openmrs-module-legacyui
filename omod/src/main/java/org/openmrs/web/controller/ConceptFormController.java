@@ -850,7 +850,6 @@ public class ConceptFormController extends SimpleFormController {
 		 * Builds a white-space separated list of concept ids belonging to a concept set
 		 * 
 		 * @return white-space separated list
-		 * @since 1.17.0
 		 */
 		public String getSetElements() {
 			StringBuilder result = new StringBuilder();

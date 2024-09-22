@@ -31,7 +31,7 @@ public class ConceptFormMapper {
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	/**
-	 * Maps reference range in openMRS core to web's reference range
+     * Maps web's reference range to reference range in openMRS core
 	 * 
 	 * @param webReferenceRange webReferenceRange
 	 * @param cn ConceptNumeric
@@ -66,7 +66,7 @@ public class ConceptFormMapper {
     }
 	
 	/**
-	 * Maps web's reference range to reference range in openMRS core
+     * Maps reference ranges in openMRS core to web's reference ranges
 	 * 
 	 * @param cn ConceptNumeric
 	 * @return list of reference range

@@ -12,8 +12,11 @@ package org.openmrs.web.controller.concept;
 import org.openmrs.ConceptNumeric;
 
 /**
- * This class is a view object of reference range. A concept reference range is typically a range of
- * a {@link ConceptNumeric} for certain factor(s) e.g. age, gender e.t.c.
+ * This class represents a reference range for a {@link ConceptNumeric}. It is used to store
+ * and manage reference range values, to be able to allow backward compatibility in openmrs core versions.
+ *
+ * A concept reference range defines the acceptable numeric values/ranges for specific factors
+ * such as age, gender, e.t.c.
  * 
  * @since 1.17.0
  */
@@ -43,13 +46,17 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
-	 * @return Returns the conceptRangeId.
+	 * Gets id of conceptReferenceRange
+	 *
+	 * @return Returns the ConceptReferenceRangeId.
 	 */
 	public Integer getConceptReferenceRangeId() {
 		return conceptReferenceRangeId;
 	}
 	
 	/**
+	 * Sets conceptReferenceRangeId
+	 *
 	 * @param conceptReferenceRangeId The conceptReferenceRangeId to set.
 	 */
 	public void setConceptReferenceRangeId(Integer conceptReferenceRangeId) {
@@ -57,16 +64,16 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
-	 * Returns the criteria of the conceptReferenceRange
+	 * Gets the criteria of conceptReferenceRange
 	 * 
-	 * @return criteria the criteria
+	 * @return criteria
 	 */
 	public String getCriteria() {
 		return this.criteria;
 	}
 	
 	/**
-	 * Sets the criteria of the conceptReferenceRange
+	 * Sets the criteria of conceptReferenceRange
 	 * 
 	 * @param criteria the criteria to set
 	 */
@@ -75,6 +82,8 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
+	 * Gets conceptNumeric of conceptReferenceRange
+	 *
 	 * @return Returns the ConceptNumeric.
 	 */
 	public ConceptNumeric getConceptNumeric() {
@@ -82,6 +91,8 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
+	 * Sets conceptNumeric
+	 *
 	 * @param conceptNumeric concept to set.
 	 */
 	public void setConceptNumeric(ConceptNumeric conceptNumeric) {
@@ -117,7 +128,7 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
-	 * Returns high absolute value of the referenceRange
+	 * Gets high absolute value of the referenceRange
 	 * 
 	 * @return hiAbsolute the high absolute value
 	 */
@@ -135,7 +146,7 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
-	 * Returns high critical value of the referenceRange
+	 * Gets high critical value of the referenceRange
 	 * 
 	 * @return the high critical value
 	 */
@@ -171,7 +182,7 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
-	 * Returns low absolute value of the referenceRange
+	 * Gets low absolute value of the referenceRange
 	 * 
 	 * @return the low absolute value
 	 */
@@ -189,7 +200,7 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
-	 * Returns low critical value of the referenceRange
+	 * Gets low critical value of the referenceRange
 	 * 
 	 * @return the low critical value
 	 */
@@ -207,7 +218,7 @@ public class ConceptReferenceRange {
 	}
 	
 	/**
-	 * Returns low normal value of the referenceRange
+	 * Gets low normal value of the referenceRange
 	 * 
 	 * @return the low normal value
 	 */
