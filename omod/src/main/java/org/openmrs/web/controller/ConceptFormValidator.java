@@ -139,17 +139,16 @@ public class ConceptFormValidator implements Validator {
 			int index = 0;
 			for (ConceptReferenceRange referenceRange : referenceRanges) {
 				
-				if (referenceRange.getId() == null && conceptNumeric.getHiAbsolute() != null
-				        && conceptNumeric.getLowAbsolute() != null) {
+				if (conceptNumeric.getHiAbsolute() != null && conceptNumeric.getLowAbsolute() != null) {
 					if (referenceRange.getHiAbsolute() == null) {
 						setReferenceRangeErrors(errors, index, "hiAbsolute",
 						    "Concept.referenceRanges.error.high.absolute.value.required",
 						    "Concept.referenceRanges.error.absolute.value.required");
 					} else {
 						if (referenceRange.getHiAbsolute() > conceptNumeric.getHiAbsolute()) {
-							setReferenceRangeErrors(errors, index, "hiAbsolute",
+							setReferenceRangeErrorsWithValue(errors, index, "hiAbsolute",
 							    "Concept.referenceRanges.error.highAbsolute.value.outOfRange",
-							    "Concept.referenceRanges.error.absolute.value.invalid");
+							    referenceRange.getHiAbsolute(), conceptNumeric.getHiAbsolute());
 						} else if (referenceRange.getHiAbsolute() < conceptNumeric.getLowAbsolute()) {
 							setReferenceRangeErrors(errors, index, "hiAbsolute",
 							    "Concept.referenceRanges.error.absolute.value.invalid",
@@ -162,9 +161,9 @@ public class ConceptFormValidator implements Validator {
 						    "Concept.referenceRanges.error.absolute.value.required");
 					} else {
 						if (referenceRange.getLowAbsolute() < conceptNumeric.getLowAbsolute()) {
-							setReferenceRangeErrors(errors, index, "lowAbsolute",
+							setReferenceRangeErrorsWithValue(errors, index, "lowAbsolute",
 							    "Concept.referenceRanges.error.lowAbsolute.value.outOfRange",
-							    "Concept.referenceRanges.error.absolute.value.invalid");
+							    referenceRange.getLowAbsolute(), conceptNumeric.getLowAbsolute());
 						} else if (referenceRange.getLowAbsolute() > conceptNumeric.getHiAbsolute()) {
 							setReferenceRangeErrors(errors, index, "lowAbsolute",
 							    "Concept.referenceRanges.error.absolute.value.invalid",
@@ -188,10 +187,30 @@ public class ConceptFormValidator implements Validator {
 	 * @param defaultMessage default message
 	 * @since 1.17.0
 	 */
-	private static void setReferenceRangeErrors(BindException errors, long index, String field, String errorCode,
+	private void setReferenceRangeErrors(BindException errors, long index, String field, String errorCode,
 	        String defaultMessage) {
 		errors.pushNestedPath("referenceRanges[" + index + "]");
 		errors.rejectValue(field, errorCode, defaultMessage);
+		errors.popNestedPath();
+	}
+	
+	/**
+	 * Set Reference Range Errors with values
+	 * 
+	 * @param errors BindException
+	 * @param index index of referenceRange row
+	 * @param field field of the reference range
+	 * @param errorCode error code
+	 * @param value current high or low absolute value
+	 * @param thresholdValue high or low absolute value of conceptNumeric
+	 * @since 1.17.0
+	 */
+	private void setReferenceRangeErrorsWithValue(BindException errors, long index, String field, String errorCode,
+	        Double value, Double thresholdValue) {
+		errors.pushNestedPath("referenceRanges[" + index + "]");
+		errors.rejectValue(field,
+		    Context.getMessageSourceService().getMessage(errorCode, new Object[] { value, thresholdValue }, null),
+		    "Concept.referenceRanges.error.absolute.value.invalid");
 		errors.popNestedPath();
 	}
 }
