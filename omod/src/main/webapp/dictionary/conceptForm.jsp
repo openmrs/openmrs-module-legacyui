@@ -839,13 +839,13 @@
                 <c:forEach var="reference" items="${command.referenceRanges}" varStatus="status">
                     <spring:nestedPath path="command.referenceRanges[${status.index}]">
                         <tr id="row-${status.index}">
-                            <td><input type="text" size="20" name="command.referenceRanges[${status.index}].hiAbsolute" value="${reference.hiAbsolute}" /></td>
-                            <td><input type="text" size="20" name="command.referenceRanges[${status.index}].lowAbsolute" value="${reference.lowAbsolute}" /></td>
-                            <td><input type="text" size="20" name="command.referenceRanges[${status.index}].hiNormal" value="${reference.hiNormal}" /></td>
-                            <td><input type="text" size="20" name="command.referenceRanges[${status.index}].lowNormal" value="${reference.lowNormal}" /></td>
-                            <td><input type="text" size="20" name="command.referenceRanges[${status.index}].hiCritical" value="${reference.hiCritical}" /></td>
-                            <td><input type="text" size="20" name="command.referenceRanges[${status.index}].lowCritical" value="${reference.lowCritical}" /></td>
-                            <td><input type="text" size="20" name="command.referenceRanges[${status.index}].criteria" value="${reference.criteria}" /></td>
+                            <td><form:input type="text" size="20" path="hiAbsolute" /></td>
+                            <td><form:input type="text" size="20" path="lowAbsolute" /></td>
+                            <td><form:input type="text" size="20" path="hiNormal" /></td>
+                            <td><form:input type="text" size="20" path="lowNormal" /></td>
+                            <td><form:input type="text" size="20" path="hiCritical" /></td>
+                            <td><form:input type="text" size="20" path="lowCritical" /></td>
+                            <td><form:input type="text" size="20" path="criteria" /></td>
                             <td>
                                 <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeReferenceRangeElementByIndex(this, ${status.index})" />
                                 <spring:bind path="command.referenceRanges[${status.index}]" ignoreNestedPath="true">

@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -25,7 +25,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -468,7 +467,7 @@ public class ConceptFormController extends SimpleFormController {
 		
 		public Collection<ConceptAttribute> activeAttributes;
 		
-		public List<org.openmrs.web.controller.concept.ConceptReferenceRange> referenceRanges;
+		public List<ConceptReferenceRange> referenceRanges;
 		
 		/**
 		 * Default constructor must take in a Concept object to create itself
@@ -696,8 +695,7 @@ public class ConceptFormController extends SimpleFormController {
 		}
 		
 		/**
-		 * This method sets reference ranges to concept numeric. If an existing reference range was
-		 * removed, then we remove it from concept numeric.
+		 * This method sets reference ranges to concept numeric.
 		 * 
 		 * @param cn ConceptNumeric
 		 * @since 1.17.0
@@ -713,63 +711,68 @@ public class ConceptFormController extends SimpleFormController {
 				
 				if (referenceRange.getId() != null) {
 					if (referenceRange.getId() <= 0) {
-						try {
-							Object platformReferenceRange = new ConceptFormMapper().mapToConceptReferenceRange(
-							    referenceRange, cn);
-							setMethodValue(cn, "removeReferenceRange", platformReferenceRange);
-						}
-						catch (Exception exception) {
-							logger.error("Failed to remove reference range: Exception: " + exception.getMessage(), exception);
-						}
+						removeReferenceRange(cn, referenceRange);
 					} else {
 						updateReferenceRange(cn, referenceRange);
 					}
 				} else {
-					referenceRange.setConceptNumeric(cn);
-					try {
-						Object platformReferenceRange = new ConceptFormMapper().mapToConceptReferenceRange(referenceRange,
-						    cn);
-						setMethodValue(cn, "addReferenceRange", platformReferenceRange);
-					}
-					catch (Exception exception) {
-						logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
-					}
+					addReferenceRange(cn, referenceRange);
 				}
+			}
+		}
+		
+		/**
+		 * This method removes a reference range from conceptNumeric
+		 * 
+		 * @param cn conceptNumeric
+		 * @param referenceRange referenceRange
+		 * @since 1.17.0
+		 */
+		private void removeReferenceRange(ConceptNumeric cn, ConceptReferenceRange referenceRange) {
+			try {
+				Object platformReferenceRange = new ConceptFormMapper().mapToConceptReferenceRange(referenceRange, cn);
+				setMethodValue(cn, "removeReferenceRange", platformReferenceRange);
+			}
+			catch (Exception exception) {
+				logger.error("Failed to remove reference range: Exception: " + exception.getMessage(), exception);
+			}
+		}
+		
+		/**
+		 * This method adds a new reference range to conceptNumeric
+		 * 
+		 * @param cn conceptNumeric
+		 * @param referenceRange referenceRange
+		 * @since 1.17.0
+		 */
+		private void addReferenceRange(ConceptNumeric cn, ConceptReferenceRange referenceRange) {
+			referenceRange.setConceptNumeric(cn);
+			try {
+				Object platformReferenceRange = new ConceptFormMapper().mapToConceptReferenceRange(referenceRange, cn);
+				setMethodValue(cn, "addReferenceRange", platformReferenceRange);
+			}
+			catch (Exception exception) {
+				logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
 			}
 		}
 		
 		/**
 		 * This method updates concept reference range if a field value has changed.
 		 * 
+		 * @param cn ConceptNumeric
+		 * @param referenceRange ConceptReferenceRange
 		 * @since 1.17.0
 		 */
 		public void updateReferenceRange(ConceptNumeric cn, ConceptReferenceRange referenceRange) {
 			try {
-				Method getReferenceRangesMethod = cn.getClass().getMethod("getReferenceRanges");
-				Set<?> referenceRanges = (Set<?>) getReferenceRangesMethod.invoke(cn);
+				Set<?> existingReferenceRanges = getExistingReferenceRanges(cn);
 
-				for (Object rr : referenceRanges) {
-					Method getIdMethod = rr.getClass().getMethod("getId");
-					Object idValue = getIdMethod.invoke(rr);
+				for (Object existingRange : existingReferenceRanges) {
+					Method getIdMethod = existingRange.getClass().getMethod("getId");
+					Object idValue = getIdMethod.invoke(existingRange);
 
-					if (Objects.equals(idValue, referenceRange.getId())) {
-
-						if (!referenceRange.getCriteria().equals(getMethodValue(rr, "getCriteria")) ||
-								!Objects.equals(referenceRange.getHiAbsolute(), getMethodValue(rr, "getHiAbsolute")) ||
-								!Objects.equals(referenceRange.getHiCritical(), getMethodValue(rr, "getHiCritical")) ||
-								!Objects.equals(referenceRange.getHiNormal(), getMethodValue(rr, "getHiNormal")) ||
-								!Objects.equals(referenceRange.getLowAbsolute(), getMethodValue(rr, "getLowAbsolute")) ||
-								!Objects.equals(referenceRange.getLowCritical(), getMethodValue(rr, "getLowCritical")) ||
-								!Objects.equals(referenceRange.getLowNormal(), getMethodValue(rr, "getLowNormal"))) {
-
-							setMethodValue(rr, "setHiAbsolute", referenceRange.getHiAbsolute());
-							setMethodValue(rr, "setHiCritical", referenceRange.getHiCritical());
-							setMethodValue(rr, "setHiNormal", referenceRange.getHiNormal());
-							setMethodValue(rr, "setLowAbsolute", referenceRange.getLowAbsolute());
-							setMethodValue(rr, "setLowCritical", referenceRange.getLowCritical());
-							setMethodValue(rr, "setLowNormal", referenceRange.getLowNormal());
-							setMethodValue(rr, "setCriteria", referenceRange.getCriteria());
-						}
+					if (Objects.equals(idValue, referenceRange.getId()) && hasReferenceRangeChanged(existingRange, referenceRange)) {
+						updateReferenceRangeFields(existingRange, referenceRange);
 						break;
 					}
 				}
@@ -780,6 +783,58 @@ public class ConceptFormController extends SimpleFormController {
 				logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
             }
         }
+		
+		/**
+		 * This method gets the existing reference ranges
+		 * 
+		 * @param cn ConceptNumeric
+		 * @return a set of reference ranges
+		 * @since 1.17.0
+		 */
+		private Set<?> getExistingReferenceRanges(ConceptNumeric cn) {
+			try {
+				Method getReferenceRangesMethod = cn.getClass().getMethod("getReferenceRanges");
+				return (Set<?>) getReferenceRangesMethod.invoke(cn);
+			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				logger.error("Failed to retrieve reference ranges: Exception: " + e.getMessage(), e);
+				return Collections.emptySet();
+			}
+		}
+		
+		private boolean hasReferenceRangeChanged(Object existingRange, ConceptReferenceRange referenceRange)
+		        throws Exception {
+			return !Objects.equals(referenceRange.getCriteria(), getMethodValue(existingRange, "getCriteria"))
+			        || !Objects.equals(referenceRange.getHiAbsolute(), getMethodValue(existingRange, "getHiAbsolute"))
+			        || !Objects.equals(referenceRange.getHiCritical(), getMethodValue(existingRange, "getHiCritical"))
+			        || !Objects.equals(referenceRange.getHiNormal(), getMethodValue(existingRange, "getHiNormal"))
+			        || !Objects.equals(referenceRange.getLowAbsolute(), getMethodValue(existingRange, "getLowAbsolute"))
+			        || !Objects.equals(referenceRange.getLowCritical(), getMethodValue(existingRange, "getLowCritical"))
+			        || !Objects.equals(referenceRange.getLowNormal(), getMethodValue(existingRange, "getLowNormal"));
+		}
+		
+		/**
+		 * This method updates reference range fields
+		 * 
+		 * @param existingRange existing reference range
+		 * @param referenceRange the updated reference range
+		 * @throws Exception exception
+		 * @since 1.17.0
+		 */
+		private void updateReferenceRangeFields(Object existingRange, ConceptReferenceRange referenceRange) throws Exception {
+			updateField(existingRange, "setHiAbsolute", referenceRange.getHiAbsolute());
+			updateField(existingRange, "setHiCritical", referenceRange.getHiCritical());
+			updateField(existingRange, "setHiNormal", referenceRange.getHiNormal());
+			updateField(existingRange, "setLowAbsolute", referenceRange.getLowAbsolute());
+			updateField(existingRange, "setLowCritical", referenceRange.getLowCritical());
+			updateField(existingRange, "setLowNormal", referenceRange.getLowNormal());
+			updateField(existingRange, "setCriteria", referenceRange.getCriteria());
+		}
+		
+		private void updateField(Object obj, String methodName, Object value) throws Exception {
+			if (value != null) {
+				setMethodValue(obj, methodName, value);
+			}
+		}
 		
 		private Object getMethodValue(Object obj, String methodName) throws Exception {
 			Method method = obj.getClass().getMethod(methodName);
