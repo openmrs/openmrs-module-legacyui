@@ -253,7 +253,8 @@
 %>
 <h2><openmrs:message code="legacyui.error.aunthenticationRequired"/></h2>
 <%
-    }
+		response.sendRedirect("login.htm");
+	}
 
 %>
 
