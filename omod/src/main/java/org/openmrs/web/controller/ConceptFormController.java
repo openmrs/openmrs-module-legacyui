@@ -716,7 +716,9 @@ public class ConceptFormController extends SimpleFormController {
 						updateReferenceRange(cn, referenceRange);
 					}
 				} else {
-					addReferenceRange(cn, referenceRange);
+					if (referenceRange.getHiAbsolute() != null && referenceRange.getLowAbsolute() != null) {
+						addReferenceRange(cn, referenceRange);
+					}
 				}
 			}
 		}

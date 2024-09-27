@@ -12,11 +12,10 @@ package org.openmrs.web.controller.concept;
 import org.openmrs.ConceptNumeric;
 
 /**
- * This class represents a reference range for a {@link ConceptNumeric}. It is used to store
- * and manage reference range values, to be able to allow backward compatibility in openmrs core versions.
- *
- * A concept reference range defines the acceptable numeric values/ranges for specific factors
- * such as age, gender, e.t.c.
+ * This class represents a reference range for a {@link ConceptNumeric}. It is used to store and
+ * manage reference range values, to be able to allow backward compatibility in openmrs core
+ * versions. A concept reference range defines the acceptable numeric values/ranges for specific
+ * factors such as age, gender, e.t.c.
  * 
  * @since 1.17.0
  */
@@ -47,7 +46,7 @@ public class ConceptReferenceRange {
 	
 	/**
 	 * Gets id of conceptReferenceRange
-	 *
+	 * 
 	 * @return Returns the ConceptReferenceRangeId.
 	 */
 	public Integer getConceptReferenceRangeId() {
@@ -56,7 +55,7 @@ public class ConceptReferenceRange {
 	
 	/**
 	 * Sets conceptReferenceRangeId
-	 *
+	 * 
 	 * @param conceptReferenceRangeId The conceptReferenceRangeId to set.
 	 */
 	public void setConceptReferenceRangeId(Integer conceptReferenceRangeId) {
@@ -83,7 +82,7 @@ public class ConceptReferenceRange {
 	
 	/**
 	 * Gets conceptNumeric of conceptReferenceRange
-	 *
+	 * 
 	 * @return Returns the ConceptNumeric.
 	 */
 	public ConceptNumeric getConceptNumeric() {
@@ -92,7 +91,7 @@ public class ConceptReferenceRange {
 	
 	/**
 	 * Sets conceptNumeric
-	 *
+	 * 
 	 * @param conceptNumeric concept to set.
 	 */
 	public void setConceptNumeric(ConceptNumeric conceptNumeric) {
