@@ -839,7 +839,7 @@ function OpenmrsSearch(div, showIncludeVoided, searchHandler, selectionHandler, 
             var cols = this.options.fieldsAndHeaders;
             rRowData = $j.map(cols, function(c) {
                 var data = rowData[c.fieldName];
-                if(data == null)
+                if(data == null || data === "null")
                     data = " ";
                 //Escape html
                 data = $j('<div/>').text(data).html();
