@@ -265,7 +265,7 @@ function CreateCallback(options) {
 
 		// wrap each result in a span tag (needed?)
 		textShown = "<span class='autocompleteresult'>" + textShown + "</span>";
-		personNameEscaped = $j('<div/>').text(person.personName).html();
+		personNameEscaped = $j('<div/>').text(personName).html();
 		personIdEscaped = $j('<div/>').text(person.personId).html();
 		return { label: textShown, value: personNameEscaped, id: personIdEscaped, object: person };
 	}; }
