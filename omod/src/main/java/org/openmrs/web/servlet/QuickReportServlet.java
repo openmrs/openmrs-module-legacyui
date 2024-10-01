@@ -62,11 +62,19 @@ public class QuickReportServlet extends HttpServlet {
 			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "error.null");
 			return;
 		}
+		
 		if (!Context.hasPrivilege(PrivilegeConstants.GET_PATIENTS)) {
 			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Privilege required: " + PrivilegeConstants.GET_PATIENTS);
 			session.setAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, request.getRequestURI() + "?"
 			        + request.getQueryString());
 			response.sendRedirect(request.getContextPath() + "/login.htm");
+			return;
+		}
+		
+		reportType = sanitizeInput(reportType);
+		
+		if (!isValidReportType(reportType)) {
+			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "error.invalidReportType");
 			return;
 		}
 		
@@ -358,5 +366,17 @@ public class QuickReportServlet extends HttpServlet {
 		template += "</table>\n";
 		
 		return template;
+	}
+	
+	private String sanitizeInput(String input) {
+		if (input == null) {
+			return null;
+		}
+		return input.replaceAll("[<>\"'%;()&+]", "");
+	}
+	
+	private boolean isValidReportType(String reportType) {
+		return "RETURN VISIT DATE THIS WEEK".equals(reportType) || "ATTENDED CLINIC THIS WEEK".equals(reportType)
+		        || "VOIDED OBS".equals(reportType);
 	}
 }
