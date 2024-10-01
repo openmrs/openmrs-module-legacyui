@@ -73,11 +73,6 @@ public class QuickReportServlet extends HttpServlet {
 		
 		reportType = sanitizeInput(reportType);
 		
-		if (!isValidReportType(reportType)) {
-			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "error.invalidReportType");
-			return;
-		}
-		
 		try {
 			Velocity.init();
 		}
@@ -373,10 +368,5 @@ public class QuickReportServlet extends HttpServlet {
 			return null;
 		}
 		return input.replaceAll("[<>\"'%;()&+]", "");
-	}
-	
-	private boolean isValidReportType(String reportType) {
-		return "RETURN VISIT DATE THIS WEEK".equals(reportType) || "ATTENDED CLINIC THIS WEEK".equals(reportType)
-		        || "VOIDED OBS".equals(reportType);
 	}
 }
