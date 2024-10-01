@@ -45,6 +45,7 @@ import org.openmrs.parameter.EncounterSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
+import org.openmrs.web.WebUtil;
 
 public class QuickReportServlet extends HttpServlet {
 	
@@ -62,6 +63,7 @@ public class QuickReportServlet extends HttpServlet {
 			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "error.null");
 			return;
 		}
+		
 		if (!Context.hasPrivilege(PrivilegeConstants.GET_PATIENTS)) {
 			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Privilege required: " + PrivilegeConstants.GET_PATIENTS);
 			session.setAttribute(WebConstants.OPENMRS_LOGIN_REDIRECT_HTTPSESSION_ATTR, request.getRequestURI() + "?"
@@ -69,6 +71,8 @@ public class QuickReportServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/login.htm");
 			return;
 		}
+		
+		reportType = WebUtil.escapeHTML(reportType);
 		
 		try {
 			Velocity.init();
