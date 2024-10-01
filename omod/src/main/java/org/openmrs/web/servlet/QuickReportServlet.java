@@ -45,6 +45,7 @@ import org.openmrs.parameter.EncounterSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
+import org.openmrs.web.WebUtil;
 
 public class QuickReportServlet extends HttpServlet {
 	
@@ -71,7 +72,7 @@ public class QuickReportServlet extends HttpServlet {
 			return;
 		}
 		
-		reportType = sanitizeInput(reportType);
+		reportType = WebUtil.escapeHTML(reportType);
 		
 		try {
 			Velocity.init();
@@ -361,12 +362,5 @@ public class QuickReportServlet extends HttpServlet {
 		template += "</table>\n";
 		
 		return template;
-	}
-	
-	private String sanitizeInput(String input) {
-		if (input == null) {
-			return null;
-		}
-		return input.replaceAll("[<>\"'%;()&+]", "");
 	}
 }
