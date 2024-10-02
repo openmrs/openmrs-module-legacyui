@@ -67,9 +67,9 @@ dojo.widget.defineWidget(
 			}
 		},
 		
-		getGiven : function(p) { return p.givenName == null ? this.noCell() : p.givenName;  },
-		getMiddle: function(p) { return p.middleName == null ? this.noCell() : p.middleName; },
-		getFamily: function(p) { return p.familyName == null ? this.noCell() : p.familyName; },
+		getGiven : function(p) { return p.givenName == null || p.givenName === "null" ? this.noCell() : p.givenName;  },
+		getMiddle: function(p) { return p.middleName == null || p.middleName === "null" ? this.noCell() : p.middleName; },
+		getFamily: function(p) { return p.familyName == null || p.familyName === "null" ? this.noCell() : p.familyName; },
 		getGender: function(p) {
 				if (p.gender == null) { return this.noCell(); }
 				
