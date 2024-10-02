@@ -475,9 +475,7 @@ dojo.widget.defineWidget(
 
 
 	noCell: function() {
-		var td = document.createElement("td");
-		td.style.display = "none";
-		return td;
+		return document.createElement("td");
 	},
 		
 	getNumber: function(searchHit) {
