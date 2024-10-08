@@ -322,7 +322,7 @@
 				</table>
 			</td>
 		</tr>
-		<c:if test="${command.concept.datatype.name == 'Numeric'}">
+		<c:if test="${command.concept.datatype.name == 'Numeric'} && fn:substring(openmrsVersion, 0, 5) >= '2.7.0'">
             <tr id="referenceRangeRow">
                 <th valign="top" style="padding-top: 8px" title="<openmrs:message code="Concept.referenceRanges.help"/>">
                     <openmrs:message code="Concept.referenceRanges"/>

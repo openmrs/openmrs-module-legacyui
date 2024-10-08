@@ -414,6 +414,9 @@ public class ConceptFormController extends SimpleFormController {
 		map.put("locale", Context.getLocale()); // should be same string format as conceptNamesByLocale map keys
 		
 		map.put("attributeTypes", cs.getAllConceptAttributeTypes());
+		
+		String openmrsVersion = OpenmrsConstants.OPENMRS_VERSION;
+		map.put("openmrsVersion", openmrsVersion);
 		return map;
 	}
 	
@@ -736,7 +739,8 @@ public class ConceptFormController extends SimpleFormController {
 				setMethodValue(cn, "removeReferenceRange", platformReferenceRange);
 			}
 			catch (Exception exception) {
-				logger.error("Failed to remove reference range: Exception: " + exception.getMessage(), exception);
+				logger.warn("Failed to remove concept reference range. "
+				        + "Note that openMRS-core version 2.7.* or higher is required for this functionality to work.");
 			}
 		}
 		
@@ -754,7 +758,7 @@ public class ConceptFormController extends SimpleFormController {
 				setMethodValue(cn, "addReferenceRange", platformReferenceRange);
 			}
 			catch (Exception exception) {
-				logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
+				// Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
 			}
 		}
 		
@@ -780,9 +784,9 @@ public class ConceptFormController extends SimpleFormController {
 				}
 			} catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
 					 ClassNotFoundException exception) {
-				logger.error("Failed to update reference range: Exception: " + exception.getMessage(), exception);
+				// Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
 			} catch (Exception exception) {
-				logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
+				// Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
             }
         }
 		
@@ -798,7 +802,7 @@ public class ConceptFormController extends SimpleFormController {
 				Method getReferenceRangesMethod = cn.getClass().getMethod("getReferenceRanges");
 				return (Set<?>) getReferenceRangesMethod.invoke(cn);
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-				logger.error("Failed to retrieve reference ranges: Exception: " + e.getMessage(), e);
+				// Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
 				return Collections.emptySet();
 			}
 		}

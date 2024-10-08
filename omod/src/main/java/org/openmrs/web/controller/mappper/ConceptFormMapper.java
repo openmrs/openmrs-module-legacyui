@@ -60,7 +60,7 @@ public class ConceptFormMapper {
 
         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException |
                  ClassNotFoundException exception) {
-            logger.error("Failed to add reference range: Exception: " + exception.getMessage(), exception);
+            // Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
         }
         return null;
     }
@@ -95,7 +95,7 @@ public class ConceptFormMapper {
                 webReferenceRanges.add(webReferenceRange);
             }
         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-            logger.error("Failed to map to web reference range: Exception: " + e.getMessage(), e);
+            // Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
         }
 
         return webReferenceRanges;
