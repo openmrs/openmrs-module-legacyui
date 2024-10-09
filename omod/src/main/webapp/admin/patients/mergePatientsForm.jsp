@@ -781,7 +781,7 @@ function toggleUnvoidedOrderErrorMessage(){
 		<input type="hidden" id="pref" name="preferred" value=""/>
 		<input type="hidden" id="nonPref" name="nonPreferred" value=""/>
 		<input type="hidden" name="modalMode" value='${modalMode}' />
-		<input type="hidden" name="redirectURL" value='<request:header name="referer" />' />
+		<input type="hidden" name="redirectURL" value='<c:out value="${pageContext.request.getHeader('referer')}"/>' />
 	</c:if>
 </form>
 
