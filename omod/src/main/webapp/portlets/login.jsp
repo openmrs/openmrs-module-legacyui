@@ -41,8 +41,7 @@
 				<input type="hidden" name="redirect" value="" />
 			</c:otherwise>
 		</c:choose>
-		
-		<input type="hidden" name="refererURL" value='<request:header name="referer" />' />
+		<input type="hidden" name="refererURL" value='<c:out value="${pageContext.request.getHeader('referer')}"/>' />
 	</c:if>
 	
 </form>
