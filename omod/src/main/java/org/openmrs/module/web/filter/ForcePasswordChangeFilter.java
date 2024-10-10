@@ -50,7 +50,8 @@ public class ForcePasswordChangeFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 	        ServletException {
-		String requestURI = ((HttpServletRequest) request).getRequestURI();
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		String requestURI = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		
 		if (Context.isAuthenticated()
 		        && new UserProperties(Context.getAuthenticatedUser().getUserProperties()).isSupposedToChangePassword()
@@ -65,10 +66,13 @@ public class ForcePasswordChangeFilter implements Filter {
 	 * Method to check if the request url is an excluded url.
 	 * 
 	 * @param requestURI
-	 * @param excludeURL
 	 * @return
 	 */
 	private boolean shouldNotAllowAccessToUrl(String requestURI) {
+		// /ws is reserved
+		if (requestURI.startsWith("/ws")) {
+			return false;
+		}
 		
 		for (String url : excludedURLs) {
 			if (requestURI.endsWith(url)) {
