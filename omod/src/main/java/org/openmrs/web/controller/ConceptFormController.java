@@ -58,6 +58,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.ConceptsLockedException;
 import org.openmrs.api.DuplicateConceptNameException;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.legacyui.GeneralUtils;
 import org.openmrs.module.web.extension.ConceptUsageExtension;
 import org.openmrs.module.web.extension.provider.Link;
 import org.openmrs.propertyeditor.ConceptAnswersEditor;
@@ -415,8 +416,8 @@ public class ConceptFormController extends SimpleFormController {
 		
 		map.put("attributeTypes", cs.getAllConceptAttributeTypes());
 		
-		String openmrsVersion = OpenmrsConstants.OPENMRS_VERSION;
-		map.put("openmrsVersion", openmrsVersion);
+		map.put("canUseConceptReferenceRanges", GeneralUtils.isTwoPointSevenAndAbove());
+		
 		return map;
 	}
 	
@@ -739,8 +740,7 @@ public class ConceptFormController extends SimpleFormController {
 				setMethodValue(cn, "removeReferenceRange", platformReferenceRange);
 			}
 			catch (Exception exception) {
-				logger.warn("Failed to remove concept reference range. "
-				        + "Note that openMRS-core version 2.7.* or higher is required for this functionality to work.");
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
 			}
 		}
 		
@@ -758,7 +758,7 @@ public class ConceptFormController extends SimpleFormController {
 				setMethodValue(cn, "addReferenceRange", platformReferenceRange);
 			}
 			catch (Exception exception) {
-				// Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
 			}
 		}
 		
@@ -784,9 +784,9 @@ public class ConceptFormController extends SimpleFormController {
 				}
 			} catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
 					 ClassNotFoundException exception) {
-				// Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
 			} catch (Exception exception) {
-				// Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
             }
         }
 		
@@ -802,7 +802,7 @@ public class ConceptFormController extends SimpleFormController {
 				Method getReferenceRangesMethod = cn.getClass().getMethod("getReferenceRanges");
 				return (Set<?>) getReferenceRangesMethod.invoke(cn);
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-				// Note that openMRS-core version 2.7.* or higher is required for this functionality to work.
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
 				return Collections.emptySet();
 			}
 		}

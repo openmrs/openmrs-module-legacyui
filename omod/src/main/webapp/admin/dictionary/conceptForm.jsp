@@ -820,7 +820,7 @@
 			</table>
 		</td>
 	</tr>
-	<c:if test="${fn:substring(openmrsVersion, 0, 5) >= '2.7.0'}">
+	<c:if test="${canUseConceptReferenceRanges == true}">
         <tr id="referenceRangeRow">
             <th valign="top" style="padding-top: 8px">
                 <openmrs:message code="Concept.referenceRanges"/> <img class="help_icon" src="${pageContext.request.contextPath}/images/help.gif" border="0" title="<openmrs:message code="Concept.referenceRanges.help"/>"/>
