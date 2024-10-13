@@ -307,7 +307,7 @@
 					</spring:bind>
 				</div>
 				<div id="patient_label">
-					<a href="../../patientDashboard.form?patientId=${encounter.patient.patientId}" >${encounter.patient.personName}</a>
+					<a href="../../patientDashboard.form?patientId=${encounter.patient.patientId}" ><c:out value='${encounter.patient.personName}'/></a>
 				</div>
 					<a id ="patient_change_link" href="#Change patient" onClick="makePatientFieldEditable()">
 						(<openmrs:message code="Encounter.transfer.change"/>)
