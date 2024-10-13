@@ -242,7 +242,7 @@
                     rootNode = $j(this.parentNode.parentNode);
                     $j(rootNode).find('.identifierTypeWarningWrapper').find('.identifierTypeWarningDiv').show();
                     duplicateCountForCurrentType++;
-                    if (duplicateCountForCurrentType < 2) {
+                    if(duplicateCountForCurrentType < 2) {
                         rootNode = $j(this.parentNode.parentNode);
                         $j(rootNode).find('.identifierTypeWarningWrapper').find('.identifierTypeWarningDiv').hide();
                     }
