@@ -182,6 +182,21 @@
 			obj.parentNode.removeChild(obj);
 	}
 
+	function beforeSubmit() {
+		removeBlankData()
+
+		sanitizeFields();
+
+		return true;
+
+	}
+
+	function sanitizeFields(){
+		var inputfields=document.querySelectorAll('input[type="text"]');
+		inputfields.forEach(function(input) {
+			input.value = html_sanitize(input.value);
+		});
+	}
 	function preferredBoxClick(obj) {
 		var inputs = document.getElementsByTagName("input");
 		if (obj.checked == true) {
@@ -345,7 +360,7 @@
     <openmrs_tag:errorNotify errors="${errors}" />
 </spring:hasBindErrors>
 
-<form method="post" onSubmit="removeBlankData()">
+<form method="post" onSubmit="return beforeSubmit()">
 
 	<h3><openmrs:message code="Patient.identifiers"/></h3>
 		<spring:hasBindErrors name="patient.identifiers">
