@@ -11,7 +11,6 @@ package org.openmrs.module.legacyui;
 
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsConstants;
 
 public class GeneralUtils {
 	
@@ -72,46 +71,20 @@ public class GeneralUtils {
 	
 	/**
 	 * Checks if current version of openmrs is greater or equal to 2.7.0
+	 * The aim is to try loading ConceptReferenceRange class and one of its method, which is in version 2.7.0.
+	 * If the ConceptReferenceRange class is loaded, then the current version is greater or equal than 2.7.0
 	 * 
 	 * @return true if current version is greater or equal to 2.7.0 and false otherwise
 	 * @since 1.17.0
 	 */
 	public static boolean isTwoPointSevenAndAbove() {
-		String openmrsVersion = OpenmrsConstants.OPENMRS_VERSION_SHORT;
-		
-		if (openmrsVersion.isEmpty()) {
+		try {
+			Class<?> referenceRangeClass = Class.forName("org.openmrs.ConceptReferenceRange");
+			referenceRangeClass.getMethod("getCriteria", String.class);
+
+			return true;
+		} catch (NoSuchMethodException | ClassNotFoundException exception) {
 			return false;
 		}
-		
-		return isVersionAbove(openmrsVersion.substring(0, 5), "2.7.0");
-	}
-	
-	/**
-	 * This method simply compares a version with the target version and returns true if the version
-	 * is subject is greater or equal to the target version
-	 * 
-	 * @param version current version
-	 * @param targetVersion target version
-	 * @return true if version is greater or equal to the target version
-	 * @since 1.17.0
-	 */
-	private static boolean isVersionAbove(String version, String targetVersion) {
-		String[] currentVersionParts = version.split("\\.");
-		String[] targetVersionParts = targetVersion.split("\\.");
-		
-		int length = Math.max(currentVersionParts.length, targetVersionParts.length);
-		
-		for (int i = 0; i < length; i++) {
-			int currentPart = i < currentVersionParts.length ? Integer.parseInt(currentVersionParts[i]) : 0;
-			int targetPart = i < targetVersionParts.length ? Integer.parseInt(targetVersionParts[i]) : 0;
-			
-			if (currentPart < targetPart) {
-				return false;
-			} else if (currentPart > targetPart) {
-				return true;
-			}
-		}
-		
-		return true;
 	}
 }
