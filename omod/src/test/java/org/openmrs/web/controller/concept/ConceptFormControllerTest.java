@@ -56,4 +56,5 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		
 		org.junit.Assert.assertEquals("ml", conceptFormBackingObject.getUnits());
 	}
+	
 }

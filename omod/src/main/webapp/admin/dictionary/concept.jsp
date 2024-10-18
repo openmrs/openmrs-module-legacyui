@@ -319,6 +319,37 @@
 				</table>
 			</td>
 		</tr>
+		<c:if test="${command.concept.datatype.name == 'Numeric' && canUseConceptReferenceRanges == true}">
+            <tr id="referenceRangeRow">
+                <th valign="top" style="padding-top: 8px" title="<openmrs:message code="Concept.referenceRanges.help"/>">
+                    <openmrs:message code="Concept.referenceRanges"/>
+                </th>
+                <td>
+                    <table cellpadding="5" cellspacing="3" align="left" class="lightBorderBox">
+                        <tr id="ReferenceRangesHeadersRow" <c:if test="${fn:length(command.referenceRanges) == 0}">style="display:none"</c:if>>
+                            <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteHigh"/></th>
+                            <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteLow"/></th>
+                            <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalHigh"/></th>
+                            <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalLow"/></th>
+                            <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalHigh"/></th>
+                            <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalLow"/></th>
+                            <th style="text-align: center"><openmrs:message code="Concept.referenceRanges.criteria"/></th>
+                        </tr>
+                        <c:forEach var="reference" items="${command.referenceRanges}" varStatus="mapStatus">
+                            <tr <c:if test="${mapStatus.index % 2 == 0}">class='evenRow'</c:if>>
+                                <td><c:out value="${reference.hiAbsolute}"/></td>
+                                <td><c:out value="${reference.lowAbsolute}"/></td>
+                                <td><c:out value="${reference.hiCritical}"/></td>
+                                <td><c:out value="${reference.lowCritical}"/></td>
+                                <td><c:out value="${reference.hiNormal}"/></td>
+                                <td><c:out value="${reference.lowNormal}"/></td>
+                                <td><c:out value="${reference.criteria}"/></td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </td>
+            </tr>
+        </c:if>
 		
         <c:if test="${command.concept.complex}">
             <tr>
