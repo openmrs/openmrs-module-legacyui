@@ -72,20 +72,19 @@ public class GeneralUtils {
 	
 	/**
 	 * Checks if current version of openmrs is greater or equal to 2.7.0 The aim is to try loading
-	 * ConceptReferenceRange class and one of its method, which is in version 2.7.0. If the
-	 * ConceptReferenceRange class is loaded, then the current version is greater than or equal to
-	 * 2.7.0
+	 * ConceptReferenceRange class, which is in version 2.7.0. If the ConceptReferenceRange class is
+	 * loaded, then the current version is greater than or equal to 2.7.0
 	 * 
 	 * @return true if current version is greater or equal to 2.7.0 and false otherwise
 	 * @since 1.17.0
 	 */
 	public static boolean isTwoPointSevenAndAbove() {
 		try {
-			Class<?> referenceRangeClass = Class.forName("org.openmrs.ConceptReferenceRange");
-			referenceRangeClass.getMethod("getCriteria");
-
+			Class.forName("org.openmrs.ConceptReferenceRange");
+			
 			return true;
-		} catch (NoSuchMethodException | ClassNotFoundException exception) {
+		}
+		catch (ClassNotFoundException exception) {
 			return false;
 		}
 	}
