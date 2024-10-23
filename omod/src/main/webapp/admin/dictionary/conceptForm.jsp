@@ -439,7 +439,7 @@
 			</spring:bind>
 		</td>
 	</tr>
-	<tr id="conceptSetRow">
+	<tr id="conceptSetRow" style="display: none">
 		<th valign="top"><openmrs:message code="Concept.conceptSets"/></th>
 		<td valign="top">
 			<spring:bind path="command.concept.conceptSets">
