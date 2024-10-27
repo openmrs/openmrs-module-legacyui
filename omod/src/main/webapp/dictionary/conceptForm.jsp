@@ -439,7 +439,7 @@
 			</spring:bind>
 		</td>
 	</tr>
-	<tr id="conceptSetRow" style="display: none">
+	<tr id="conceptSetRow">
 		<th valign="top"><openmrs:message code="Concept.conceptSets"/></th>
 		<td valign="top">
 			<spring:bind path="command.concept.conceptSets">
@@ -1072,6 +1072,16 @@ function resetNewTermForm(){
 	$j('#newTermErrorMsg').hide();
 	$j('#successMsg').hide();
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+        var conceptSetCheckbox = document.getElementById("conceptSet");
+        changeSetStatus(conceptSetCheckbox);
+    });
+
+    function changeSetStatus(checkbox) {
+        var conceptSetRow = document.getElementById("conceptSetRow");
+        conceptSetRow.style.display = checkbox.checked ? "" : "none";
+    }
 </script>
 </openmrs:hasPrivilege>
 
