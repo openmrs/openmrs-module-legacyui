@@ -118,7 +118,7 @@ public class PatientFormController extends PersonFormController {
 			
 			MessageSourceAccessor msa = getMessageSourceAccessor();
 			String action = WebUtil.escapeHTML(request.getParameter("action"));
-
+			
 			if (action.equals(msa.getMessage("Patient.save"))) {
 				
 				patientValidator.validate(patient, errors);
@@ -155,16 +155,18 @@ public class PatientFormController extends PersonFormController {
 							try {
 								int identifierTypeId = Integer.parseInt(idTypes[i]);
 								pi.setIdentifierType(ps.getPatientIdentifierType(identifierTypeId));
-							} catch (NumberFormatException e) {
+							}
+							catch (NumberFormatException e) {
 								errors.rejectValue("identifierType", "Invalid identifier type format");
 								return showForm(request, response, errors);
 							}
-
+							
 							if (StringUtils.isNotEmpty(locs[i])) {
 								try {
 									int locationId = Integer.parseInt(locs[i]);
 									pi.setLocation(ls.getLocation(locationId));
-								} catch (NumberFormatException e) {
+								}
+								catch (NumberFormatException e) {
 									errors.rejectValue("location", "Invalid location format");
 									return showForm(request, response, errors);
 								}
