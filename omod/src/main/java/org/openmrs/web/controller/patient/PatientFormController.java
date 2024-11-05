@@ -52,6 +52,7 @@ import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.validator.PatientIdentifierValidator;
 import org.openmrs.validator.PatientValidator;
 import org.openmrs.web.WebConstants;
+import org.openmrs.web.WebUtil;
 import org.openmrs.web.controller.person.PersonFormController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -116,8 +117,8 @@ public class PatientFormController extends PersonFormController {
 			Object[] objs = null;
 			
 			MessageSourceAccessor msa = getMessageSourceAccessor();
-			String action = request.getParameter("action");
-			
+			String action = WebUtil.escapeHTML(request.getParameter("action"));
+
 			if (action.equals(msa.getMessage("Patient.save"))) {
 				
 				patientValidator.validate(patient, errors);
@@ -150,10 +151,23 @@ public class PatientFormController extends PersonFormController {
 						String id = ids[i].trim();
 						if (!"".equals(id) && !"".equals(idTypes[i])) { //skips invalid and blank identifiers/identifierTypes
 							PatientIdentifier pi = new PatientIdentifier();
-							pi.setIdentifier(id);
-							pi.setIdentifierType(ps.getPatientIdentifierType(Integer.valueOf(idTypes[i])));
+							pi.setIdentifier(WebUtil.escapeHTML(id));
+							try {
+								int identifierTypeId = Integer.parseInt(idTypes[i]);
+								pi.setIdentifierType(ps.getPatientIdentifierType(identifierTypeId));
+							} catch (NumberFormatException e) {
+								errors.rejectValue("identifierType", "Invalid identifier type format");
+								return showForm(request, response, errors);
+							}
+
 							if (StringUtils.isNotEmpty(locs[i])) {
-								pi.setLocation(ls.getLocation(Integer.valueOf(locs[i])));
+								try {
+									int locationId = Integer.parseInt(locs[i]);
+									pi.setLocation(ls.getLocation(locationId));
+								} catch (NumberFormatException e) {
+									errors.rejectValue("location", "Invalid location format");
+									return showForm(request, response, errors);
+								}
 							}
 							if (idPrefStatus != null && idPrefStatus.length > i) {
 								pi.setPreferred(new Boolean(idPrefStatus[i]));
@@ -200,12 +214,12 @@ public class PatientFormController extends PersonFormController {
 					if (format == null) {
 						formatStr = "";
 					}
-					if (formatDescription != null && formatDescription.length() > 0) {
+					if (formatDescription != null && !formatDescription.isEmpty()) {
 						formatStr = formatDescription;
 					}
 					String[] args = { identifier, formatStr };
 					try {
-						if (format != null && format.length() > 0 && !identifier.matches(format)) {
+						if (format != null && !format.isEmpty() && !identifier.matches(format)) {
 							log.error("Identifier format is not valid: (" + format + ") " + identifier);
 							String msg = getMessageSourceAccessor().getMessage("error.identifier.formatInvalid", args);
 							errors.rejectValue("identifiers", msg);
