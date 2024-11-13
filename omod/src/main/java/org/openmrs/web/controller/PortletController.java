@@ -11,12 +11,14 @@ package org.openmrs.web.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Collections;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +41,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.legacyui.GeneralUtils;
+import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.util.StringUtils;
@@ -48,6 +51,8 @@ import org.springframework.web.servlet.mvc.Controller;
 public class PortletController implements Controller {
 	
 	protected Log log = LogFactory.getLog(this.getClass());
+	
+	private static final int DEFAULT_PAGE_SIZE = 50;
 	
 	/**
 	 * This method produces a model containing the following mappings:
@@ -97,11 +102,11 @@ public class PortletController implements Controller {
 	 */
 	@SuppressWarnings("unchecked")
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-	        IOException {
-		
+			IOException {
+
 		AdministrationService as = Context.getAdministrationService();
 		ConceptService cs = Context.getConceptService();
-		
+
 		// find the portlet that was identified in the openmrs:portlet taglib
 		Object uri = request.getAttribute("javax.servlet.include.servlet_path");
 		String portletPath = "";
@@ -112,8 +117,8 @@ public class PortletController implements Controller {
 			String lastRequestId = (String) session.getAttribute(WebConstants.OPENMRS_PORTLET_LAST_REQ_ID);
 			if (uniqueRequestId.equals(lastRequestId)) {
 				model = (Map<String, Object>) session.getAttribute(WebConstants.OPENMRS_PORTLET_CACHED_MODEL);
-				
-				// remove cached parameters 
+
+				// remove cached parameters
 				List<String> parameterKeys = (List<String>) model.get("parameterKeys");
 				if (parameterKeys != null) {
 					for (String key : parameterKeys) {
@@ -128,26 +133,27 @@ public class PortletController implements Controller {
 				session.setAttribute(WebConstants.OPENMRS_PORTLET_CACHED_MODEL, model);
 			}
 		}
-		
+
 		if (uri != null) {
 			long timeAtStart = System.currentTimeMillis();
 			portletPath = uri.toString();
-			
+
 			// Allowable extensions are '' (no extension) and '.portlet'
 			if (portletPath.endsWith("portlet")) {
 				portletPath = portletPath.replace(".portlet", "");
 			} else if (portletPath.endsWith("jsp")) {
 				throw new ServletException(
-				        "Illegal extension used for portlet: '.jsp'. Allowable extensions are '' (no extension) and '.portlet'");
+						"Illegal extension used for portlet: '.jsp'. Allowable extensions are '' (no extension) and '.portlet'");
 			}
-			
+
 			log.debug("Loading portlet: " + portletPath);
-			
+
 			String id = (String) request.getAttribute("org.openmrs.portlet.id");
 			String size = (String) request.getAttribute("org.openmrs.portlet.size");
 			Map<String, Object> params = (Map<String, Object>) request.getAttribute("org.openmrs.portlet.parameters");
-			Map<String, Object> moreParams = (Map<String, Object>) request.getAttribute("org.openmrs.portlet.parameterMap");
-			
+			Map<String, Object> moreParams = (Map<String, Object>) request
+					.getAttribute("org.openmrs.portlet.parameterMap");
+
 			model.put("now", new Date());
 			model.put("id", id);
 			model.put("size", size);
@@ -160,14 +166,15 @@ public class PortletController implements Controller {
 				parameterKeys.addAll(moreParams.keySet());
 			}
 			model.put("parameterKeys", parameterKeys); // so we can clean these up in the next request
-			
-			// if there's an authenticated user, put them, and their patient set, in the model
+
+			// if there's an authenticated user, put them, and their patient set, in the
+			// model
 			if (Context.getAuthenticatedUser() != null) {
 				model.put("authenticatedUser", Context.getAuthenticatedUser());
 			}
-			
+
 			Integer personId = null;
-			
+
 			// if a patient id is available, put patient data documented above in the model
 			Object o = request.getAttribute("org.openmrs.portlet.patientId");
 			if (o != null) {
@@ -180,88 +187,87 @@ public class PortletController implements Controller {
 					if (p.isDead()) {
 						patientVariation = "Dead";
 					}
-					
+
 					// add encounters if this user can view them
 					if (Context.hasPrivilege(PrivilegeConstants.GET_ENCOUNTERS)) {
 						model.put("patientEncounters", Context.getEncounterService().getEncountersByPatient(p));
 					}
-					
+
 					// add visits if this user can view them
 					if (Context.hasPrivilege(PrivilegeConstants.GET_VISITS)) {
-						model.put("person", p);
-						PortletControllerUtil.addFormToEditAndViewUrlMaps(model);
-						model.put("patientVisits", Context.getVisitService().getVisitsByPatient(p));
-						model.put("activeVisits", Context.getVisitService().getActiveVisitsByPatient(p));
+						// Check if visits are enabled in the system
+						String enableVisits = as.getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_ENABLE_VISITS,
+								"true");
+						if (Boolean.valueOf(enableVisits)) {
+							model.put("person", p);
+							PortletControllerUtil.addFormToEditAndViewUrlMaps(model);
+							model.put("patientVisits", Context.getVisitService().getVisitsByPatient(p));
+							model.put("activeVisits", Context.getVisitService().getActiveVisitsByPatient(p));
+						}
 					}
-					
+
 					if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
-						List<Obs> patientObs = Context.getObsService().getObservationsByPerson(p);
-						model.put("patientObs", patientObs);
+						// Get pagination parameters
+						Integer page = getPageParameter(request);
+						Integer pageSize = getPageSizeParameter(request, as);
+
+						// First, only fetch the specific concepts we need for BMI calculation
+						String weightString = as.getGlobalProperty("concept.weight");
+						String heightString = as.getGlobalProperty("concept.height");
+
+						ConceptNumeric weightConcept = null;
+						ConceptNumeric heightConcept = null;
+
+						if (StringUtils.hasLength(weightString)) {
+							weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString).getConceptId());
+						}
+						if (StringUtils.hasLength(heightString)) {
+							heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
+						}
+
+						// Get latest weight and height observations directly
 						Obs latestWeight = null;
 						Obs latestHeight = null;
-						String bmiAsString = "?";
-						try {
-							String weightString = as.getGlobalProperty("concept.weight");
-							ConceptNumeric weightConcept = null;
-							if (StringUtils.hasLength(weightString)) {
-								weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString).getConceptId());
-							}
-							String heightString = as.getGlobalProperty("concept.height");
-							ConceptNumeric heightConcept = null;
-							if (StringUtils.hasLength(heightString)) {
-								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
-							}
-							for (Obs obs : patientObs) {
-								if (obs.getConcept().equals(weightConcept)) {
-									if (latestWeight == null
-									        || obs.getObsDatetime().compareTo(latestWeight.getObsDatetime()) > 0) {
-										latestWeight = obs;
-									}
-								} else if (obs.getConcept().equals(heightConcept)
-								        && (latestHeight == null || obs.getObsDatetime().compareTo(
-								            latestHeight.getObsDatetime()) > 0)) {
-									latestHeight = obs;
-								}
-							}
-							if (latestWeight != null) {
-								model.put("patientWeight", latestWeight);
-							}
-							if (latestHeight != null) {
-								model.put("patientHeight", latestHeight);
-							}
-							if (latestWeight != null && latestHeight != null) {
-								double weightInKg;
-								double heightInM;
-								if (weightConcept.getUnits().equalsIgnoreCase("kg")) {
-									weightInKg = latestWeight.getValueNumeric();
-								} else if (weightConcept.getUnits().equalsIgnoreCase("lb")) {
-									weightInKg = latestWeight.getValueNumeric() * 0.45359237;
-								} else {
-									throw new IllegalArgumentException("Can't handle units of weight concept: "
-									        + weightConcept.getUnits());
-								}
-								if (heightConcept.getUnits().equalsIgnoreCase("cm")) {
-									heightInM = latestHeight.getValueNumeric() / 100;
-								} else if (heightConcept.getUnits().equalsIgnoreCase("m")) {
-									heightInM = latestHeight.getValueNumeric();
-								} else if (heightConcept.getUnits().equalsIgnoreCase("in")) {
-									heightInM = latestHeight.getValueNumeric() * 0.0254;
-								} else {
-									throw new IllegalArgumentException("Can't handle units of height concept: "
-									        + heightConcept.getUnits());
-								}
-								double bmi = weightInKg / (heightInM * heightInM);
-								model.put("patientBmi", bmi);
-								String temp = "" + bmi;
-								bmiAsString = temp.substring(0, temp.indexOf('.') + 2);
+
+						if (weightConcept != null) {
+							List<Obs> weightObs = Context.getObsService().getObservationsByPersonAndConcept(p,
+									weightConcept);
+							if (!weightObs.isEmpty()) {
+								latestWeight = Collections.max(weightObs, Comparator.comparing(Obs::getObsDatetime));
 							}
 						}
-						catch (Exception ex) {
-							if (latestWeight != null && latestHeight != null) {
-								log.error("Failed to calculate BMI even though a weight and height were found", ex);
+
+						if (heightConcept != null) {
+							List<Obs> heightObs = Context.getObsService().getObservationsByPersonAndConcept(p,
+									heightConcept);
+							if (!heightObs.isEmpty()) {
+								latestHeight = Collections.max(heightObs, Comparator.comparing(Obs::getObsDatetime));
 							}
 						}
+
+						// Calculate BMI if we have both measurements
+						String bmiAsString = calculateBMI(latestWeight, latestHeight, weightConcept, heightConcept);
+
+						// Get paginated observations
+						// Get all observations
+						List<Obs> allObs = Context.getObsService().getObservationsByPerson(p);
+
+						// Manual pagination
+						int startIndex = page * pageSize;
+						int endIndex = Math.min(startIndex + pageSize, allObs.size());
+						List<Obs> paginatedObs = allObs.subList(startIndex, endIndex);
+
+						// Add counts to model
+						model.put("totalObsCount", allObs.size());
+
+						// Add pagination metadata to the model
+						model.put("currentPage", page);
+						model.put("pageSize", pageSize);
+						model.put("patientObs", paginatedObs);
+						model.put("patientWeight", latestWeight);
+						model.put("patientHeight", latestHeight);
 						model.put("patientBmiAsString", bmiAsString);
+
 					} else {
 						model.put("patientObs", new HashSet<Obs>());
 					}
@@ -278,7 +284,7 @@ public class PortletController implements Controller {
 						Concept reasonForExitConcept = cs.getConcept(reasonForExitConceptString);
 						if (reasonForExitConcept != null) {
 							List<Obs> patientExitObs = Context.getObsService().getObservationsByPersonAndConcept(p,
-							    reasonForExitConcept);
+									reasonForExitConcept);
 							if (patientExitObs != null) {
 								log.debug("Exit obs is size " + patientExitObs.size());
 								if (patientExitObs.size() == 1) {
@@ -299,25 +305,27 @@ public class PortletController implements Controller {
 						}
 					}
 					model.put("patientReasonForExit", reasonForExitObs);
-					
+
 					if (Context.hasPrivilege(PrivilegeConstants.GET_PROGRAMS)
-					        && Context.hasPrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)) {
+							&& Context.hasPrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)) {
 						model.put("patientPrograms",
-						    Context.getProgramWorkflowService().getPatientPrograms(p, null, null, null, null, null, false));
+								Context.getProgramWorkflowService().getPatientPrograms(p, null, null, null, null, null,
+										false));
 						model.put(
-						    "patientCurrentPrograms",
-						    Context.getProgramWorkflowService().getPatientPrograms(p, null, null, new Date(), new Date(),
-						        null, false));
+								"patientCurrentPrograms",
+								Context.getProgramWorkflowService().getPatientPrograms(p, null, null, new Date(),
+										new Date(),
+										null, false));
 					}
-					
+
 					model.put("patientId", patientId);
 					personId = p.getPatientId();
 					model.put("personId", personId);
-					
+
 					model.put("patientVariation", patientVariation);
 				}
 			}
-			
+
 			// if a person id is available, put person and relationships in the model
 			if (personId == null) {
 				o = request.getAttribute("org.openmrs.portlet.personId");
@@ -335,8 +343,9 @@ public class PortletController implements Controller {
 					}
 					model.put("person", p);
 				}
-				
-				if (!model.containsKey("personRelationships") && Context.hasPrivilege(PrivilegeConstants.GET_RELATIONSHIPS)) {
+
+				if (!model.containsKey("personRelationships")
+						&& Context.hasPrivilege(PrivilegeConstants.GET_RELATIONSHIPS)) {
 					List<Relationship> relationships = new ArrayList<Relationship>();
 					relationships.addAll(Context.getPersonService().getRelationshipsByPerson(p));
 					Map<RelationshipType, List<Relationship>> relationshipsByType = new HashMap<RelationshipType, List<Relationship>>();
@@ -348,13 +357,14 @@ public class PortletController implements Controller {
 						}
 						list.add(rel);
 					}
-					
+
 					model.put("personRelationships", relationships);
 					model.put("personRelationshipsByType", relationshipsByType);
 				}
 			}
-			
-			// if an encounter id is available, put "encounter" and "encounterObs" in the model
+
+			// if an encounter id is available, put "encounter" and "encounterObs" in the
+			// model
 			o = request.getAttribute("org.openmrs.portlet.encounterId");
 			if (o != null && !model.containsKey("encounterId")) {
 				if (!model.containsKey("encounter") && Context.hasPrivilege(PrivilegeConstants.GET_ENCOUNTERS)) {
@@ -366,7 +376,7 @@ public class PortletController implements Controller {
 					model.put("encounterId", (Integer) o);
 				}
 			}
-			
+
 			// if a user id is available, put "user" in the model
 			o = request.getAttribute("org.openmrs.portlet.userId");
 			if (o != null && !model.containsKey("user")) {
@@ -376,7 +386,7 @@ public class PortletController implements Controller {
 				}
 				model.put("userId", (Integer) o);
 			}
-			
+
 			// if a list of patient ids is available, make a patientset out of it
 			o = request.getAttribute("org.openmrs.portlet.patientIds");
 			if (!StringUtils.isEmpty(o) && !model.containsKey("patientIds") && !model.containsKey("patientSet")) {
@@ -384,9 +394,9 @@ public class PortletController implements Controller {
 				model.put("patientSet", ps);
 				model.put("patientIds", (String) o);
 			}
-			
+
 			o = model.get("conceptIds");
-			
+
 			if (!StringUtils.isEmpty(o) && !model.containsKey("conceptMap")) {
 				log.debug("Found conceptIds parameter: " + o);
 				Map<Integer, Concept> concepts = new HashMap<Integer, Concept>();
@@ -399,22 +409,93 @@ public class PortletController implements Controller {
 						Concept c = cs.getConcept(i);
 						concepts.put(i, c);
 						conceptsByStringIds.put(i.toString(), c);
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						log.error("Error during putting int i into concept c", ex);
 					}
 				}
-				
+
 				model.put("conceptMap", concepts);
 				model.put("conceptMapByStringIds", conceptsByStringIds);
 			}
-			
+
 			populateModel(request, model);
 			log.debug(portletPath + " took " + (System.currentTimeMillis() - timeAtStart) + " ms");
 		}
-		
+
 		return new ModelAndView(portletPath, "model", model);
+
+	}
+	
+	private Integer getPageParameter(HttpServletRequest request) {
+		try {
+			return Integer.parseInt(request.getParameter("page"));
+		}
+		catch (NumberFormatException e) {
+			return 0;
+		}
+	}
+	
+	private Integer getPageSizeParameter(HttpServletRequest request, AdministrationService as) {
+		try {
+			String pageSizeParam = request.getParameter("pageSize");
+			if (pageSizeParam != null) {
+				return Integer.parseInt(pageSizeParam);
+			}
+			
+			// Try to get from global properties
+			String globalPageSize = as.getGlobalProperty("dashboard.defaultPageSize");
+			if (globalPageSize != null) {
+				return Integer.parseInt(globalPageSize);
+			}
+		}
+		catch (NumberFormatException e) {
+			log.debug("Unable to parse page size parameter, using default", e);
+		}
+		return DEFAULT_PAGE_SIZE;
+	}
+	
+	private String calculateBMI(Obs latestWeight, Obs latestHeight, ConceptNumeric weightConcept,
+	        ConceptNumeric heightConcept) {
+		if (latestWeight == null || latestHeight == null) {
+			return "?";
+		}
 		
+		try {
+			double weightInKg = convertWeight(latestWeight.getValueNumeric(), weightConcept.getUnits());
+			double heightInM = convertHeight(latestHeight.getValueNumeric(), heightConcept.getUnits());
+			
+			double bmi = weightInKg / (heightInM * heightInM);
+			String temp = String.valueOf(bmi);
+			return temp.substring(0, temp.indexOf('.') + 2);
+		}
+		catch (Exception ex) {
+			log.error("Failed to calculate BMI", ex);
+			return "?";
+		}
+	}
+	
+	private double convertWeight(double value, String units) {
+		switch (units.toLowerCase()) {
+			case "kg":
+				return value;
+			case "lb":
+				return value * 0.45359237;
+			default:
+				throw new IllegalArgumentException("Unsupported weight units: " + units);
+		}
+	}
+	
+	private double convertHeight(double value, String units) {
+		switch (units.toLowerCase()) {
+			case "cm":
+				return value / 100;
+			case "m":
+				return value;
+			case "in":
+				return value * 0.0254;
+			default:
+				throw new IllegalArgumentException("Unsupported height units: " + units);
+		}
 	}
 	
 	/**
