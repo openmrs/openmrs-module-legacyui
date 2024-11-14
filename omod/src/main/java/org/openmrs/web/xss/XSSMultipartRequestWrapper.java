@@ -30,7 +30,7 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 			return null;
 		}
 		
-		return Encode.forHtml(value);
+		return Encode.forHtmlContent(value);
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 		int count = values.length;
 		String[] encodedValues = new String[count];
 		for (int i = 0; i < count; i++) {
-			encodedValues[i] = Encode.forHtml(values[i]);
+			encodedValues[i] = Encode.forHtmlContent(values[i]);
 		}
 		
 		return encodedValues;
