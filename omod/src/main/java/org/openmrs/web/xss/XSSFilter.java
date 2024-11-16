@@ -10,42 +10,37 @@
 package org.openmrs.web.xss;
 
 import java.io.IOException;
+import java.util.Locale;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-public class XSSFilter implements Filter {
+public class XSSFilter extends OncePerRequestFilter {
 	
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-	        ServletException {
+	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+	        throws IOException, ServletException {
 		
-		if (!"GET".equalsIgnoreCase(((HttpServletRequest) request).getMethod())) {
-			if (ServletFileUpload.isMultipartContent((HttpServletRequest) request)) {
-				request = new XSSMultipartRequestWrapper((DefaultMultipartHttpServletRequest) request);
-			} else {
-				request = new XSSRequestWrapper((HttpServletRequest) request);
+		String method = request.getMethod();
+		String contentType = request.getContentType();
+		if (!"GET".equals(method) && !"OPTIONS".equals(method) && !"HEAD".equalsIgnoreCase(method) && contentType != null) {
+			if (contentType.toLowerCase(Locale.ROOT).startsWith("multipart/form-data")) {
+				if (!(request instanceof MultipartHttpServletRequest)) {
+					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+					return;
+				}
+				
+				request = new XSSMultipartRequestWrapper((MultipartHttpServletRequest) request);
+			} else if (contentType.toLowerCase(Locale.ROOT).startsWith("application/x-www-form-urlencoded")) {
+				request = new XSSRequestWrapper(request);
 			}
 		}
 		
 		chain.doFilter(request, response);
-	}
-	
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		
-	}
-	
-	@Override
-	public void destroy() {
-		
 	}
 }

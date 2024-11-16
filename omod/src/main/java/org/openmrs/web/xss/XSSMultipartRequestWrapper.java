@@ -14,17 +14,17 @@ import java.util.Enumeration;
 import org.owasp.encoder.Encode;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
-public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletRequest {
+public class XSSMultipartRequestWrapper extends StandardMultipartHttpServletRequest {
 	
-	public XSSMultipartRequestWrapper(DefaultMultipartHttpServletRequest request) {
+	public XSSMultipartRequestWrapper(MultipartHttpServletRequest request) {
 		super(request);
 	}
 	
 	@Override
 	public String getParameter(String name) {
-		
 		String value = getRequest().getParameter(name);
 		if (value == null) {
 			return null;
@@ -35,7 +35,6 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 	
 	@Override
 	public String[] getParameterValues(String name) {
-		
 		String[] values = getRequest().getParameterValues(name);
 		if (values == null) {
 			return null;
@@ -51,8 +50,8 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 	}
 	
 	@Override
-	public DefaultMultipartHttpServletRequest getRequest() {
-		return (DefaultMultipartHttpServletRequest) super.getRequest();
+	public MultipartHttpServletRequest getRequest() {
+		return (MultipartHttpServletRequest) super.getRequest();
 	}
 	
 	@Override
