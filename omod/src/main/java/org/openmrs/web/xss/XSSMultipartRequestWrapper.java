@@ -10,6 +10,7 @@
 package org.openmrs.web.xss;
 
 import java.util.Enumeration;
+import java.util.List;
 
 import org.owasp.encoder.Encode;
 import org.springframework.util.MultiValueMap;
@@ -68,5 +69,10 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 	@Override
 	public Enumeration<String> getParameterNames() {
 		return getRequest().getParameterNames();
+	}
+	
+	@Override
+	public List<MultipartFile> getFiles(String name) {
+		return getRequest().getFiles(name);
 	}
 }
