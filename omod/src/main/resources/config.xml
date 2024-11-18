@@ -386,7 +386,7 @@
 	</globalProperty>
 	<globalProperty>
 		<property>dashboard.formEntry.maximumNumberEncountersToShow</property>
-		<defaultValue></defaultValue>
+		<defaultValue />
 		<description>
 			Allows one to limit the number of encounters shown on the form entry tab of the patient dashboard specifically
 		</description>
