@@ -12,7 +12,6 @@ package org.openmrs.web.xss;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.owasp.encoder.Encode;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
@@ -31,7 +30,7 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 			return null;
 		}
 		
-		return Encode.forHtmlContent(value);
+		return XSSUtil.sanitize(this, name, value);
 	}
 	
 	@Override
@@ -45,7 +44,7 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 		int count = values.length;
 		String[] encodedValues = new String[count];
 		for (int i = 0; i < count; i++) {
-			encodedValues[i] = Encode.forHtmlContent(values[i]);
+			encodedValues[i] = XSSUtil.sanitize(this, name, values[i]);
 		}
 		
 		return encodedValues;

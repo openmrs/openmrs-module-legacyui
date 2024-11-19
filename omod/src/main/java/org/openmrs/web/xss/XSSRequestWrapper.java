@@ -37,7 +37,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 		int count = values.length;
 		String[] encodedValues = new String[count];
 		for (int i = 0; i < count; i++) {
-			encodedValues[i] = Encode.forHtml(values[i]);
+			encodedValues[i] = XSSUtil.sanitize(this, parameter, values[i]);
 		}
 		
 		return encodedValues;
@@ -51,7 +51,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 			return null;
 		}
 		
-		return Encode.forHtml(value);
+		return XSSUtil.sanitize(this, name, value);
 	}
 	
 	@Override
