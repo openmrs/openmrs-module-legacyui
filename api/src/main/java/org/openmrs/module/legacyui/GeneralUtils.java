@@ -11,6 +11,7 @@ package org.openmrs.module.legacyui;
 
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.OpenmrsConstants;
 
 public class GeneralUtils {
 	
@@ -67,5 +68,24 @@ public class GeneralUtils {
 		}
 		
 		return cpt;
+	}
+	
+	/**
+	 * Checks if current version of openmrs is greater or equal to 2.7.0 The aim is to try loading
+	 * ConceptReferenceRange class, which is in version 2.7.0. If the ConceptReferenceRange class is
+	 * loaded, then the current version is greater than or equal to 2.7.0
+	 * 
+	 * @return true if current version is greater or equal to 2.7.0 and false otherwise
+	 * @since 1.17.0
+	 */
+	public static boolean isTwoPointSevenAndAbove() {
+		try {
+			Class.forName("org.openmrs.ConceptReferenceRange");
+			
+			return true;
+		}
+		catch (ClassNotFoundException exception) {
+			return false;
+		}
 	}
 }

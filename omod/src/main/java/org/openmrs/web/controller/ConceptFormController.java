@@ -9,17 +9,21 @@
  */
 package org.openmrs.web.controller;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -54,6 +58,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.ConceptsLockedException;
 import org.openmrs.api.DuplicateConceptNameException;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.legacyui.GeneralUtils;
 import org.openmrs.module.web.extension.ConceptUsageExtension;
 import org.openmrs.module.web.extension.provider.Link;
 import org.openmrs.propertyeditor.ConceptAnswersEditor;
@@ -69,7 +74,9 @@ import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.validator.ValidateUtil;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.attribute.WebAttributeUtil;
+import org.openmrs.web.controller.concept.ConceptReferenceRange;
 import org.openmrs.web.controller.concept.ConceptReferenceTermWebValidator;
+import org.openmrs.web.controller.mappper.ConceptFormMapper;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -271,6 +278,8 @@ public class ConceptFormController extends SimpleFormController {
 					
 					validateConceptUsesPersistedObjects(concept, errors);
 					
+					new ConceptFormValidator().validateConceptReferenceRange(concept, errors);
+					
 					if (!errors.hasErrors()) {
 						if (action.equals(msa.getMessage("Concept.cancel"))) {
 							return new ModelAndView(new RedirectView("index.htm"));
@@ -406,6 +415,9 @@ public class ConceptFormController extends SimpleFormController {
 		map.put("locale", Context.getLocale()); // should be same string format as conceptNamesByLocale map keys
 		
 		map.put("attributeTypes", cs.getAllConceptAttributeTypes());
+		
+		map.put("canUseConceptReferenceRanges", GeneralUtils.isTwoPointSevenAndAbove());
+		
 		return map;
 	}
 	
@@ -458,6 +470,8 @@ public class ConceptFormController extends SimpleFormController {
 		public Map<Locale, String> preferredNamesByLocale = new HashMap<Locale, String>();
 		
 		public Collection<ConceptAttribute> activeAttributes;
+		
+		public List<ConceptReferenceRange> referenceRanges;
 		
 		/**
 		 * Default constructor must take in a Concept object to create itself
@@ -517,6 +531,10 @@ public class ConceptFormController extends SimpleFormController {
 				this.allowDecimal = cn.getAllowDecimal();
 				this.displayPrecision = cn.getDisplayPrecision();
 				this.units = cn.getUnits();
+
+				this.referenceRanges = ListUtils.lazyList(
+						new ArrayList<>(new ConceptFormMapper().mapToWebReferenceRanges(cn)),
+						FactoryUtils.instantiateFactory(ConceptReferenceRange.class));
 			} else if (concept instanceof ConceptComplex) {
 				ConceptComplex complex = (ConceptComplex) concept;
 				this.handlerKey = complex.getHandler();
@@ -662,6 +680,8 @@ public class ConceptFormController extends SimpleFormController {
 				cn.setDisplayPrecision(displayPrecision);
 				cn.setUnits(units);
 				
+				setConceptReferenceRanges(cn);
+				
 				concept = cn;
 				
 			} else if (concept.getDatatype().getName().equals("Complex")) {
@@ -676,6 +696,160 @@ public class ConceptFormController extends SimpleFormController {
 			}
 			
 			return concept;
+		}
+		
+		/**
+		 * This method sets reference ranges to concept numeric.
+		 * 
+		 * @param cn ConceptNumeric
+		 * @since 1.17.0
+		 */
+		private void setConceptReferenceRanges(ConceptNumeric cn) {
+			if (this.referenceRanges == null) {
+				return;
+			}
+			for (ConceptReferenceRange referenceRange : this.referenceRanges) {
+				if (referenceRange == null) {
+					continue;
+				}
+				
+				if (referenceRange.getId() != null) {
+					if (referenceRange.getId() <= 0) {
+						removeReferenceRange(cn, referenceRange);
+					} else {
+						updateReferenceRange(cn, referenceRange);
+					}
+				} else {
+					if (referenceRange.getHiAbsolute() != null && referenceRange.getLowAbsolute() != null) {
+						addReferenceRange(cn, referenceRange);
+					}
+				}
+			}
+		}
+		
+		/**
+		 * This method removes a reference range from conceptNumeric
+		 * 
+		 * @param cn conceptNumeric
+		 * @param referenceRange referenceRange
+		 * @since 1.17.0
+		 */
+		private void removeReferenceRange(ConceptNumeric cn, ConceptReferenceRange referenceRange) {
+			try {
+				Object platformReferenceRange = new ConceptFormMapper().mapToConceptReferenceRange(referenceRange, cn);
+				setMethodValue(cn, "removeReferenceRange", platformReferenceRange);
+			}
+			catch (Exception exception) {
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
+			}
+		}
+		
+		/**
+		 * This method adds a new reference range to conceptNumeric
+		 * 
+		 * @param cn conceptNumeric
+		 * @param referenceRange referenceRange
+		 * @since 1.17.0
+		 */
+		private void addReferenceRange(ConceptNumeric cn, ConceptReferenceRange referenceRange) {
+			referenceRange.setConceptNumeric(cn);
+			try {
+				Object platformReferenceRange = new ConceptFormMapper().mapToConceptReferenceRange(referenceRange, cn);
+				setMethodValue(cn, "addReferenceRange", platformReferenceRange);
+			}
+			catch (Exception exception) {
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
+			}
+		}
+		
+		/**
+		 * This method updates concept reference range if a field value has changed.
+		 * 
+		 * @param cn ConceptNumeric
+		 * @param referenceRange ConceptReferenceRange
+		 * @since 1.17.0
+		 */
+		public void updateReferenceRange(ConceptNumeric cn, ConceptReferenceRange referenceRange) {
+			try {
+				Set<?> existingReferenceRanges = getExistingReferenceRanges(cn);
+
+				for (Object existingRange : existingReferenceRanges) {
+					Method getIdMethod = existingRange.getClass().getMethod("getId");
+					Object idValue = getIdMethod.invoke(existingRange);
+
+					if (Objects.equals(idValue, referenceRange.getId()) && hasReferenceRangeChanged(existingRange, referenceRange)) {
+						updateReferenceRangeFields(existingRange, referenceRange);
+						break;
+					}
+				}
+			} catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
+					 ClassNotFoundException exception) {
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
+			} catch (Exception exception) {
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
+            }
+        }
+		
+		/**
+		 * This method gets the existing reference ranges
+		 * 
+		 * @param cn ConceptNumeric
+		 * @return a set of reference ranges
+		 * @since 1.17.0
+		 */
+		private Set<?> getExistingReferenceRanges(ConceptNumeric cn) {
+			try {
+				Method getReferenceRangesMethod = cn.getClass().getMethod("getReferenceRanges");
+				return (Set<?>) getReferenceRangesMethod.invoke(cn);
+			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				// Note that openMRS-core version 2.7.0 or higher is required for this functionality to work.
+				return Collections.emptySet();
+			}
+		}
+		
+		private boolean hasReferenceRangeChanged(Object existingRange, ConceptReferenceRange referenceRange)
+		        throws Exception {
+			return !Objects.equals(referenceRange.getCriteria(), getMethodValue(existingRange, "getCriteria"))
+			        || !Objects.equals(referenceRange.getHiAbsolute(), getMethodValue(existingRange, "getHiAbsolute"))
+			        || !Objects.equals(referenceRange.getHiCritical(), getMethodValue(existingRange, "getHiCritical"))
+			        || !Objects.equals(referenceRange.getHiNormal(), getMethodValue(existingRange, "getHiNormal"))
+			        || !Objects.equals(referenceRange.getLowAbsolute(), getMethodValue(existingRange, "getLowAbsolute"))
+			        || !Objects.equals(referenceRange.getLowCritical(), getMethodValue(existingRange, "getLowCritical"))
+			        || !Objects.equals(referenceRange.getLowNormal(), getMethodValue(existingRange, "getLowNormal"));
+		}
+		
+		/**
+		 * This method updates reference range fields
+		 * 
+		 * @param existingRange existing reference range
+		 * @param referenceRange the updated reference range
+		 * @throws Exception exception
+		 * @since 1.17.0
+		 */
+		private void updateReferenceRangeFields(Object existingRange, ConceptReferenceRange referenceRange) throws Exception {
+			updateField(existingRange, "setHiAbsolute", referenceRange.getHiAbsolute());
+			updateField(existingRange, "setHiCritical", referenceRange.getHiCritical());
+			updateField(existingRange, "setHiNormal", referenceRange.getHiNormal());
+			updateField(existingRange, "setLowAbsolute", referenceRange.getLowAbsolute());
+			updateField(existingRange, "setLowCritical", referenceRange.getLowCritical());
+			updateField(existingRange, "setLowNormal", referenceRange.getLowNormal());
+			updateField(existingRange, "setCriteria", referenceRange.getCriteria());
+		}
+		
+		private void updateField(Object obj, String methodName, Object value) throws Exception {
+			if (value != null) {
+				setMethodValue(obj, methodName, value);
+			}
+		}
+		
+		private Object getMethodValue(Object obj, String methodName) throws Exception {
+			Method method = obj.getClass().getMethod(methodName);
+			return method.invoke(obj);
+		}
+		
+		private void setMethodValue(Object obj, String methodName, Object value) throws Exception {
+			Method method = obj.getClass().getMethod(methodName, value.getClass());
+			method.invoke(obj, value);
 		}
 		
 		/**
@@ -936,6 +1110,36 @@ public class ConceptFormController extends SimpleFormController {
 		 */
 		public List<Form> getFormsInUse() {
 			return Context.getFormService().getFormsContainingConcept(concept);
+		}
+		
+		/**
+		 * Get reference ranges
+		 * 
+		 * @return the referenceRanges
+		 * @since 1.17.0
+		 */
+		public List<ConceptReferenceRange> getReferenceRanges() {
+			return referenceRanges;
+		}
+		
+		/**
+		 * Sets reference ranges
+		 * 
+		 * @param referenceRanges the referenceRanges to set
+		 * @since 1.17.0
+		 */
+		public void setReferenceRanges(List<ConceptReferenceRange> referenceRanges) {
+			this.referenceRanges = referenceRanges;
+		}
+		
+		/**
+		 * Adds a new reference range to the list of reference ranges
+		 * 
+		 * @param referenceRange the referenceRange to add
+		 * @since 1.17.0
+		 */
+		public void addReferenceRange(ConceptReferenceRange referenceRange) {
+			getReferenceRanges().add(referenceRange);
 		}
 		
 		/**

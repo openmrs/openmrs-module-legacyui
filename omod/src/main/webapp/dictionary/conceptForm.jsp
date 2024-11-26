@@ -78,6 +78,11 @@
 			$j(".hideableEle").hide();
 	});
 
+	$j(document).ready(function(){
+        if(${fn:length(command.referenceRanges)} == 0)
+            $j(".referenceRangeHeader").hide();
+    });
+
 </script>
 
 <script src="<openmrs:contextPath/>/dwr/interface/DWRConceptService.js"></script>
@@ -789,7 +794,7 @@
 					<td colspan="3" valign="top" align="left">
 					<c:choose>
 				           <c:when test="${sourceID != null}">
-						<input id="addMapButton" type="button" value='<openmrs:message code="Concept.mapping.add"/>' class="smallButton" 
+						<input id="addMapButton" type="button" value='<openmrs:message code="Concept.mapping.add"/>' class="smallButton"
 							   onClick="addConceptMapping(${fn:length(command.conceptMappings)})" />
 							    </c:when>
 							    <c:otherwise>
@@ -815,6 +820,65 @@
 			</table>
 		</td>
 	</tr>
+	<c:if test="${canUseConceptReferenceRanges == true}">
+        <tr id="referenceRangeRow">
+            <th valign="top" style="padding-top: 8px">
+                <openmrs:message code="Concept.referenceRanges"/> <img class="help_icon" src="${pageContext.request.contextPath}/images/help.gif" border="0" title="<openmrs:message code="Concept.referenceRanges.help"/>"/>
+            </th>
+            <td>
+                <table id="referenceTable" cellpadding="3" cellspacing="1">
+                    <tr id="headerRow" class="headerRow referenceRangeHeader">
+                        <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteHigh"/></th>
+                        <th style="text-align: center"><openmrs:message code="ConceptNumeric.absoluteLow"/></th>
+                        <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalHigh"/></th>
+                        <th style="text-align: center"><openmrs:message code="ConceptNumeric.criticalLow"/></th>
+                        <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalHigh"/></th>
+                        <th style="text-align: center"><openmrs:message code="ConceptNumeric.normalLow"/></th>
+                        <th style="text-align: center"><openmrs:message code="Concept.referenceRanges.criteria"/></th>
+                        <th class="removeButtonCol">&nbsp;</th>
+                    </tr>
+                    <c:forEach var="reference" items="${command.referenceRanges}" varStatus="status">
+                        <spring:nestedPath path="command.referenceRanges[${status.index}]">
+                            <tr id="row-${status.index}">
+                                <td><form:input type="text" size="20" path="hiAbsolute" /></td>
+                                <td><form:input type="text" size="20" path="lowAbsolute" /></td>
+                                <td><form:input type="text" size="20" path="hiNormal" /></td>
+                                <td><form:input type="text" size="20" path="lowNormal" /></td>
+                                <td><form:input type="text" size="20" path="hiCritical" /></td>
+                                <td><form:input type="text" size="20" path="lowCritical" /></td>
+                                <td><form:input type="text" size="20" path="criteria" /></td>
+                                <td>
+                                    <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeReferenceRangeElementByIndex(this, ${status.index})" />
+                                    <spring:bind path="command.referenceRanges[${status.index}]" ignoreNestedPath="true">
+                                        <c:if test="${status.errorMessage != ''}"><span class="error">${status.errorMessage}</span></c:if>
+                                    </spring:bind>
+                                </td>
+                            </tr>
+                            <input type="hidden" name="referenceRanges[${status.index}].id" id="removeMarker-${status.index}" value="${reference.id}" />
+                        </spring:nestedPath>
+                    </c:forEach>
+                    <tr id="newReferenceRange" style="display: none" varStatus="status">
+                        <td><input type="text" name="[x].hiAbsolute" size="20" /></td>
+                        <td><input type="text" name="[x].lowAbsolute" size="20" /></td>
+                        <td><input type="text" name="[x].hiCritical" size="20" /></td>
+                        <td><input type="text" name="[x].lowCritical" size="20" /></td>
+                        <td><input type="text" name="[x].hiNormal" size="20" /></td>
+                        <td><input type="text" name="[x].lowNormal" size="20" /></td>
+                        <td><input type="text" name="[x].criteria" size="20" /></td>
+                        <td>
+                            <input type="button" value='<openmrs:message code="general.remove"/>' class="smallButton" onClick="removeReferenceRangeElement(this, 'newReferenceRange')" />
+                        </td>
+                    </tr>
+                    <tr id="addButton">
+                        <td colspan="3" valign="top" align="left">
+                            <input type="button" value='<openmrs:message code="Concept.referenceRanges.add"/>' class="smallButton"
+                               onClick="addReferenceRanges(${fn:length(command.referenceRanges)})" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </c:if>
 
 	<spring:bind path="command.activeAttributes">
 		<c:if test="${status.error}">
@@ -1008,6 +1072,16 @@ function resetNewTermForm(){
 	$j('#newTermErrorMsg').hide();
 	$j('#successMsg').hide();
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+        var conceptSetCheckbox = document.getElementById("conceptSet");
+        changeSetStatus(conceptSetCheckbox);
+    });
+
+    function changeSetStatus(checkbox) {
+        var conceptSetRow = document.getElementById("conceptSetRow");
+        conceptSetRow.style.display = checkbox.checked ? "" : "none";
+    }
 </script>
 </openmrs:hasPrivilege>
 

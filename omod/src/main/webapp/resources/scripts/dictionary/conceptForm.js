@@ -169,12 +169,22 @@ customDatatypes.push("coded");
 customDatatypes.push("complex");
 
 function changeDatatype(obj) {
+    var selectedType = obj[obj.selectedIndex].text.toLowerCase();
+
 	for (var i=0; i < customDatatypes.length; i++) {
 		var row = document.getElementById(customDatatypes[i] + "DatatypeRow");
-		if (obj[obj.selectedIndex].text.toLowerCase() == customDatatypes[i])
+		if (selectedType == customDatatypes[i])
 			row.style.display = "";
 		else
 			row.style.display = "none";
+	}
+
+    var referenceRangeRow = document.getElementById("referenceRangeRow");
+
+	if (selectedType == "numeric") {
+	    referenceRangeRow.style.display = "";
+	} else {
+	    referenceRangeRow.style.display = "none";
 	}
 }
 
@@ -433,7 +443,7 @@ function addConceptMapping(initialSizeOfClonedSiblings){
 				input.id = 'term[' + index + '].name';
 			}
 		}
-		
+
 		//find the select element and set the name attribute for the conceptSource and map type
 		for (var i in selects) {
 			var select = selects[i];
@@ -451,6 +461,62 @@ function addConceptMapping(initialSizeOfClonedSiblings){
 		//set up the auto complete
 		addAutoComplete('term[' + index + '].code', 'term[' + index + '].source', inputNamePrefix+'[' + index + '].conceptReferenceTerm', 'term[' + index + '].name')
 	}
+}
+
+/**
+ * Method is invoked to add a new reference range
+ * @param initialSizeOfReferenceRanges the number of mappings on page load
+ */
+function addReferenceRanges(initialSizeOfReferenceRanges) {
+    var inputNamePrefix = 'referenceRanges';
+    var newRow = cloneElement('newReferenceRange', initialSizeOfReferenceRanges, inputNamePrefix);
+
+	if(newRow){
+		newRow.id = "";
+		var index = numberOfClonedElements['newReferenceRange'];
+		var inputs = newRow.getElementsByTagName("input");
+
+		for (var x = 0; x < inputs.length; x++) {
+			var input = inputs[x];
+
+            if (input && input.type == 'text') {
+                input.id = inputNamePrefix + '[' + index + '].' + input.name.split('.')[1]
+                input.name = inputNamePrefix + '[' + index + '].' + input.name.split('.')[1]
+            }
+		}
+
+		if(!$j("#headerRow").is(":visible"))
+            $j(".referenceRangeHeader").show();
+	}
+}
+
+/**
+ * Handles deleting and update visibility of reference range fields
+ *
+ * @param btn
+ *           the source object of event
+ * @param key
+ *           the key object for receiving the save key
+*/
+function removeReferenceRangeElement(btn, key) {
+    removeParentElement(btn.parentNode);
+    numberOfClonedElements[key]--;
+}
+
+/**
+ * Handles deleting and updating visibility of reference range fields.
+ * The removed row is marked for deletion.
+ *
+ * @param btn
+ *           the source object of event
+ * @param index
+ *           the index of the row to be deleted
+*/
+function removeReferenceRangeElementByIndex(btn, index) {
+    removeParentElement(btn.parentNode);
+    var row = document.getElementById('row-' + index);
+
+    document.getElementById('removeMarker-' + index).value = "0";
 }
 
 function addAutoComplete(displayInputId, sourceSelectElementId, hiddenElementId, nameInputId){
