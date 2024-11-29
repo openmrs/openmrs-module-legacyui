@@ -11,6 +11,7 @@ package org.openmrs.web.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.ConceptNumeric;
 import org.openmrs.Encounter;
+import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
@@ -39,6 +41,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.legacyui.GeneralUtils;
+import org.openmrs.util.OpenmrsConstants.PERSON_TYPE;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.util.StringUtils;
@@ -103,18 +106,19 @@ public class PortletController implements Controller {
 		
 		AdministrationService as = Context.getAdministrationService();
 		ConceptService cs = Context.getConceptService();
-
+		
 		// find the portlet that was identified in the openmrs:portlet taglib
 		Object uri = request.getAttribute("javax.servlet.include.servlet_path");
 		String portletPath = "";
 		Map<String, Object> model = null;
+		
 		{
 			HttpSession session = request.getSession();
 			String uniqueRequestId = (String) request.getAttribute(WebConstants.INIT_REQ_UNIQUE_ID);
 			String lastRequestId = (String) session.getAttribute(WebConstants.OPENMRS_PORTLET_LAST_REQ_ID);
 			if (uniqueRequestId.equals(lastRequestId)) {
 				model = (Map<String, Object>) session.getAttribute(WebConstants.OPENMRS_PORTLET_CACHED_MODEL);
-
+				
 				// remove cached parameters
 				List<String> parameterKeys = (List<String>) model.get("parameterKeys");
 				if (parameterKeys != null) {
@@ -130,11 +134,11 @@ public class PortletController implements Controller {
 				session.setAttribute(WebConstants.OPENMRS_PORTLET_CACHED_MODEL, model);
 			}
 		}
-
+		
 		if (uri != null) {
 			long timeAtStart = System.currentTimeMillis();
 			portletPath = uri.toString();
-
+			
 			// Allowable extensions are '' (no extension) and '.portlet'
 			if (portletPath.endsWith("portlet")) {
 				portletPath = portletPath.replace(".portlet", "");
@@ -162,7 +166,7 @@ public class PortletController implements Controller {
 				parameterKeys.addAll(moreParams.keySet());
 			}
 			model.put("parameterKeys", parameterKeys); // so we can clean these up in the next request
-	
+			
 			// if there's an authenticated user, put them, and their patient set, in the
 			// model
 			if (Context.getAuthenticatedUser() != null) {
@@ -202,18 +206,32 @@ public class PortletController implements Controller {
 						Integer page = getPageParameter(request);
 						Integer pageSize = getPageSizeParameter(request, as);
 						
-						// Get all observations
-						List<Obs> allObs = Context.getObsService().getObservationsByPerson(p);
+						Person person = (Person) p;
+						List<Person> persons = Collections.singletonList(person);
 						
-						// Manual pagination
-						int startIndex = page * pageSize;
-						int endIndex = Math.min(startIndex + pageSize, allObs.size());
-						List<Obs> paginatedObs = allObs.subList(startIndex, endIndex);
+						// Setup parameters for database-level pagination
+						List<Encounter> encounters = null;
+						List<Concept> questions = null;
+						List<Concept> answers = null;
+						List<PERSON_TYPE> personTypes = null;
+						List<Location> locations = null;
+						List<String> sort = Collections.singletonList("obsDatetime desc");
+						Integer obsGroupId = null;
+						Date fromDate = null;
+						Date toDate = null;
+						boolean includeVoided = false;
 						
-						// Add pagination metadata to the model
+						// Get observations for the current page
+						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, encounters, questions,
+						    answers, personTypes, locations, sort, null, obsGroupId, fromDate, toDate, includeVoided);
+						
+						// Get total count for pagination
+						Integer totalCount = Context.getObsService().getObservationCount(persons, encounters, questions,
+						    answers, personTypes, locations, obsGroupId, fromDate, toDate, includeVoided);
+						
 						model.put("currentPage", page);
 						model.put("pageSize", pageSize);
-						model.put("totalObsCount", allObs.size());
+						model.put("totalObsCount", totalCount);
 						model.put("patientObs", paginatedObs);
 						
 						Obs latestWeight = null;
@@ -231,27 +249,34 @@ public class PortletController implements Controller {
 								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
 							}
 							
-							// Use allObs for weight/height calculation since we need all records to find
-							// the latest
-							for (Obs obs : allObs) {
-								if (obs.getConcept().equals(weightConcept)) {
-									if (latestWeight == null
-									        || obs.getObsDatetime().compareTo(latestWeight.getObsDatetime()) > 0) {
-										latestWeight = obs;
-									}
-								} else if (obs.getConcept().equals(heightConcept)
-								        && (latestHeight == null || obs.getObsDatetime().compareTo(
-								            latestHeight.getObsDatetime()) > 0)) {
-									latestHeight = obs;
+							if (weightConcept != null) {
+								List<Concept> weightQuestions = Collections.singletonList(weightConcept);
+								List<String> weightSort = Collections.singletonList("obsDatetime desc");
+								
+								List<Obs> weightObs = Context.getObsService().getObservations(persons, null,
+								    weightQuestions, null, null, null, weightSort, 1, null, null, null, false);
+								
+								if (!weightObs.isEmpty()) {
+									latestWeight = weightObs.get(0);
 								}
 							}
-							if (latestWeight != null) {
-								model.put("patientWeight", latestWeight);
+							
+							if (heightConcept != null) {
+								List<Concept> heightQuestions = Collections.singletonList(heightConcept);
+								List<String> heightSort = Collections.singletonList("obsDatetime desc");
+								
+								List<Obs> heightObs = Context.getObsService().getObservations(persons, null,
+								    heightQuestions, null, null, null, heightSort, 1, null, null, null, false);
+								
+								if (!heightObs.isEmpty()) {
+									latestHeight = heightObs.get(0);
+								}
 							}
-							if (latestHeight != null) {
-								model.put("patientHeight", latestHeight);
-							}
+							
 							if (latestWeight != null && latestHeight != null) {
+								model.put("patientWeight", latestWeight);
+								model.put("patientHeight", latestHeight);
+								
 								double weightInKg;
 								double heightInM;
 								if (weightConcept.getUnits().equalsIgnoreCase("kg")) {
