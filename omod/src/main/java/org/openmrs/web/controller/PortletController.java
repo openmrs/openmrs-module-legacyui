@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +42,8 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.legacyui.GeneralUtils;
+import org.openmrs.parameter.EncounterSearchCriteria;
+import org.openmrs.parameter.EncounterSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants.PERSON_TYPE;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
@@ -190,7 +193,10 @@ public class PortletController implements Controller {
 					
 					// add encounters if this user can view them
 					if (Context.hasPrivilege(PrivilegeConstants.GET_ENCOUNTERS)) {
-						model.put("patientEncounters", Context.getEncounterService().getEncountersByPatient(p));
+						model.put(
+						    "patientEncounters",
+						    Context.getEncounterService().getEncounters(p.getPatientIdentifier().getIdentifier(), 0, 100,
+						        false));
 					}
 					
 					// add visits if this user can view them
@@ -202,36 +208,16 @@ public class PortletController implements Controller {
 					}
 					
 					if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
-						// Get pagination parameters
-						Integer page = getPageParameter(request);
 						Integer pageSize = getPageSizeParameter(request, as);
 						
 						Person person = (Person) p;
 						List<Person> persons = Collections.singletonList(person);
 						
-						// Setup parameters for database-level pagination
-						List<Encounter> encounters = null;
-						List<Concept> questions = null;
-						List<Concept> answers = null;
-						List<PERSON_TYPE> personTypes = null;
-						List<Location> locations = null;
-						List<String> sort = Collections.singletonList("obsDatetime desc");
-						Integer obsGroupId = null;
-						Date fromDate = null;
-						Date toDate = null;
-						boolean includeVoided = false;
+						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null,
+						    null, Collections.singletonList("obsDatetime desc"), pageSize,
+						    null, null, null, false);
 						
-						// Get observations for the current page
-						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, encounters, questions,
-						    answers, personTypes, locations, sort, null, obsGroupId, fromDate, toDate, includeVoided);
-						
-						// Get total count for pagination
-						Integer totalCount = Context.getObsService().getObservationCount(persons, encounters, questions,
-						    answers, personTypes, locations, obsGroupId, fromDate, toDate, includeVoided);
-						
-						model.put("currentPage", page);
 						model.put("pageSize", pageSize);
-						model.put("totalObsCount", totalCount);
 						model.put("patientObs", paginatedObs);
 						
 						Obs latestWeight = null;
@@ -473,15 +459,6 @@ public class PortletController implements Controller {
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
 	}
 	
-	private Integer getPageParameter(HttpServletRequest request) {
-		try {
-			return Integer.parseInt(request.getParameter("page"));
-		}
-		catch (NumberFormatException e) {
-			return 0;
-		}
-	}
-	
 	private Integer getPageSizeParameter(HttpServletRequest request, AdministrationService as) {
 		try {
 			String pageSizeParam = request.getParameter("pageSize");
@@ -489,7 +466,7 @@ public class PortletController implements Controller {
 				return Integer.parseInt(pageSizeParam);
 			}
 			
-			String globalPageSize = as.getGlobalProperty("dashboard.defaultPageSize");
+			String globalPageSize = as.getGlobalProperty("dashboard.encounters.maximumNumberToShow");
 			if (globalPageSize != null) {
 				return Integer.parseInt(globalPageSize);
 			}
