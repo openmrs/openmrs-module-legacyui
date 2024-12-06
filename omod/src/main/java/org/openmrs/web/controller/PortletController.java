@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +30,6 @@ import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.ConceptNumeric;
 import org.openmrs.Encounter;
-import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
@@ -42,9 +40,6 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.legacyui.GeneralUtils;
-import org.openmrs.parameter.EncounterSearchCriteria;
-import org.openmrs.parameter.EncounterSearchCriteriaBuilder;
-import org.openmrs.util.OpenmrsConstants.PERSON_TYPE;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.util.StringUtils;
@@ -193,7 +188,7 @@ public class PortletController implements Controller {
 					
 					// add encounters if this user can view them
 					if (Context.hasPrivilege(PrivilegeConstants.GET_ENCOUNTERS)) {
-						Integer limit = getLimitParameter(request, as);
+						Integer limit = getLimitParameter(request, as, "dashboard.encounters.maximumNumberToShow");
 						Integer startIndex = getStartIndexParameter(request);
 						
 						model.put(
@@ -211,7 +206,7 @@ public class PortletController implements Controller {
 					}
 					
 					if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
-						Integer limit = getLimitParameter(request, as);
+						Integer limit = getLimitParameter(request, as, "dashboard.observations.maximumNumberToShow");
 						
 						Person person = (Person) p;
 						List<Person> persons = Collections.singletonList(person);
@@ -478,14 +473,13 @@ public class PortletController implements Controller {
 		}
 	}
 	
-	private Integer getLimitParameter(HttpServletRequest request, AdministrationService as) {
+	private Integer getLimitParameter(HttpServletRequest request, AdministrationService as, String globalPropertyKey) {
 		try {
 			String limitParam = request.getParameter("limit");
 			if (limitParam != null) {
 				return Integer.parseInt(limitParam);
 			}
-			
-			String globalLimit = as.getGlobalProperty("dashboard.encounters.maximumNumberToShow");
+			String globalLimit = as.getGlobalProperty(globalPropertyKey);
 			if (globalLimit != null) {
 				return Integer.parseInt(globalLimit);
 			}
