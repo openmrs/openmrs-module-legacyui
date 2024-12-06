@@ -207,13 +207,14 @@ public class PortletController implements Controller {
 					
 					if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
 						Integer limit = getLimitParameter(request, as, "dashboard.observations.maximumNumberToShow");
+						Integer startIndex = getStartIndexParameter(request);
 						
 						Person person = (Person) p;
 						List<Person> persons = Collections.singletonList(person);
 						
 						// Get most recent observations using limit parameter
-						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null,
-						    null, Collections.singletonList("obsDatetime desc"), limit, null, null, null, false);
+						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null, null, 
+						Collections.singletonList("obsDatetime desc"), limit, startIndex, null, null, false);					
 						
 						model.put("limit", limit);
 						model.put("patientObs", paginatedObs);
