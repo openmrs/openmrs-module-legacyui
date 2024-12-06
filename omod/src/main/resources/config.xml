@@ -26,215 +26,215 @@
 	<require_version>${openmrsPlatformVersion}</require_version>
 	<!-- / Module Properties -->
 
-
+	
 	<!-- Module Activator -->
 	<activator>${project.parent.groupId}.${project.parent.artifactId}.LegacyUIActivator</activator>
-
+	
 	<dwr>
 		<allow>
-
+		
 			<create creator="new" javascript="JDate">
-				<param name="class" value="java.util.Date" />
+		<param name="class" value="java.util.Date"/>
 			</create>
 
 			<convert match="java.lang.Exception" converter="exception">
-				<param name="exclude" value="stackTrace" />
+				<param name="exclude" value="stackTrace"/>
 			</convert>
 
-			<convert converter="bean" match="org.openmrs.web.dwr.PatientListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.PersonListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.ConceptListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.ConceptDrugListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.EncounterListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.UserListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.ObsListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.FormFieldListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.FieldListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.FormListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.LocationListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.RelationshipListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.ListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.PatientProgramItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.PatientStateItem" />
-			<convert converter="bean" match="org.openmrs.PatientAddress" />
-			<convert converter="bean" match="org.openmrs.notification.web.dwr.AlertListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.EnteredField" />
+			<convert converter="bean" match="org.openmrs.web.dwr.PatientListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.PersonListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.ConceptListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.ConceptDrugListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.EncounterListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.UserListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.ObsListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.FormFieldListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.FieldListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.FormListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.LocationListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.RelationshipListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.ListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.PatientProgramItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.PatientStateItem"/>
+			<convert converter="bean" match="org.openmrs.PatientAddress"/>
+			<convert converter="bean" match="org.openmrs.notification.web.dwr.AlertListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.EnteredField"/>
 			<convert converter="bean" match="org.openmrs.Cohort">
-				<param name="exclude" value="patients" />
+				<param name="exclude" value="patients"/>
 			</convert>
-			<convert converter="bean" match="org.openmrs.web.dwr.VisitListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.ConceptReferenceTermListItem" />
-			<convert converter="bean" match="org.openmrs.web.dwr.ProviderListItem" />
-
+			<convert converter="bean" match="org.openmrs.web.dwr.VisitListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.ConceptReferenceTermListItem"/>
+			<convert converter="bean" match="org.openmrs.web.dwr.ProviderListItem"/>
+			
 			<create creator="new" javascript="DWRPatientService">
-				<param name="class" value="org.openmrs.web.dwr.DWRPatientService" />
-				<include method="findPatients" />
-				<include method="getPatient" />
-				<include method="getSimilarPatients" />
-				<include method="findDuplicatePatients" />
-				<include method="findPatientsByIdentifier" />
-				<include method="addIdentifier" />
-				<include method="exitPatientFromCare" />
-				<include method="changeHealthCenter" />
-				<include method="findCountAndPatients" />
-				<include method="findCountAndPatientsWithVoided" />
-				<include method="findBatchOfPatients" />
+				<param name="class" value="org.openmrs.web.dwr.DWRPatientService"/>
+				<include method="findPatients"/>
+				<include method="getPatient"/>
+				<include method="getSimilarPatients"/>
+				<include method="findDuplicatePatients"/>
+		<include method="findPatientsByIdentifier"/>
+				<include method="addIdentifier"/>
+				<include method="exitPatientFromCare"/>
+				<include method="changeHealthCenter"/>
+				<include method="findCountAndPatients"/>
+				<include method="findCountAndPatientsWithVoided"/>
+				<include method="findBatchOfPatients"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWRPersonService">
 				<param name="class" value="org.openmrs.web.dwr.DWRPersonService" />
-				<include method="getSimilarPeople" />
-				<include method="findPeople" />
-				<include method="findPeopleByRoles" />
-				<include method="createPerson" />
-				<include method="getPerson" />
-				<include method="findBatchOfPeopleByRoles" />
-				<include method="findCountAndPeople" />
+				<include method="getSimilarPeople"/>
+				<include method="findPeople"/>
+				<include method="findPeopleByRoles"/>
+				<include method="createPerson"/>
+				<include method="getPerson"/>
+				<include method="findBatchOfPeopleByRoles"/>
+				<include method="findCountAndPeople"/>
 			</create>
-
+	
 			<create creator="new" javascript="DWRConceptService">
-				<param name="class" value="org.openmrs.web.dwr.DWRConceptService" />
-				<include method="findConcepts" />
-				<include method="findConceptAnswers" />
-				<include method="getQuestionsForAnswer" />
-				<include method="getConceptSet" />
-				<include method="getConcept" />
-				<include method="findProposedConcepts" />
-				<include method="isValidNumericValue" />
-				<include method="getConceptNumericUnits" />
-				<include method="getDrug" />
-				<include method="getDrugs" />
-				<include method="findDrugs" />
-				<include method="getAnswersForQuestion" />
-				<include method="convertBooleanConceptToCoded" />
-				<include method="findCountAndConcepts" />
-				<include method="findBatchOfConcepts" />
-				<include method="getConceptReferenceTerm" />
-				<include method="findCountAndConceptReferenceTerms" />
-				<include method="findBatchOfConceptReferenceTerms" />
-				<include method="createConceptReferenceTerm" />
+				<param name="class" value="org.openmrs.web.dwr.DWRConceptService"/>
+				<include method="findConcepts"/>
+				<include method="findConceptAnswers"/>
+				<include method="getQuestionsForAnswer"/>
+				<include method="getConceptSet"/>
+				<include method="getConcept"/>
+				<include method="findProposedConcepts"/>
+				<include method="isValidNumericValue"/>
+				<include method="getConceptNumericUnits"/>
+				<include method="getDrug"/>
+				<include method="getDrugs"/>
+				<include method="findDrugs"/>
+				<include method="getAnswersForQuestion"/>
+				<include method="convertBooleanConceptToCoded"/>
+				<include method="findCountAndConcepts"/>
+				<include method="findBatchOfConcepts"/>
+				<include method="getConceptReferenceTerm"/>
+				<include method="findCountAndConceptReferenceTerms"/>
+				<include method="findBatchOfConceptReferenceTerms"/>
+				<include method="createConceptReferenceTerm"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWREncounterService">
 				<param name="class" value="org.openmrs.web.dwr.DWREncounterService" />
-				<include method="findEncounters" />
-				<include method="getEncounter" />
-				<include method="findLocations" />
-				<include method="getLocations" />
-				<include method="getLocation" />
-				<include method="findCountAndEncounters" />
-				<include method="findBatchOfEncounters" />
-				<include method="findBatchOfEncountersByPatient" />
-				<include method="findCountAndLocations" />
-				<include method="findBatchOfLocations" />
+				<include method="findEncounters"/>
+				<include method="getEncounter"/>
+				<include method="findLocations"/>
+				<include method="getLocations"/>
+				<include method="getLocation"/>
+				<include method="findCountAndEncounters"/>
+				<include method="findBatchOfEncounters"/>
+				<include method="findBatchOfEncountersByPatient"/>
+				<include method="findCountAndLocations"/>
+				<include method="findBatchOfLocations"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWRUserService">
-				<param name="class" value="org.openmrs.web.dwr.DWRUserService" />
-				<include method="findUsers" />
-				<include method="getAllUsers" />
-				<include method="getUser" />
+				<param name="class" value="org.openmrs.web.dwr.DWRUserService"/>
+				<include method="findUsers"/>
+				<include method="getAllUsers"/>
+				<include method="getUser"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWRObsService">
-				<param name="class" value="org.openmrs.web.dwr.DWRObsService" />
-				<include method="voidObservation" />
-				<include method="voidObservation" />
-				<include method="getObservations" />
-				<include method="createObs" />
-				<include method="createNewObs" />
-				<include method="getObsByPatientConceptEncounter" />
-				<include method="getObs" />
+				<param name="class" value="org.openmrs.web.dwr.DWRObsService"/>
+				<include method="voidObservation"/>
+				<include method="voidObservation"/>
+				<include method="getObservations"/>
+				<include method="createObs"/>
+				<include method="createNewObs"/>
+				<include method="getObsByPatientConceptEncounter"/>
+				<include method="getObs"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWRFormService">
-				<param name="class" value="org.openmrs.web.dwr.DWRFormService" />
-				<include method="getFormField" />
-				<include method="getFormFields" />
-				<include method="getField" />
-				<include method="getForms" />
-				<include method="getJSTree" />
-				<include method="findFields" />
-				<include method="findForms" />
-				<include method="findFieldsAndConcepts" />
-				<include method="saveFormField" />
-				<include method="deleteFormField" />
+				<param name="class" value="org.openmrs.web.dwr.DWRFormService"/>
+				<include method="getFormField"/>
+				<include method="getFormFields"/>
+				<include method="getField"/>
+				<include method="getForms"/>
+				<include method="getJSTree"/>
+				<include method="findFields"/>
+				<include method="findForms"/>
+				<include method="findFieldsAndConcepts"/>
+				<include method="saveFormField"/>
+				<include method="deleteFormField"/>
 			</create>
-
+	
 			<create creator="new" javascript="DWRMessageService">
-				<param name="class" value="org.openmrs.notification.web.dwr.DWRMessageService" />
-				<include method="sendFeedback" />
-				<include method="sendMessage" />
+				<param name="class" value="org.openmrs.notification.web.dwr.DWRMessageService"/>
+				<include method="sendFeedback"/>
+				<include method="sendMessage"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWRAlertService">
-				<param name="class" value="org.openmrs.notification.web.dwr.DWRAlertService" />
-				<include method="getAlerts" />
-				<include method="markAlertRead" />
-				<include method="markAllAlertsRead" />
-				<include method="createAlert" />
+				<param name="class" value="org.openmrs.notification.web.dwr.DWRAlertService"/>
+				<include method="getAlerts"/>
+				<include method="markAlertRead"/>
+				<include method="markAllAlertsRead"/>
+				<include method="createAlert"/>
 			</create>
-
+	
 			<create creator="new" javascript="DWRRelationshipService">
-				<param name="class" value="org.openmrs.web.dwr.DWRRelationshipService" />
-				<include method="getRelationshipTypes" />
-				<include method="getRelationshipTypeId" />
-				<include method="createRelationship" />
-				<include method="voidRelationship" />
-				<include method="changeRelationshipDates" />
-				<include method="setRelationshipTo" />
-				<include method="getRelationships" />
-				<include method="getRelationshipsToPerson" />
-				<include method="getRelationshipsFromPerson" />
+				<param name="class" value="org.openmrs.web.dwr.DWRRelationshipService"/>
+				<include method="getRelationshipTypes"/>
+				<include method="getRelationshipTypeId"/>
+				<include method="createRelationship"/>
+				<include method="voidRelationship"/>
+				<include method="changeRelationshipDates"/>
+				<include method="setRelationshipTo"/>
+				<include method="getRelationships"/>
+				<include method="getRelationshipsToPerson"/>
+				<include method="getRelationshipsFromPerson"/>
 			</create>
 
 			<create creator="new" javascript="DWRCohortService">
-				<param name="class" value="org.openmrs.web.dwr.DWRCohortService" />
-				<include method="addPatientToCohort" />
-				<include method="removePatientFromCohort" />
-				<include method="getCohorts" />
-				<include method="getCohortsContainingPatient" />
+				<param name="class" value="org.openmrs.web.dwr.DWRCohortService"/>
+				<include method="addPatientToCohort"/>
+				<include method="removePatientFromCohort"/>
+				<include method="getCohorts"/>
+				<include method="getCohortsContainingPatient"/>
 			</create>
 
 			<create creator="new" javascript="DWRAdministrationService">
-				<param name="class" value="org.openmrs.web.dwr.DWRAdministrationService" />
-				<include method="getGlobalProperty" />
-				<include method="setGlobalProperty" />
+				<param name="class" value="org.openmrs.web.dwr.DWRAdministrationService"/>
+				<include method="getGlobalProperty"/>
+				<include method="setGlobalProperty"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWRHL7Service">
-				<param name="class" value="org.openmrs.web.dwr.DWRHL7Service" />
-				<include method="startHl7ArchiveMigration" />
-				<include method="getMigrationStatus" />
-				<include method="stopHl7ArchiveMigration" />
+				<param name="class" value="org.openmrs.web.dwr.DWRHL7Service"/>
+				<include method="startHl7ArchiveMigration"/>
+				<include method="getMigrationStatus"/>
+				<include method="stopHl7ArchiveMigration"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWRVisitService">
-				<param name="class" value="org.openmrs.web.dwr.DWRVisitService" />
-				<include method="findVisitsByPatient" />
-				<include method="getVisit" />
-				<include method="findEncountersByVisit" />
+				<param name="class" value="org.openmrs.web.dwr.DWRVisitService"/>
+				<include method="findVisitsByPatient"/>
+				<include method="getVisit"/>
+				<include method="findEncountersByVisit"/>
 			</create>
-
+			
 			<create creator="new" javascript="DWRProviderService">
-				<param name="class" value="org.openmrs.web.dwr.DWRProviderService" />
-				<include method="findProviderCountAndProvider" />
-				<include method="findProvider" />
-				<include method="getProvider" />
+				<param name="class" value="org.openmrs.web.dwr.DWRProviderService"/>
+				<include method="findProviderCountAndProvider"/>
+				<include method="findProvider"/>
+				<include method="getProvider"/>
 			</create>
 
 			<create creator="new" javascript="DWRProgramWorkflowService">
-				<param name="class" value="org.openmrs.web.dwr.DWRProgramWorkflowService" />
-				<include method="getPatientProgram" />
-				<include method="getPatientStates" />
-				<include method="updatePatientProgram" />
-				<include method="deletePatientProgram" />
-				<include method="getPossibleNextStates" />
-				<include method="changeToState" />
-				<include method="voidLastState" />
-				<include method="getWorkflowsByProgram" />
-				<include method="getStatesByWorkflow" />
-				<include method="getPossibleOutcomes" />
+				<param name="class" value="org.openmrs.web.dwr.DWRProgramWorkflowService"/>
+				<include method="getPatientProgram"/>
+				<include method="getPatientStates"/>
+				<include method="updatePatientProgram"/>
+				<include method="deletePatientProgram"/>
+				<include method="getPossibleNextStates"/>
+				<include method="changeToState"/>
+				<include method="voidLastState"/>
+				<include method="getWorkflowsByProgram"/>
+				<include method="getStatesByWorkflow"/>
+				<include method="getPossibleOutcomes"/>
 			</create>
 
 		</allow>
@@ -323,8 +323,8 @@
 		<servlet-class>org.openmrs.web.servlet.QuickReportServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>complexObsServlet</servlet-name>
-		<servlet-class>org.openmrs.web.servlet.ComplexObsServlet</servlet-class>
+	<servlet-name>complexObsServlet</servlet-name>
+	<servlet-class>org.openmrs.web.servlet.ComplexObsServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>sampleFlowsheetServlet</servlet-name>
@@ -338,14 +338,14 @@
 		<servlet-name>dwr-invoker</servlet-name>
 		<servlet-class>org.openmrs.web.dwr.OpenmrsDWRServlet</servlet-class>
 	</servlet>
-
+	
 	<filter>
-		<filter-name>dwrFilter</filter-name>
-		<filter-class>org.openmrs.web.dwr.DwrFilter</filter-class>
+		<filter-name>dwrFilter</filter-name> 
+		<filter-class>org.openmrs.web.dwr.DwrFilter</filter-class> 
 	</filter>
 	<filter-mapping>
-		<filter-name>dwrFilter</filter-name>
-		<url-pattern>/dwr/*</url-pattern>
+		<filter-name>dwrFilter</filter-name> 
+		<url-pattern>/dwr/*</url-pattern> 
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>dwrFilter</filter-name>
@@ -367,7 +367,7 @@
 		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
-	
+
 	<globalProperty>
 		<property>legacyui.enableExitFromCare</property>
 		<defaultValue>false</defaultValue>
