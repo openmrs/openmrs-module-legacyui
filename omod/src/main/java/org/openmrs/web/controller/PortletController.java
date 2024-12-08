@@ -191,10 +191,8 @@ public class PortletController implements Controller {
 						Integer limit = getLimitParameter(request, as, "dashboard.encounters.maximumNumberToShow");
 						Integer startIndex = getStartIndexParameter(request);
 						
-						model.put(
-						    "patientEncounters",
-						    Context.getEncounterService().getEncounters(p.getPatientIdentifier().getIdentifier(),
-						        startIndex, limit, false));
+						model.put("patientEncounters",
+						    Context.getEncounterService().getEncounters(null, p.getPatientId(), startIndex, limit, false));
 					}
 					
 					// add visits if this user can view them
@@ -213,8 +211,8 @@ public class PortletController implements Controller {
 						List<Person> persons = Collections.singletonList(person);
 						
 						// Get most recent observations using limit parameter
-						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null, null, 
-						Collections.singletonList("obsDatetime desc"), limit, startIndex, null, null, false);					
+						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null,
+						    null, Collections.singletonList("obsDatetime desc"), limit, startIndex, null, null, false);
 						
 						model.put("limit", limit);
 						model.put("patientObs", paginatedObs);
@@ -467,21 +465,26 @@ public class PortletController implements Controller {
 	
 	private Integer getStartIndexParameter(HttpServletRequest request) {
 		try {
-			return Integer.parseInt(request.getParameter("startIndex"));
+			String startIndexParam = request.getParameter("startIndex");
+			if (StringUtils.hasText(startIndexParam)) {
+				return Integer.parseInt(startIndexParam);
+			}
 		}
 		catch (NumberFormatException e) {
-			return 0; // Return first page if not specified
+			log.debug("Unable to parse startIndex parameter, using default", e);
 		}
+		return 0; // Return first page if not specified or invalid
 	}
 	
 	private Integer getLimitParameter(HttpServletRequest request, AdministrationService as, String globalPropertyKey) {
 		try {
 			String limitParam = request.getParameter("limit");
-			if (limitParam != null) {
+			if (StringUtils.hasText(limitParam)) {
 				return Integer.parseInt(limitParam);
 			}
+			
 			String globalLimit = as.getGlobalProperty(globalPropertyKey);
-			if (globalLimit != null) {
+			if (StringUtils.hasText(globalLimit)) {
 				return Integer.parseInt(globalLimit);
 			}
 		}
