@@ -11,6 +11,7 @@ package org.openmrs.web.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +49,8 @@ import org.springframework.web.servlet.mvc.Controller;
 public class PortletController implements Controller {
 	
 	protected Log log = LogFactory.getLog(this.getClass());
+	
+	private static final int DEFAULT_PAGE_SIZE = 50;
 	
 	/**
 	 * This method produces a model containing the following mappings:
@@ -106,6 +109,7 @@ public class PortletController implements Controller {
 		Object uri = request.getAttribute("javax.servlet.include.servlet_path");
 		String portletPath = "";
 		Map<String, Object> model = null;
+		
 		{
 			HttpSession session = request.getSession();
 			String uniqueRequestId = (String) request.getAttribute(WebConstants.INIT_REQ_UNIQUE_ID);
@@ -113,7 +117,7 @@ public class PortletController implements Controller {
 			if (uniqueRequestId.equals(lastRequestId)) {
 				model = (Map<String, Object>) session.getAttribute(WebConstants.OPENMRS_PORTLET_CACHED_MODEL);
 				
-				// remove cached parameters 
+				// remove cached parameters
 				List<String> parameterKeys = (List<String>) model.get("parameterKeys");
 				if (parameterKeys != null) {
 					for (String key : parameterKeys) {
@@ -161,7 +165,8 @@ public class PortletController implements Controller {
 			}
 			model.put("parameterKeys", parameterKeys); // so we can clean these up in the next request
 			
-			// if there's an authenticated user, put them, and their patient set, in the model
+			// if there's an authenticated user, put them, and their patient set, in the
+			// model
 			if (Context.getAuthenticatedUser() != null) {
 				model.put("authenticatedUser", Context.getAuthenticatedUser());
 			}
@@ -183,7 +188,11 @@ public class PortletController implements Controller {
 					
 					// add encounters if this user can view them
 					if (Context.hasPrivilege(PrivilegeConstants.GET_ENCOUNTERS)) {
-						model.put("patientEncounters", Context.getEncounterService().getEncountersByPatient(p));
+						Integer limit = getLimitParameter(request, as, "dashboard.encounters.maximumNumberToShow");
+						Integer startIndex = getStartIndexParameter(request);
+						
+						model.put("patientEncounters",
+						    Context.getEncounterService().getEncounters(null, p.getPatientId(), startIndex, limit, false));
 					}
 					
 					// add visits if this user can view them
@@ -195,23 +204,42 @@ public class PortletController implements Controller {
 					}
 					
 					if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
-						List<Obs> patientObs = Context.getObsService().getObservationsByPerson(p);
-						model.put("patientObs", patientObs);
+						Integer limit = getLimitParameter(request, as, "dashboard.observations.maximumNumberToShow");
+						Integer startIndex = getStartIndexParameter(request);
+						
+						Person person = (Person) p;
+						List<Person> persons = Collections.singletonList(person);
+						
+						// Get paginated observations
+						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null,
+						    null, Collections.singletonList("obsDatetime desc"), limit, startIndex, null, null, false);
+						
+						// Get all observations for BMI calculation
+						List<Obs> allObs = Context.getObsService().getObservations(persons, null, null, null, null, null,
+						    null, null, null, null, null, false);
+						
+						model.put("patientObs", paginatedObs);
+						
+						// Handle BMI calculation
 						Obs latestWeight = null;
 						Obs latestHeight = null;
 						String bmiAsString = "?";
+						
 						try {
 							String weightString = as.getGlobalProperty("concept.weight");
 							ConceptNumeric weightConcept = null;
 							if (StringUtils.hasLength(weightString)) {
 								weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString).getConceptId());
 							}
+							
 							String heightString = as.getGlobalProperty("concept.height");
 							ConceptNumeric heightConcept = null;
 							if (StringUtils.hasLength(heightString)) {
 								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
 							}
-							for (Obs obs : patientObs) {
+							
+							// Find weight and height from all observations
+							for (Obs obs : allObs) {
 								if (obs.getConcept().equals(weightConcept)) {
 									if (latestWeight == null
 									        || obs.getObsDatetime().compareTo(latestWeight.getObsDatetime()) > 0) {
@@ -223,15 +251,18 @@ public class PortletController implements Controller {
 									latestHeight = obs;
 								}
 							}
+							
 							if (latestWeight != null) {
 								model.put("patientWeight", latestWeight);
 							}
 							if (latestHeight != null) {
 								model.put("patientHeight", latestHeight);
 							}
+							
 							if (latestWeight != null && latestHeight != null) {
 								double weightInKg;
 								double heightInM;
+								
 								if (weightConcept.getUnits().equalsIgnoreCase("kg")) {
 									weightInKg = latestWeight.getValueNumeric();
 								} else if (weightConcept.getUnits().equalsIgnoreCase("lb")) {
@@ -240,6 +271,7 @@ public class PortletController implements Controller {
 									throw new IllegalArgumentException("Can't handle units of weight concept: "
 									        + weightConcept.getUnits());
 								}
+								
 								if (heightConcept.getUnits().equalsIgnoreCase("cm")) {
 									heightInM = latestHeight.getValueNumeric() / 100;
 								} else if (heightConcept.getUnits().equalsIgnoreCase("m")) {
@@ -250,6 +282,7 @@ public class PortletController implements Controller {
 									throw new IllegalArgumentException("Can't handle units of height concept: "
 									        + heightConcept.getUnits());
 								}
+								
 								double bmi = weightInKg / (heightInM * heightInM);
 								model.put("patientBmi", bmi);
 								String temp = "" + bmi;
@@ -261,6 +294,7 @@ public class PortletController implements Controller {
 								log.error("Failed to calculate BMI even though a weight and height were found", ex);
 							}
 						}
+						
 						model.put("patientBmiAsString", bmiAsString);
 					} else {
 						model.put("patientObs", new HashSet<Obs>());
@@ -354,7 +388,8 @@ public class PortletController implements Controller {
 				}
 			}
 			
-			// if an encounter id is available, put "encounter" and "encounterObs" in the model
+			// if an encounter id is available, put "encounter" and "encounterObs" in the
+			// model
 			o = request.getAttribute("org.openmrs.portlet.encounterId");
 			if (o != null && !model.containsKey("encounterId")) {
 				if (!model.containsKey("encounter") && Context.hasPrivilege(PrivilegeConstants.GET_ENCOUNTERS)) {
@@ -423,6 +458,37 @@ public class PortletController implements Controller {
 	 * could be null when this method is called.
 	 */
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
+	}
+	
+	private Integer getStartIndexParameter(HttpServletRequest request) {
+		try {
+			String startIndexParam = request.getParameter("startIndex");
+			if (StringUtils.hasText(startIndexParam)) {
+				return Integer.parseInt(startIndexParam);
+			}
+		}
+		catch (NumberFormatException e) {
+			log.debug("Unable to parse startIndex parameter, using default", e);
+		}
+		return 0; // Return first page if not specified or invalid
+	}
+	
+	private Integer getLimitParameter(HttpServletRequest request, AdministrationService as, String globalPropertyKey) {
+		try {
+			String limitParam = request.getParameter("limit");
+			if (StringUtils.hasText(limitParam)) {
+				return Integer.parseInt(limitParam);
+			}
+			
+			String globalLimit = as.getGlobalProperty(globalPropertyKey);
+			if (StringUtils.hasText(globalLimit)) {
+				return Integer.parseInt(globalLimit);
+			}
+		}
+		catch (NumberFormatException e) {
+			log.debug("Unable to parse limit parameter, using default", e);
+		}
+		return DEFAULT_PAGE_SIZE;
 	}
 	
 }
