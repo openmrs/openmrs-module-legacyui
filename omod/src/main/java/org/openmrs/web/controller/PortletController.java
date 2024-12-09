@@ -210,11 +210,14 @@ public class PortletController implements Controller {
 						Person person = (Person) p;
 						List<Person> persons = Collections.singletonList(person);
 						
-						// Get most recent observations using limit parameter
+						// Get paginated observations
 						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null,
 						    null, Collections.singletonList("obsDatetime desc"), limit, startIndex, null, null, false);
 						
-						model.put("limit", limit);
+						// Get all observations for BMI calculation
+						List<Obs> allObs = Context.getObsService().getObservations(persons, null, null, null, null, null,
+						    null, null, null, null, null, false);
+						
 						model.put("patientObs", paginatedObs);
 						
 						// Handle BMI calculation
@@ -235,34 +238,28 @@ public class PortletController implements Controller {
 								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
 							}
 							
-							if (weightConcept != null) {
-								List<Concept> weightQuestions = Collections.singletonList(weightConcept);
-								List<String> weightSort = Collections.singletonList("obsDatetime desc");
-								
-								List<Obs> weightObs = Context.getObsService().getObservations(persons, null,
-								    weightQuestions, null, null, null, weightSort, 1, null, null, null, false);
-								
-								if (!weightObs.isEmpty()) {
-									latestWeight = weightObs.get(0);
+							// Find weight and height from all observations
+							for (Obs obs : allObs) {
+								if (obs.getConcept().equals(weightConcept)) {
+									if (latestWeight == null
+									        || obs.getObsDatetime().compareTo(latestWeight.getObsDatetime()) > 0) {
+										latestWeight = obs;
+									}
+								} else if (obs.getConcept().equals(heightConcept)
+								        && (latestHeight == null || obs.getObsDatetime().compareTo(
+								            latestHeight.getObsDatetime()) > 0)) {
+									latestHeight = obs;
 								}
 							}
 							
-							if (heightConcept != null) {
-								List<Concept> heightQuestions = Collections.singletonList(heightConcept);
-								List<String> heightSort = Collections.singletonList("obsDatetime desc");
-								
-								List<Obs> heightObs = Context.getObsService().getObservations(persons, null,
-								    heightQuestions, null, null, null, heightSort, 1, null, null, null, false);
-								
-								if (!heightObs.isEmpty()) {
-									latestHeight = heightObs.get(0);
-								}
+							if (latestWeight != null) {
+								model.put("patientWeight", latestWeight);
+							}
+							if (latestHeight != null) {
+								model.put("patientHeight", latestHeight);
 							}
 							
 							if (latestWeight != null && latestHeight != null) {
-								model.put("patientWeight", latestWeight);
-								model.put("patientHeight", latestHeight);
-								
 								double weightInKg;
 								double heightInM;
 								
