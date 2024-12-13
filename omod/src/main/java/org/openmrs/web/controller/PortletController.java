@@ -231,20 +231,22 @@ public class PortletController implements Controller {
 							if (StringUtils.hasLength(weightString)) {
 								weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString).getConceptId());
 								List<Obs> weightObs = Context.getObsService().getObservations(persons, null,
-								    Collections.singletonList(weightConcept), null, null, null,
-								    Collections.singletonList("obsDatetime desc"), 1, null, null, null, false);
+									Collections.singletonList(weightConcept), null, null, null,
+									Collections.singletonList("obsDatetime desc"), 1, null, null, null, false);
 								if (!weightObs.isEmpty()) {
 									latestWeight = weightObs.get(0);
+									model.put("patientWeight", latestWeight);
 								}
 							}
 							
 							if (StringUtils.hasLength(heightString)) {
 								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
 								List<Obs> heightObs = Context.getObsService().getObservations(persons, null,
-								    Collections.singletonList(heightConcept), null, null, null,
-								    Collections.singletonList("obsDatetime desc"), 1, null, null, null, false);
+									Collections.singletonList(heightConcept), null, null, null,
+									Collections.singletonList("obsDatetime desc"), 1, null, null, null, false);
 								if (!heightObs.isEmpty()) {
 									latestHeight = heightObs.get(0);
+									model.put("patientHeight", latestHeight);
 								}
 							}
 							
