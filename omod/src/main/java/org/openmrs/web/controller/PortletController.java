@@ -203,6 +203,108 @@ public class PortletController implements Controller {
 						model.put("activeVisits", Context.getVisitService().getActiveVisitsByPatient(p));
 					}
 					
+					// if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
+					// 	Integer limit = getLimitParameter(request, as, "dashboard.observations.maximumNumberToShow");
+					// 	Integer startIndex = getStartIndexParameter(request);
+					
+					// 	Person person = (Person) p;
+					// 	List<Person> persons = Collections.singletonList(person);
+					
+					// 	// Get paginated observations
+					// 	String weightString = as.getGlobalProperty("concept.weight");
+					// 	String heightString = as.getGlobalProperty("concept.height");
+					// 	// List<Concept> concepts = new ArrayList<Concept>();
+					// 	// concepts.add(GeneralUtils.getConcept(weightString));
+					// 	List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null,
+					// 	    null, Collections.singletonList("obsDatetime desc"), limit, startIndex, null, null, false);
+					
+					// 	// Get all observations for BMI calculation
+					// 	List<Obs> weightObs = Context.getObsService().getObservations(persons, null, Collections.singletonList(GeneralUtils.getConcept(weightString)), null, null, null,
+					// 	Collections.singletonList("obsDatetime desc"), 1, null, null, null, false);
+					
+					// 	List<Obs> heightObs = Context.getObsService().getObservations(persons, null, Collections.singletonList(GeneralUtils.getConcept(heightString)), null, null, null,
+					// 	Collections.singletonList("obsDatetime desc"), 1, null, null, null, false);
+					
+					// 	model.put("patientObs", paginatedObs);
+					
+					// 	// Handle BMI calculation
+					// 	Obs latestWeight = weightObs.get(0);
+					// 	Obs latestHeight = heightObs.get(0);
+					// 	String bmiAsString = "?";
+					
+					// 	try {
+					// 		ConceptNumeric weightConcept = null;
+					// 		if (StringUtils.hasLength(weightString)) {
+					// 			weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString).getConceptId());
+					// 		}
+					
+					// 		ConceptNumeric heightConcept = null;
+					// 		if (StringUtils.hasLength(heightString)) {
+					// 			heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
+					// 		}
+					
+					// 		// Find weight and height from all observations
+					// 		// for (Obs obs : allObs) {
+					// 		// 	if (obs.getConcept().equals(weightConcept)) {
+					// 		// 		if (latestWeight == null
+					// 		// 		        || obs.getObsDatetime().compareTo(latestWeight.getObsDatetime()) > 0) {
+					// 		// 			latestWeight = obs;
+					// 		// 		}
+					// 		// 	} else if (obs.getConcept().equals(heightConcept)
+					// 		// 	        && (latestHeight == null || obs.getObsDatetime().compareTo(
+					// 		// 	            latestHeight.getObsDatetime()) > 0)) {
+					// 		// 		latestHeight = obs;
+					// 		// 	}
+					// 		// }
+					
+					// 		if (latestWeight != null) {
+					// 			model.put("patientWeight", latestWeight);
+					// 		}
+					// 		if (latestHeight != null) {
+					// 			model.put("patientHeight", latestHeight);
+					// 		}
+					
+					// 		if (latestWeight != null && latestHeight != null) {
+					// 			double weightInKg;
+					// 			double heightInM;
+					
+					// 			if (weightConcept.getUnits().equalsIgnoreCase("kg")) {
+					// 				weightInKg = latestWeight.getValueNumeric();
+					// 			} else if (weightConcept.getUnits().equalsIgnoreCase("lb")) {
+					// 				weightInKg = latestWeight.getValueNumeric() * 0.45359237;
+					// 			} else {
+					// 				throw new IllegalArgumentException("Can't handle units of weight concept: "
+					// 				        + weightConcept.getUnits());
+					// 			}
+					
+					// 			if (heightConcept.getUnits().equalsIgnoreCase("cm")) {
+					// 				heightInM = latestHeight.getValueNumeric() / 100;
+					// 			} else if (heightConcept.getUnits().equalsIgnoreCase("m")) {
+					// 				heightInM = latestHeight.getValueNumeric();
+					// 			} else if (heightConcept.getUnits().equalsIgnoreCase("in")) {
+					// 				heightInM = latestHeight.getValueNumeric() * 0.0254;
+					// 			} else {
+					// 				throw new IllegalArgumentException("Can't handle units of height concept: "
+					// 				        + heightConcept.getUnits());
+					// 			}
+					
+					// 			double bmi = weightInKg / (heightInM * heightInM);
+					// 			model.put("patientBmi", bmi);
+					// 			String temp = "" + bmi;
+					// 			bmiAsString = temp.substring(0, temp.indexOf('.') + 2);
+					// 		}
+					// 	}
+					// 	catch (Exception ex) {
+					// 		if (latestWeight != null && latestHeight != null) {
+					// 			log.error("Failed to calculate BMI even though a weight and height were found", ex);
+					// 		}
+					// 	}
+					
+					// 	model.put("patientBmiAsString", bmiAsString);
+					// } else {
+					// 	model.put("patientObs", new HashSet<Obs>());
+					// }
+					
 					if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
 						Integer limit = getLimitParameter(request, as, "dashboard.observations.maximumNumberToShow");
 						Integer startIndex = getStartIndexParameter(request);
@@ -210,56 +312,46 @@ public class PortletController implements Controller {
 						Person person = (Person) p;
 						List<Person> persons = Collections.singletonList(person);
 						
-						// Get paginated observations
+						// Get paginated observations for display
 						List<Obs> paginatedObs = Context.getObsService().getObservations(persons, null, null, null, null,
 						    null, Collections.singletonList("obsDatetime desc"), limit, startIndex, null, null, false);
-						
-						// Get all observations for BMI calculation
-						List<Obs> allObs = Context.getObsService().getObservations(persons, null, null, null, null, null,
-						    null, null, null, null, null, false);
 						
 						model.put("patientObs", paginatedObs);
 						
 						// Handle BMI calculation
-						Obs latestWeight = null;
-						Obs latestHeight = null;
 						String bmiAsString = "?";
 						
 						try {
 							String weightString = as.getGlobalProperty("concept.weight");
+							String heightString = as.getGlobalProperty("concept.height");
+							
 							ConceptNumeric weightConcept = null;
+							ConceptNumeric heightConcept = null;
+							Obs latestWeight = null;
+							Obs latestHeight = null;
+							
 							if (StringUtils.hasLength(weightString)) {
 								weightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(weightString).getConceptId());
-							}
-							
-							String heightString = as.getGlobalProperty("concept.height");
-							ConceptNumeric heightConcept = null;
-							if (StringUtils.hasLength(heightString)) {
-								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
-							}
-							
-							// Find weight and height from all observations
-							for (Obs obs : allObs) {
-								if (obs.getConcept().equals(weightConcept)) {
-									if (latestWeight == null
-									        || obs.getObsDatetime().compareTo(latestWeight.getObsDatetime()) > 0) {
-										latestWeight = obs;
-									}
-								} else if (obs.getConcept().equals(heightConcept)
-								        && (latestHeight == null || obs.getObsDatetime().compareTo(
-								            latestHeight.getObsDatetime()) > 0)) {
-									latestHeight = obs;
+								List<Obs> weightObs = Context.getObsService().getObservations(persons, null,
+								    Collections.singletonList(weightConcept), null, null, null,
+								    Collections.singletonList("obsDatetime desc"), 1, null, null, null, false);
+								if (!weightObs.isEmpty()) {
+									latestWeight = weightObs.get(0);
 								}
 							}
 							
-							if (latestWeight != null) {
-								model.put("patientWeight", latestWeight);
-							}
-							if (latestHeight != null) {
-								model.put("patientHeight", latestHeight);
+							if (StringUtils.hasLength(heightString)) {
+								heightConcept = cs.getConceptNumeric(GeneralUtils.getConcept(heightString).getConceptId());
+								List<Obs> heightObs = Context.getObsService().getObservations(persons, null,
+								    Collections.singletonList(heightConcept), null, null, null,
+								    Collections.singletonList("obsDatetime desc"), 1, null, null, null, false);
+								if (!heightObs.isEmpty()) {
+									latestHeight = heightObs.get(0);
+								}
 							}
 							
-							if (latestWeight != null && latestHeight != null) {
+							if (latestWeight != null && latestHeight != null && weightConcept != null
+							        && heightConcept != null) {
 								double weightInKg;
 								double heightInM;
 								
@@ -290,9 +382,7 @@ public class PortletController implements Controller {
 							}
 						}
 						catch (Exception ex) {
-							if (latestWeight != null && latestHeight != null) {
-								log.error("Failed to calculate BMI even though a weight and height were found", ex);
-							}
+							log.error("Failed to calculate BMI", ex);
 						}
 						
 						model.put("patientBmiAsString", bmiAsString);
