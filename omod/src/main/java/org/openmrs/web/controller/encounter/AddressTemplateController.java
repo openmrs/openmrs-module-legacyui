@@ -10,6 +10,7 @@
 package org.openmrs.web.controller.encounter;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.openmrs.LocationTag;
 import org.openmrs.PersonAddress;
 import org.openmrs.api.context.Context;
@@ -53,7 +54,7 @@ public class AddressTemplateController {
 			try {
 				//To test whether this is a valid conversion
 				AddressTemplate test = Context.getSerializationService().getDefaultSerializer()
-				        .deserialize(xml, AddressTemplate.class);
+				        .deserialize(StringEscapeUtils.unescapeXml(xml), AddressTemplate.class);
 				
 				List<String> requiredElements = test.getRequiredElements();
 				if (requiredElements != null) {
