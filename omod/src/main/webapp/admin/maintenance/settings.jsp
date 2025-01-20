@@ -44,7 +44,7 @@
 										<c:choose>
 											<c:when test="${fn:length(item.globalProperty.propertyValue) > 20}">
 												<form:textarea
-													path="settings[${status.index}].globalProperty.propertyValue"
+													path="settings[${status.index}].globalProperty.propertyValue" htmlEscape="false" 
 													cols="50"/></td>
 										    </c:when>
 										    <c:otherwise>
