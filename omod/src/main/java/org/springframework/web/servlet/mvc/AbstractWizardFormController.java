@@ -29,6 +29,7 @@
  */
 package org.springframework.web.servlet.mvc;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -654,7 +655,20 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * @see #PARAM_TARGET
 	 */
 	protected int getTargetPage(HttpServletRequest request, int currentPage) {
-		return WebUtils.getTargetPage(request, PARAM_TARGET, currentPage);
+		Enumeration<String> parameterNames = request.getParameterNames();
+		while (parameterNames.hasMoreElements()) {
+			String param = parameterNames.nextElement();
+			if (param.startsWith(PARAM_TARGET)) {
+				String pageStr = param.substring(PARAM_TARGET.length());
+				try {
+					return Integer.parseInt(pageStr);
+				}
+				catch (NumberFormatException e) {
+					logger.error(e);
+				}
+			}
+		}
+		return currentPage;
 	}
 	
 	/**

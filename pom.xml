@@ -51,9 +51,9 @@
 	</modules>
 	
 	<properties>
-		<openmrsPlatformVersion>2.0.0</openmrsPlatformVersion>
+		<openmrsPlatformVersion>2.7.3</openmrsPlatformVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javaCompilerVersion>1.8</javaCompilerVersion>
+        <javaCompilerVersion>21</javaCompilerVersion>
 	</properties>
 
 	<dependencyManagement>
