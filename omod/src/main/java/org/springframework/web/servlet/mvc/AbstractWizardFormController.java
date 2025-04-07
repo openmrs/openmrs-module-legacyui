@@ -42,6 +42,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import static org.springframework.web.util.WebUtils.SUBMIT_IMAGE_SUFFIXES;
+
 /**
  * Form controller for typical wizard-style workflows.
  * <p>
@@ -659,6 +661,13 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 		while (parameterNames.hasMoreElements()) {
 			String param = parameterNames.nextElement();
 			if (param.startsWith(PARAM_TARGET)) {
+				for (String suffix : SUBMIT_IMAGE_SUFFIXES) {
+					// Remove any image button suffixes (like .x or .y)
+					if (param.endsWith(suffix)) {
+						param = param.substring(0, param.length() - suffix.length());
+						break;
+					}
+				}
 				String pageStr = param.substring(PARAM_TARGET.length());
 				try {
 					return Integer.parseInt(pageStr);
