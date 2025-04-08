@@ -665,16 +665,11 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 					// Remove any image button suffixes (like .x or .y)
 					if (param.endsWith(suffix)) {
 						param = param.substring(0, param.length() - suffix.length());
-						break;
 					}
 				}
 				String pageStr = param.substring(PARAM_TARGET.length());
-				try {
-					return Integer.parseInt(pageStr);
-				}
-				catch (NumberFormatException e) {
-					logger.error(e);
-				}
+				return Integer.parseInt(pageStr);
+
 			}
 		}
 		return currentPage;

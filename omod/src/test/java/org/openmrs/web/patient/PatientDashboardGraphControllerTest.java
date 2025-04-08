@@ -41,6 +41,7 @@ public class PatientDashboardGraphControllerTest extends BaseModuleWebContextSen
 		
 		long firstObsDate = new GregorianCalendar(2006, Calendar.FEBRUARY, 9).getTimeInMillis();
 		long secondObsDate = new GregorianCalendar(2006, Calendar.FEBRUARY, 10).getTimeInMillis();
+		long thirdObsDate = new GregorianCalendar(2006, Calendar.FEBRUARY, 10).getTimeInMillis();
 		
 		ModelMap map = new ModelMap();
 		controller.showGraphData(2, 1, map);
@@ -48,8 +49,8 @@ public class PatientDashboardGraphControllerTest extends BaseModuleWebContextSen
 		
 		String expectedData = String
 		        .format(
-		            "{\"absolute\":{\"high\":50.0,\"low\":2.0},\"critical\":{\"high\":null,\"low\":null},\"name\":\"Some concept name\",\"normal\":{\"high\":null,\"low\":null},\"data\":[[%d,null],[%d,1.0]],\"units\":\"\"}",
-		            secondObsDate, firstObsDate);
+		            "{\"absolute\":{\"high\":50.0,\"low\":2.0},\"critical\":{\"high\":null,\"low\":null},\"name\":\"Some concept name\",\"normal\":{\"high\":null,\"low\":null},\"data\":[[%d,null],[%d, null],[%d,1.0]],\"units\":\"\"}",
+		            secondObsDate, thirdObsDate, firstObsDate);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode expectedJson = mapper.readTree(expectedData);

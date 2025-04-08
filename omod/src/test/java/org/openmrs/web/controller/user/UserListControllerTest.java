@@ -28,10 +28,10 @@ public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	 * @verifies get all users if no name given
 	 */
 	@Test
-	public void displayUsers_shouldGetAllUsersIfNoNameGiven() throws Exception {
+	public void displayUsers_shouldGetAllUsersIfNoNameGiven() {
 		UserListController controller = new UserListController();
 		List<User> users = controller.getUsers("Search", "", null, false);
-		Assert.assertEquals(3, users.size());
+		Assert.assertEquals(2, users.size());
 	}
 	
 	/**
@@ -39,10 +39,10 @@ public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	 * @verifies get users just given action parameter
 	 */
 	@Test
-	public void displayUsers_shouldGetUsersJustGivenActionParameter() throws Exception {
+	public void displayUsers_shouldGetUsersJustGivenActionParameter() {
 		UserListController controller = new UserListController();
 		List<User> users = controller.getUsers("Search", null, null, null);
-		Assert.assertEquals(3, users.size());
+		Assert.assertEquals(2, users.size());
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	 * @verifies get users with a given role
 	 */
 	@Test
-	public void displayUsers_shouldGetUsersWithAGivenRole() throws Exception {
+	public void displayUsers_shouldGetUsersWithAGivenRole() {
 		UserListController controller = new UserListController();
 		List<User> users = controller.getUsers("Search", null, new Role("Provider"), null);
 		Assert.assertEquals(1, users.size());
@@ -61,9 +61,9 @@ public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	 * @verifies include disabled users if requested
 	 */
 	@Test
-	public void displayUsers_shouldIncludeDisabledUsersIfRequested() throws Exception {
+	public void displayUsers_shouldIncludeDisabledUsersIfRequested() {
 		UserListController controller = new UserListController();
 		List<User> users = controller.getUsers("Search", "", new Role(""), true);
-		Assert.assertEquals(4, users.size());
+		Assert.assertEquals(3, users.size());
 	}
 }

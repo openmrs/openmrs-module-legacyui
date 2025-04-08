@@ -172,10 +172,12 @@ public class ForgotPasswordFormController extends SimpleFormController {
 						
 						try {
 							Context.addProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
+							Context.addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
 							Context.getUserService().changePassword(user, randomPassword);
 						}
 						finally {
 							Context.removeProxyPrivilege(PrivilegeConstants.EDIT_USER_PASSWORDS);
+							Context.removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
 						}
 						
 						httpSession.setAttribute("resetPassword", randomPassword);
@@ -204,7 +206,15 @@ public class ForgotPasswordFormController extends SimpleFormController {
 	public String getRandomPassword() {
 		//Password should be satisfy the minimum length if any is set, must have 1 upper case letter and 1 number
 		Integer minLength = 8;
-		String str = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GP_PASSWORD_MINIMUM_LENGTH);
+		String str;
+
+		try {
+			Context.getUserContext().addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+			str = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GP_PASSWORD_MINIMUM_LENGTH);
+		} finally {
+			Context.getUserContext().removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+		}
+
 		if (StringUtils.isNotBlank(str)) {
 			minLength = Integer.valueOf(str);
 		}
