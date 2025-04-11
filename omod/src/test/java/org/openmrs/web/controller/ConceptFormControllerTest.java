@@ -35,7 +35,9 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptAttribute;
 import org.openmrs.ConceptAttributeType;
+import org.openmrs.ConceptClass;
 import org.openmrs.ConceptComplex;
+import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptMap;
 import org.openmrs.ConceptMapType;
@@ -173,7 +175,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
-		
+		mockRequest.setParameter("concept.conceptClass", "1");
+
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
@@ -213,7 +216,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
-		
+		mockRequest.setParameter("concept.conceptClass", "1");
+
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
@@ -256,7 +260,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
 		mockRequest.setParameter("concept.datatype", "4");
-		
+		mockRequest.setParameter("concept.conceptClass", "1");
+
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
@@ -301,7 +306,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
 		mockRequest.setParameter("concept.datatype", "1");
-		
+		mockRequest.setParameter("concept.conceptClass", "1");
+
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
@@ -357,7 +363,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
 		mockRequest.setParameter("concept.datatype", "1");
-		
+		mockRequest.setParameter("concept.conceptClass", "1");
+
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
@@ -409,7 +416,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
 		mockRequest.setParameter("concept.datatype", "1");
-		
+		mockRequest.setParameter("concept.conceptClass", "1");
+
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
@@ -458,6 +466,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
 		mockRequest.setParameter("concept.datatype", "1");
+		mockRequest.setParameter("concept.conceptClass", "1");
 		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
 		assertNotNull(mav);
@@ -522,6 +531,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		concept.addName(new ConceptName(CONCEPT_NAME, britishEn));
 		concept.setShortName(new ConceptName("shortname", britishEn));
 		concept.addDescription(new ConceptDescription("some description", null));
+		concept.setDatatype(Context.getConceptService().getConceptDatatype(1));
+		concept.setConceptClass(Context.getConceptService().getConceptClass(1));
 		cs.saveConcept(concept);
 		
 		Concept actualConcept = cs.getConceptByName(CONCEPT_NAME);
@@ -573,6 +584,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		originalConceptDescription.setLocale(britishEn);
 		originalConceptDescription.setDescription(ORIGINAL_DESCRIPTION);
 		conceptToUpdate.addDescription(originalConceptDescription);
+		conceptToUpdate.setDatatype(Context.getConceptService().getConceptDatatype(1));
+		conceptToUpdate.setConceptClass(Context.getConceptService().getConceptClass(1));
 		cs.saveConcept(conceptToUpdate);
 		
 		// then submit changes through the controller
@@ -590,7 +603,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
 		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
 		mockRequest.setParameter("concept.datatype", "1");
-		
+		mockRequest.setParameter("concept.conceptClass", "1");
+
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
@@ -608,12 +622,12 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should copy numeric values into numeric concepts", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldCopyNumericValuesIntoNumericConcepts() throws Exception {
-		final Double EXPECTED_LOW_ABSOLUTE = 100.0;
+		final Double EXPECTED_LOW_ABSOLUTE = 50.0;
 		final Double EXPECTED_LOW_CRITICAL = 103.0;
 		final Double EXPECTED_LOW_NORMAL = 105.0;
 		final Double EXPECTED_HI_NORMAL = 110.0;
 		final Double EXPECTED_HI_CRITICAL = 117.0;
-		final Double EXPECTED_HI_ABSOLUTE = 120.0;
+		final Double EXPECTED_HI_ABSOLUTE = 150.0;
 		
 		ConceptService cs = Context.getConceptService();
 		
@@ -626,6 +640,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("namesByLocale[en_GB].name", "WEIGHT (KG)");
 		mockRequest.setParameter("conceptId", "5089");
 		mockRequest.setParameter("concept.datatype", "1");
+		mockRequest.setParameter("concept.conceptClass", "1");
 		mockRequest.setParameter("lowAbsolute", EXPECTED_LOW_ABSOLUTE.toString());
 		mockRequest.setParameter("lowCritical", EXPECTED_LOW_CRITICAL.toString());
 		mockRequest.setParameter("lowNormal", EXPECTED_LOW_NORMAL.toString());
@@ -926,6 +941,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("namesByLocale[en_GB].name", conceptName);
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
+		mockRequest.setParameter("concept.conceptClass", "1");
 		mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "1");
 		mockRequest.setParameter("conceptMappings[0].conceptMapType", "3");
 		
@@ -1248,7 +1264,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("concept.datatype", "1");
 		mockRequest.setParameter("attribute.1.new[0]", "2011-04-25");
-		
+		mockRequest.setParameter("concept.conceptClass", "1");
+
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());

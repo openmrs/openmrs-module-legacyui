@@ -29,6 +29,7 @@
  */
 package org.springframework.web.servlet.mvc;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,8 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
+
+import static org.springframework.web.util.WebUtils.SUBMIT_IMAGE_SUFFIXES;
 
 /**
  * Form controller for typical wizard-style workflows.
@@ -654,7 +657,22 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * @see #PARAM_TARGET
 	 */
 	protected int getTargetPage(HttpServletRequest request, int currentPage) {
-		return WebUtils.getTargetPage(request, PARAM_TARGET, currentPage);
+		Enumeration<String> parameterNames = request.getParameterNames();
+		while (parameterNames.hasMoreElements()) {
+			String param = parameterNames.nextElement();
+			if (param.startsWith(PARAM_TARGET)) {
+				for (String suffix : SUBMIT_IMAGE_SUFFIXES) {
+					// Remove any image button suffixes (like .x or .y)
+					if (param.endsWith(suffix)) {
+						param = param.substring(0, param.length() - suffix.length());
+					}
+				}
+				String pageStr = param.substring(PARAM_TARGET.length());
+				return Integer.parseInt(pageStr);
+
+			}
+		}
+		return currentPage;
 	}
 	
 	/**

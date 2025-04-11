@@ -17,13 +17,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.openmrs.Location;
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.customdatatype.datatype.MockLocationDatatype;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
 public class BaseMetadataFieldGenDatatypeHandlerTest {
 	
 	private BaseMetadataFieldGenDatatypeHandler handler = new MockLocationFieldGenDatatypeHandler();

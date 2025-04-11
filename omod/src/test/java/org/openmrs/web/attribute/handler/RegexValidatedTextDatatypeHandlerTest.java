@@ -19,23 +19,20 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.customdatatype.InvalidCustomValueException;
 import org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * Tests {@code RegexValidatedTextDatatypeHandler}.
  */
-@RunWith(PowerMockRunner.class)
 public class RegexValidatedTextDatatypeHandlerTest {
 	
 	@Rule
-	ExpectedException expectedException = ExpectedException.none();
+	public ExpectedException expectedException = ExpectedException.none();
 	
-	private RegexValidatedTextDatatypeHandler handler = new RegexValidatedTextDatatypeHandler();
+	private final RegexValidatedTextDatatypeHandler handler = new RegexValidatedTextDatatypeHandler();
 	
 	/**
 	 * @see org.openmrs.web.attribute.handler.FieldGenDatatypeHandler#getValue(CustomDatatype,
