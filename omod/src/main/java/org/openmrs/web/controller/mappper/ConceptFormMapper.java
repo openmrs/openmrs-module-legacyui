@@ -9,7 +9,6 @@
  */
 package org.openmrs.web.controller.mappper;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.ConceptNumeric;
@@ -84,7 +83,7 @@ public class ConceptFormMapper {
 
                 webReferenceRange.setConceptReferenceRangeId((Integer) referenceRange.getClass().getMethod("getConceptReferenceRangeId").invoke(referenceRange));
                 webReferenceRange.setUuid((String) referenceRange.getClass().getMethod("getUuid").invoke(referenceRange));
-                webReferenceRange.setCriteria(StringEscapeUtils.unescapeHtml4((String) referenceRange.getClass().getMethod("getCriteria").invoke(referenceRange)));
+                webReferenceRange.setCriteria((String) referenceRange.getClass().getMethod("getCriteria").invoke(referenceRange));
                 webReferenceRange.setHiAbsolute((Double) referenceRange.getClass().getMethod("getHiAbsolute").invoke(referenceRange));
                 webReferenceRange.setHiCritical((Double) referenceRange.getClass().getMethod("getHiCritical").invoke(referenceRange));
                 webReferenceRange.setHiNormal((Double) referenceRange.getClass().getMethod("getHiNormal").invoke(referenceRange));

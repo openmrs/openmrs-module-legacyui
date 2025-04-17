@@ -9,6 +9,7 @@
  */
 package org.openmrs.web.controller.concept;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.openmrs.ConceptNumeric;
 
 /**
@@ -77,7 +78,7 @@ public class ConceptReferenceRange {
 	 * @param criteria the criteria to set
 	 */
 	public void setCriteria(String criteria) {
-		this.criteria = criteria;
+		this.criteria = StringEscapeUtils.unescapeHtml4(criteria);
 	}
 	
 	/**
