@@ -217,7 +217,7 @@
 					<input type="hidden" name="moduleId" value="${module.moduleId}" />
 					<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" }' id="${module.moduleId}">
 						<c:choose>
-							<c:when test="${allowAdmin=='true' && module.mandatory == false && module.coreModule == false}">
+							<c:when test="${allowAdmin=='true' && module.mandatory == false}">
 								<td valign="top">
 									<c:choose>
 										<c:when test="${not module.started}">
