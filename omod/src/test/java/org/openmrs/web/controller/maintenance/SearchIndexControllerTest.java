@@ -29,8 +29,9 @@ import java.util.concurrent.FutureTask;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doThrow;
 
 /**
  * Tests the {@link SearchIndexController} controller
@@ -74,7 +75,7 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 		when(userContext.isAuthenticated()).thenReturn(true);
 		assertTrue(Context.getUserContext().isAuthenticated());
 		
-		Mockito.when(contextDao.updateSearchIndexAsync()).thenReturn(null);
+		when(contextDao.updateSearchIndexAsync()).thenReturn(null);
 		Map<String, Object> response = controller.rebuildSearchIndex();
 		assertEquals(true, response.get("success"));
 	}
@@ -89,7 +90,7 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 		when(userContext.isAuthenticated()).thenReturn(true);
 		assertTrue(Context.getUserContext().isAuthenticated());
 		
-		Mockito.doThrow(new RuntimeException("boom")).when(contextDao).updateSearchIndexAsync();
+		doThrow(new RuntimeException("boom")).when(contextDao).updateSearchIndexAsync();
 		Map<String, Object> response = controller.rebuildSearchIndex();
 		assertEquals(false, response.get("success"));
 	}
@@ -104,7 +105,7 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 		when(userContext.isAuthenticated()).thenReturn(false);
 		assertFalse(Context.getUserContext().isAuthenticated());
 		
-		Mockito.when(contextDao.updateSearchIndexAsync()).thenReturn(null);
+		when(contextDao.updateSearchIndexAsync()).thenReturn(null);
 		Map<String, Object> response = controller.rebuildSearchIndex();
 		assertEquals(false, response.get("success"));
 	}
@@ -115,7 +116,7 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
     public void getStatus_shouldReturnInProgressForStatusIfRebuildSearchIndexIsInProgress() throws Exception {
-        Mockito.when(contextDao.updateSearchIndexAsync()).thenAnswer((Answer<Future>) invocationOnMock -> {
+        when(contextDao.updateSearchIndexAsync()).thenAnswer((Answer<Future>) invocationOnMock -> {
             Future<String> future = mock(FutureTask.class);
             when(future.isDone()).thenReturn(false);
             return future;
@@ -131,7 +132,7 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
     public void getStatus_shouldReturnSuccessForStatusIfRebuildSearchIndexIsCompletedSuccessfully() throws Exception {
-        Mockito.when(contextDao.updateSearchIndexAsync()).thenAnswer((Answer<Future>) invocationOnMock -> {
+        when(contextDao.updateSearchIndexAsync()).thenAnswer((Answer<Future>) invocationOnMock -> {
             Future<String> future = mock(FutureTask.class);
             when(future.isDone()).thenReturn(true);
             when(future.isCancelled()).thenReturn(false);
@@ -148,7 +149,7 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
     public void getStatus_shouldReturnErrorForStatusIfRebuildSearchIndexIsCompletedUnsuccessfully() throws Exception {
-        Mockito.when(contextDao.updateSearchIndexAsync()).thenAnswer((Answer<Future>) invocationOnMock -> {
+        when(contextDao.updateSearchIndexAsync()).thenAnswer((Answer<Future>) invocationOnMock -> {
             Future<String> future = mock(FutureTask.class);
             when(future.isDone()).thenReturn(true);
             when(future.isCancelled()).thenReturn(true);
