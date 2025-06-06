@@ -12,6 +12,7 @@ stages:
     jobs:
     - Build and Test JDK 17
     - Build and Test JDK 24
+    - Build and Test JDK 8
     - Build and Test JDK 11
     - Build and Test JDK 21
 - Deploy:
@@ -88,6 +89,41 @@ Build and Test JDK 24:
         set -x
 
         export IMAGE="maven:3.9.9-amazoncorretto-24"
+
+        docker pull ${IMAGE}
+
+        docker run -v m2-repo:/root/.m2/repository -v ${PWD}:/module --rm -w="/module" ${IMAGE} bash -c 'mvn clean package && chmod -R 777 .'
+      description: Build and test
+  artifact-subscriptions: []
+Build and Test JDK 8:
+  key: BTJ8
+  tasks:
+  - script:
+      interpreter: SHELL
+      scripts:
+      - |-
+        #!/bin/bash -eu
+
+        set -x
+
+        export IMAGE=${bamboo.build.docker.image.id}
+
+        docker pull ${IMAGE}
+
+        docker run -v m2-repo:/root/.m2/repository -v ${PWD}:/module --rm -w="/module" ${IMAGE} bash -c 'chmod -R 777 .'
+      description: Resolve file permissions
+  - checkout:
+      force-clean-build: 'true'
+      description: Checkout default repository
+  - script:
+      interpreter: SHELL
+      scripts:
+      - |-
+        #!/bin/bash -eu
+
+        set -x
+
+        export IMAGE="maven:3.9.9-amazoncorretto-8"
 
         docker pull ${IMAGE}
 
