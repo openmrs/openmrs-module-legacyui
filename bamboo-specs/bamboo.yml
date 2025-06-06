@@ -276,7 +276,7 @@ Release to maven:
   artifact-subscriptions: []
 variables:
   build.docker.image.id: maven:3.9.9-amazoncorretto-21
-  maven.development.version: 2.0.0-SNAPSHOT
+  maven.development.version: 2.1.0-SNAPSHOT
   maven.release.version: 2.0.0
   refapp.distro.property: legacyuiVersion
 repositories:
