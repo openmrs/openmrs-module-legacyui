@@ -35,6 +35,29 @@
 			</td>
 		</tr>
 	</table>
+	<%--script to handle the missing properties,GP --%>>
+	
+	<script>
+	
+	window.onload = function handleMissingProperrties(){
+		var propertyValue = new GlobalProperty(globalProperty);
+		var outcomeType = dwr.util.getValue("reasonForExit");
+		if(outcomeType == ''){
+			alert("<openmrs:message code="Patient.outcome.error.noType" />");
+			return;
+		}
+		
+		else if( propertyValue === "undefined"){
+	    	
+	    	document.getElementById("patientActionsCauseOfDeath").style.display = "none";
+	    	return;
+	    }
+	    	
+	}
+	
+	
+	
+	</script>
 	<!--Copied from OpenMRS core 1.9.13
 	See https://github.com/openmrs/openmrs-core/blob/1.9.13/webapp/src/main/webapp/WEB-INF/view/portlets/patientOverview.jsp#L36
 	  -->
@@ -42,11 +65,12 @@
 		<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.patientActionsContent" type="html" parameters="patientId=${model.patient.patientId}"/> 
 	   <c:if test="${exitFromCareEnabled}">
 		<tr class="patientActionsRow">
+		<%-- removed global property--%>
 		<openmrs:globalProperty key="concept.reasonExitedCare" var="reasonExitedCare" />
 		<c:if test="${empty model.patientReasonForExit && !empty reasonExitedCare}">
 			<td id="patientActionsOutcome">
 				<div id="patientActionsOutcomeLink">					
-					<button id="cancelExitButton" onClick="return showExitForm();"><openmrs:message code="Patient.outcome.exitFromCare"/></button>
+					<button id="cancelExitButton" onClick="handleMissingProperrties();"><openmrs:message code="Patient.outcome.exitFromCare"/></button>
 				</div>
 				<div id="patientActionsOutcomeForm" style="display:none; padding: 3px; border: 1px black dashed">
 					<form method="post" id="exitForm">
@@ -58,6 +82,8 @@
 								</td>
 								<td id="patientActionsCauseOfDeath" style="display:none;">
 									<span id="patientOutcomeTextDeathCause"><openmrs:message code="Person.causeOfDeath"/></span>
+									<%-- removed global properties--%>
+									
 									<openmrs:globalProperty key="concept.causeOfDeath" var="conceptCauseOfDeath" />
 									<openmrs:globalProperty key="concept.otherNonCoded" var="conceptOther" />
 									<openmrs:fieldGen type="org.openmrs.Concept" formFieldName="causeOfDeath" val="${status.value}" parameters="showAnswers=${conceptCauseOfDeath}|showOther=${conceptOther}|otherValue=${causeOfDeathOther}" />
