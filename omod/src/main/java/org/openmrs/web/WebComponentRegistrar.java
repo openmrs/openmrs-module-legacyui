@@ -15,7 +15,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 import java.util.EnumSet;
 
-import org.directwebremoting.servlet.EfficientShutdownServletContextAttributeListener;
+import org.openmrs.contrib.dwr.servlet.EfficientShutdownServletContextAttributeListener;
 import org.openmrs.module.web.filter.AdminPageFilter;
 import org.openmrs.module.web.filter.ForcePasswordChangeFilter;
 import org.openmrs.module.web.filter.RedirectAfterLoginFilter;

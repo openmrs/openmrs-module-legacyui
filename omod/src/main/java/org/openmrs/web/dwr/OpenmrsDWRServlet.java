@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.iterators.IteratorEnumeration;
 import org.apache.commons.lang3.StringUtils;
-import org.directwebremoting.servlet.DwrServlet;
+import org.openmrs.contrib.dwr.servlet.DwrServlet;
 import org.openmrs.util.OpenmrsClassLoader;
 
 /**
