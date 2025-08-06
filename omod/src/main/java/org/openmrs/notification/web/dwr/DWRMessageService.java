@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.directwebremoting.WebContextFactory;
+import org.openmrs.contrib.dwr.WebContextFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.notification.MessageService;
 import org.openmrs.notification.NotificationConstants;
