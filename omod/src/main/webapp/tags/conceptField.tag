@@ -61,7 +61,8 @@
 
 		<c:if test="${not empty initialValue}">
 			// fetch the concept object they passed the value in of and do the normal "select" stuff
-			DWRConceptService.getConcept("${initialValue}", function(concept) { func${escapedFormFieldId}AutoCompleteOnSelect(concept); });
+			
+			DWRConceptService.getConcept(convert("${initialValue}"), function(concept) { func${escapedFormFieldId}AutoCompleteOnSelect(concept); });
 		</c:if>
 		
 		<c:if test="${not empty showAnswers}">
@@ -75,6 +76,10 @@
 		</c:if>
 		
 	})
+	
+	function convert(conc){
+		return conc.replace(/[^\d.]/g,'');	
+	}
 	
 	function func${escapedFormFieldId}AutoCompleteOnSelect(concept, item) {
 
