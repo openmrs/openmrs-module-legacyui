@@ -255,6 +255,15 @@
 				    	<argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
 				    </configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.owasp</groupId>
+					<artifactId>dependency-check-maven</artifactId>
+					<version>8.4.0</version>
+					<configuration>
+						<autoUpdate>false</autoUpdate>
+						<ossindexAnalyzerEnabled>true</ossindexAnalyzerEnabled>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>

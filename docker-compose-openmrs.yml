@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: Admin123
+      MYSQL_DATABASE: openmrs
+      MYSQL_USER: openmrs
+      MYSQL_PASSWORD: Admin123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --profiling=1
+
+  openmrs:
+    image: openmrs/openmrs-core:2.7.3
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      DB_DATABASE: openmrs
+      DB_HOST: mysql
+      DB_USERNAME: openmrs
+      DB_PASSWORD: Admin123
+      DB_PORT: 3306
+      DB_CREATE_TABLES: 'true'
+      DB_AUTO_UPDATE: 'true'
+      MODULE_WEB_ADMIN: 'true'
+      OMRS_CONFIG_CONNECTION_URL: 'jdbc:mysql://mysql:3306/openmrs?autoReconnect=true&sessionVariables=default_storage_engine=InnoDB&useUnicode=true&characterEncoding=UTF-8'
+      OMRS_DB_HOSTNAME: mysql
+      OMRS_DB_PASSWORD: Admin123
+    volumes:
+      - openmrs_data:/openmrs/data
+      - ./omod/target:/openmrs/modules
+
+volumes:
+  mysql_data:
+  openmrs_data:
