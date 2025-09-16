@@ -979,6 +979,9 @@
 		</property>
 	</bean>
 	
+    <!-- Disabled obsServiceTarget extension due to compatibility issues with OpenMRS core -->
+    <!-- This bean was causing BeanDefinitionStoreException when parent bean 'obsServiceTarget' was not available -->
+    <!--
     <bean parent="obsServiceTarget" >
         <property name="handlers">
             <map>
@@ -1005,6 +1008,7 @@
             </map>
         </property>
     </bean>
+    -->
 
 	<bean id="webEventListeners" parent="openmrsEventListeners">
 	    <property name="globalPropertyListeners">

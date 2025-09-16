@@ -1,7 +1,7 @@
 # Multi-stage build for OpenMRS Legacy UI Module with MCP integration
 
 # Stage 1: Build the module
-FROM maven:3.9-eclipse-temurin-21 AS builder
+FROM maven:3.8-openjdk-8 AS builder
 
 WORKDIR /build
 
@@ -20,7 +20,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Stage 2: Test the build
-FROM eclipse-temurin:21-jdk-alpine AS tester
+FROM openjdk:8-jdk-alpine AS tester
 
 WORKDIR /app
 
