@@ -108,7 +108,7 @@ public class DWRAlertService {
 				return true;
 			}
 			catch (Exception e) {
-				log.error("Error while creating an alert ", e);
+				log.error("Error while creating an alert", e);
 			}
 			finally {
 				Context.removeProxyPrivilege(PrivilegeConstants.MANAGE_ALERTS);

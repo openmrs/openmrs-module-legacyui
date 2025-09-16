@@ -41,6 +41,9 @@ import org.springframework.web.context.request.WebRequest;
 @SessionAttributes("locationTag")
 public class LocationTagController {
 	
+	private static final LocationTagValidator VALIDATOR = new LocationTagValidator();
+	private static final LocationTagEditor LOCATION_TAG_EDITOR = new LocationTagEditor();
+	
 	/**
 	 * Set up automatic primitive-to-class mappings
 	 * 
@@ -48,7 +51,7 @@ public class LocationTagController {
 	 */
 	@InitBinder
 	public void initBinder(WebDataBinder wdb) {
-		wdb.registerCustomEditor(LocationTag.class, new LocationTagEditor());
+		wdb.registerCustomEditor(LocationTag.class, LOCATION_TAG_EDITOR);
 	}
 	
 	/**
@@ -102,7 +105,7 @@ public class LocationTagController {
 	public String handleEditSubmission(WebRequest request, @ModelAttribute("locationTag") LocationTag locationTag,
 	        BindingResult result, SessionStatus status) {
 		
-		new LocationTagValidator().validate(locationTag, result);
+		VALIDATOR.validate(locationTag, result);
 		if (result.hasErrors()) {
 			return "/admin/locations/locationTagEdit";
 		} else {

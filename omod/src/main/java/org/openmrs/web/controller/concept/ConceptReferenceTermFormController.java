@@ -10,6 +10,7 @@
 package org.openmrs.web.controller.concept;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +40,16 @@ import org.springframework.web.context.request.WebRequest;
  */
 @Controller
 public class ConceptReferenceTermFormController {
+	
+	private static final ConceptReferenceTermValidator CONCEPT_REFERENCE_TERM_VALIDATOR = new ConceptReferenceTermValidator();
+	private static final ConceptReferenceTermWebValidator CONCEPT_REFERENCE_TERM_WEB_VALIDATOR = new ConceptReferenceTermWebValidator();
+	private static final List<ConceptReferenceTermMap> EMPTY_TERM_MAPS = new ArrayList<ConceptReferenceTermMap>();
+	
+	private static List<ConceptReferenceTermMap> createTermMapsList(Collection<ConceptReferenceTermMap> source) {
+		List<ConceptReferenceTermMap> result = new ArrayList<ConceptReferenceTermMap>();
+		result.addAll(source);
+		return result;
+	}
 	
 	/**
 	 * Logger for this class
@@ -105,11 +116,8 @@ public class ConceptReferenceTermFormController {
 		ConceptReferenceTerm conceptReferenceTerm = conceptReferenceTermModel.getConceptReferenceTerm();
 		// add all the term maps
 		//store ids of already mapped terms so that we don't map a term multiple times
-		Set<Integer> mappedTermIds = null;
+		Set<Integer> mappedTermIds = new HashSet<Integer>();
 		for (int x = 0; x < conceptReferenceTermModel.getTermMaps().size(); x++) {
-			if (mappedTermIds == null) {
-				mappedTermIds = new HashSet<Integer>();
-			}
 			ConceptReferenceTermMap map = conceptReferenceTermModel.getTermMaps().get(x);
 			
 			if (map != null && map.getTermB() != null) {
@@ -144,8 +152,8 @@ public class ConceptReferenceTermFormController {
 		if (!result.hasErrors()) {
 			try {
 				result.pushNestedPath("conceptReferenceTerm");
-				ValidationUtils.invokeValidator(new ConceptReferenceTermValidator(), conceptReferenceTerm, result);
-				ValidationUtils.invokeValidator(new ConceptReferenceTermWebValidator(), conceptReferenceTerm, result);
+				ValidationUtils.invokeValidator(CONCEPT_REFERENCE_TERM_VALIDATOR, conceptReferenceTerm, result);
+				ValidationUtils.invokeValidator(CONCEPT_REFERENCE_TERM_WEB_VALIDATOR, conceptReferenceTerm, result);
 			}
 			finally {
 				result.popNestedPath();
@@ -272,7 +280,11 @@ public class ConceptReferenceTermFormController {
 		}
 		
 		//send the user back to form
-		return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + "?conceptReferenceTermId=" + id;
+		if (id != null && id > 0) {
+			return "redirect:" + CONCEPT_REFERENCE_TERM_FORM_URL + "?conceptReferenceTermId=" + id;
+		} else {
+			return "redirect:" + FIND_CONCEPT_REFERENCE_TERM_URL;
+		}
 	}
 	
 	/**
@@ -292,15 +304,11 @@ public class ConceptReferenceTermFormController {
 		@SuppressWarnings("unchecked")
 		public ConceptReferenceTermModel(ConceptReferenceTerm conceptReferenceTerm) {
 			this.conceptReferenceTerm = conceptReferenceTerm;
-			List<ConceptReferenceTermMap> maps = null;
 			if (conceptReferenceTerm.getConceptReferenceTermMaps().size() == 0) {
-				maps = new ArrayList<ConceptReferenceTermMap>();
-				maps.add(new ConceptReferenceTermMap(null, null));
+				termMaps = EMPTY_TERM_MAPS;
 			} else {
-				maps = new ArrayList<ConceptReferenceTermMap>(conceptReferenceTerm.getConceptReferenceTermMaps());
+				termMaps = createTermMapsList(conceptReferenceTerm.getConceptReferenceTermMaps());
 			}
-			
-			termMaps = ListUtils.lazyList(maps, FactoryUtils.instantiateFactory(ConceptReferenceTermMap.class));
 		}
 		
 		/**

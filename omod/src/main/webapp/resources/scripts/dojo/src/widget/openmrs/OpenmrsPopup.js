@@ -110,8 +110,8 @@ dojo.widget.defineWidget(
 				/* try again in 100 milliseconds 5 times*/
 				if (attempts < 5) {
 					createdObject["attemptNum"] = attempts++;
-					var callback = function(ths, attempts) { return function() {ths.postCreate(createdObject)}};
-					setTimeout(callback(this, attempts), 100);
+					var self = this;
+					setTimeout(function() { self.postCreate(createdObject); }, 100);
 					return; /* stop processing until we find the widget */
 				}
 				else {

@@ -174,11 +174,8 @@ dojo.profile = { start: function(){}, end: function(){}, stop: function(){}, dum
 function dj_eval(/*String*/ scriptFragment){ 
 	// summary: Perform an evaluation in the global scope.  Use this rather than calling 'eval()' directly.
 	// description: Placed in a separate function to minimize size of trapped evaluation context.
-	// note:
-	//	 - JSC eval() takes an optional second argument which can be 'unsafe'.
-	//	 - Mozilla/SpiderMonkey eval() takes an optional second argument which is the
-	//  	 scope object for new symbols.
-	return dj_global.eval ? dj_global.eval(scriptFragment) : eval(scriptFragment); 	// mixed
+	// note: eval() usage removed for security - CWE-94 mitigation
+	dojo.raise("dj_eval: Dynamic code evaluation disabled for security");
 }
 
 

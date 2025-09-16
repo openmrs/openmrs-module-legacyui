@@ -13,6 +13,7 @@ import org.openmrs.api.context.Context;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Controller for listing all concept attribute types.
@@ -25,7 +26,7 @@ public class ConceptAttributeTypeListController {
 	/**
 	 * Show existing
 	 */
-	@RequestMapping("/admin/concepts/conceptAttributeTypes.list")
+	@RequestMapping(value = "/admin/concepts/conceptAttributeTypes.list", method = RequestMethod.GET)
 	public void list(Model model) {
 		model.addAttribute("attributeTypes", Context.getConceptService().getAllConceptAttributeTypes());
 	}
