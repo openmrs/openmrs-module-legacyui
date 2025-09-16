@@ -28,9 +28,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.openmrs.module.legacyui.api.mcp.MCPDemo;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 public class Hl7InErrorListController {
+
+	@Autowired(required = false)
+	private MCPDemo mcpDemo;
 	
 	/**
 	 * Logger for this class and subclasses
@@ -142,5 +147,36 @@ public class Hl7InErrorListController {
 		return new Object[] { q.getHL7InErrorId().toString(), q.getHL7Source().getName(),
 		        Context.getDateFormat().format(q.getDateCreated()), q.getHL7Data(), q.getError(), q.getErrorDetails() };
 	}
-	
+
+	/**
+	 * Analyze an HL7InError message using MCP
+	 *
+	 * @param id HL7InErrorId for identifying the HL7 message
+	 * @return analysis results from MCP
+	 */
+	@RequestMapping("/admin/hl7/analyzeError.json")
+	public @ResponseBody
+	Map<String, Object> analyzeError(@RequestParam("id") Integer id) {
+		if (mcpDemo == null) {
+			Map<String, Object> errorResponse = new HashMap<>();
+			errorResponse.put("error", "MCP integration not configured");
+			return errorResponse;
+		}
+
+		try {
+			HL7InError error = Context.getHL7Service().getHL7InError(id);
+			if (error == null) {
+				Map<String, Object> errorResponse = new HashMap<>();
+				errorResponse.put("error", "HL7 error not found");
+				return errorResponse;
+			}
+
+			return mcpDemo.analyzeHL7(error.getHL7Data());
+		} catch (Exception e) {
+			Map<String, Object> errorResponse = new HashMap<>();
+			errorResponse.put("error", "Analysis failed: " + e.getMessage());
+			return errorResponse;
+		}
+	}
+
 }

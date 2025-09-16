@@ -35,7 +35,10 @@
 					         "fnRender": function ( oObj ) {
 									return '<button ' +
 										'onClick="resubmitMessage(' + oObj.aData[0] + ',' + oObj.iDataRow + ')">' +
-										'<openmrs:message code="Hl7inError.errorList.restore" /></button>';
+										'<openmrs:message code="Hl7inError.errorList.restore" /></button>' +
+										' <button style="margin-left: 5px;" ' +
+										'onClick="analyzeHL7Error(' + oObj.aData[0] + ')">' +
+										'🤖 Analyze</button>';
 								}
 							},
 							{ "sName": "source", "bSortable": false },
@@ -123,6 +126,52 @@
 		$j("#popup .content").html("<pre>" + errorDetails[row] + "</pre>");
 		$j("#popup .content").highlight(hl7table.fnSettings().oPreviousSearch.sSearch);
 		$j("#popup").dialog("open");
+	}
+
+	function analyzeHL7Error(errorId) {
+		$j.ajax({
+			url: 'analyzeError.json',
+			data: { id: errorId },
+			dataType: 'json',
+			success: function(data) {
+				let html = '<div class="mcp-analysis">';
+				html += '<h3>AI Analysis</h3>';
+
+				if (data.errors && data.errors.length > 0) {
+					html += '<h4>Issues Found:</h4><ul>';
+					data.errors.forEach(function(err) {
+						html += '<li style="color:red">' + err + '</li>';
+					});
+					html += '</ul>';
+				}
+
+				if (data.suggestions && data.suggestions.length > 0) {
+					html += '<h4>Suggestions:</h4><ul>';
+					data.suggestions.forEach(function(sug) {
+						html += '<li style="color:green">✓ ' + sug + '</li>';
+					});
+					html += '</ul>';
+				}
+
+				if (data.summary) {
+					html += '<p><b>Summary:</b> ' + data.summary + '</p>';
+				}
+
+				if (data.error) {
+					html += '<p style="color:red">Error: ' + data.error + '</p>';
+				}
+
+				html += '</div>';
+
+				// Show in popup
+				$j("#popup .content").html(html);
+				$j("#popup").dialog("option", "title", "MCP HL7 Analysis");
+				$j("#popup").dialog("open");
+			},
+			error: function() {
+				alert('Analysis failed. Check MCP server.');
+			}
+		});
 	}
 
 </script>
