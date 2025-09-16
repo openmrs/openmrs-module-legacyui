@@ -96,18 +96,28 @@ fi
 
 # Validate Java code for hardcoded paths
 echo -e "\nChecking for hardcoded paths in Java code..."
-if grep -r "localhost" api/src/main/java/ | grep -v "default" | grep -v "runtime properties"; then
-    print_warning "Found potential hardcoded localhost references (check if they have fallbacks)"
+LOCALHOST_REFS=$(grep -r "localhost" api/src/main/java/ | grep -v "getProperty" | grep -v "fallback" | grep -v "//" || true)
+if [ -n "$LOCALHOST_REFS" ]; then
+    print_error "Found hardcoded localhost references without fallbacks:"
+    echo "$LOCALHOST_REFS"
 else
-    print_check "No hardcoded localhost references found in Java code"
+    print_check "Localhost references are properly handled as fallbacks"
 fi
 
-# Check for Docker environment configuration
+# Check for Docker environment detection
 if grep -q "DOCKER_ENV" api/src/main/java/org/openmrs/module/legacyui/api/mcp/MCPDemo.java; then
     print_check "Java code has Docker environment detection"
 else
     print_error "Java code missing Docker environment detection"
 fi
+
+# Check for runtime property overrides
+if grep -q "getProperty.*mcp.hl7.server.url" api/src/main/java/org/openmrs/module/legacyui/api/mcp/MCPDemo.java; then
+    print_check "Java code supports runtime property overrides"
+else
+    print_error "Java code missing runtime property override support"
+fi
+
 
 # Validate MCP server code
 echo -e "\nValidating MCP server..."
