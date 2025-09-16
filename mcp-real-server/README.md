@@ -6,6 +6,8 @@ This directory is reserved for the real MCP implementation using the official MC
 
 When `MCP_MODE=real`, the system will use this server instead of the mock server.
 
+If using docker, make sure service is enabled/uncommented
+
 ### Features to Implement
 - Official MCP SDK integration
 - JSON-RPC 2.0 protocol

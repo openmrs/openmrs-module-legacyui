@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # MCP HL7 Analysis Server (Mock Mode - Default)
+  mcp-hl7-server:
+    build:
+      context: ./mcp-hl7-demo
+      dockerfile: Dockerfile
+    container_name: mcp-hl7-analyzer
+    ports:
+      - "3000:3000"
+    networks:
+      - openmrs-net
+    environment:
+      - MCP_MODE=mock
+      - PORT=3000
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r => process.exit(r.ok ? 0 : 1))"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+
+  # Real MCP Server (Disabled by default)
+  # Uncomment to use real MCP mode
+  # mcp-hl7-real:
+  #   build:
+  #     context: ./mcp-real-server
+  #     dockerfile: Dockerfile
+  #   container_name: mcp-hl7-real
+  #   ports:
+  #     - "3001:3001"
+  #   networks:
+  #     - openmrs-net
+  #   environment:
+  #     - MCP_MODE=real
+  #     - PORT=3001
+  #   restart: unless-stopped
+
+  # Module builder (runs once to build the module)
+  module-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+      target: builder
+    container_name: legacyui-builder
+    volumes:
+      - ./docker-build:/output
+    command: sh -c "cp omod/target/*.omod /output/ && echo 'Module copied to /output'"
+    networks:
+      - openmrs-net
+
+  # Test environment - MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: openmrs-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=openmrs
+      - MYSQL_DATABASE=openmrs
+      - MYSQL_USER=openmrs
+      - MYSQL_PASSWORD=openmrs
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - openmrs-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # OpenMRS with Legacy UI Module
+  openmrs:
+    image: openmrs/openmrs-core:dev
+    container_name: openmrs-core
+    depends_on:
+      - mysql
+      - mcp-hl7-server
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=mysql
+      - DB_DATABASE=openmrs
+      - DB_USERNAME=openmrs
+      - DB_PASSWORD=openmrs
+      - DB_AUTO_UPDATE=true
+      - MODULE_WEB_ADMIN=true
+      - DOCKER_ENV=true
+      - MCP_MODE=mock
+    volumes:
+      - ./docker-build:/openmrs/distribution/openmrs_modules
+      - openmrs-data:/openmrs/data
+    networks:
+      - openmrs-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/openmrs"]
+      interval: 1m
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+networks:
+  openmrs-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  openmrs-data:

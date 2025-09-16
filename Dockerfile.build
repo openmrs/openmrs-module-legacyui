@@ -1,0 +1,45 @@
+# Multi-stage build for OpenMRS Legacy UI Module with MCP integration
+
+# Stage 1: Build the module
+FROM maven:3.9-eclipse-temurin-21 AS builder
+
+WORKDIR /build
+
+# Copy pom files first for better caching
+COPY pom.xml .
+COPY api/pom.xml api/
+COPY omod/pom.xml omod/
+
+# Download dependencies
+RUN mvn dependency:go-offline -B
+
+# Copy source code
+COPY . .
+
+# Build the module
+RUN mvn clean package -DskipTests
+
+# Stage 2: Test the build
+FROM eclipse-temurin:21-jdk-alpine AS tester
+
+WORKDIR /app
+
+# Copy the built module
+COPY --from=builder /build/omod/target/*.omod ./module.omod
+
+# Simple validation that the module was built
+RUN ls -la *.omod && \
+    echo "Module built successfully!"
+
+# Stage 3: Runtime (for testing with OpenMRS)
+FROM openmrs/openmrs-core:dev AS runtime
+
+# Copy the module to OpenMRS modules directory
+COPY --from=builder /build/omod/target/*.omod /openmrs/distribution/openmrs_modules/
+
+# Set environment variables for MCP
+ENV DOCKER_ENV=true
+ENV mcp.hl7.enabled=true
+ENV mcp.hl7.server.url=http://mcp-hl7-server:3000/analyze
+
+# Note: In production, you would configure these in runtime properties
