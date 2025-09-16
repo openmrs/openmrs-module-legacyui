@@ -1,0 +1,14 @@
+{
+  "name": "hl7-mcp-mock",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Mock MCP server for HL7 message analysis demonstration",
+  "main": "mock-server.js",
+  "scripts": {
+    "start": "node mock-server.js",
+    "test": "node test-client.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
