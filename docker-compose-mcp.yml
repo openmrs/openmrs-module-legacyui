@@ -1,0 +1,30 @@
+services:
+  mcp-hl7-server:
+    build: ./mcp-hl7-demo
+    container_name: mcp-hl7-analyzer
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - openmrs-network
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+
+  # Example OpenMRS service configuration
+  # Uncomment and configure if running OpenMRS in Docker
+  # openmrs:
+  #   image: openmrs/openmrs-core:latest
+  #   container_name: openmrs
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - openmrs-network
+  #   environment:
+  #     - mcp.hl7.enabled=true
+  #   volumes:
+  #     - ./target/legacyui-2.0.0-SNAPSHOT.omod:/openmrs/modules/legacyui.omod
+
+networks:
+  openmrs-network:
+    driver: bridge
