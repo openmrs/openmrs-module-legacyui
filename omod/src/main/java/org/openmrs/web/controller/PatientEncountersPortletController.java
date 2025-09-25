@@ -11,7 +11,7 @@ package org.openmrs.web.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.openmrs.api.context.Context;
 

@@ -12,7 +12,7 @@ package org.openmrs.web.servlet;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.jfree.chart.JFreeChart;
 import org.junit.Assert;

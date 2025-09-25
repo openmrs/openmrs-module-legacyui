@@ -9,8 +9,8 @@
  */
 package org.openmrs.web.controller.patient;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.mvc.SimpleFormController;
 

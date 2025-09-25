@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.controller.user;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.User;
