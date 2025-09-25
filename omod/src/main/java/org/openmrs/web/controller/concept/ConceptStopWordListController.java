@@ -11,7 +11,7 @@ package org.openmrs.web.controller.concept;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.openmrs.ConceptStopWord;
 import org.openmrs.api.ConceptService;

@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -103,7 +103,7 @@ public class PortletController implements Controller {
 		ConceptService cs = Context.getConceptService();
 		
 		// find the portlet that was identified in the openmrs:portlet taglib
-		Object uri = request.getAttribute("javax.servlet.include.servlet_path");
+		Object uri = request.getAttribute("jakarta.servlet.include.servlet_path");
 		String portletPath = "";
 		Map<String, Object> model = null;
 		{

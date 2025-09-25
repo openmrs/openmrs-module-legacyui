@@ -12,8 +12,8 @@ package org.openmrs.notification.web;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.jstl.core.LoopTagSupport;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.jstl.core.LoopTagSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -9,10 +9,10 @@
  */
 package org.openmrs.web;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration.Dynamic;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterRegistration.Dynamic;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
 import java.util.EnumSet;
 
 import org.openmrs.contrib.dwr.servlet.EfficientShutdownServletContextAttributeListener;
