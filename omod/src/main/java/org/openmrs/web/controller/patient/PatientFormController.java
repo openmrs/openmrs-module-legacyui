@@ -249,7 +249,7 @@ public class PatientFormController extends PersonFormController {
 		
 		if (Context.isAuthenticated()) {
 			
-			MessageSourceAccessor msa = getMessageSourceAccessor();
+			MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 			String action = request.getParameter("action");
 			PatientService ps = Context.getPatientService();
 			

@@ -22,6 +22,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -29,7 +30,6 @@ import org.springframework.validation.BindException;
 
 public class GlobalPropertyControllerTest extends BaseModuleWebContextSensitiveTest {
 	
-	@Autowired
 	private MessageSource messageSource;
 	
 	@Autowired
@@ -39,6 +39,7 @@ public class GlobalPropertyControllerTest extends BaseModuleWebContextSensitiveT
 	
 	@Before
 	public void before() {
+		messageSource = Context.getMessageSourceService();
 		administrationService = Context.getAdministrationService();
 	}
 	

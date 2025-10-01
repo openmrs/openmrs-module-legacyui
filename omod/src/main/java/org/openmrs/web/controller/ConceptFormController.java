@@ -58,6 +58,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.ConceptsLockedException;
 import org.openmrs.api.DuplicateConceptNameException;
 import org.openmrs.api.context.Context;
+import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.legacyui.GeneralUtils;
 import org.openmrs.module.web.extension.ConceptUsageExtension;
 import org.openmrs.module.web.extension.provider.Link;
@@ -139,7 +140,7 @@ public class ConceptFormController extends SimpleFormController {
 	protected ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object object,
 	        BindException errors) throws Exception {
 		
-		if (getMessageSourceAccessor().getMessage("Concept.cancel").equals(request.getParameter("action"))) {
+		if (Context.getMessageSourceService().getMessage("Concept.cancel").equals(request.getParameter("action"))) {
 			return new ModelAndView(new RedirectView("index.htm"));
 		}
 		
@@ -194,7 +195,7 @@ public class ConceptFormController extends SimpleFormController {
 		if (Context.isAuthenticated()) {
 			
 			ConceptFormBackingObject conceptBackingObject = (ConceptFormBackingObject) obj;
-			MessageSourceAccessor msa = getMessageSourceAccessor();
+			MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 			String action = request.getParameter("action");
 			
 			if (action.equals(msa.getMessage("general.retire"))) {

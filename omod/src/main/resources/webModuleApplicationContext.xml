@@ -28,7 +28,7 @@
 				<ref bean="themeChangeInterceptor" />
 			</list>
 		</property>
-		<property name="order"><value>100</value></property>
+		<property name="order" value="100"/>
 		<property name="mappings">
 			<props>
 				<prop key="admin/patients/patient.form">patientForm</prop>

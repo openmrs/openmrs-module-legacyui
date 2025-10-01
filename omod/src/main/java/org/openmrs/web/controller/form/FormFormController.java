@@ -76,7 +76,7 @@ public class FormFormController extends SimpleFormController {
 		
 		if (Context.isAuthenticated()) {
 			Form form = (Form) obj;
-			MessageSourceAccessor msa = getMessageSourceAccessor();
+			MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 			String action = request.getParameter("action");
 			try {
 				if (action == null) {
