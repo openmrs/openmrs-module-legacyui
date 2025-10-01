@@ -58,7 +58,7 @@ public class FieldTypeListController extends SimpleFormController {
 			String success = "";
 			String error = "";
 			
-			MessageSourceAccessor msa = getMessageSourceAccessor();
+			MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 			String deleted = msa.getMessage("general.deleted");
 			String notDeleted = msa.getMessage("general.cannot.delete");
 			String textFieldType = msa.getMessage("FieldType.fieldType");

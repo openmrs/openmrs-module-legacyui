@@ -378,7 +378,7 @@ public class OptionsFormController extends SimpleFormController {
 				//ignore
 			}
 			
-			hints.add(mss.getMessage("options.login.password.minCharacterCount", new Object[] { minChar }, null));
+			hints.add(mss.getMessage("options.login.password.minCharacterCount", new Object[] { minChar }, Context.getLocale()));
 			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_CANNOT_MATCH_USERNAME_OR_SYSTEMID),
 			    mss.getMessage("options.login.password.cannotMatchUsername"));
 			addHint(hints, as.getGlobalProperty(OpenmrsConstants.GP_PASSWORD_REQUIRES_UPPER_AND_LOWER_CASE),

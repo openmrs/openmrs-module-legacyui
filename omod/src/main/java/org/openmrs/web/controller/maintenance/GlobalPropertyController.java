@@ -64,7 +64,7 @@ public class GlobalPropertyController extends SimpleFormController {
 			action = "cancel";
 		}
 		
-		if (action.equals(getMessageSourceAccessor().getMessage("general.save"))) {
+		if (action.equals(Context.getMessageSourceService().getMessage("general.save"))) {
 			HttpSession httpSession = request.getSession();
 			
 			if (Context.isAuthenticated()) {
