@@ -9,6 +9,7 @@
  */
 package org.openmrs.web.controller;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -16,14 +17,10 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Locale;
-import java.util.Set;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,9 +32,7 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptAttribute;
 import org.openmrs.ConceptAttributeType;
-import org.openmrs.ConceptClass;
 import org.openmrs.ConceptComplex;
-import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptMap;
 import org.openmrs.ConceptMapType;
@@ -54,12 +49,12 @@ import org.openmrs.test.Verifies;
 import org.openmrs.util.LocaleUtility;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.controller.ConceptFormController.ConceptFormBackingObject;
-import org.openmrs.web.controller.concept.ConceptReferenceRange;
-import org.openmrs.web.controller.mappper.ConceptFormMapper;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.WebTestHelper;
 import org.openmrs.web.test.WebTestHelper.Response;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -77,6 +72,10 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	
 	@Autowired
 	ConceptService conceptService;
+
+    @Autowired
+    @Qualifier("conceptForm")
+    ObjectFactory<ConceptFormController> conceptFormProvider;
 	
 	private Locale britishEn;
 	
@@ -97,14 +96,14 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldGetConcept() throws Exception {
-		
+
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "");
 		request.setParameter("conceptId", "3");
 		
 		HttpServletResponse response = new MockHttpServletResponse();
-		
-		ConceptFormController controller = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
+
+		ConceptFormController controller = conceptFormProvider.getObject();
+
 		ModelAndView modelAndView = controller.handleRequest(request, response);
 		
 		// make sure there is an "conceptId" filled in on the concept
@@ -126,7 +125,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		ConceptService cs = Context.getConceptService();
 		
 		// set up the controller
-		ConceptFormController controller = (ConceptFormController) applicationContext.getBean("conceptForm");
+        ConceptFormController controller = conceptFormProvider.getObject();
 		controller.setApplicationContext(applicationContext);
 		controller.setSuccessView("index.htm");
 		controller.setFormView("concept.form");
@@ -158,37 +157,37 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldAddConceptWithOnlyNameSpecified() throws Exception {
-		final String EXPECTED_PREFERRED_NAME = "no such concept";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept doesn't already exist
-		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNull(conceptToAdd);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
+        final String EXPECTED_PREFERRED_NAME = "no such concept";
 
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
-		Collection<ConceptName> actualNames = actualConcept.getNames();
-		assertEquals(1, actualNames.size());
-		assertNull(actualConcept.getShortNameInLocale(britishEn));
-		assertNotNull(actualConcept.getDescription(britishEn));
-	}
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept doesn't already exist
+        Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNull(conceptToAdd);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+        assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+        Collection<ConceptName> actualNames = actualConcept.getNames();
+        assertEquals(1, actualNames.size());
+        assertNull(actualConcept.getShortNameInLocale(britishEn));
+        assertNotNull(actualConcept.getDescription(britishEn));
+    }
 	
 	/**
 	 * This tests a concept form being submitted with also a short name supplied
@@ -197,40 +196,40 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldAddConceptWithNameAndShortNameSpecified() throws Exception {
-		final String EXPECTED_PREFERRED_NAME = "no such concept";
-		final String EXPECTED_SHORT_NAME = "nonesuch";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept doesn't already exist
-		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNull(conceptToAdd);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
+        final String EXPECTED_PREFERRED_NAME = "no such concept";
+        final String EXPECTED_SHORT_NAME = "nonesuch";
 
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		Collection<ConceptName> actualNames = actualConcept.getNames();
-		assertEquals(2, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
-		assertEquals(1, actualConcept.getShortNames().size());
-		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept doesn't already exist
+        Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNull(conceptToAdd);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+        Collection<ConceptName> actualNames = actualConcept.getNames();
+        assertEquals(2, actualNames.size());
+        assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+        assertEquals(1, actualConcept.getShortNames().size());
+        assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+        assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
+    }
 	
 	/**
 	 * Tests a concept form being submitted with name/shortname/description all filled in
@@ -239,44 +238,44 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldAddConceptWithNameAndShortNameAndDescriptionSpecifiedToCodeConcepts() throws Exception {
-		final String EXPECTED_PREFERRED_NAME = "no such concept";
-		final String EXPECTED_SHORT_NAME = "nonesuch";
-		final String EXPECTED_DESCRIPTION = "this is not really a concept";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept doesn't already exist
-		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNull(conceptToAdd);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("concept.datatype", "4");
-		mockRequest.setParameter("concept.conceptClass", "1");
+        final String EXPECTED_PREFERRED_NAME = "no such concept";
+        final String EXPECTED_SHORT_NAME = "nonesuch";
+        final String EXPECTED_DESCRIPTION = "this is not really a concept";
 
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		Collection<ConceptName> actualNames = actualConcept.getNames();
-		assertEquals(2, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
-		
-		assertNotNull(actualConcept.getDescription(britishEn));
-		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept doesn't already exist
+        Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNull(conceptToAdd);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("concept.datatype", "4");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+        Collection<ConceptName> actualNames = actualConcept.getNames();
+        assertEquals(2, actualNames.size());
+        assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+        assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+        assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
+
+        assertNotNull(actualConcept.getDescription(britishEn));
+        assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
+    }
 	
 	/**
 	 * Tests a concept form being submitted with a name and description for numeric type of concepts
@@ -285,44 +284,44 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldAddConceptWithNameAndShortNameAndDescriptionSpecifiedToNumericConcepts() throws Exception {
-		final String EXPECTED_PREFERRED_NAME = "no such concept";
-		final String EXPECTED_SHORT_NAME = "nonesuch";
-		final String EXPECTED_DESCRIPTION = "this is not really a concept";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept doesn't already exist
-		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNull(conceptToAdd);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
+        final String EXPECTED_PREFERRED_NAME = "no such concept";
+        final String EXPECTED_SHORT_NAME = "nonesuch";
+        final String EXPECTED_DESCRIPTION = "this is not really a concept";
 
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		Collection<ConceptName> actualNames = actualConcept.getNames();
-		assertEquals(2, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
-		
-		assertNotNull(actualConcept.getDescription(britishEn));
-		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept doesn't already exist
+        Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNull(conceptToAdd);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+        Collection<ConceptName> actualNames = actualConcept.getNames();
+        assertEquals(2, actualNames.size());
+        assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+        assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+        assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
+
+        assertNotNull(actualConcept.getDescription(britishEn));
+        assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
+    }
 	
 	/**
 	 * Test adding a concept with a preferred name, short name, description and synonyms.
@@ -331,56 +330,56 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldAddConceptWithAllNamingSpecified() throws Exception {
-		final String EXPECTED_PREFERRED_NAME = "no such concept";
-		final String EXPECTED_SHORT_NAME = "nonesuch";
-		final String EXPECTED_DESCRIPTION = "this is not really a concept";
-		final String EXPECTED_SYNONYM_A = "phantom";
-		final String EXPECTED_SYNONYM_B = "imaginary";
-		final String EXPECTED_SYNONYM_C = "mock";
-		
-		AdministrationService as = Context.getAdministrationService();
-		GlobalProperty gp = as.getGlobalPropertyObject(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
-		gp.setPropertyValue("en_GB, en_US");
-		as.saveGlobalProperty(gp);
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept doesn't already exist
-		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNull(conceptToAdd);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("synonymsByLocale[en_GB][0].name", EXPECTED_SYNONYM_A);
-		mockRequest.setParameter("synonymsByLocale[en_GB][1].name", EXPECTED_SYNONYM_B);
-		mockRequest.setParameter("synonymsByLocale[en_GB][2].name", EXPECTED_SYNONYM_C);
-		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
+        final String EXPECTED_PREFERRED_NAME = "no such concept";
+        final String EXPECTED_SHORT_NAME = "nonesuch";
+        final String EXPECTED_DESCRIPTION = "this is not really a concept";
+        final String EXPECTED_SYNONYM_A = "phantom";
+        final String EXPECTED_SYNONYM_B = "imaginary";
+        final String EXPECTED_SYNONYM_C = "mock";
 
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		Collection<ConceptName> actualNames = actualConcept.getNames();
-		assertEquals(5, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
-		
-		assertNotNull(actualConcept.getDescription(britishEn));
-		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
-		
-	}
+        AdministrationService as = Context.getAdministrationService();
+        GlobalProperty gp = as.getGlobalPropertyObject(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
+        gp.setPropertyValue("en_GB, en_US");
+        as.saveGlobalProperty(gp);
+
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept doesn't already exist
+        Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNull(conceptToAdd);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("synonymsByLocale[en_GB][0].name", EXPECTED_SYNONYM_A);
+        mockRequest.setParameter("synonymsByLocale[en_GB][1].name", EXPECTED_SYNONYM_B);
+        mockRequest.setParameter("synonymsByLocale[en_GB][2].name", EXPECTED_SYNONYM_C);
+        mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+        Collection<ConceptName> actualNames = actualConcept.getNames();
+        assertEquals(5, actualNames.size());
+        assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+        assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+        assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
+
+        assertNotNull(actualConcept.getDescription(britishEn));
+        assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
+
+    }
 	
 	/**
 	 * Test adding a concept with a preferred name, short name, description and synonyms.
@@ -389,48 +388,48 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldUpdateConceptWithNameAlreadyInSynonymList() throws Exception {
-		final String EXPECTED_PREFERRED_NAME = "no such concept";
-		final String EXPECTED_SHORT_NAME = "nonesuch";
-		final String EXPECTED_DESCRIPTION = "this is not really a concept";
-		final String EXPECTED_SYNONYM_A = "phantom";
-		final String EXPECTED_SYNONYM_B = EXPECTED_PREFERRED_NAME;
-		final String EXPECTED_SYNONYM_C = "mock";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept doesn't already exist
-		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNull(conceptToAdd);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("synonymsByLocale[en_GB][0].name", EXPECTED_SYNONYM_A);
-		mockRequest.setParameter("synonymsByLocale[en_GB][1].name", EXPECTED_SYNONYM_B);
-		mockRequest.setParameter("synonymsByLocale[en_GB][2].name", EXPECTED_SYNONYM_C);
-		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
+        final String EXPECTED_PREFERRED_NAME = "no such concept";
+        final String EXPECTED_SHORT_NAME = "nonesuch";
+        final String EXPECTED_DESCRIPTION = "this is not really a concept";
+        final String EXPECTED_SYNONYM_A = "phantom";
+        final String EXPECTED_SYNONYM_B = EXPECTED_PREFERRED_NAME;
+        final String EXPECTED_SYNONYM_C = "mock";
 
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		Collection<ConceptName> actualNames = actualConcept.getNames();
-		assertEquals(4, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
-		
-	}
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept doesn't already exist
+        Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNull(conceptToAdd);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("synonymsByLocale[en_GB][0].name", EXPECTED_SYNONYM_A);
+        mockRequest.setParameter("synonymsByLocale[en_GB][1].name", EXPECTED_SYNONYM_B);
+        mockRequest.setParameter("synonymsByLocale[en_GB][2].name", EXPECTED_SYNONYM_C);
+        mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+        Collection<ConceptName> actualNames = actualConcept.getNames();
+        assertEquals(4, actualNames.size());
+        assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+        assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+        assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
+
+    }
 	
 	/**
 	 * Test adding a concept with a preferred name, short name, description and synonyms.
@@ -439,48 +438,48 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldUpdateConceptWithShortNameAlreadyInSynonymList() throws Exception {
-		final String EXPECTED_PREFERRED_NAME = "no such concept";
-		final String EXPECTED_SHORT_NAME = "nonesuch";
-		final String EXPECTED_DESCRIPTION = "this is not really a concept";
-		final String EXPECTED_SYNONYM_A = "phantom";
-		final String EXPECTED_SYNONYM_B = EXPECTED_SHORT_NAME;
-		final String EXPECTED_SYNONYM_C = "mock";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept doesn't already exist
-		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNull(conceptToAdd);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("synonymsByLocale[en_GB][0].name", EXPECTED_SYNONYM_A);
-		mockRequest.setParameter("synonymsByLocale[en_GB][1].name", EXPECTED_SYNONYM_B);
-		mockRequest.setParameter("synonymsByLocale[en_GB][2].name", EXPECTED_SYNONYM_C);
-		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		Collection<ConceptName> actualNames = actualConcept.getNames();
-		assertEquals(4, actualNames.size());
-		assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
-		assertNotNull(actualConcept.getShortNameInLocale(britishEn));
-		assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
-		
-	}
+        final String EXPECTED_PREFERRED_NAME = "no such concept";
+        final String EXPECTED_SHORT_NAME = "nonesuch";
+        final String EXPECTED_DESCRIPTION = "this is not really a concept";
+        final String EXPECTED_SYNONYM_A = "phantom";
+        final String EXPECTED_SYNONYM_B = EXPECTED_SHORT_NAME;
+        final String EXPECTED_SYNONYM_C = "mock";
+
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept doesn't already exist
+        Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNull(conceptToAdd);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("synonymsByLocale[en_GB][0].name", EXPECTED_SYNONYM_A);
+        mockRequest.setParameter("synonymsByLocale[en_GB][1].name", EXPECTED_SYNONYM_B);
+        mockRequest.setParameter("synonymsByLocale[en_GB][2].name", EXPECTED_SYNONYM_C);
+        mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+        Collection<ConceptName> actualNames = actualConcept.getNames();
+        assertEquals(4, actualNames.size());
+        assertEquals(EXPECTED_PREFERRED_NAME, actualConcept.getFullySpecifiedName(britishEn).getName());
+        assertNotNull(actualConcept.getShortNameInLocale(britishEn));
+        assertEquals(EXPECTED_SHORT_NAME, actualConcept.getShortNameInLocale(britishEn).getName());
+
+    }
 	
 	/**
 	 * Test updating a concept by adding a name
@@ -489,32 +488,32 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldUpdateConceptByAddingName() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept already exists
-		Concept concept = cs.getConcept(3);
-		assertNotNull(concept);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
-		mockRequest.setParameter("namesByLocale[en_GB].name", "new name");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		updateSearchIndex();
-		
-		Concept actualConcept = cs.getConceptByName("new name");
-		assertNotNull(actualConcept);
-		assertEquals(concept.getConceptId(), actualConcept.getConceptId());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept already exists
+        Concept concept = cs.getConcept(3);
+        assertNotNull(concept);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", concept.getConceptId().toString());
+        mockRequest.setParameter("namesByLocale[en_GB].name", "new name");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        updateSearchIndex();
+
+        Concept actualConcept = cs.getConceptByName("new name");
+        assertNotNull(actualConcept);
+        assertEquals(concept.getConceptId(), actualConcept.getConceptId());
+    }
 	
 	/**
 	 * Test removing short name by adding a blank short name
@@ -523,42 +522,42 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldVoidShortName() throws Exception {
-		final String CONCEPT_NAME = "default concept name";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		final Concept concept = new Concept();
-		concept.addName(new ConceptName(CONCEPT_NAME, britishEn));
-		concept.setShortName(new ConceptName("shortname", britishEn));
-		concept.addDescription(new ConceptDescription("some description", null));
-		concept.setDatatype(Context.getConceptService().getConceptDatatype(1));
-		concept.setConceptClass(Context.getConceptService().getConceptClass(1));
-		cs.saveConcept(concept);
-		
-		Concept actualConcept = cs.getConceptByName(CONCEPT_NAME);
-		assertThat(actualConcept.getShortNameInLocale(britishEn), is(notNullValue()));
-		assertThat(actualConcept.getShortNames().size(), greaterThan(0));
-		assertThat(actualConcept.getNames().size(), is(2));
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
-		mockRequest.setParameter("shortNamesByLocale[en_GB].name", " ");
-		mockRequest.setParameter("concept.datatype", "1");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		
-		actualConcept = cs.getConceptByName(CONCEPT_NAME);
-		assertThat(actualConcept.getShortNameInLocale(britishEn), is(nullValue()));
-		assertThat(actualConcept.getShortNames().size(), is(0));
-		assertThat(actualConcept.getNames().size(), is(1));
-	}
+        final String CONCEPT_NAME = "default concept name";
+
+        ConceptService cs = Context.getConceptService();
+
+        final Concept concept = new Concept();
+        concept.addName(new ConceptName(CONCEPT_NAME, britishEn));
+        concept.setShortName(new ConceptName("shortname", britishEn));
+        concept.addDescription(new ConceptDescription("some description", null));
+        concept.setDatatype(Context.getConceptService().getConceptDatatype(1));
+        concept.setConceptClass(Context.getConceptService().getConceptClass(1));
+        cs.saveConcept(concept);
+
+        Concept actualConcept = cs.getConceptByName(CONCEPT_NAME);
+        assertThat(actualConcept.getShortNameInLocale(britishEn), is(notNullValue()));
+        assertThat(actualConcept.getShortNames().size(), greaterThan(0));
+        assertThat(actualConcept.getNames().size(), is(2));
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", concept.getConceptId().toString());
+        mockRequest.setParameter("shortNamesByLocale[en_GB].name", " ");
+        mockRequest.setParameter("concept.datatype", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+
+        actualConcept = cs.getConceptByName(CONCEPT_NAME);
+        assertThat(actualConcept.getShortNameInLocale(britishEn), is(nullValue()));
+        assertThat(actualConcept.getShortNames().size(), is(0));
+        assertThat(actualConcept.getNames().size(), is(1));
+    }
 	
 	/**
 	 * Test adding a concept with a preferred name, short name, description and synonyms.
@@ -567,54 +566,54 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldReplacePreviousDescription() throws Exception {
-		final String EXPECTED_PREFERRED_NAME = "no such concept";
-		final String EXPECTED_SHORT_NAME = "nonesuch";
-		final String ORIGINAL_DESCRIPTION = "this is indescribable";
-		final String EXPECTED_DESCRIPTION = "this is not really a concept";
-		final String EXPECTED_SYNONYM_A = "phantom";
-		final String EXPECTED_SYNONYM_B = EXPECTED_SHORT_NAME;
-		final String EXPECTED_SYNONYM_C = "mock";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// first, add the concept with an original description
-		Concept conceptToUpdate = new Concept();
-		conceptToUpdate.addName(new ConceptName("demo name", Context.getLocale()));
-		ConceptDescription originalConceptDescription = new ConceptDescription();
-		originalConceptDescription.setLocale(britishEn);
-		originalConceptDescription.setDescription(ORIGINAL_DESCRIPTION);
-		conceptToUpdate.addDescription(originalConceptDescription);
-		conceptToUpdate.setDatatype(Context.getConceptService().getConceptDatatype(1));
-		conceptToUpdate.setConceptClass(Context.getConceptService().getConceptClass(1));
-		cs.saveConcept(conceptToUpdate);
-		
-		// then submit changes through the controller
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("synonymsByLocale[en_GB][0].name", EXPECTED_SYNONYM_A);
-		mockRequest.setParameter("synonymsByLocale[en_GB][1].name", EXPECTED_SYNONYM_B);
-		mockRequest.setParameter("synonymsByLocale[en_GB][2].name", EXPECTED_SYNONYM_C);
-		mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
+        final String EXPECTED_PREFERRED_NAME = "no such concept";
+        final String EXPECTED_SHORT_NAME = "nonesuch";
+        final String ORIGINAL_DESCRIPTION = "this is indescribable";
+        final String EXPECTED_DESCRIPTION = "this is not really a concept";
+        final String EXPECTED_SYNONYM_A = "phantom";
+        final String EXPECTED_SYNONYM_B = EXPECTED_SHORT_NAME;
+        final String EXPECTED_SYNONYM_C = "mock";
 
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		
-		assertNotNull(actualConcept.getDescription(britishEn));
-		assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        // first, add the concept with an original description
+        Concept conceptToUpdate = new Concept();
+        conceptToUpdate.addName(new ConceptName("demo name", Context.getLocale()));
+        ConceptDescription originalConceptDescription = new ConceptDescription();
+        originalConceptDescription.setLocale(britishEn);
+        originalConceptDescription.setDescription(ORIGINAL_DESCRIPTION);
+        conceptToUpdate.addDescription(originalConceptDescription);
+        conceptToUpdate.setDatatype(Context.getConceptService().getConceptDatatype(1));
+        conceptToUpdate.setConceptClass(Context.getConceptService().getConceptClass(1));
+        cs.saveConcept(conceptToUpdate);
+
+        // then submit changes through the controller
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("synonymsByLocale[en_GB][0].name", EXPECTED_SYNONYM_A);
+        mockRequest.setParameter("synonymsByLocale[en_GB][1].name", EXPECTED_SYNONYM_B);
+        mockRequest.setParameter("synonymsByLocale[en_GB][2].name", EXPECTED_SYNONYM_C);
+        mockRequest.setParameter("shortNamesByLocale[en_GB].name", EXPECTED_SHORT_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", EXPECTED_DESCRIPTION);
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+
+        assertNotNull(actualConcept.getDescription(britishEn));
+        assertEquals(EXPECTED_DESCRIPTION, actualConcept.getDescription(britishEn).getDescription());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -622,44 +621,44 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should copy numeric values into numeric concepts", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldCopyNumericValuesIntoNumericConcepts() throws Exception {
-		final Double EXPECTED_LOW_ABSOLUTE = 50.0;
-		final Double EXPECTED_LOW_CRITICAL = 103.0;
-		final Double EXPECTED_LOW_NORMAL = 105.0;
-		final Double EXPECTED_HI_NORMAL = 110.0;
-		final Double EXPECTED_HI_CRITICAL = 117.0;
-		final Double EXPECTED_HI_ABSOLUTE = 150.0;
-		
-		ConceptService cs = Context.getConceptService();
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("namesByLocale[en_GB].name", "WEIGHT (KG)");
-		mockRequest.setParameter("conceptId", "5089");
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
-		mockRequest.setParameter("lowAbsolute", EXPECTED_LOW_ABSOLUTE.toString());
-		mockRequest.setParameter("lowCritical", EXPECTED_LOW_CRITICAL.toString());
-		mockRequest.setParameter("lowNormal", EXPECTED_LOW_NORMAL.toString());
-		mockRequest.setParameter("hiNormal", EXPECTED_HI_NORMAL.toString());
-		mockRequest.setParameter("hiCritical", EXPECTED_HI_CRITICAL.toString());
-		mockRequest.setParameter("hiAbsolute", EXPECTED_HI_ABSOLUTE.toString());
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		ConceptNumeric concept = (ConceptNumeric) cs.getConcept(5089);
-		Assert.assertEquals(EXPECTED_LOW_NORMAL, concept.getLowNormal());
-		Assert.assertEquals(EXPECTED_HI_NORMAL, concept.getHiNormal());
-		Assert.assertEquals(EXPECTED_LOW_ABSOLUTE, concept.getLowAbsolute());
-		Assert.assertEquals(EXPECTED_HI_ABSOLUTE, concept.getHiAbsolute());
-		Assert.assertEquals(EXPECTED_LOW_CRITICAL, concept.getLowCritical());
-		Assert.assertEquals(EXPECTED_HI_CRITICAL, concept.getHiCritical());
-	}
+        final Double EXPECTED_LOW_ABSOLUTE = 50.0;
+        final Double EXPECTED_LOW_CRITICAL = 103.0;
+        final Double EXPECTED_LOW_NORMAL = 105.0;
+        final Double EXPECTED_HI_NORMAL = 110.0;
+        final Double EXPECTED_HI_CRITICAL = 117.0;
+        final Double EXPECTED_HI_ABSOLUTE = 150.0;
+
+        ConceptService cs = Context.getConceptService();
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("namesByLocale[en_GB].name", "WEIGHT (KG)");
+        mockRequest.setParameter("conceptId", "5089");
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+        mockRequest.setParameter("lowAbsolute", EXPECTED_LOW_ABSOLUTE.toString());
+        mockRequest.setParameter("lowCritical", EXPECTED_LOW_CRITICAL.toString());
+        mockRequest.setParameter("lowNormal", EXPECTED_LOW_NORMAL.toString());
+        mockRequest.setParameter("hiNormal", EXPECTED_HI_NORMAL.toString());
+        mockRequest.setParameter("hiCritical", EXPECTED_HI_CRITICAL.toString());
+        mockRequest.setParameter("hiAbsolute", EXPECTED_HI_ABSOLUTE.toString());
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        ConceptNumeric concept = (ConceptNumeric) cs.getConcept(5089);
+        assertEquals(EXPECTED_LOW_NORMAL, concept.getLowNormal());
+        assertEquals(EXPECTED_HI_NORMAL, concept.getHiNormal());
+        assertEquals(EXPECTED_LOW_ABSOLUTE, concept.getLowAbsolute());
+        assertEquals(EXPECTED_HI_ABSOLUTE, concept.getHiAbsolute());
+        assertEquals(EXPECTED_LOW_CRITICAL, concept.getLowCritical());
+        assertEquals(EXPECTED_HI_CRITICAL, concept.getHiCritical());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -667,31 +666,31 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should display numeric values from table", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldDisplayNumericValuesFromTable() throws Exception {
-		final Double EXPECTED_LOW_ABSOLUTE = 0.0;
-		final Double EXPECTED_LOW_CRITICAL = 99.0;
-		final Double EXPECTED_LOW_NORMAL = 445.0;
-		final Double EXPECTED_HI_NORMAL = 1497.0;
-		final Double EXPECTED_HI_CRITICAL = 1800.0;
-		final Double EXPECTED_HI_ABSOLUTE = 2500.0;
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("GET");
-		mockRequest.setParameter("conceptId", "5497");
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		
-		assertNotNull(mav);
-		ConceptFormBackingObject formBackingObject = (ConceptFormBackingObject) mav.getModel().get("command");
-		
-		Assert.assertEquals(EXPECTED_LOW_NORMAL, formBackingObject.getLowNormal());
-		Assert.assertEquals(EXPECTED_HI_NORMAL, formBackingObject.getHiNormal());
-		Assert.assertEquals(EXPECTED_LOW_ABSOLUTE, formBackingObject.getLowAbsolute());
-		Assert.assertEquals(EXPECTED_HI_ABSOLUTE, formBackingObject.getHiAbsolute());
-		Assert.assertEquals(EXPECTED_LOW_CRITICAL, formBackingObject.getLowCritical());
-		Assert.assertEquals(EXPECTED_HI_CRITICAL, formBackingObject.getHiCritical());
-	}
+        final Double EXPECTED_LOW_ABSOLUTE = 0.0;
+        final Double EXPECTED_LOW_CRITICAL = 99.0;
+        final Double EXPECTED_LOW_NORMAL = 445.0;
+        final Double EXPECTED_HI_NORMAL = 1497.0;
+        final Double EXPECTED_HI_CRITICAL = 1800.0;
+        final Double EXPECTED_HI_ABSOLUTE = 2500.0;
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("GET");
+        mockRequest.setParameter("conceptId", "5497");
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+
+        assertNotNull(mav);
+        ConceptFormBackingObject formBackingObject = (ConceptFormBackingObject) mav.getModel().get("command");
+
+        assertEquals(EXPECTED_LOW_NORMAL, formBackingObject.getLowNormal());
+        assertEquals(EXPECTED_HI_NORMAL, formBackingObject.getHiNormal());
+        assertEquals(EXPECTED_LOW_ABSOLUTE, formBackingObject.getLowAbsolute());
+        assertEquals(EXPECTED_HI_ABSOLUTE, formBackingObject.getHiAbsolute());
+        assertEquals(EXPECTED_LOW_CRITICAL, formBackingObject.getLowCritical());
+        assertEquals(EXPECTED_HI_CRITICAL, formBackingObject.getHiCritical());
+    }
 	
 	/**
 	 * This tests removing a concept set
@@ -700,27 +699,27 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldRemoveConceptSet() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", "23");
-		mockRequest.setParameter("namesByLocale[en_GB].name", "FOOD CONSTRUCT");
-		mockRequest.setParameter("concept.datatype", "4");
-		mockRequest.setParameter("concept.class", "10");
-		mockRequest.setParameter("concept.conceptSets", "18 19");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept concept = cs.getConcept(23);
-		assertNotNull(concept);
-		assertEquals(2, concept.getConceptSets().size());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", "23");
+        mockRequest.setParameter("namesByLocale[en_GB].name", "FOOD CONSTRUCT");
+        mockRequest.setParameter("concept.datatype", "4");
+        mockRequest.setParameter("concept.class", "10");
+        mockRequest.setParameter("concept.conceptSets", "18 19");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept concept = cs.getConcept(23);
+        assertNotNull(concept);
+        assertEquals(2, concept.getConceptSets().size());
+    }
 	
 	/**
 	 * This tests removing an answer
@@ -729,27 +728,27 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldRemoveConceptAnswer() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", "21");
-		mockRequest.setParameter("namesByLocale[en_GB].name", "FOOD ASSISTANCE FOR ENTIRE FAMILY");
-		mockRequest.setParameter("concept.datatype", "2");
-		mockRequest.setParameter("concept.class", "7");
-		mockRequest.setParameter("concept.answers", "7 8");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept concept = cs.getConcept(21);
-		assertNotNull(concept);
-		assertEquals(2, concept.getAnswers(false).size());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", "21");
+        mockRequest.setParameter("namesByLocale[en_GB].name", "FOOD ASSISTANCE FOR ENTIRE FAMILY");
+        mockRequest.setParameter("concept.datatype", "2");
+        mockRequest.setParameter("concept.class", "7");
+        mockRequest.setParameter("concept.answers", "7 8");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept concept = cs.getConcept(21);
+        assertNotNull(concept);
+        assertEquals(2, concept.getAnswers(false).size());
+    }
 	
 	/**
 	 * This test makes sure that all answers are deleted if the user changes this concept's datatype
@@ -759,27 +758,27 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldRemoveConceptAnswersIfDatatypeChangedFromCoded() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", "4"); // this must be a concept id that is not used in an observation in order to be changed
-		mockRequest.setParameter("namesByLocale[en_GB].name", "CIVIL STATUS");
-		mockRequest.setParameter("concept.datatype", "1"); // set it to something other than "Coded"
-		mockRequest.setParameter("concept.class", "10");
-		mockRequest.setParameter("concept.answers", "5 6");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept concept = cs.getConcept(4);
-		assertNotNull(concept);
-		assertEquals(0, concept.getAnswers(false).size());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", "4"); // this must be a concept id that is not used in an observation in order to be changed
+        mockRequest.setParameter("namesByLocale[en_GB].name", "CIVIL STATUS");
+        mockRequest.setParameter("concept.datatype", "1"); // set it to something other than "Coded"
+        mockRequest.setParameter("concept.class", "10");
+        mockRequest.setParameter("concept.answers", "5 6");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept concept = cs.getConcept(4);
+        assertNotNull(concept);
+        assertEquals(0, concept.getAnswers(false).size());
+    }
 	
 	/**
 	 * This test makes sure that ConceptComplex objects can be edited
@@ -788,49 +787,47 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldEditConceptComplex() throws Exception {
-		executeDataSet("org/openmrs/api/include/ObsServiceTest-complex.xml");
-		
-		ConceptService cs = Context.getConceptService();
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", "8473");
-		mockRequest.setParameter("namesByLocale[en_GB].name", "A complex concept");
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
-		mockRequest.setParameter("concept.datatype", "13");
-		mockRequest.setParameter("concept.class", "5");
-		mockRequest.setParameter("handlerKey", "TextHandler"); // switching it from an ImageHandler to a TextHandler
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept concept = cs.getConcept(8473);
-		assertEquals(ConceptComplex.class, concept.getClass());
-		ConceptComplex complex = (ConceptComplex) concept;
-		assertEquals("TextHandler", complex.getHandler());
-	}
+        executeDataSet("org/openmrs/api/include/ObsServiceTest-complex.xml");
+
+        ConceptService cs = Context.getConceptService();
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", "8473");
+        mockRequest.setParameter("namesByLocale[en_GB].name", "A complex concept");
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
+        mockRequest.setParameter("concept.datatype", "13");
+        mockRequest.setParameter("concept.class", "5");
+        mockRequest.setParameter("handlerKey", "TextHandler"); // switching it from an ImageHandler to a TextHandler
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept concept = cs.getConcept(8473);
+        assertEquals(ConceptComplex.class, concept.getClass());
+        ConceptComplex complex = (ConceptComplex) concept;
+        assertEquals("TextHandler", complex.getHandler());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
 	 */
 	@Test
-	@Verifies(value = "should return a concept with a null id if no match is found", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldReturnAConceptWithANullIdIfNoMatchIsFound() throws Exception {
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		mockRequest.setMethod("GET");
-		mockRequest.setParameter("conceptId", "57432223");
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		ConceptFormBackingObject formBackingObject = (ConceptFormBackingObject) mav.getModel().get("command");
-		assertNotNull(formBackingObject.getConcept());
-		assertNull(formBackingObject.getConcept().getConceptId());
-	}
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.setMethod("GET");
+        mockRequest.setParameter("conceptId", "57432223");
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        ConceptFormBackingObject formBackingObject = (ConceptFormBackingObject) mav.getModel().get("command");
+        assertNotNull(formBackingObject.getConcept());
+        assertNull(formBackingObject.getConcept().getConceptId());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -838,26 +835,26 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should set the local preferred name", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldSetTheLocalPreferredName() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		Concept concept = cs.getConcept(5497);
-		//sanity check, the current preferred Name should be different from what will get set in the form
-		Assert.assertNotSame("CD3+CD4+ABS CNT", concept.getPreferredName(britishEn).getName());
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", "5497");
-		mockRequest.setParameter("preferredNamesByLocale[en_GB]", "CD3+CD4+ABS CNT");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Assert.assertEquals("CD3+CD4+ABS CNT", concept.getPreferredName(britishEn).getName());
-		//preferred name should be the new one that has been set from the form
-		Assert.assertEquals(true, concept.getPreferredName(britishEn).isLocalePreferred());
-	}
+        ConceptService cs = Context.getConceptService();
+        Concept concept = cs.getConcept(5497);
+        //sanity check, the current preferred Name should be different from what will get set in the form
+        Assert.assertNotSame("CD3+CD4+ABS CNT", concept.getPreferredName(britishEn).getName());
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", "5497");
+        mockRequest.setParameter("preferredNamesByLocale[en_GB]", "CD3+CD4+ABS CNT");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        assertEquals("CD3+CD4+ABS CNT", concept.getPreferredName(britishEn).getName());
+        //preferred name should be the new one that has been set from the form
+        assertEquals(true, concept.getPreferredName(britishEn).isLocalePreferred());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -865,28 +862,28 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should void a synonym marked as preferred when it is removed", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldVoidASynonymMarkedAsPreferredWhenItIsRemoved() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		Concept concept = cs.getConcept(5497);
-		//mark one of the synonyms as preferred
-		ConceptName preferredName = new ConceptName("pref name", britishEn);
-		preferredName.setLocalePreferred(true);
-		concept.addName(preferredName);
-		cs.saveConcept(concept);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", "5497");
-		//remove the synonym that is marked as preferred
-		mockRequest.setParameter("synonymsByLocale[en_GB][0].voided", "true");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Assert.assertEquals(true, preferredName.isVoided());
-	}
+        ConceptService cs = Context.getConceptService();
+        Concept concept = cs.getConcept(5497);
+        //mark one of the synonyms as preferred
+        ConceptName preferredName = new ConceptName("pref name", britishEn);
+        preferredName.setLocalePreferred(true);
+        concept.addName(preferredName);
+        cs.saveConcept(concept);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", "5497");
+        //remove the synonym that is marked as preferred
+        mockRequest.setParameter("synonymsByLocale[en_GB][0].voided", "true");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        assertEquals(true, preferredName.isVoided());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -894,30 +891,30 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should add a new Concept map to an existing concept", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldAddANewConceptMapToAnExistingConcept() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		int conceptId = 3;
-		
-		// make sure the concept already exists
-		Concept concept = cs.getConcept(conceptId);
-		assertNotNull(concept);
-		int initialConceptMappingCount = concept.getConceptMappings().size();
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
-		mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "1");
-		mockRequest.setParameter("conceptMappings[0].conceptMapType", "3");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		assertEquals(initialConceptMappingCount + 1, cs.getConcept(conceptId).getConceptMappings().size());
-	}
+        ConceptService cs = Context.getConceptService();
+        int conceptId = 3;
+
+        // make sure the concept already exists
+        Concept concept = cs.getConcept(conceptId);
+        assertNotNull(concept);
+        int initialConceptMappingCount = concept.getConceptMappings().size();
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", concept.getConceptId().toString());
+        mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "1");
+        mockRequest.setParameter("conceptMappings[0].conceptMapType", "3");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        assertEquals(initialConceptMappingCount + 1, cs.getConcept(conceptId).getConceptMappings().size());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -925,34 +922,34 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should add a new Concept map when creating a concept", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldAddANewConceptMapWhenCreatingAConcept() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		final String conceptName = "new concept";
-		// make sure the concept doesn't already exist
-		Concept newConcept = cs.getConceptByName(conceptName);
-		assertNull(newConcept);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("namesByLocale[en_GB].name", conceptName);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("concept.conceptClass", "1");
-		mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "1");
-		mockRequest.setParameter("conceptMappings[0].conceptMapType", "3");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept createdConcept = cs.getConceptByName(conceptName);
-		assertNotNull(createdConcept);
-		Assert.assertEquals(1, createdConcept.getConceptMappings().size());
-	}
+        ConceptService cs = Context.getConceptService();
+        final String conceptName = "new concept";
+        // make sure the concept doesn't already exist
+        Concept newConcept = cs.getConceptByName(conceptName);
+        assertNull(newConcept);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("namesByLocale[en_GB].name", conceptName);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("concept.conceptClass", "1");
+        mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "1");
+        mockRequest.setParameter("conceptMappings[0].conceptMapType", "3");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept createdConcept = cs.getConceptByName(conceptName);
+        assertNotNull(createdConcept);
+        assertEquals(1, createdConcept.getConceptMappings().size());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -960,30 +957,30 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should ignore new concept map row if the user did not select a term", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldIgnoreNewConceptMapRowIfTheUserDidNotSelectATerm() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		int conceptId = 3;
-		
-		// make sure the concept already exists
-		Concept concept = cs.getConcept(conceptId);
-		assertNotNull(concept);
-		int initialConceptMappingCount = concept.getConceptMappings().size();
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
-		mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "");
-		mockRequest.setParameter("conceptMappings[0].conceptMapType", "");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		assertEquals(initialConceptMappingCount, cs.getConcept(conceptId).getConceptMappings().size());
-	}
+        ConceptService cs = Context.getConceptService();
+        int conceptId = 3;
+
+        // make sure the concept already exists
+        Concept concept = cs.getConcept(conceptId);
+        assertNotNull(concept);
+        int initialConceptMappingCount = concept.getConceptMappings().size();
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", concept.getConceptId().toString());
+        mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "");
+        mockRequest.setParameter("conceptMappings[0].conceptMapType", "");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        assertEquals(initialConceptMappingCount, cs.getConcept(conceptId).getConceptMappings().size());
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -991,32 +988,32 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should remove a concept map from an existing concept", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldRemoveAConceptMapFromAnExistingConcept() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		int conceptId = 5089;
-		
-		// make sure the concept already exists and has some concept mappings
-		Concept concept = cs.getConcept(conceptId);
-		assertNotNull(concept);
-		Collection<ConceptMap> maps = concept.getConceptMappings();
-		int initialConceptMappingCount = maps.size();
-		assertTrue(initialConceptMappingCount > 0);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
-		//remove the first row
-		mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		assertEquals(initialConceptMappingCount - 1, cs.getConcept(conceptId).getConceptMappings().size());
-	}
+        ConceptService cs = Context.getConceptService();
+        int conceptId = 5089;
+
+        // make sure the concept already exists and has some concept mappings
+        Concept concept = cs.getConcept(conceptId);
+        assertNotNull(concept);
+        Collection<ConceptMap> maps = concept.getConceptMappings();
+        int initialConceptMappingCount = maps.size();
+        assertTrue(initialConceptMappingCount > 0);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", concept.getConceptId().toString());
+        //remove the first row
+        mockRequest.setParameter("conceptMappings[0].conceptReferenceTerm", "");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        assertEquals(initialConceptMappingCount - 1, cs.getConcept(conceptId).getConceptMappings().size());
+    }
 	
 	/**
 	 * @see ConceptFormController#validateConceptUsesPersistedObjects(Concept,BindException)
@@ -1103,39 +1100,39 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	
 	@Test
 	public void shouldRemoveConceptDescriptionIfRemovedFromUI() throws Exception {
-		ConceptService cs = Context.getConceptService();
-		final String espaniol = "es";
-		AdministrationService as = Context.getAdministrationService();
-		GlobalProperty gp = as.getGlobalPropertyObject(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
-		gp.setPropertyValue("en_GB, " + espaniol);
-		as.saveGlobalProperty(gp);
-		// make sure the concept already exists
-		Concept concept = cs.getConcept(3);
-		assertNotNull(concept);
-		Locale spanish = LocaleUtility.fromSpecification(espaniol);
-		assertNotNull(concept.getDescription(britishEn, true));
-		assertNull(concept.getDescription(spanish, true));
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "");
-		mockRequest.setParameter("descriptionsByLocale[es].description", "new spanish description");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConcept(3);
-		assertNotNull(actualConcept);
-		assertNull(concept.getDescription(britishEn, true));
-		assertNotNull(concept.getDescription(spanish, true));
-	}
+        ConceptService cs = Context.getConceptService();
+        final String espaniol = "es";
+        AdministrationService as = Context.getAdministrationService();
+        GlobalProperty gp = as.getGlobalPropertyObject(OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
+        gp.setPropertyValue("en_GB, " + espaniol);
+        as.saveGlobalProperty(gp);
+        // make sure the concept already exists
+        Concept concept = cs.getConcept(3);
+        assertNotNull(concept);
+        Locale spanish = LocaleUtility.fromSpecification(espaniol);
+        assertNotNull(concept.getDescription(britishEn, true));
+        assertNull(concept.getDescription(spanish, true));
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", concept.getConceptId().toString());
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "");
+        mockRequest.setParameter("descriptionsByLocale[es].description", "new spanish description");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConcept(3);
+        assertNotNull(actualConcept);
+        assertNull(concept.getDescription(britishEn, true));
+        assertNotNull(concept.getDescription(spanish, true));
+    }
 	
 	/**
 	 * @see ConceptFormBackingObject#getConceptFromFormData()
@@ -1143,37 +1140,37 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Test
 	@Verifies(value = "should set concept on concept answers", method = "getConceptFromFormData()")
 	public void getConceptFromFormData_shouldSetConceptOnConceptAnswers() throws Exception {
-		int conceptId = 21;
-		
-		Concept concept = conceptService.getConcept(conceptId);
-		assertNotNull(concept);
-		
-		int initialCount = concept.getAnswers().size();
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "Save Concept");
-		mockRequest.setParameter("conceptId", "21");
-		mockRequest.setParameter("namesByLocale[en].name", concept.getName().getName());
-		mockRequest.setParameter("concept.datatype", "2");
-		mockRequest.setParameter("concept.answers", "7 8 22 5089");
-		
-		ConceptFormBackingObject cb = conceptFormController.formBackingObject(mockRequest);
-		
-		// Bind the request parameters
-		ServletRequestDataBinder srdb = new ServletRequestDataBinder(cb);
-		conceptFormController.initBinder(mockRequest, srdb);
-		srdb.bind(mockRequest);
-		
-		Concept parsedConcept = cb.getConceptFromFormData();
-		
-		assertEquals(initialCount + 1, parsedConcept.getAnswers().size());
-		for (ConceptAnswer ca : parsedConcept.getAnswers()) {
-			assertNotNull(ca.getConcept());
-		}
-	}
+        int conceptId = 21;
+
+        Concept concept = conceptService.getConcept(conceptId);
+        assertNotNull(concept);
+
+        int initialCount = concept.getAnswers().size();
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "Save Concept");
+        mockRequest.setParameter("conceptId", "21");
+        mockRequest.setParameter("namesByLocale[en].name", concept.getName().getName());
+        mockRequest.setParameter("concept.datatype", "2");
+        mockRequest.setParameter("concept.answers", "7 8 22 5089");
+
+        ConceptFormBackingObject cb = conceptFormController.formBackingObject(mockRequest);
+
+        // Bind the request parameters
+        ServletRequestDataBinder srdb = new ServletRequestDataBinder(cb);
+        conceptFormController.initBinder(mockRequest, srdb);
+        srdb.bind(mockRequest);
+
+        Concept parsedConcept = cb.getConceptFromFormData();
+
+        assertEquals(initialCount + 1, parsedConcept.getAnswers().size());
+        for (ConceptAnswer ca : parsedConcept.getAnswers()) {
+            assertNotNull(ca.getConcept());
+        }
+    }
 	
 	/**
 	 * @see ConceptFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
@@ -1213,32 +1210,32 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldSaveConceptAttribute() throws Exception {
-		executeDataSet(CONCEPT_ATTRIBUTES_XML);
-		ConceptService cs = Context.getConceptService();
-		ConceptAttributeType conceptAttributeType = cs.getConceptAttributeType(1);
-		
-		final Integer conceptId = 5089;
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("conceptId", conceptId.toString());
-		mockRequest.setParameter("attribute." + conceptAttributeType.getId() + ".new[1]", "2014-03-12");
-		
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConcept(conceptId);
-		assertNotNull(actualConcept);
-		final Collection<ConceptAttribute> attributes = actualConcept.getAttributes();
-		assertEquals(1, attributes.size());
-		final ConceptAttribute conceptAttribute = attributes.iterator().next();
-		assertEquals("2014-03-12", conceptAttribute.getValueReference());
-	}
+        executeDataSet(CONCEPT_ATTRIBUTES_XML);
+        ConceptService cs = Context.getConceptService();
+        ConceptAttributeType conceptAttributeType = cs.getConceptAttributeType(1);
+
+        final Integer conceptId = 5089;
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("conceptId", conceptId.toString());
+        mockRequest.setParameter("attribute." + conceptAttributeType.getId() + ".new[1]", "2014-03-12");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConcept(conceptId);
+        assertNotNull(actualConcept);
+        final Collection<ConceptAttribute> attributes = actualConcept.getAttributes();
+        assertEquals(1, attributes.size());
+        final ConceptAttribute conceptAttribute = attributes.iterator().next();
+        assertEquals("2014-03-12", conceptAttribute.getValueReference());
+    }
 	
 	/**
 	 * @verifies should add new concept attributes on creating concept
@@ -1246,96 +1243,96 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void shouldSaveConceptAttributeOnCreatingConcept() throws Exception {
-		executeDataSet(CONCEPT_ATTRIBUTES_XML);
-		final String EXPECTED_PREFERRED_NAME = "concept with attribute";
-		
-		ConceptService cs = Context.getConceptService();
-		
-		// make sure the concept doesn't already exist
-		Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNull(conceptToAdd);
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		
-		MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-		mockRequest.setMethod("POST");
-		mockRequest.setParameter("action", "");
-		mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
-		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
-		mockRequest.setParameter("concept.datatype", "1");
-		mockRequest.setParameter("attribute.1.new[0]", "2011-04-25");
-		mockRequest.setParameter("concept.conceptClass", "1");
+        executeDataSet(CONCEPT_ATTRIBUTES_XML);
+        final String EXPECTED_PREFERRED_NAME = "concept with attribute";
 
-		ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
-		assertNotNull(actualConcept);
-		final Collection<ConceptAttribute> attributes = actualConcept.getAttributes();
-		assertEquals(1, attributes.size());
-		final ConceptAttribute conceptAttribute = attributes.iterator().next();
-		assertEquals("2011-04-25", conceptAttribute.getValueReference());
-	}
+        ConceptService cs = Context.getConceptService();
+
+        // make sure the concept doesn't already exist
+        Concept conceptToAdd = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNull(conceptToAdd);
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.setMethod("POST");
+        mockRequest.setParameter("action", "");
+        mockRequest.setParameter("namesByLocale[en_GB].name", EXPECTED_PREFERRED_NAME);
+        mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
+        mockRequest.setParameter("concept.datatype", "1");
+        mockRequest.setParameter("attribute.1.new[0]", "2011-04-25");
+        mockRequest.setParameter("concept.conceptClass", "1");
+
+        ModelAndView mav = conceptFormController.handleRequest(mockRequest, new MockHttpServletResponse());
+        assertNotNull(mav);
+        assertTrue(mav.getModel().isEmpty());
+
+        Concept actualConcept = cs.getConceptByName(EXPECTED_PREFERRED_NAME);
+        assertNotNull(actualConcept);
+        final Collection<ConceptAttribute> attributes = actualConcept.getAttributes();
+        assertEquals(1, attributes.size());
+        final ConceptAttribute conceptAttribute = attributes.iterator().next();
+        assertEquals("2011-04-25", conceptAttribute.getValueReference());
+    }
 	
 	/**
 	 * @verifies not void or change attributeList if the attribute values are same
 	 */
 	@Test
 	public void shouldNotVoidOrChangeAttributeListIfTheAttributeValuesAreSame() throws Exception {
-		executeDataSet(CONCEPT_ATTRIBUTES_XML);
-		Concept concept = Context.getConceptService().getConcept(3);
-		final int existingConceptAttributeId = 1;
-		ConceptAttributeType conceptAttributeType = Context.getConceptService().getConceptAttributeType(
-		    existingConceptAttributeId);
-		conceptAttributeType.setName("concept joined date");
-		
-		//assert there is one concept attribute
-		assertEquals(1, concept.getAttributes().size());
-		assertEquals("2011-04-25", concept.getAttributes().iterator().next().getValueReference());
-		
-		MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
-		mockHttpServletRequest.setMethod("POST");
-		mockHttpServletRequest.setParameter("action", "");
-		mockHttpServletRequest.setParameter("conceptId", "3");
-		mockHttpServletRequest.setParameter("attribute." + conceptAttributeType.getId() + ".existing["
-		        + existingConceptAttributeId + "]", "2011-04-25");
-		BindException errors = new BindException(concept, "concept");
-		
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		conceptFormController.handleRequest(mockHttpServletRequest, new MockHttpServletResponse());
-		
-		Assert.assertEquals(1, concept.getAttributes().size());
-		Assert.assertFalse(((ConceptAttribute) (concept.getAttributes().toArray()[0])).getVoided());
-		Assert.assertFalse(errors.hasErrors());
-	}
+        executeDataSet(CONCEPT_ATTRIBUTES_XML);
+        Concept concept = Context.getConceptService().getConcept(3);
+        final int existingConceptAttributeId = 1;
+        ConceptAttributeType conceptAttributeType = Context.getConceptService().getConceptAttributeType(
+                existingConceptAttributeId);
+        conceptAttributeType.setName("concept joined date");
+
+        //assert there is one concept attribute
+        assertEquals(1, concept.getAttributes().size());
+        assertEquals("2011-04-25", concept.getAttributes().iterator().next().getValueReference());
+
+        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+        mockHttpServletRequest.setMethod("POST");
+        mockHttpServletRequest.setParameter("action", "");
+        mockHttpServletRequest.setParameter("conceptId", "3");
+        mockHttpServletRequest.setParameter("attribute." + conceptAttributeType.getId() + ".existing["
+                + existingConceptAttributeId + "]", "2011-04-25");
+        BindException errors = new BindException(concept, "concept");
+
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        conceptFormController.handleRequest(mockHttpServletRequest, new MockHttpServletResponse());
+
+        assertEquals(1, concept.getAttributes().size());
+        Assert.assertFalse(((ConceptAttribute) (concept.getAttributes().toArray()[0])).getVoided());
+        Assert.assertFalse(errors.hasErrors());
+    }
 	
 	/**
 	 * @verifies set attributes to void if the values is not set
 	 */
 	@Test
 	public void shouldSetAttributesToVoidIfTheValueIsNotSet() throws Exception {
-		executeDataSet(CONCEPT_ATTRIBUTES_XML);
-		Concept concept = Context.getConceptService().getConcept(3);
-		final int existingConceptAttributeId = 1;
-		ConceptAttributeType conceptAttributeType = Context.getConceptService().getConceptAttributeType(
-		    existingConceptAttributeId);
-		conceptAttributeType.setName("concept type");
-		MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
-		//If value is not set then void all the attributes.
-		mockHttpServletRequest.setMethod("POST");
-		mockHttpServletRequest.setParameter("action", "");
-		mockHttpServletRequest.setParameter("conceptId", "3");
-		mockHttpServletRequest.setParameter("attribute." + conceptAttributeType.getId() + ".existing["
-		        + existingConceptAttributeId + "]", "");
-		BindException errors = new BindException(concept, "concept");
-		ConceptFormController conceptFormController = (ConceptFormController) applicationContext.getBean("conceptForm");
-		conceptFormController.handleRequest(mockHttpServletRequest, new MockHttpServletResponse());
-		
-		Assert.assertEquals(1, concept.getAttributes().size());
-		Assert.assertTrue(((ConceptAttribute) (concept.getAttributes().toArray()[0])).getVoided());
-		Assert.assertFalse(errors.hasErrors());
-	}
+        executeDataSet(CONCEPT_ATTRIBUTES_XML);
+        Concept concept = Context.getConceptService().getConcept(3);
+        final int existingConceptAttributeId = 1;
+        ConceptAttributeType conceptAttributeType = Context.getConceptService().getConceptAttributeType(
+                existingConceptAttributeId);
+        conceptAttributeType.setName("concept type");
+        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+        //If value is not set then void all the attributes.
+        mockHttpServletRequest.setMethod("POST");
+        mockHttpServletRequest.setParameter("action", "");
+        mockHttpServletRequest.setParameter("conceptId", "3");
+        mockHttpServletRequest.setParameter("attribute." + conceptAttributeType.getId() + ".existing["
+                + existingConceptAttributeId + "]", "");
+        BindException errors = new BindException(concept, "concept");
+        ConceptFormController conceptFormController = conceptFormProvider.getObject();
+        conceptFormController.handleRequest(mockHttpServletRequest, new MockHttpServletResponse());
+
+        assertEquals(1, concept.getAttributes().size());
+        assertTrue(((ConceptAttribute) (concept.getAttributes().toArray()[0])).getVoided());
+        Assert.assertFalse(errors.hasErrors());
+    }
 	
 	/**
 	 * To be uncommented when the openmrs-core version in this module is ultimately changed to 2.7.0

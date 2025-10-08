@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptAttribute;
+import org.openmrs.ConceptAttributeType;
 import org.openmrs.ConceptComplex;
 import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptMap;
@@ -58,7 +59,6 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.ConceptsLockedException;
 import org.openmrs.api.DuplicateConceptNameException;
 import org.openmrs.api.context.Context;
-import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.legacyui.GeneralUtils;
 import org.openmrs.module.web.extension.ConceptUsageExtension;
 import org.openmrs.module.web.extension.provider.Link;
@@ -82,6 +82,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -193,7 +194,6 @@ public class ConceptFormController extends SimpleFormController {
 		ConceptService cs = Context.getConceptService();
 		
 		if (Context.isAuthenticated()) {
-			
 			ConceptFormBackingObject conceptBackingObject = (ConceptFormBackingObject) obj;
 			MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 			String action = request.getParameter("action");
@@ -261,6 +261,7 @@ public class ConceptFormController extends SimpleFormController {
 				// return to the edit screen because an error was thrown
 				return new ModelAndView(new RedirectView(getSuccessView() + "?conceptId=" + concept.getConceptId()));
 			} else {
+                List<ConceptAttributeType> conceptAttributeTypes = cs.getAllConceptAttributeTypes();
 				Concept concept = conceptBackingObject.getConceptFromFormData();
 				//if the user is editing a concept, initialise the associated creator property
 				//this is aimed at avoiding a lazy initialisation exception when rendering
@@ -271,7 +272,7 @@ public class ConceptFormController extends SimpleFormController {
 				
 				try {
 					WebAttributeUtil.handleSubmittedAttributesForType(conceptBackingObject.getConcept(), errors,
-					    ConceptAttribute.class, request, cs.getAllConceptAttributeTypes());
+					    ConceptAttribute.class, request, conceptAttributeTypes);
 					
 					errors.pushNestedPath("concept");
 					ValidateUtil.validate(concept, errors);
@@ -398,10 +399,13 @@ public class ConceptFormController extends SimpleFormController {
 		if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
 			try {
 				Concept concept = cs.getConcept(Integer.valueOf(conceptId));
-				dataTypeReadOnly = cs.hasAnyObservation(concept);
-				if (concept != null && concept.getDatatype().isBoolean()) {
-					map.put("isBoolean", true);
-				}
+                if (concept != null) {
+                    if (concept.getDatatype().isBoolean()) {
+                        map.put("isBoolean", true);
+                    }
+
+                    dataTypeReadOnly = cs.hasAnyObservation(concept);
+                }
 			}
 			catch (NumberFormatException ex) {
 				// nothing to do
