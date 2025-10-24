@@ -261,8 +261,8 @@ public class ConceptFormController extends SimpleFormController {
 				// return to the edit screen because an error was thrown
 				return new ModelAndView(new RedirectView(getSuccessView() + "?conceptId=" + concept.getConceptId()));
 			} else {
-                List<ConceptAttributeType> conceptAttributeTypes = cs.getAllConceptAttributeTypes();
 				Concept concept = conceptBackingObject.getConceptFromFormData();
+                List<ConceptAttributeType> conceptAttributeTypes = cs.getAllConceptAttributeTypes();
 				//if the user is editing a concept, initialise the associated creator property
 				//this is aimed at avoiding a lazy initialisation exception when rendering
 				//the jsp after validation has failed
