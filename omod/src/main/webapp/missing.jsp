@@ -8,7 +8,7 @@
 
 <br /><br />
 
-<openmrs:message code="Missing.start"/> "<b><%= request.getAttribute("javax.servlet.error.request_uri") %></b>"
+<openmrs:message code="Missing.start"/> "<b><%= request.getAttribute("jakarta.servlet.error.request_uri") %></b>"
 <openmrs:message code="Missing.end"/>
 
 <br/><br/>
