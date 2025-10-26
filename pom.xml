@@ -74,6 +74,22 @@
 						<groupId>commons-fileupload</groupId>
 						<artifactId>commons-fileupload</artifactId>
 					</exclusion>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>response</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>request</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>standard</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>page</artifactId>
+                    </exclusion>
 				</exclusions>
 			</dependency>
 						
