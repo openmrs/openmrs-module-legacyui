@@ -526,7 +526,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 
         ConceptService cs = Context.getConceptService();
 
-        final Concept concept = new Concept();
+        final Concept concept = new Concept(3);
         concept.addName(new ConceptName(CONCEPT_NAME, britishEn));
         concept.setShortName(new ConceptName("shortname", britishEn));
         concept.addDescription(new ConceptDescription("some description", null));
