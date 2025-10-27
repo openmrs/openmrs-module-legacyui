@@ -25,7 +25,7 @@ public class LocationAttributeTypeListController {
 	/**
 	 * Show existing
 	 */
-	@RequestMapping("/admin/locations/locationAttributeTypes")
+	@RequestMapping("/admin/locations/locationAttributeTypes.list")
 	public void list(Model model) {
 		model.addAttribute("attributeTypes", Context.getLocationService().getAllLocationAttributeTypes());
 	}
