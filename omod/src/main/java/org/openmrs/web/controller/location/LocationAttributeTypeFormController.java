@@ -59,7 +59,7 @@ public class LocationAttributeTypeFormController {
 	/**
 	 * Show existing (or instantiate blank)
 	 */
-	@RequestMapping(value = { "/admin/locations/locationAttributeTypes.list", "/admin/locations/locationAttributeType.form" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/admin/locations/locationAttributeType.form" }, method = RequestMethod.GET)
 	public void showForm() {
 	}
 	
