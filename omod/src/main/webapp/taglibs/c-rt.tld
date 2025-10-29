@@ -10,14 +10,6 @@
   <display-name>JSTL core RT</display-name>
   <description>JSTL 1.0 core library</description>
 
-  <validator>
-    <validator-class>
-        org.apache.taglibs.standard.tlv.JstlCoreTLV
-    </validator-class>
-    <description>
-        Provides core validation features for JSTL tags.
-    </description>
-  </validator>
 
   <tag>
     <name>catch</name>
