@@ -70,7 +70,7 @@ public class PrivilegeTag extends TagSupport {
 	 * of privileges is treated can be inversed by setting {@code inverse} to "true"/"TRUE".
 	 * </p>
 	 * 
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doStartTag()
 	 * @should include body for user with the privilege
 	 * @should skip body for user without the privilege
 	 * @should skip body for user with the privilege if inverse is true
