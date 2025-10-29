@@ -2,9 +2,11 @@
 		<br/>
 		</div>
 	</div>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <div id="footer"
      xmlns:c="jakarta.tags.core"
+     xmlns:fn="jakarta.tags.functions"
 >
 	
 		<div id="footerInner">
