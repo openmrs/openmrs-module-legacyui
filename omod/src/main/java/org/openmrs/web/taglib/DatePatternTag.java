@@ -37,7 +37,7 @@ public class DatePatternTag extends TagSupport {
 	/**
 	 * Does the actual working of printing the date pattern
 	 * 
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doStartTag()
 	 */
 	@Override
 	public int doStartTag() {

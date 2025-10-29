@@ -1,5 +1,5 @@
 <div id="banner"
-     xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:jsp="https://jakarta.ee/xml/ns/jakartaee"
      xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">
 <a href="<%= request.getContextPath() %><spring:theme code="url.homepage" />">
   <div id="logosmall"><img src="<%= request.getContextPath() %><spring:theme code="image.logo.text.small" />" alt="OpenMRS Logo" border="0"/></div>

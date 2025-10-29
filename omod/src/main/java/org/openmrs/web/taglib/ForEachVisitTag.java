@@ -86,7 +86,7 @@ public class ForEachVisitTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
+	 * @see jakarta.servlet.jsp.tagext.IterationTag#doAfterBody()
 	 */
 	@Override
 	public int doAfterBody() throws JspException {
@@ -100,7 +100,7 @@ public class ForEachVisitTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
+	 * @see jakarta.servlet.jsp.tagext.Tag#doEndTag()
 	 */
 	@Override
 	public int doEndTag() throws JspException {

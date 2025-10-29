@@ -52,7 +52,7 @@ public class ForEachEncounterTag extends BodyTagSupport {
 	private String var;
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.BodyTagSupport#doStartTag()
 	 * @should sort encounters by encounterDatetime in descending order
 	 * @should pass for a patient with no encounters
 	 */
@@ -98,7 +98,7 @@ public class ForEachEncounterTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
+	 * @see jakarta.servlet.jsp.tagext.IterationTag#doAfterBody()
 	 */
 	@Override
 	public int doAfterBody() throws JspException {
@@ -112,7 +112,7 @@ public class ForEachEncounterTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
+	 * @see jakarta.servlet.jsp.tagext.Tag#doEndTag()
 	 */
 	@Override
 	public int doEndTag() throws JspException {

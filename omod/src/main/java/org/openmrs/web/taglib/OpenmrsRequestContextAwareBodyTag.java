@@ -42,7 +42,7 @@ public abstract class OpenmrsRequestContextAwareBodyTag extends BodyTagSupport {
 	private RequestContext requestContext;
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.BodyTagSupport#doStartTag()
 	 */
 	@Override
 	public final int doStartTag() throws JspException {
@@ -95,7 +95,7 @@ public abstract class OpenmrsRequestContextAwareBodyTag extends BodyTagSupport {
 	 * @return same as BodyTagSupport.doEndTag
 	 * @throws Exception any exception, any checked one other than a JspException gets wrapped in a
 	 *             JspException by doEndTag
-	 * @see javax.servlet.jsp.tagext.TagSupport#doEndTag
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doEndTag
 	 */
 	protected abstract int doEndTagInternal() throws Exception;
 	

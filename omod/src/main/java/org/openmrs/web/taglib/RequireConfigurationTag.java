@@ -39,7 +39,7 @@ public class RequireConfigurationTag extends TagSupport {
 	private String configurationPage;
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doStartTag()
 	 * @should redirect if any properties are not set
 	 * @should not be sensitive to extraneous whitespace
 	 * @should not be sensitive to empty values

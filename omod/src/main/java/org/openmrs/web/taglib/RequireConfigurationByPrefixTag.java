@@ -42,7 +42,7 @@ public class RequireConfigurationByPrefixTag extends TagSupport {
 	private String configurationPage;
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doStartTag()
 	 */
 	public int doStartTag() throws JspException {
 		

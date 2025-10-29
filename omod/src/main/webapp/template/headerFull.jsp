@@ -16,7 +16,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:c="jakarta.tags.core"
-      xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:jsp="https://jakarta.ee/xml/ns/jakartaee"
       xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">
 	<head>
 		<script src="${pageContext.request.contextPath}/csrfguard" type="text/javascript"></script>
