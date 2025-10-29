@@ -4,15 +4,15 @@
 
 <%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>
 <%@ include file="localHeader.jsp" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <openmrs:htmlInclude file="/scripts/dojo/dojo.js" />
 
 <script type="text/javascript">
 	dojo.require("dojo.widget.openmrs.ConceptSearch");
-	dojo.require("dojo.widget.openmrs.OpenmrsPopup");
-	<request:existsParameter name="autoJump">
-		var autoJump = ${openmrs:getSafeJsBoolean(param.autoJump)};
-	</request:existsParameter>
+    <c:if test="${not empty param.autoJump}">
+        let autoJump = ${openmrs:getSafeJsBoolean(param.autoJump)};
+    </c:if>
 
 	dojo.addOnLoad( function() {
 		
