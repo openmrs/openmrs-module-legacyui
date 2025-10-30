@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <% session.removeAttribute(org.openmrs.web.WebConstants.OPENMRS_HEADER_USE_MINIMAL); %>
 	   
 <c:choose>

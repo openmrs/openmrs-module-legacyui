@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <div class="boxHeader${model.patientVariation}"><openmrs:message code="Patient.title"/></div>
