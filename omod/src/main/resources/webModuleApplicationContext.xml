@@ -16,9 +16,11 @@
   		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<!-- Add here beans related to the web context -->
-	
-	<bean id="legacyUiUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="patternParser"><null/></property>
+
+
+
+
+    <bean id="legacyUiUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="interceptors">
 			<list>
 				<ref bean="localeChangeInterceptor" />
@@ -46,7 +48,6 @@
 
 				<prop key="admin/person/addPerson.htm">addPerson</prop>
 				
-				<prop key="**/*.portlet">portletController</prop>
 
                 <prop key="admin/modules/module.list">moduleListController</prop>
                 <prop key="admin/modules/moduleProperties.form">modulePropertiesFormController</prop>
@@ -115,33 +116,37 @@
 				
 				<prop key="forgotPassword.form">forgotPasswordForm</prop>
 
-				<prop key="**/globalProperties.portlet">globalPropertyPortletController</prop>
-				<prop key="**/addressLayout.portlet">addressLayoutPortletController</prop>
-				<prop key="**/nameLayout.portlet">nameLayoutPortletController</prop>
-				<prop key="**/patientPrograms.portlet">patientProgramsPortletController</prop>
-				<prop key="**/personRelationships.portlet">personRelationshipsPortletController</prop>
-				<prop key="**/patientEncounters.portlet">patientEncountersPortletController</prop>
-				<prop key="**/patientVisits.portlet">patientVisitsPortletController</prop>
-				<prop key="**/personFormEntry.portlet">personFormEntryPortletController</prop>
-
-				<prop key="**/*.field">fieldGenController</prop>
-
 				<prop key="admin/visits/visitType.list">visitTypeList</prop>
 				<prop key="admin/visits/visitType.form">visitTypeForm</prop>
 				<prop key="admin/visits/visitAttributeType.list">visitAttributeTypeList</prop>
 				<prop key="admin/visits/visitAttributeType.form">visitAttributeTypeForm</prop>
 				
 				<prop key="admin/provider/providerAttributeType.list">providerAttributeTypeList</prop>
-				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>	
+				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>
 
-				<prop key="**/*.htm">springController</prop>
- 			</props>
+                <prop key="/**">legacyCatchAllController</prop>
+            </props>
 		</property>
 	</bean>
 	
 	<bean id="springController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
- 	 
-	<!-- ** Patient ** -->
+
+    <bean id="legacyCatchAllController" class="org.openmrs.web.controller.LegacyCatchAllController">
+        <property name="springController" ref="springController"/>
+        <property name="fieldGenController" ref="fieldGenController"/>
+        <property name="portletController" ref="portletController"/>
+
+        <property name="globalPropertyPortletController" ref="globalPropertyPortletController"/>
+        <property name="addressLayoutPortletController" ref="addressLayoutPortletController"/>
+        <property name="nameLayoutPortletController" ref="nameLayoutPortletController"/>
+        <property name="patientProgramsPortletController" ref="patientProgramsPortletController"/>
+        <property name="personRelationshipsPortletController" ref="personRelationshipsPortletController"/>
+        <property name="patientEncountersPortletController" ref="patientEncountersPortletController"/>
+        <property name="patientVisitsPortletController" ref="patientVisitsPortletController"/>
+        <property name="personFormEntryPortletController" ref="personFormEntryPortletController"/>
+    </bean>
+
+    <!-- ** Patient ** -->
 
 	<bean id="patientForm" class="org.openmrs.web.controller.patient.PatientFormController">
 		<property name="commandName" value="patient"/>
