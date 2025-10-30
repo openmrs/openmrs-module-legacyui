@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Provider Attribute Types,Purge Provider Attribute Types" otherwise="/login.htm" redirect="/admin/provider/providerAttributeType.list" />

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@page import="org.openmrs.util.PrivilegeConstants"%>
 
 <ul id="menu">

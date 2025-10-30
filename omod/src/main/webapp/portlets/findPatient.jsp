@@ -1,5 +1,5 @@
-<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <c:if test="${model.authenticatedUser != null}">
 	<c:choose>
