@@ -52,6 +52,7 @@ import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.validator.PatientIdentifierValidator;
 import org.openmrs.validator.PatientValidator;
 import org.openmrs.web.WebConstants;
+import org.openmrs.web.WebUtil;
 import org.openmrs.web.controller.person.PersonFormController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -116,7 +117,7 @@ public class PatientFormController extends PersonFormController {
 			Object[] objs = null;
 			
 			MessageSourceAccessor msa = getMessageSourceAccessor();
-			String action = request.getParameter("action");
+			String action = WebUtil.escapeHTML(request.getParameter("action"));
 			
 			if (action.equals(msa.getMessage("Patient.save"))) {
 				
@@ -150,10 +151,25 @@ public class PatientFormController extends PersonFormController {
 						String id = ids[i].trim();
 						if (!"".equals(id) && !"".equals(idTypes[i])) { //skips invalid and blank identifiers/identifierTypes
 							PatientIdentifier pi = new PatientIdentifier();
-							pi.setIdentifier(id);
-							pi.setIdentifierType(ps.getPatientIdentifierType(Integer.valueOf(idTypes[i])));
+							pi.setIdentifier(WebUtil.escapeHTML(id));
+							try {
+								int identifierTypeId = Integer.parseInt(idTypes[i]);
+								pi.setIdentifierType(ps.getPatientIdentifierType(identifierTypeId));
+							}
+							catch (NumberFormatException e) {
+								errors.rejectValue("identifierType", "Invalid identifier type format");
+								return showForm(request, response, errors);
+							}
+
 							if (StringUtils.isNotEmpty(locs[i])) {
-								pi.setLocation(ls.getLocation(Integer.valueOf(locs[i])));
+								try {
+									int locationId = Integer.parseInt(locs[i]);
+									pi.setLocation(ls.getLocation(locationId));
+								}
+								catch (NumberFormatException e) {
+									errors.rejectValue("location", "Invalid location format");
+									return showForm(request, response, errors);
+								}
 							}
 							if (idPrefStatus != null && idPrefStatus.length > i) {
 								pi.setPreferred(new Boolean(idPrefStatus[i]));
