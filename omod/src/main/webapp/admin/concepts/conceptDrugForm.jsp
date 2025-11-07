@@ -173,7 +173,7 @@
 		<td>
 			<table cellpadding="3" cellspacing="0">
 					<c:forEach var="ingredient" items="${drug.ingredients}">
-						<tr><td><openmrs:format concept="${ingredient.ingredient}"/> - ${ingredient.quantity} <openmrs:format concept="${ingredient.units}"/></td></tr>        
+						<tr><td><openmrs:format concept="${ingredient.ingredient}"/> - ${ingredient.strength} <openmrs:format concept="${ingredient.units}"/></td></tr>
 					</c:forEach>
 			</table>
 		</td>
