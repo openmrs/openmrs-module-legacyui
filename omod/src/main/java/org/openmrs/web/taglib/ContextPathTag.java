@@ -11,8 +11,8 @@ package org.openmrs.web.taglib;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 /**
  * Prints the contextPath for the current webapp. Typically you can get this via

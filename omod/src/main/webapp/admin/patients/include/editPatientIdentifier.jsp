@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <table>
 	<tr>
 		<td><openmrs:message code="general.preferred"/></td>

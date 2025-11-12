@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Person Attribute Types" otherwise="/login.htm" redirect="/admin/person/personAttributeType.list" />

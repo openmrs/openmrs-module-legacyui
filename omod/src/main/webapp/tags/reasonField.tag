@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <%@ attribute name="formFieldName" required="true" type="java.lang.String" %>
 <%@ attribute name="reasons" required="true" type="java.util.Map" %>

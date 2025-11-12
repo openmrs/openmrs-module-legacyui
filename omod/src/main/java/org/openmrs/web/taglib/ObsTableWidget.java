@@ -27,8 +27,8 @@ import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <openmrs:require privilege="View Current Users" otherwise="/login.htm" redirect="/admin/maintenance/currentUsers.list" />
 <%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp" %>

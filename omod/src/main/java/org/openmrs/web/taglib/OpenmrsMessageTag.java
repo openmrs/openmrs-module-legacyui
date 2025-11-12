@@ -12,8 +12,8 @@ package org.openmrs.web.taglib;
 import java.io.IOException;
 import java.util.Collection;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.util.LocaleUtility;

@@ -14,12 +14,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +28,8 @@ import org.openmrs.obs.ComplexData;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
+
+import javax.imageio.ImageIO;
 
 public class ComplexObsServlet extends HttpServlet {
 	

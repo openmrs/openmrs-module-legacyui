@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.attribute.handler;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.beans.PropertyEditor;
 

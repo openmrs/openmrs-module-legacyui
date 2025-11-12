@@ -12,8 +12,8 @@ package org.openmrs.web.taglib;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.jsp.tagext.BodyTag;
-import javax.servlet.jsp.tagext.Tag;
+import jakarta.servlet.jsp.tagext.BodyTag;
+import jakarta.servlet.jsp.tagext.Tag;
 
 import org.junit.Assert;
 import org.junit.Test;

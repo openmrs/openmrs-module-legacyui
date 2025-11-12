@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 <c:set var="obsList" value="${requestScope.obsList}" />
 <c:set var="field" value="${requestScope.field}" />

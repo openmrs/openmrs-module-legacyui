@@ -9,20 +9,20 @@
  */
 package org.openmrs.web.taglib;
 
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.taglibs.standard.tag.common.core.ImportSupport;
 import org.openmrs.module.Module;
 import org.openmrs.module.ModuleFactory;
 import org.openmrs.util.OpenmrsUtil;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.PageContext;
 import java.io.IOException;
 import java.util.Map;
 
-public class PortletTag extends ImportSupport {
+public class PortletTag extends BodyTagSupport {
 	
 	public static final long serialVersionUID = 21L;
 	
@@ -47,6 +47,8 @@ public class PortletTag extends ImportSupport {
 	private String patientIds = "";
 	
 	private String moduleId = "";
+
+	private String url = "";
 	
 	public PageContext getPageContext() {
 		return this.pageContext;
@@ -259,5 +261,8 @@ public class PortletTag extends ImportSupport {
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
 	}
-	
+
+	public String getUrl() {
+		return url;
+	}
 }

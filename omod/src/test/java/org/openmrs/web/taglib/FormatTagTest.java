@@ -11,8 +11,8 @@ package org.openmrs.web.taglib;
 
 import java.util.Locale;
 
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.Tag;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.Tag;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;

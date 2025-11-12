@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -64,7 +64,7 @@ public class GlobalPropertyController extends SimpleFormController {
 			action = "cancel";
 		}
 		
-		if (action.equals(getMessageSourceAccessor().getMessage("general.save"))) {
+		if (action.equals(Context.getMessageSourceService().getMessage("general.save"))) {
 			HttpSession httpSession = request.getSession();
 			
 			if (Context.isAuthenticated()) {

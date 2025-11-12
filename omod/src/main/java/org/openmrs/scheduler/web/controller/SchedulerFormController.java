@@ -15,10 +15,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +29,7 @@ import org.openmrs.web.WebConstants;
 import org.openmrs.web.WebUtil;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -147,7 +148,7 @@ public class SchedulerFormController extends SimpleFormController {
 		view = getSuccessView();
 		
 		Object[] args = new Object[] { WebUtil.escapeHTML(task.getName()) };
-		String success = getMessageSourceAccessor().getMessage("Scheduler.taskForm.saved", args);
+		String success = new MessageSourceAccessor(Context.getMessageSourceService()).getMessage("Scheduler.taskForm.saved", args);
 		httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, success);
 		
 		return new ModelAndView(new RedirectView(view));

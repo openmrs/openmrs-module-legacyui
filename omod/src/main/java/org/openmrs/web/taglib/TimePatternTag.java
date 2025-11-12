@@ -13,7 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.tagext.TagSupport;
 import java.text.SimpleDateFormat;
 
 /**
@@ -41,7 +41,7 @@ public class TimePatternTag extends TagSupport {
 	/**
 	 * Does the actual working of printing the time pattern
 	 * 
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doStartTag()
 	 */
 	@Override
 	public int doStartTag() {

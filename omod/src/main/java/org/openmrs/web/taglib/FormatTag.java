@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;

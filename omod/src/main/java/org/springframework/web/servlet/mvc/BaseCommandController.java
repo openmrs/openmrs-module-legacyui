@@ -26,7 +26,7 @@
  */
 package org.springframework.web.servlet.mvc;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.PropertyEditorRegistrar;
@@ -515,7 +515,7 @@ public abstract class BaseCommandController extends AbstractController {
 	 */
 	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
 		if (this.webBindingInitializer != null) {
-			this.webBindingInitializer.initBinder(binder, new ServletWebRequest(request));
+			this.webBindingInitializer.initBinder(binder);
 		}
 	}
 	

@@ -11,9 +11,9 @@
 
 -->
 <dataset>
-  <privilege privilege="Manage Patients" description="Able to manage patients" uuid="b0da53a7-e5f5-4584-a9b9-bf911470fe57"/>
-  <privilege privilege="View Patients" description="Able to view patients" uuid="83756836-aa91-44d0-97de-2cfcf3a64808"/>
-  <privilege privilege="Edit Patients" description="Able to edit patients" uuid="68ba469c-22cc-46fd-a992-e4ec7db92b7f"/>
+  <privilege name="Manage Patients" privilege="Manage Patients" description="Able to manage patients" uuid="b0da53a7-e5f5-4584-a9b9-bf911470fe57" creator="1" retired="false" date_created="2008-08-15 15:46:47.0"/>
+  <privilege name="View Patients" privilege="View Patients" description="Able to view patients" uuid="83756836-aa91-44d0-97de-2cfcf3a64808" creator="1" retired="false" date_created="2008-08-15 15:46:47.0"/>
+  <privilege name="Edit Patients" privilege="Edit Patients" description="Able to edit patients" uuid="68ba469c-22cc-46fd-a992-e4ec7db92b7f" creator="1" retired="false" date_created="2008-08-15 15:46:47.0"/>
   
   <role role="Data Clerk" description="Takes care of entering, editing patients." uuid="dddf8f8e-c6e3-49d3-8f70-2107a60f7df2"/>
   <role role="Clinician" description="Looks up patients." uuid="fa2fd77d-a586-4e89-9bd0-193a34b6d01e"/>

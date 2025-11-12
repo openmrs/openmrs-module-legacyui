@@ -45,9 +45,9 @@
 	</modules>
 	
 	<properties>
-		<openmrsPlatformVersion>2.7.3</openmrsPlatformVersion>
+		<openmrsPlatformVersion>3.0.0-SNAPSHOT</openmrsPlatformVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javaCompilerVersion>8</javaCompilerVersion>
+        <javaCompilerVersion>21</javaCompilerVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -69,6 +69,28 @@
 				<version>${openmrsPlatformVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-fileupload</groupId>
+						<artifactId>commons-fileupload</artifactId>
+					</exclusion>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>response</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>request</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>standard</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>taglibs</groupId>
+                        <artifactId>page</artifactId>
+                    </exclusion>
+				</exclusions>
 			</dependency>
 						
 			<dependency>
@@ -101,13 +123,7 @@
                 <version>1.0.12</version>
             </dependency>
 
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>jsp-api</artifactId>
-                <version>2.0</version>
-                <scope>provided</scope>
-            </dependency>
-						
+
 			<!-- End OpenMRS core -->
 
 			<dependency>
@@ -173,43 +189,6 @@
                         <tagNameFormat>@{project.version}</tagNameFormat>
                     </configuration>
                 </plugin>
-				<plugin>
-					<groupId>com.mycila</groupId>
-					<artifactId>license-maven-plugin</artifactId>
-					<version>3.0</version>
-					<configuration>
-						<header>license-header.txt</header>
-						<includes>
-							<include>**/*.java</include>
-							<include>**/*.txt</include>
-							<include>**/*.xml</include>
-						</includes>
-						<excludes>
-							<exclude>license-header.txt</exclude>
-							<exclude>.git/**</exclude>
-							<exclude>tools/formatter/**</exclude>
-							<!-- From gitignore -->
-							<exclude>.idea/**</exclude>
-							<exclude>target/**</exclude>
-							<exclude>bin/**</exclude>
-							<exclude>tmp/**</exclude>
-							<exclude>.settings/**</exclude>
-							<exclude>.externalToolBuilders/</exclude>
-							<exclude>build/</exclude>
-							<exclude>bin/</exclude>
-							<exclude>dist/</exclude>
-						</excludes>
-					</configuration>
-					<executions>
-						<execution>
-							<id>format-license-header</id>
-							<phase>process-sources</phase>
-							<goals>
-								<goal>format</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<groupId>net.revelc.code.formatter</groupId>
 					<artifactId>formatter-maven-plugin</artifactId>

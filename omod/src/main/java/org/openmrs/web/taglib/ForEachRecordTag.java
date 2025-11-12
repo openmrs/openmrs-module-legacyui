@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -177,7 +177,7 @@ public class ForEachRecordTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.BodyTag#doInitBody()
+	 * @see jakarta.servlet.jsp.tagext.BodyTag#doInitBody()
 	 */
 	public void doInitBody() throws JspException {
 		if (records.hasNext()) {
@@ -187,7 +187,7 @@ public class ForEachRecordTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
+	 * @see jakarta.servlet.jsp.tagext.IterationTag#doAfterBody()
 	 */
 	public int doAfterBody() throws JspException {
 		if (records.hasNext()) {
@@ -236,7 +236,7 @@ public class ForEachRecordTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
+	 * @see jakarta.servlet.jsp.tagext.Tag#doEndTag()
 	 */
 	public int doEndTag() throws JspException {
 		try {

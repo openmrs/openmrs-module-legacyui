@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -14,11 +15,10 @@
 	session.removeAttribute(WebConstants.OPENMRS_ERROR_ARGS);
 %>
 
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="jakarta.tags.core"
+      xmlns:jsp="https://jakarta.ee/xml/ns/jakartaee"
+      xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">
 	<head>
 		<script src="${pageContext.request.contextPath}/csrfguard" type="text/javascript"></script>
 		<openmrs:htmlInclude file="/moduleResources/legacyui/scripts/openmrs.js" />
