@@ -46,6 +46,7 @@
 	
 	<properties>
 		<openmrsPlatformVersion>2.7.3</openmrsPlatformVersion>
+		<openmrsContribDwrVersion>2.0.8-mod</openmrsContribDwrVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javaCompilerVersion>8</javaCompilerVersion>
 	</properties>
