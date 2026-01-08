@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.hibernate.Hibernate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -209,7 +210,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		User user = Context.getAuthenticatedUser();
 		user.setUserProperty(OpenmrsConstants.USER_PROPERTY_PROFICIENT_LOCALES, "en_GB, en_US, pl");
 		Context.getUserService().saveUser(user);
-		
+		Context.clearSession();
+
 		Concept answer1 = Context.getConceptService().getConcept(7);
 		answer1.addName(new ConceptName("TAK", new Locale("pl")));
 		Context.getConceptService().saveConcept(answer1);
@@ -250,6 +252,7 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		User user = Context.getAuthenticatedUser();
 		user.setUserProperty(OpenmrsConstants.USER_PROPERTY_PROFICIENT_LOCALES, "en_GB, en_US, pl");
 		Context.getUserService().saveUser(user);
+		Context.clearSession();
 		
 		Concept answer1 = Context.getConceptService().getConcept(7);
 		answer1.addName(new ConceptName("TAK", new Locale("pl")));

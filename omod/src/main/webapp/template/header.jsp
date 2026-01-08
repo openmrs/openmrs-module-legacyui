@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page errorPage="/errorhandler.jsp" %>
 <%@ page import="org.openmrs.web.WebConstants" %>
 <%

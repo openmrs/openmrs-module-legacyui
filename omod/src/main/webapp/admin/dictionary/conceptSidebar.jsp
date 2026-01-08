@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <fieldset>
 	<legend><openmrs:message code="Concept.resources" /></legend>
 	<a href="index.htm?phrase=<openmrs:format concept="${command.concept}" />"

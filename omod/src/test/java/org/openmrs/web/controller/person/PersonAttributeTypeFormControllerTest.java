@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.controller.person;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Before;

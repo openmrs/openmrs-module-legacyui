@@ -16,12 +16,12 @@ import static org.junit.Assert.assertNull;
 
 import java.net.BindException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.GlobalProperty;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
@@ -30,8 +30,8 @@ import org.openmrs.api.db.UserDAO;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.Security;
 import org.openmrs.web.OptionsForm;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.WebTestHelper;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -49,7 +49,7 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 	@Autowired
 	private WebTestHelper testHelper;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Context.authenticate("admin", "test");
 		user = Context.getAuthenticatedUser();

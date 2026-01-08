@@ -11,7 +11,7 @@ package org.openmrs.web.taglib;
 
 import java.text.SimpleDateFormat;
 
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +37,7 @@ public class DateTimePatternTag extends TagSupport {
 	/**
 	 * Does the actual working of printing the datetime pattern
 	 * 
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doStartTag()
 	 */
 	@Override
 	public int doStartTag() {
