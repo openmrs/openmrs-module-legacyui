@@ -9,6 +9,9 @@
  */
 package org.openmrs.web.controller.maintenance;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -25,7 +28,9 @@ import org.springframework.ui.ModelMap;
 public class SystemInformationControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	private ModelMap model = null;
-	
+
+    private static final Logger log = LoggerFactory.getLogger(SystemInformationControllerTest.class);
+
 	@Before
 	public void before() throws Exception {
 		createController();
@@ -36,9 +41,17 @@ public class SystemInformationControllerTest extends BaseModuleWebContextSensiti
 	 */
 	private void createController() {
 		model = new ModelMap();
-		SystemInformationController controller = new SystemInformationController();
+
+        // Safe null check
+        if (model == null) {
+            log.warn("Model was null, creating new ModelMap");
+            model = new ModelMap();
+        }
+
+        SystemInformationController controller = new SystemInformationController();
 		controller.showPage(model);
-		//System.out.println("SystemInformationControllerTest.createController() "+model.toString());
+
+        log.debug("createController() model: {}", model);
 	}
 	
 	/**
