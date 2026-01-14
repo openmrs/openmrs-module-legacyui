@@ -9,6 +9,9 @@
  */
 package org.openmrs.web.controller.maintenance;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.openmrs.api.context.Context;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class SystemInformationController {
-	
+    private static final Logger log =
+            LoggerFactory.getLogger(SystemInformationController.class);
 	/**
 	 * Default constructor used by spring MVC
 	 */
@@ -39,7 +43,10 @@ public class SystemInformationController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/systemInfo.htm")
 	public String showPage(ModelMap model) {
-		model.addAttribute("systemInfo", Context.getAdministrationService().getSystemInformation());
+
+        log.debug("Loading system information page");
+
+        model.addAttribute("systemInfo", Context.getAdministrationService().getSystemInformation());
 		return "/module/legacyui/admin/maintenance/systemInfo";
 	}
 	
