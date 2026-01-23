@@ -29,6 +29,8 @@ import org.openmrs.web.user.UserProperties;
  * the user to change his password.
  */
 public class ForcePasswordChangeFilter implements Filter {
+
+	private static boolean enabled = true;
 	
 	private String excludeURL;
 	
@@ -53,7 +55,7 @@ public class ForcePasswordChangeFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String requestURI = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		
-		if (Context.isAuthenticated()
+		if (enabled && Context.isAuthenticated()
 		        && new UserProperties(Context.getAuthenticatedUser().getUserProperties()).isSupposedToChangePassword()
 		        && shouldNotAllowAccessToUrl(requestURI)) {
 			config.getServletContext().getRequestDispatcher(changePasswordForm).forward(request, response);
@@ -92,5 +94,12 @@ public class ForcePasswordChangeFilter implements Filter {
 		excludedURLs = excludeURL.split(",");
 		changePasswordForm = config.getInitParameter("changePasswordForm");
 	}
-	
+
+	public static boolean isEnabled() {
+		return enabled;
+	}
+
+	public static void setEnabled(boolean enabled) {
+		ForcePasswordChangeFilter.enabled = enabled;
+	}
 }
