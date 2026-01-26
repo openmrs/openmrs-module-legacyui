@@ -9,7 +9,9 @@
  */
 package org.openmrs.module.web.filter;
 
-import java.io.IOException;
+import org.openmrs.api.context.Context;
+import org.openmrs.util.ConfigUtil;
+import org.openmrs.web.user.UserProperties;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,10 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.openmrs.api.context.Context;
-import org.openmrs.web.user.UserProperties;
+import java.io.IOException;
 
 /**
  * This filter checks if an authenticated user has been flagged by the admin to change his password
@@ -30,7 +29,7 @@ import org.openmrs.web.user.UserProperties;
  */
 public class ForcePasswordChangeFilter implements Filter {
 
-	private static boolean enabled = true;
+	private boolean enabled = true;
 	
 	private String excludeURL;
 	
@@ -90,16 +89,14 @@ public class ForcePasswordChangeFilter implements Filter {
 	 */
 	public void init(FilterConfig config) throws ServletException {
 		this.config = config;
-		excludeURL = config.getInitParameter("excludeURL");
+		enabled = !"false".equalsIgnoreCase(getParameter("enabled"));
+		excludeURL = getParameter("excludeURL");
 		excludedURLs = excludeURL.split(",");
-		changePasswordForm = config.getInitParameter("changePasswordForm");
+		changePasswordForm = getParameter("changePasswordForm");
 	}
 
-	public static boolean isEnabled() {
-		return enabled;
-	}
-
-	public static void setEnabled(boolean enabled) {
-		ForcePasswordChangeFilter.enabled = enabled;
+	private String getParameter(String name) {
+		String propertyName = "legacyui.passwordChangeFilter." + name;
+		return ConfigUtil.getProperty(propertyName, name);
 	}
 }
