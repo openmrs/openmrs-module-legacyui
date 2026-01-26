@@ -53,7 +53,7 @@ public class ForcePasswordChangeFilter implements Filter {
 	        ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String requestURI = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
-		
+
 		if (enabled && Context.isAuthenticated()
 		        && new UserProperties(Context.getAuthenticatedUser().getUserProperties()).isSupposedToChangePassword()
 		        && shouldNotAllowAccessToUrl(requestURI)) {
@@ -97,6 +97,6 @@ public class ForcePasswordChangeFilter implements Filter {
 
 	private String getParameter(String name) {
 		String propertyName = "legacyui.passwordChangeFilter." + name;
-		return ConfigUtil.getProperty(propertyName, name);
+		return ConfigUtil.getProperty(propertyName, config.getInitParameter(name));
 	}
 }
