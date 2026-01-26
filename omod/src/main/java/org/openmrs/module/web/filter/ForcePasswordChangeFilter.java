@@ -9,9 +9,7 @@
  */
 package org.openmrs.module.web.filter;
 
-import org.openmrs.api.context.Context;
-import org.openmrs.util.ConfigUtil;
-import org.openmrs.web.user.UserProperties;
+import java.io.IOException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -20,7 +18,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+
+import org.openmrs.api.context.Context;
+import org.openmrs.web.user.UserProperties;
 
 /**
  * This filter checks if an authenticated user has been flagged by the admin to change his password
@@ -29,7 +30,7 @@ import java.io.IOException;
  */
 public class ForcePasswordChangeFilter implements Filter {
 
-	private boolean enabled = true;
+	private static boolean enabled = true;
 	
 	private String excludeURL;
 	
@@ -53,7 +54,7 @@ public class ForcePasswordChangeFilter implements Filter {
 	        ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String requestURI = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
-
+		
 		if (enabled && Context.isAuthenticated()
 		        && new UserProperties(Context.getAuthenticatedUser().getUserProperties()).isSupposedToChangePassword()
 		        && shouldNotAllowAccessToUrl(requestURI)) {
@@ -89,14 +90,16 @@ public class ForcePasswordChangeFilter implements Filter {
 	 */
 	public void init(FilterConfig config) throws ServletException {
 		this.config = config;
-		enabled = !"false".equalsIgnoreCase(getParameter("enabled"));
-		excludeURL = getParameter("excludeURL");
+		excludeURL = config.getInitParameter("excludeURL");
 		excludedURLs = excludeURL.split(",");
-		changePasswordForm = getParameter("changePasswordForm");
+		changePasswordForm = config.getInitParameter("changePasswordForm");
 	}
 
-	private String getParameter(String name) {
-		String propertyName = "legacyui.passwordChangeFilter." + name;
-		return ConfigUtil.getProperty(propertyName, config.getInitParameter(name));
+	public static boolean isEnabled() {
+		return enabled;
+	}
+
+	public static void setEnabled(boolean enabled) {
+		ForcePasswordChangeFilter.enabled = enabled;
 	}
 }
