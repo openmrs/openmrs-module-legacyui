@@ -9,19 +9,28 @@
  */
 package org.openmrs.web.attribute.handler;
 
-import java.util.Map;
-
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.Concept;
+import org.openmrs.api.context.Context;
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.customdatatype.datatype.ConceptDatatype;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Handler for the Concept custom datatype
  */
 @Component
 public class ConceptFieldGenDatatypeHandler extends SerializingFieldGenDatatypeHandler<ConceptDatatype, Concept> {
-	
+
+	public static final String SHOW_ANSWERS = "showAnswers";
+
+	private ObjectMapper objectMapper = new ObjectMapper();
+	private Map<String, Object> widgetConfiguration = new HashMap<>();
+
 	/**
 	 * @see SerializingFieldGenDatatypeHandler#getWidgetName()
 	 */
@@ -51,14 +60,32 @@ public class ConceptFieldGenDatatypeHandler extends SerializingFieldGenDatatypeH
 	 */
 	@Override
 	public Map<String, Object> getWidgetConfiguration() {
-		return null;
+		return widgetConfiguration;
 	}
 	
 	/**
 	 * @see SerializingFieldGenDatatypeHandler#setHandlerConfiguration(String)
 	 */
 	@Override
-	public void setHandlerConfiguration(String s) {
-		
+	public void setHandlerConfiguration(String handlerConfig) {
+		widgetConfiguration = new HashMap<>();
+		if (StringUtils.isNotBlank(handlerConfig)) {
+			try {
+				widgetConfiguration.putAll(objectMapper.readValue(handlerConfig, Map.class));
+			}
+			catch (Exception e) {
+				throw new IllegalArgumentException("Unable to parse widget configuration", e);
+			}
+			Object showAnswersRef = widgetConfiguration.remove(SHOW_ANSWERS);
+			if (showAnswersRef != null) {
+				Concept concept = Context.getConceptService().getConceptByUuid(showAnswersRef.toString());
+				if (concept != null) {
+					widgetConfiguration.put(SHOW_ANSWERS, concept.getConceptId());
+				}
+				else {
+					widgetConfiguration.put(SHOW_ANSWERS, Integer.parseInt(showAnswersRef.toString()));
+				}
+			}
+		}
 	}
 }
