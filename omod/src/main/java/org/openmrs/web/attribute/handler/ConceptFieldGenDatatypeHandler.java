@@ -26,8 +26,10 @@ import java.util.Map;
 @Component
 public class ConceptFieldGenDatatypeHandler extends SerializingFieldGenDatatypeHandler<ConceptDatatype, Concept> {
 
-	ObjectMapper objectMapper = new ObjectMapper();
-	Map<String, Object> widgetConfiguration = new HashMap<>();
+	public static final String SHOW_ANSWERS = "showAnswers";
+
+	private ObjectMapper objectMapper = new ObjectMapper();
+	private Map<String, Object> widgetConfiguration = new HashMap<>();
 
 	/**
 	 * @see SerializingFieldGenDatatypeHandler#getWidgetName()
@@ -74,15 +76,14 @@ public class ConceptFieldGenDatatypeHandler extends SerializingFieldGenDatatypeH
 			catch (Exception e) {
 				throw new IllegalArgumentException("Unable to parse widget configuration", e);
 			}
-			Object showAnswersRef = widgetConfiguration.remove("showAnswers");
+			Object showAnswersRef = widgetConfiguration.remove(SHOW_ANSWERS);
 			if (showAnswersRef != null) {
-				// Concept concept = Context.getConceptService().getConceptByReference(showAnswersRef.toString());
 				Concept concept = Context.getConceptService().getConceptByUuid(showAnswersRef.toString());
 				if (concept != null) {
-					widgetConfiguration.put("showAnswers", concept.getConceptId());
+					widgetConfiguration.put(SHOW_ANSWERS, concept.getConceptId());
 				}
 				else {
-					widgetConfiguration.put("showAnswers", Integer.parseInt(showAnswersRef.toString()));
+					widgetConfiguration.put(SHOW_ANSWERS, Integer.parseInt(showAnswersRef.toString()));
 				}
 			}
 		}
