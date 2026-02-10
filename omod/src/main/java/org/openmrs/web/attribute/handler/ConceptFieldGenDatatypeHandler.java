@@ -9,6 +9,7 @@
  */
 package org.openmrs.web.attribute.handler;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
@@ -66,7 +67,7 @@ public class ConceptFieldGenDatatypeHandler extends SerializingFieldGenDatatypeH
 	@Override
 	public void setHandlerConfiguration(String handlerConfig) {
 		widgetConfiguration = new HashMap<>();
-		if (handlerConfig != null) {
+		if (StringUtils.isNotBlank(handlerConfig)) {
 			try {
 				widgetConfiguration.putAll(objectMapper.readValue(handlerConfig, Map.class));
 			}
