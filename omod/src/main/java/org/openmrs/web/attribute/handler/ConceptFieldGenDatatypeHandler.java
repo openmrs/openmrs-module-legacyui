@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.attribute.handler;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;

@@ -16,7 +16,7 @@
 
 			<span id="localeOptions">
 				<%  //removes last instance of lang= from querystring and encodes the url to avoid xml problems
-					String qs = org.apache.commons.lang.StringEscapeUtils.escapeXml(request.getQueryString());
+					String qs = org.apache.commons.lang3.StringEscapeUtils.escapeXml(request.getQueryString());
 					if (qs == null)
 						qs = "";
 					int i = qs.lastIndexOf("lang=");

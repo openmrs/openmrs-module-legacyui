@@ -9,9 +9,9 @@
  */
 package org.openmrs.web.taglib.functions;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * Functions used within taglibs in a webapp jsp page. <br>

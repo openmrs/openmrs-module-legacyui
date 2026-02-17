@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.iterators.IteratorEnumeration;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang33.StringUtils;
 import org.openmrs.contrib.dwr.servlet.DwrServlet;
 import org.openmrs.util.OpenmrsClassLoader;
 

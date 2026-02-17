@@ -11,7 +11,7 @@ package org.openmrs.web.controller.user;
 
 import jakarta.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.User;
 import org.openmrs.api.PasswordException;
 import org.openmrs.api.UserService;

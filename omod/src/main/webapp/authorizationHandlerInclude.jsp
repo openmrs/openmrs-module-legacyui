@@ -1,4 +1,4 @@
-<%@page import="org.apache.commons.lang.StringUtils"%>
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.openmrs.web.WebConstants"%>
 <%@page import="org.openmrs.api.APIAuthenticationException"%>
 <%@page import="org.openmrs.api.context.ContextAuthenticationException"%>

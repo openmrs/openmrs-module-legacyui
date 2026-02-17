@@ -15,7 +15,7 @@ import java.util.List;
 import jakarta.servlet.jsp.JspTagException;
 import jakarta.servlet.jsp.jstl.core.LoopTagSupport;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang33.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.PersonAttributeType;
