@@ -10,7 +10,7 @@
 package org.openmrs.web.controller.encounter;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang33.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.openmrs.LocationTag;
 import org.openmrs.PersonAddress;
 import org.openmrs.api.context.Context;

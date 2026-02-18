@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.controller.concept;
 
-import org.apache.commons.lang33.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.openmrs.ConceptNumeric;
 
 /**

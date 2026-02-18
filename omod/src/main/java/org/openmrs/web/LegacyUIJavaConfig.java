@@ -23,9 +23,6 @@ public class LegacyUIJavaConfig implements WebMvcConfigurer {
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
 
-        var themeChangeInterceptor = new org.springframework.web.servlet.theme.ThemeChangeInterceptor();
-        themeChangeInterceptor.setParamName("theme");
-        registry.addInterceptor(themeChangeInterceptor);
     }
 
     @Override

@@ -11,7 +11,7 @@ package org.openmrs.web.xss;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang33.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.owasp.encoder.Encode;
 
 public class XSSUtil {

@@ -29,15 +29,6 @@
 				<openmrs:message code="LocalesAndThemes.locale.help"/>
 			</td>
 		</tr>
-		<tr>
-			<td><openmrs:message code="LocalesAndThemes.theme"/></td>
-			<td>
-				<input type="text" value="<c:out value='${theme}'/>" name="theme"/>
-			</td>
-			<td class="description">
-				<openmrs:message code="LocalesAndThemes.theme.help"/>
-			</td>
-		</tr>
 	</table>
 	
 	<input type="submit" value='<openmrs:message code="general.submit"/>' />

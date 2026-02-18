@@ -24,7 +24,6 @@
 		<property name="interceptors">
 			<list>
 				<ref bean="localeChangeInterceptor" />
-				<ref bean="themeChangeInterceptor" />
 			</list>
 		</property>
 		<property name="order" value="100"/>
@@ -897,26 +896,6 @@
 	            <bean class="org.openmrs.web.WebUtil" />
 	        </list>
 	    </property>
-	</bean>
-	
-	<bean id="parentTheme" class="org.openmrs.web.StaticThemeSource">
-		<property name="themeName" value="themes/defaults"/>
-	</bean>
-	
-	<!-- Specify the default OpenMRS look and feel. -->
-	<bean id="themeSource"
-		class="org.springframework.ui.context.support.ResourceBundleThemeSource">
-		<property name="parentThemeSource" ref="parentTheme"/>
-		<property name="basenamePrefix" value="themes/"/>
-	</bean>
-	
-	<bean id="themeResolver" class="org.openmrs.web.OpenmrsCookieThemeResolver" primary="true">
-		<property name="defaultThemeName" value="green"/>
-	</bean>
-	
-	<bean id="themeChangeInterceptor"
-		class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
-		<property name="paramName" value="theme"/>
 	</bean>
 	
 	<bean id="localeResolver" class="org.openmrs.web.OpenmrsCookieLocaleResolver" primary="true" />

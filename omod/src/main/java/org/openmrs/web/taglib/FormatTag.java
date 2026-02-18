@@ -20,11 +20,11 @@ import java.util.Set;
 
 import jakarta.servlet.jsp.tagext.TagSupport;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.WordUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.WordUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNameTag;
@@ -155,7 +155,7 @@ public class FormatTag extends TagSupport {
 		}
 		
 		if (obsValue != null) {
-			sb.append(StringEscapeUtils.escapeHtml(obsValue.getValueAsString(Context.getLocale())));
+			sb.append(StringEscapeUtils.escapeHtml4(obsValue.getValueAsString(Context.getLocale())));
 		}
 		
 		if (userId != null) {
@@ -280,7 +280,7 @@ public class FormatTag extends TagSupport {
 		} else if (o instanceof Concept) {
 			printConcept(sb, (Concept) o);
 		} else if (o instanceof Obs) {
-			sb.append(StringEscapeUtils.escapeHtml(((Obs) o).getValueAsString(Context.getLocale())));
+			sb.append(StringEscapeUtils.escapeHtml4(((Obs) o).getValueAsString(Context.getLocale())));
 		} else if (o instanceof User) {
 			printUser(sb, (User) o);
 		} else if (o instanceof Encounter) {
@@ -298,7 +298,7 @@ public class FormatTag extends TagSupport {
 		} else if (o instanceof OpenmrsMetadata) {
 			printMetadata(sb, (OpenmrsMetadata) o);
 		} else {
-			sb.append("" + StringEscapeUtils.escapeHtml(o.toString()));
+			sb.append("" + StringEscapeUtils.escapeHtml4(o.toString()));
 		}
 	}
 	
@@ -352,8 +352,8 @@ public class FormatTag extends TagSupport {
 	 * @param form
 	 */
 	private void printForm(StringBuilder sb, Form form) {
-		String name = StringEscapeUtils.escapeHtml(form.getName());
-		sb.append(name + StringEscapeUtils.escapeHtml(" (v" + form.getVersion() + ")"));
+		String name = StringEscapeUtils.escapeHtml4(form.getName());
+		sb.append(name + StringEscapeUtils.escapeHtml4(" (v" + form.getVersion() + ")"));
 	}
 	
 	/**
@@ -370,19 +370,19 @@ public class FormatTag extends TagSupport {
 		if (handler != null && handler instanceof HtmlDisplayableDatatypeHandler) {
 			Summary summary = ((HtmlDisplayableDatatypeHandler) handler).toHtmlSummary(datatype, val.getValueReference());
 			if (summary.isComplete()) {
-				sb.append(StringEscapeUtils.escapeHtml(summary.toString()));
+				sb.append(StringEscapeUtils.escapeHtml4(summary.toString()));
 			} else {
-				sb.append(StringEscapeUtils.escapeHtml(summary.toString()));
+				sb.append(StringEscapeUtils.escapeHtml4(summary.toString()));
 				sb.append("...");
 				String link = "viewCustomValue.form?handler=" + handler.getClass().getName() + "&datatype="
-				        + datatype.getClass().getName() + "&value=" + StringEscapeUtils.escapeHtml(val.getValueReference());
+				        + datatype.getClass().getName() + "&value=" + StringEscapeUtils.escapeHtml4(val.getValueReference());
 				sb.append(" (<a target=\"_blank\" href=\"" + link + "\">"
 				        + Context.getMessageSourceService().getMessage("general.view") + "</a>)");
 				
 				if (handler instanceof DownloadableDatatypeHandler) {
 					link = "downloadCustomValue.form?handler=" + handler.getClass().getName() + "&datatype="
 					        + datatype.getClass().getName() + "&value="
-					        + StringEscapeUtils.escapeHtml(val.getValueReference());
+					        + StringEscapeUtils.escapeHtml4(val.getValueReference());
 					sb.append(" (<a href=\"" + link + "\">"
 					        + Context.getMessageSourceService().getMessage("general.download") + "</a>)");
 				}
@@ -390,16 +390,16 @@ public class FormatTag extends TagSupport {
 		} else if (datatype != null) {
 			Summary summary = datatype.getTextSummary(val.getValueReference());
 			if (summary.isComplete()) {
-				sb.append(StringEscapeUtils.escapeHtml(summary.toString()));
+				sb.append(StringEscapeUtils.escapeHtml4(summary.toString()));
 			} else {
-				sb.append(StringEscapeUtils.escapeHtml(summary.toString()));
+				sb.append(StringEscapeUtils.escapeHtml4(summary.toString()));
 				sb.append("...");
 			}
 		} else {
-			sb.append(StringEscapeUtils.escapeHtml(Context.getMessageSourceService().getMessage(
+			sb.append(StringEscapeUtils.escapeHtml4(Context.getMessageSourceService().getMessage(
 			    "CustomDatatype.error.missingDatatype", new Object[] { descriptor.getDatatypeClassname() },
 			    Context.getLocale())));
-			sb.append(StringEscapeUtils.escapeHtml(val.getValueReference()));
+			sb.append(StringEscapeUtils.escapeHtml4(val.getValueReference()));
 		}
 	}
 	
@@ -487,7 +487,7 @@ public class FormatTag extends TagSupport {
 	 */
 	private void printMetadata(StringBuilder sb, OpenmrsMetadata metadata) {
 		if (metadata != null) {
-			sb.append(applyConversion(StringEscapeUtils.escapeHtml(metadata.getName())));
+			sb.append(applyConversion(StringEscapeUtils.escapeHtml4(metadata.getName())));
 		}
 	}
 	
@@ -497,8 +497,8 @@ public class FormatTag extends TagSupport {
 	 */
 	private void printLocation(StringBuilder sb, Location location) {
 		if (location != null) {
-			String name = StringEscapeUtils.escapeHtml(location.getName());
-			name = StringEscapeUtils.escapeJavaScript(name);
+			String name = StringEscapeUtils.escapeHtml4(location.getName());
+			name = StringEscapeUtils.escapeEcmaScript(name);
 			sb.append(applyConversion(name));
 		}
 	}
@@ -509,8 +509,8 @@ public class FormatTag extends TagSupport {
 	 */
 	private void printLocationTag(StringBuilder sb, LocationTag locationTag) {
 		if (locationTag != null) {
-			String name = StringEscapeUtils.escapeHtml(locationTag.getName());
-			name = StringEscapeUtils.escapeJavaScript(name);
+			String name = StringEscapeUtils.escapeHtml4(locationTag.getName());
+			name = StringEscapeUtils.escapeEcmaScript(name);
 			sb.append(applyConversion(name));
 		}
 	}
@@ -524,11 +524,11 @@ public class FormatTag extends TagSupport {
 	private void printUser(StringBuilder sb, User u) {
 		sb.append("<span class=\"user\">");
 		sb.append("<span class=\"username\">");
-		sb.append(StringEscapeUtils.escapeHtml(u.getUsername()));
+		sb.append(StringEscapeUtils.escapeHtml4(u.getUsername()));
 		sb.append("</span>");
 		if (u.getPerson() != null) {
 			sb.append("<span class=\"personName\">");
-			sb.append(" (").append(StringEscapeUtils.escapeHtml(u.getPersonName().getFullName())).append(")");
+			sb.append(" (").append(StringEscapeUtils.escapeHtml4(u.getPersonName().getFullName())).append(")");
 			sb.append("</span>");
 		}
 		sb.append("</span>");
@@ -542,7 +542,7 @@ public class FormatTag extends TagSupport {
 	 */
 	private void printPerson(StringBuilder sb, Person p) {
 		if (p != null) {
-			sb.append(StringEscapeUtils.escapeHtml(p.getPersonName().getFullName()));
+			sb.append(StringEscapeUtils.escapeHtml4(p.getPersonName().getFullName()));
 		}
 	}
 	
@@ -554,7 +554,7 @@ public class FormatTag extends TagSupport {
 	 */
 	private void printProvider(StringBuilder sb, Provider p) {
 		if (p != null) {
-			sb.append(StringEscapeUtils.escapeHtml(getProviderName(p)));
+			sb.append(StringEscapeUtils.escapeHtml4(getProviderName(p)));
 		}
 	}
 	
@@ -577,7 +577,7 @@ public class FormatTag extends TagSupport {
 					providers += ", ";
 				}
 				
-				providers += StringEscapeUtils.escapeHtml(getProviderName(provider));
+				providers += StringEscapeUtils.escapeHtml4(getProviderName(provider));
 			}
 			
 			if (providers != null) {

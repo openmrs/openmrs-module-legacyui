@@ -24,7 +24,7 @@
 		<openmrs:htmlInclude file="/moduleResources/legacyui/scripts/openmrs.js" />
 		<openmrs:htmlInclude file="/scripts/openmrsmessages.js" appendLocale="true" />
 		<openmrs:htmlInclude file="/moduleResources/legacyui/css/openmrs.css" />
-		<link href="<openmrs:contextPath/><spring:theme code='stylesheet' />" type="text/css" rel="stylesheet" />
+		<link href="<openmrs:contextPath/>/moduleResources/legacyui/css/openmrs_green.css" type="text/css" rel="stylesheet" />
 		<openmrs:htmlInclude file="/moduleResources/legacyui/css/style.css" />
 		<openmrs:htmlInclude file="/dwr/engine.js" />
         <openmrs:htmlInclude file="/moduleResources/legacyui/scripts/html-sanitizer-min.js" />
@@ -38,10 +38,10 @@
             <%-- IT'S ALREADY FIXED IN NEW VERSION OF JQUEYR  TICKET #6198 --%>
             <%-- PLEASE, REMOVE THIS INCLUDE AFTER JQUERY UPGRADE --%>
 			<openmrs:htmlInclude file="/scripts/jquery-ui/js/jquery-ui-timepicker-month-year-patch.js" />
-			<link href="<openmrs:contextPath/>/scripts/jquery-ui/css/<spring:theme code='jqueryui.theme.name' />/jquery-ui.custom.css" type="text/css" rel="stylesheet" />
+			<link href="<openmrs:contextPath/>/scripts/jquery-ui/css/green/jquery-ui.custom.css" type="text/css" rel="stylesheet" />
 		</c:if>
-		<link rel="shortcut icon" type="image/ico" href="<openmrs:contextPath/><spring:theme code='favicon' />">
-		<link rel="icon" type="image/png" href="<openmrs:contextPath/><spring:theme code='favicon.png' />">
+		<link rel="shortcut icon" type="image/ico" href="<openmrs:contextPath/>/images/openmrs-favicon.ico">
+		<link rel="icon" type="image/png" href="<openmrs:contextPath/>/images/openmrs-favicon.png">
 
 		<c:choose>
 			<c:when test="${!empty pageTitle}">
