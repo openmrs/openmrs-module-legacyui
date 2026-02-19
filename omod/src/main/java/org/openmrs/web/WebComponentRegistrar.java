@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 @Component
 public class WebComponentRegistrar implements ServletContextAware {
-
     private static final Logger log = LoggerFactory.getLogger(WebComponentRegistrar.class);
 
 	@Override
