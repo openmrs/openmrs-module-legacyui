@@ -67,7 +67,6 @@ public class WebComponentRegistrar implements ServletContextAware {
 			//hence requiring a restart to see any page other than index.htm
 			//After a restart, all mappings will then happen within Listener.contextInitialized()
 
-            //Replaced
             log.error("Error registering web component", ex);
 		}
 	}
