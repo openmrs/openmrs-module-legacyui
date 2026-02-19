@@ -22,7 +22,6 @@ import org.openmrs.module.web.filter.RedirectAfterLoginFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
-//Added
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
