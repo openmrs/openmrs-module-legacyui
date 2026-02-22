@@ -19,8 +19,9 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
+
+import static org.apache.commons.fileupload2.jakarta.JakartaServletFileUpload.isMultipartContent;
 
 public class XSSFilter implements Filter {
 	
@@ -29,7 +30,7 @@ public class XSSFilter implements Filter {
 	        ServletException {
 		
 		if (!"GET".equalsIgnoreCase(((HttpServletRequest) request).getMethod())) {
-			if (ServletFileUpload.isMultipartContent((HttpServletRequest) request)) {
+			if (isMultipartContent((HttpServletRequest) request)) {
 				request = new XSSMultipartRequestWrapper((DefaultMultipartHttpServletRequest) request);
 			} else {
 				request = new XSSRequestWrapper((HttpServletRequest) request);
