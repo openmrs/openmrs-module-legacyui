@@ -21,6 +21,7 @@ import java.util.Map;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
@@ -30,6 +31,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
 import jakarta.servlet.http.Part;
 
 /**
@@ -77,7 +79,12 @@ public class DwrServletRequest implements HttpServletRequest {
 	public int getContentLength() {
 		return request.getContentLength();
 	}
-	
+
+	@Override
+	public long getContentLengthLong() {
+		return request.getContentLengthLong();
+	}
+
 	@Override
 	public String getContentType() {
 		return request.getContentType();
@@ -174,11 +181,7 @@ public class DwrServletRequest implements HttpServletRequest {
 		return request.getRequestDispatcher(path);
 	}
 	
-	@Override
-	public String getRealPath(String path) {
-		return request.getRealPath(path);
-	}
-	
+
 	@Override
 	public int getRemotePort() {
 		return request.getRemotePort();
@@ -234,7 +237,22 @@ public class DwrServletRequest implements HttpServletRequest {
 	public DispatcherType getDispatcherType() {
 		return request.getDispatcherType();
 	}
-	
+
+	@Override
+	public String getRequestId() {
+		return request.getRequestId();
+	}
+
+	@Override
+	public String getProtocolRequestId() {
+		return request.getProtocolRequestId();
+	}
+
+	@Override
+	public ServletConnection getServletConnection() {
+		return request.getServletConnection();
+	}
+
 	@Override
 	public String getAuthType() {
 		return request.getAuthType();
@@ -339,7 +357,12 @@ public class DwrServletRequest implements HttpServletRequest {
 	public HttpSession getSession() {
 		return request.getSession();
 	}
-	
+
+	@Override
+	public String changeSessionId() {
+		return request.changeSessionId();
+	}
+
 	@Override
 	public boolean isRequestedSessionIdValid() {
 		return request.isRequestedSessionIdValid();
@@ -353,11 +376,6 @@ public class DwrServletRequest implements HttpServletRequest {
 	@Override
 	public boolean isRequestedSessionIdFromURL() {
 		return request.isRequestedSessionIdFromURL();
-	}
-	
-	@Override
-	public boolean isRequestedSessionIdFromUrl() {
-		return request.isRequestedSessionIdFromUrl();
 	}
 	
 	@Override
@@ -383,5 +401,10 @@ public class DwrServletRequest implements HttpServletRequest {
 	@Override
 	public Part getPart(String name) throws IOException, ServletException {
 		return request.getPart(name);
+	}
+
+	@Override
+	public <T extends HttpUpgradeHandler> T upgrade(Class<T> aClass) throws IOException, ServletException {
+		return request.upgrade(aClass);
 	}
 }

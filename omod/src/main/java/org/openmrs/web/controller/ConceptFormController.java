@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptAttribute;
+import org.openmrs.ConceptAttributeType;
 import org.openmrs.ConceptComplex;
 import org.openmrs.ConceptDescription;
 import org.openmrs.ConceptMap;
@@ -139,7 +140,7 @@ public class ConceptFormController extends SimpleFormController {
 	protected ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object object,
 	        BindException errors) throws Exception {
 		
-		if (getMessageSourceAccessor().getMessage("Concept.cancel").equals(request.getParameter("action"))) {
+		if (Context.getMessageSourceService().getMessage("Concept.cancel").equals(request.getParameter("action"))) {
 			return new ModelAndView(new RedirectView("index.htm"));
 		}
 		
@@ -192,9 +193,8 @@ public class ConceptFormController extends SimpleFormController {
 		ConceptService cs = Context.getConceptService();
 		
 		if (Context.isAuthenticated()) {
-			
 			ConceptFormBackingObject conceptBackingObject = (ConceptFormBackingObject) obj;
-			MessageSourceAccessor msa = getMessageSourceAccessor();
+			MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 			String action = request.getParameter("action");
 			
 			if (action.equals(msa.getMessage("general.retire"))) {
@@ -261,6 +261,7 @@ public class ConceptFormController extends SimpleFormController {
 				return new ModelAndView(new RedirectView(getSuccessView() + "?conceptId=" + concept.getConceptId()));
 			} else {
 				Concept concept = conceptBackingObject.getConceptFromFormData();
+                List<ConceptAttributeType> conceptAttributeTypes = cs.getAllConceptAttributeTypes();
 				//if the user is editing a concept, initialise the associated creator property
 				//this is aimed at avoiding a lazy initialisation exception when rendering
 				//the jsp after validation has failed
@@ -270,7 +271,7 @@ public class ConceptFormController extends SimpleFormController {
 				
 				try {
 					WebAttributeUtil.handleSubmittedAttributesForType(conceptBackingObject.getConcept(), errors,
-					    ConceptAttribute.class, request, cs.getAllConceptAttributeTypes());
+					    ConceptAttribute.class, request, conceptAttributeTypes);
 					
 					errors.pushNestedPath("concept");
 					ValidateUtil.validate(concept, errors);
@@ -397,10 +398,13 @@ public class ConceptFormController extends SimpleFormController {
 		if (Context.hasPrivilege(PrivilegeConstants.GET_OBS)) {
 			try {
 				Concept concept = cs.getConcept(Integer.valueOf(conceptId));
-				dataTypeReadOnly = cs.hasAnyObservation(concept);
-				if (concept != null && concept.getDatatype().isBoolean()) {
-					map.put("isBoolean", true);
-				}
+                if (concept != null) {
+                    if (concept.getDatatype().isBoolean()) {
+                        map.put("isBoolean", true);
+                    }
+
+                    dataTypeReadOnly = cs.hasAnyObservation(concept);
+                }
 			}
 			catch (NumberFormatException ex) {
 				// nothing to do

@@ -45,6 +45,8 @@ public class ProgramFormControllerTest extends BaseModuleWebContextSensitiveTest
 		ProgramFormController controller = (ProgramFormController) applicationContext.getBean("programForm");
 		controller.handleRequest(request, new MockHttpServletResponse());
 		
+		Context.clearSession();
+		
 		Assert.assertNotSame(0, Context.getProgramWorkflowService().getProgram(3).getAllWorkflows().size());
 		Assert.assertEquals(1, Context.getProgramWorkflowService().getProgram(3).getAllWorkflows().size());
 	}
