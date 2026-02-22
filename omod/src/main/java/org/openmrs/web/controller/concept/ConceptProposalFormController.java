@@ -74,7 +74,7 @@ public class ConceptProposalFormController extends SimpleFormController {
 		}
 		cp.setMappedConcept(c);
 		
-		MessageSourceAccessor msa = getMessageSourceAccessor();
+		MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 		if (action.equals(msa.getMessage("general.cancel"))) {
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "general.canceled");
 			return new ModelAndView(new RedirectView(getSuccessView()));
@@ -121,7 +121,7 @@ public class ConceptProposalFormController extends SimpleFormController {
 		String view = getFormView();
 		
 		Locale locale = Context.getLocale();
-		MessageSourceAccessor msa = getMessageSourceAccessor();
+		MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 		
 		if (Context.isAuthenticated()) {
 			// this concept proposal
