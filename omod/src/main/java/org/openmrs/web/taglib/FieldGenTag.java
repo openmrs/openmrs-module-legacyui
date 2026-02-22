@@ -14,10 +14,10 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -331,7 +331,7 @@ public class FieldGenTag extends TagSupport {
 		
 		/*
 		log.debug("FieldGenTag has reqest of " + pageContext.getRequest().toString());
-		pageContext.getRequest().setAttribute("javax.servlet.include.servlet_path.fieldGen", url);
+		pageContext.getRequest().setAttribute("jakarta.servlet.include.servlet_path.fieldGen", url);
 		FieldGenController fgc = new FieldGenController();
 		try {
 			fgc.handleRequest((HttpServletRequest)pageContext.getRequest(), (HttpServletResponse)pageContext.getResponse());

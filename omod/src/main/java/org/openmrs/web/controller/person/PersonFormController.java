@@ -19,10 +19,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -74,7 +74,7 @@ public class PersonFormController extends SimpleFormController {
 	 * Allows for other Objects to be used as values in input tags. Normally, only strings and lists
 	 * are expected
 	 * 
-	 * @see org.springframework.web.servlet.mvc.BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest,
+	 * @see org.springframework.web.servlet.mvc.BaseCommandController#initBinder(jakarta.servlet.http.HttpServletRequest,
 	 *      org.springframework.web.bind.ServletRequestDataBinder)
 	 */
 	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
@@ -128,8 +128,8 @@ public class PersonFormController extends SimpleFormController {
 	/**
 	 * Redirects to the patient form if the given personId points to a patient.
 	 * 
-	 * @see org.springframework.web.servlet.mvc.SimpleFormController#showForm(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, org.springframework.validation.BindException)
+	 * @see org.springframework.web.servlet.mvc.SimpleFormController#showForm(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, org.springframework.validation.BindException)
 	 */
 	@Override
 	protected ModelAndView showForm(HttpServletRequest request, HttpServletResponse response, BindException errors)
@@ -149,8 +149,8 @@ public class PersonFormController extends SimpleFormController {
 	/**
 	 * Redirects to the patient form if the given personId points to a patient.
 	 * 
-	 * @see org.springframework.web.servlet.mvc.SimpleFormController#showForm(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, org.springframework.validation.BindException,
+	 * @see org.springframework.web.servlet.mvc.SimpleFormController#showForm(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, org.springframework.validation.BindException,
 	 *      java.util.Map)
 	 */
 	@Override
@@ -169,8 +169,8 @@ public class PersonFormController extends SimpleFormController {
 	}
 	
 	/**
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#processFormSubmission(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
 	 */
 	protected ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object obj,

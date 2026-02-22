@@ -12,8 +12,8 @@ package org.openmrs.web.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class PortletControllerTest extends BaseModuleWebContextSensitiveTest {
 		
 		request.setAttribute(WebConstants.INIT_REQ_UNIQUE_ID, "1");
 		request.getSession().setAttribute(WebConstants.OPENMRS_PORTLET_LAST_REQ_ID, "0");
-		request.setAttribute("javax.servlet.include.servlet_path", "testPortlet");
+		request.setAttribute("jakarta.servlet.include.servlet_path", "testPortlet");
 		request.setAttribute("org.openmrs.portlet.parameters", new HashMap());
 		request.setAttribute("org.openmrs.portlet.patientId", patientId);
 		

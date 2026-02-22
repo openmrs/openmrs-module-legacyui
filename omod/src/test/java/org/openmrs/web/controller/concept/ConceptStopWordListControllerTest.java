@@ -11,7 +11,7 @@ package org.openmrs.web.controller.concept;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +28,7 @@ import org.springframework.mock.web.MockHttpSession;
 public class ConceptStopWordListControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	/**
-	 * @see ConceptStopWordListController#showForm(javax.servlet.http.HttpSession)
+	 * @see ConceptStopWordListController#showForm(jakarta.servlet.http.HttpSession)
 	 */
 	@Test
 	@Verifies(value = "should return Concept Stop Word List View", method = "showForm(HttpSession)")
@@ -46,7 +46,7 @@ public class ConceptStopWordListControllerTest extends BaseModuleWebContextSensi
 	}
 	
 	/**
-	 * @see ConceptStopWordListController#showForm(javax.servlet.http.HttpSession)
+	 * @see ConceptStopWordListController#showForm(jakarta.servlet.http.HttpSession)
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
@@ -67,7 +67,7 @@ public class ConceptStopWordListControllerTest extends BaseModuleWebContextSensi
 	}
 	
 	/**
-	 * @see {@link ConceptStopWordListController#handleSubmission(javax.servlet.http.HttpSession, String[])
+	 * @see {@link ConceptStopWordListController#handleSubmission(jakarta.servlet.http.HttpSession, String[])
 
 	 */
 	@SuppressWarnings("unchecked")
@@ -87,7 +87,7 @@ public class ConceptStopWordListControllerTest extends BaseModuleWebContextSensi
 	}
 	
 	/**
-	 * @see {@link ConceptStopWordListController#handleSubmission(javax.servlet.http.HttpSession, String[])
+	 * @see {@link ConceptStopWordListController#handleSubmission(jakarta.servlet.http.HttpSession, String[])
 
 	 */
 	@Test
@@ -109,7 +109,7 @@ public class ConceptStopWordListControllerTest extends BaseModuleWebContextSensi
 	}
 	
 	/**
-	 * @see {@link ConceptStopWordListController#handleSubmission(javax.servlet.http.HttpSession, String[])
+	 * @see {@link ConceptStopWordListController#handleSubmission(jakarta.servlet.http.HttpSession, String[])
 
 	 */
 	@Test

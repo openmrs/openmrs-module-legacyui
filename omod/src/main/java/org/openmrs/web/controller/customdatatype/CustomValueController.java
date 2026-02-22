@@ -12,7 +12,7 @@ package org.openmrs.web.controller.customdatatype;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;

@@ -18,8 +18,8 @@ import org.openmrs.web.servlet.LoginServlet;
 import org.openmrs.web.user.CurrentUsers;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -34,7 +34,7 @@ public class CurrentUsersController extends SimpleFormController {
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	/**
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(jakarta.servlet.http.HttpServletRequest)
 	 */
 	protected List<String> formBackingObject(HttpServletRequest request) throws ServletException {
 		log.debug("List current users");

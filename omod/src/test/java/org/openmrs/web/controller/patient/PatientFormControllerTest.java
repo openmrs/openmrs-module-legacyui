@@ -23,7 +23,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Consists of unit tests for the PatientFormController
@@ -33,8 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 public class PatientFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	/**
-	 * @see PatientFormController#onSubmit(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, Object,
+	 * @see PatientFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, Object,
 	 *      org.springframework.validation.BindException)
 	 */
 	@Test
@@ -58,8 +58,8 @@ public class PatientFormControllerTest extends BaseModuleWebContextSensitiveTest
 	}
 	
 	/**
-	 * @see PatientFormController#onSubmit(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, Object,
+	 * @see PatientFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, Object,
 	 *      org.springframework.validation.BindException)
 	 */
 	@Test

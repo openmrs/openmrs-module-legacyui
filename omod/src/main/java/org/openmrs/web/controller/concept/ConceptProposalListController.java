@@ -16,8 +16,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +37,7 @@ public class ConceptProposalListController extends SimpleFormController {
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
 	 * 
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(jakarta.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
 		
@@ -88,7 +88,7 @@ public class ConceptProposalListController extends SimpleFormController {
 	}
 	
 	/**
-	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest,
+	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(jakarta.servlet.http.HttpServletRequest,
 	 *      java.lang.Object, org.springframework.validation.Errors)
 	 */
 	@Override

@@ -13,10 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,7 +69,7 @@ public class RequireTag extends TagSupport {
 	 * <br>
 	 * Returns SKIP_PAGE if the user doesn't have the privilege and SKIP_BODY if it does.
 	 * 
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doStartTag()
 	 * @should allow user with the privilege
 	 * @should allow user to have any privilege
 	 * @should allow user with all privileges
@@ -293,7 +293,7 @@ public class RequireTag extends TagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.TagSupport#doEndTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doEndTag()
 	 */
 	public int doEndTag() {
 		missingPrivilegesBuffer = null;

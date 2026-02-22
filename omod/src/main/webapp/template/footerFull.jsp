@@ -4,8 +4,8 @@
 	</div>
 
 	<div id="footer" 
-		xmlns:c="http://java.sun.com/jsp/jstl/core"
-		xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+		xmlns:c="jakarta.tags.core"
+		xmlns:fn="jakarta.tags.functions"
 		xmlns:spring="http://www.springframework.org/tags">
 	
 		<div id="footerInner">

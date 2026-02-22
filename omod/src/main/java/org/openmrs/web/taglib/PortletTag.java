@@ -16,9 +16,9 @@ import org.openmrs.module.Module;
 import org.openmrs.module.ModuleFactory;
 import org.openmrs.util.OpenmrsUtil;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.PageContext;
 import java.io.IOException;
 import java.util.Map;
 

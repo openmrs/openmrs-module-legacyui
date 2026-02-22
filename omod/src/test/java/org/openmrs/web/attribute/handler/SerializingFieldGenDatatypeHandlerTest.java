@@ -36,7 +36,7 @@ public class SerializingFieldGenDatatypeHandlerTest extends BaseModuleWebContext
 	/**
 	 * @verifies return the correct typed value
 	 * @see SerializingFieldGenDatatypeHandler#getValue(org.openmrs.customdatatype.SerializingCustomDatatype,
-	 *      javax.servlet.http.HttpServletRequest, String)
+	 *      jakarta.servlet.http.HttpServletRequest, String)
 	 */
 	@Test
 	public void getValue_shouldReturnTheCorrectTypedValue() throws Exception {

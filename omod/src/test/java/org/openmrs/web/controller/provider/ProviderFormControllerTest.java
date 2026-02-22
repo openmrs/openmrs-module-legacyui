@@ -37,7 +37,7 @@ public class ProviderFormControllerTest extends BaseModuleWebContextSensitiveTes
 	
 	/**
 	 * @verifies not void or change attributeList if the attribute values are same
-	 * @see org.openmrs.web.controller.provider.ProviderFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 * @see org.openmrs.web.controller.provider.ProviderFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
 	 *      String, String, String, String, org.openmrs.Provider,
 	 *      org.springframework.validation.BindingResult, org.springframework.ui.ModelMap)
 	 */
@@ -61,7 +61,7 @@ public class ProviderFormControllerTest extends BaseModuleWebContextSensitiveTes
 	
 	/**
 	 * @verifies set attributes to void if the values is not set
-	 * @see org.openmrs.web.controller.provider.ProviderFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 * @see org.openmrs.web.controller.provider.ProviderFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
 	 *      String, String, String, String, org.openmrs.Provider,
 	 *      org.springframework.validation.BindingResult, org.springframework.ui.ModelMap)
 	 */
@@ -86,7 +86,7 @@ public class ProviderFormControllerTest extends BaseModuleWebContextSensitiveTes
 	
 	/**
 	 * @verifies should purge the provider
-	 * @see org.openmrs.web.controller.provider.ProviderFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 * @see org.openmrs.web.controller.provider.ProviderFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
 	 *      String, String, String, String, org.openmrs.Provider,
 	 *      org.springframework.validation.BindingResult, org.springframework.ui.ModelMap)
 	 */

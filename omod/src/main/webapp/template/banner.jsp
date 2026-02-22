@@ -1,4 +1,4 @@
-<div id="banner" xmlns:c="http://java.sun.com/jsp/jstl/core"
+<div id="banner" xmlns:c="jakarta.tags.core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">

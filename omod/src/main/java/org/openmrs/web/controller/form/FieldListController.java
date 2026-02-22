@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.controller.form;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,7 +21,7 @@ public class FieldListController extends SimpleFormController {
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	/**
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(jakarta.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws Exception {
 		

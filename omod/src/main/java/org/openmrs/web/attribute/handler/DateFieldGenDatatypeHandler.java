@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
@@ -56,7 +56,7 @@ public class DateFieldGenDatatypeHandler implements FieldGenDatatypeHandler<Date
 	
 	/**
 	 * @see org.openmrs.web.attribute.handler.FieldGenDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype,
-	 *      javax.servlet.http.HttpServletRequest, java.lang.String)
+	 *      jakarta.servlet.http.HttpServletRequest, java.lang.String)
 	 */
 	@Override
 	public java.util.Date getValue(org.openmrs.customdatatype.datatype.DateDatatype datatype, HttpServletRequest request,

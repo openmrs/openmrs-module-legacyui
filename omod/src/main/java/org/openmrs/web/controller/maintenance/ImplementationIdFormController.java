@@ -9,8 +9,8 @@
  */
 package org.openmrs.web.controller.maintenance;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,8 +36,8 @@ public class ImplementationIdFormController extends SimpleFormController {
 	/**
 	 * Actions taken when the form is submitted
 	 * 
-	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
+	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class ImplementationIdFormController extends SimpleFormController {
 	 * The object that backs the form. The class of this object (String) is set in the servlet
 	 * descriptor file
 	 * 
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(jakarta.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) throws Exception {

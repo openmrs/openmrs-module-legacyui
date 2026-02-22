@@ -11,10 +11,10 @@ package org.openmrs.web.taglib;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -39,7 +39,7 @@ public class RequireConfigurationTag extends TagSupport {
 	private String configurationPage;
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+	 * @see jakarta.servlet.jsp.tagext.TagSupport#doStartTag()
 	 * @should redirect if any properties are not set
 	 * @should not be sensitive to extraneous whitespace
 	 * @should not be sensitive to empty values

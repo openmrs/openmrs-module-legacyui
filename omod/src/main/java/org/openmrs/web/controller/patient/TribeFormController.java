@@ -9,8 +9,8 @@
  */
 package org.openmrs.web.controller.patient;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -24,7 +24,7 @@ public class TribeFormController extends SimpleFormController {
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
 	 * 
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(jakarta.servlet.http.HttpServletRequest)
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
 		return new Object();

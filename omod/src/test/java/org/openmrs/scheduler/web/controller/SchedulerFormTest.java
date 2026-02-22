@@ -11,7 +11,7 @@ package org.openmrs.scheduler.web.controller;
 
 import static org.junit.Assert.assertNotNull;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
