@@ -11,5 +11,5 @@ jobs:
   build:
     uses: openmrs/openmrs-contrib-gha-workflows/.github/workflows/build-backend-module.yml@main
     with:
-      java_versions: '[17, 21, 25]'
+      java_versions: '[21, 25]'
       main_java_version: '21'
