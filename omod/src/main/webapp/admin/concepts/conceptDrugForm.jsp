@@ -1,3 +1,5 @@
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Concepts" otherwise="/login.htm" redirect="/admin/concepts/conceptDrug.form" />

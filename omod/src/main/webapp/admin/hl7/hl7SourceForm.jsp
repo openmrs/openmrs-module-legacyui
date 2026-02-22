@@ -1,3 +1,5 @@
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Update HL7 Source" otherwise="/login.htm" redirect="/admin/hl7/hl7Source.form" />

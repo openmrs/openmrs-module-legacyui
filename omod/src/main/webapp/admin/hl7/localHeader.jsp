@@ -1,3 +1,5 @@
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@page import="org.openmrs.api.context.Context"%>
 <ul id="menu">
 	<li class="first">

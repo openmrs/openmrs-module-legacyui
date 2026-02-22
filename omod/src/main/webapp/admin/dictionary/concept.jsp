@@ -1,3 +1,5 @@
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp"%>
 <openmrs:message var="pageTitle" code="Concept.view.titlebar" scope="page" htmlEscape="true" arguments="${command.concept.name}"/>
 <%@ include file="/WEB-INF/view/module/legacyui/template/header.jsp"%>

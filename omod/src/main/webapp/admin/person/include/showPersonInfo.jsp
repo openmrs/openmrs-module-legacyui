@@ -1,3 +1,5 @@
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <table>
 	<tr>
 		<th align="left"><openmrs:message code="general.id"/></th>
