@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.User;
 import org.openmrs.web.WebConstants;
 import org.slf4j.Logger;

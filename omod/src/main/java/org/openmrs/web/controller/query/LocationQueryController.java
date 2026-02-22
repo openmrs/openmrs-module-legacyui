@@ -17,8 +17,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Location;
 import org.openmrs.LocationTag;
@@ -156,8 +156,8 @@ public class LocationQueryController {
 	 * @return
 	 */
 	private String getName(BaseOpenmrsMetadata metadata) {
-		String name = StringEscapeUtils.escapeHtml(metadata.getName());
-		name = StringEscapeUtils.escapeJavaScript(name);
+		String name = StringEscapeUtils.escapeHtml4(metadata.getName());
+		name = StringEscapeUtils.escapeEcmaScript(name);
 		return metadata.isRetired() ? "<strike>" + name + "</strike>" : name;
 	}
 	

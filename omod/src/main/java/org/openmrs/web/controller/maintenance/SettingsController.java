@@ -18,7 +18,7 @@ import java.util.TreeSet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.APIException;

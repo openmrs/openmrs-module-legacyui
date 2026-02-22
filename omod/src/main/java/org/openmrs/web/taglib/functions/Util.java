@@ -9,9 +9,9 @@
  */
 package org.openmrs.web.taglib.functions;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * Functions used within taglibs in a webapp jsp page. <br>
@@ -34,7 +34,7 @@ public class Util {
 	 * @return a JS-escaped version of s
 	 */
 	public static String getSafeJsString(String s) {
-		return StringEscapeUtils.escapeJavaScript(s);
+		return StringEscapeUtils.escapeEcmaScript(s);
 	}
 	
 	/**

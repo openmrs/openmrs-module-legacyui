@@ -17,9 +17,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
@@ -108,8 +108,8 @@ public class HierarchyController {
 	}
 	
 	private String getName(BaseOpenmrsMetadata element) {
-		String name = StringEscapeUtils.escapeHtml(element.getName());
-		name = StringEscapeUtils.escapeJavaScript(name);
+		String name = StringEscapeUtils.escapeHtml4(element.getName());
+		name = StringEscapeUtils.escapeEcmaScript(name);
 		return element.isRetired() ? "<strike>" + name + "</strike>" : name;
 	}
 	
