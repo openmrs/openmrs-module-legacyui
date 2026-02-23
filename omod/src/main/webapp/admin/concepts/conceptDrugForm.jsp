@@ -10,9 +10,9 @@
 <script type="text/javascript">
 	dojo.require("dojo.widget.openmrs.ConceptSearch");
 	dojo.require("dojo.widget.openmrs.OpenmrsPopup");
-	<request:existsParameter name="autoJump">
+	<c:if test="${not empty param.autoJump}">
 		var autoJump = ${openmrs:getSafeJsBoolean(param.autoJump)};
-	</request:existsParameter>
+	</c:if>
 
 	dojo.addOnLoad( function() {
 		

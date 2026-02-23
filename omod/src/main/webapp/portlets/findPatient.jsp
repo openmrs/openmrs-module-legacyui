@@ -47,9 +47,9 @@
 
 				var patient;
 				var autoJump = true;
-				<request:existsParameter name="autoJump">
+				<c:if test="${not empty param.autoJump}">
 					autoJump = ${openmrs:getSafeJsBoolean(param.autoJump)};
-				</request:existsParameter>
+				</c:if>
 
 				function showSearch() {
 					findPatient.style.display = "";
@@ -108,18 +108,18 @@
 				function init() {
 					dwr.util.useLoadingMessage();
 
-					<request:existsParameter name="patientId">
+					<c:if test="${not empty param.patientId}">
 						<!-- User has 'patientId' in the request params -- selecting that patient -->
 						var pats = new Array();
 						pats.push(new Object());
 						pats[0].patientId = '${openmrs:getSafeJsString(param.patientId)}';
 						onSelect(pats);
-					</request:existsParameter>
+					</c:if>
 
-					<request:existsParameter name="phrase">
+					<c:if test="${not empty param.phrase}">
 						<!-- User has 'phrase' in the request params -- searching on that -->
 						searchBox.value = '${openmrs:getSafeJsString(param.phrase)}';
-					</request:existsParameter>
+					</c:if>
 
 					showSearch();
 
