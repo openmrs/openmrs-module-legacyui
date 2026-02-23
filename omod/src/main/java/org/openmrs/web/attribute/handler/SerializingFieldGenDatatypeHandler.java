@@ -9,11 +9,11 @@
  */
 package org.openmrs.web.attribute.handler;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.beans.PropertyEditor;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.customdatatype.InvalidCustomValueException;
 import org.openmrs.customdatatype.SerializingCustomDatatype;
@@ -35,7 +35,7 @@ public abstract class SerializingFieldGenDatatypeHandler<DT extends SerializingC
 	
 	/**
 	 * @see org.openmrs.web.attribute.handler.FieldGenDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype,
-	 *      javax.servlet.http.HttpServletRequest, java.lang.String)
+	 *      jakarta.servlet.http.HttpServletRequest, java.lang.String)
 	 * @should return the correct typed value
 	 */
 	@Override

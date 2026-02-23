@@ -14,13 +14,14 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import jakarta.activation.MimetypesFileTypeMap;
+
 import org.openmrs.api.context.Context;
 import org.openmrs.Obs;
 import org.openmrs.obs.ComplexData;
 import org.openmrs.obs.ComplexObsHandler;
 
 import org.openmrs.obs.handler.MediaHandler;
-import org.openmrs.util.OpenmrsUtil;
 
 /**
  * Extends functionality of {@link MediaHandler} for web specific views.
@@ -31,6 +32,8 @@ public class WebMediaHandler extends MediaHandler {
 	
 	/** Views supported by this handler */
 	private static final String[] supportedViews = { ComplexObsHandler.URI_VIEW, ComplexObsHandler.HTML_VIEW, };
+	
+	private final MimetypesFileTypeMap mimetypes = new MimetypesFileTypeMap();
 	
 	/**
 	 * Default Constructor
@@ -65,7 +68,7 @@ public class WebMediaHandler extends MediaHandler {
 		
 		if (ComplexObsHandler.HTML_VIEW.equals(view)) {
 			String mediaTag = "";
-			String mimeType = OpenmrsUtil.getFileMimeType(getComplexDataFile(obs));
+			String mimeType = mimetypes.getContentType(parseFilename(obs, ""));
 			if (mimeType.contains("video")) {
 				mediaTag = "<video controls>" + "<source src=\""
 				        + WebHandlerUtils.getHyperlink(obs, ComplexObsHandler.RAW_VIEW) + "\" type=\"" + mimeType

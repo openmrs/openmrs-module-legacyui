@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.collections.FactoryUtils;
 import org.apache.commons.collections.ListUtils;
@@ -105,7 +105,7 @@ public class ConceptFormController extends SimpleFormController {
 	 * Allows for other Objects to be used as values in input tags. Normally, only strings and lists
 	 * are expected
 	 * 
-	 * @see org.springframework.web.servlet.mvc.BaseCommandController#initBinder(javax.servlet.http.HttpServletRequest,
+	 * @see org.springframework.web.servlet.mvc.BaseCommandController#initBinder(jakarta.servlet.http.HttpServletRequest,
 	 *      org.springframework.web.bind.ServletRequestDataBinder)
 	 */
 	@Override
@@ -131,8 +131,8 @@ public class ConceptFormController extends SimpleFormController {
 	}
 	
 	/**
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#processFormSubmission(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
 	 */
 	@Override
@@ -169,8 +169,8 @@ public class ConceptFormController extends SimpleFormController {
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
 	 * 
-	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
+	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
 	 * @should display numeric values from table
 	 * @should copy numeric values into numeric concepts
@@ -341,7 +341,7 @@ public class ConceptFormController extends SimpleFormController {
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
 	 * 
-	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
+	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(jakarta.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	protected ConceptFormBackingObject formBackingObject(HttpServletRequest request) throws ServletException {
@@ -366,7 +366,7 @@ public class ConceptFormController extends SimpleFormController {
 	/**
 	 * Called prior to form display. Allows for data to be put in the request to be used in the view
 	 * 
-	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
+	 * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(jakarta.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {

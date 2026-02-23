@@ -45,10 +45,10 @@
 	</modules>
 	
 	<properties>
-		<openmrsPlatformVersion>2.7.3</openmrsPlatformVersion>
-		<openmrsContribDwrVersion>2.0.8-mod</openmrsContribDwrVersion>
+		<openmrsPlatformVersion>3.0.0-SNAPSHOT</openmrsPlatformVersion>
+		<openmrsContribDwrVersion>3.0.0-SNAPSHOT</openmrsContribDwrVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javaCompilerVersion>8</javaCompilerVersion>
+        <javaCompilerVersion>21</javaCompilerVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -103,9 +103,9 @@
             </dependency>
 
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>jsp-api</artifactId>
-                <version>2.0</version>
+                <groupId>jakarta.servlet.jsp</groupId>
+                <artifactId>jakarta.servlet.jsp-api</artifactId>
+                <version>4.0.0</version>
                 <scope>provided</scope>
             </dependency>
 						
@@ -181,7 +181,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.4</version>
+					<version>3.6.1</version>
 				</plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>

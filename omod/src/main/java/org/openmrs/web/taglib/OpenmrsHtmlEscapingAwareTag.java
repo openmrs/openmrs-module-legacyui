@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.taglib;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 import org.springframework.web.servlet.tags.HtmlEscapingAwareTag;
 

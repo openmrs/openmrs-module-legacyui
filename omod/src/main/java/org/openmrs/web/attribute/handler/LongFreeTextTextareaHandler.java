@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.customdatatype.CustomDatatypeUtil;
@@ -89,7 +89,7 @@ public class LongFreeTextTextareaHandler implements WebDatatypeHandler<LongFreeT
 	
 	/**
 	 * @see org.openmrs.web.attribute.handler.WebDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype,
-	 *      javax.servlet.http.HttpServletRequest, java.lang.String)
+	 *      jakarta.servlet.http.HttpServletRequest, java.lang.String)
 	 */
 	@Override
 	public String getValue(LongFreeTextDatatype datatype, HttpServletRequest request, String formFieldName)

@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.controller.encounter;
 
-import org.apache.struts.mock.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.Encounter;
@@ -30,8 +30,8 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 	protected static final String TRANSFER_ENC_DATA_XML = "org/openmrs/api/include/EncounterServiceTest-transferEncounter.xml";
 	
 	/**
-	 * @see EncounterFormController#onSubmit(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
+	 * @see EncounterFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
 	 */
 	@Test

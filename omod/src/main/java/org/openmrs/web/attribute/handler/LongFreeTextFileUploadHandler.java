@@ -12,7 +12,7 @@ package org.openmrs.web.attribute.handler;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.customdatatype.DownloadableDatatypeHandler;
@@ -76,7 +76,7 @@ public class LongFreeTextFileUploadHandler implements WebDatatypeHandler<LongFre
 	
 	/**
 	 * @see org.openmrs.web.attribute.handler.WebDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype,
-	 *      javax.servlet.http.HttpServletRequest, java.lang.String)
+	 *      jakarta.servlet.http.HttpServletRequest, java.lang.String)
 	 */
 	@Override
 	public String getValue(LongFreeTextDatatype datatype, HttpServletRequest request, String formFieldName)

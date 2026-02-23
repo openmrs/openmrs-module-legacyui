@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.Vector;
 
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -14,12 +14,12 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
@@ -259,7 +259,7 @@ public class FieldGenTag extends TagSupport {
 					
 					String startVal = "";
 					if (val != null) {
-						startVal = StringEscapeUtils.escapeHtml(val.toString());
+						startVal = StringEscapeUtils.escapeHtml4(val.toString());
 					}
 					
 					String items = this.parameterMap != null ? (String) this.parameterMap.get("items") : null;
@@ -271,8 +271,8 @@ public class FieldGenTag extends TagSupport {
 					if (items != null && !items.isEmpty()) {
 						StringBuilder options = new StringBuilder();
 						for (String item : items.split(",")) {
-							String escapedItem = StringEscapeUtils.escapeHtml(item);
-							escapedItem = StringEscapeUtils.escapeJavaScript(escapedItem);
+							String escapedItem = StringEscapeUtils.escapeHtml4(item);
+							escapedItem = StringEscapeUtils.escapeEcmaScript(escapedItem);
 							options.append("<option value=\"").append(escapedItem).append("\"")
 							        .append(startVal.equals(escapedItem) ? " selected" : "").append(">").append(escapedItem)
 							        .append("</option>");
@@ -331,7 +331,7 @@ public class FieldGenTag extends TagSupport {
 		
 		/*
 		log.debug("FieldGenTag has reqest of " + pageContext.getRequest().toString());
-		pageContext.getRequest().setAttribute("javax.servlet.include.servlet_path.fieldGen", url);
+		pageContext.getRequest().setAttribute("jakarta.servlet.include.servlet_path.fieldGen", url);
 		FieldGenController fgc = new FieldGenController();
 		try {
 			fgc.handleRequest((HttpServletRequest)pageContext.getRequest(), (HttpServletResponse)pageContext.getResponse());

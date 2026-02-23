@@ -33,9 +33,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -162,7 +162,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * {@link #getViewName(HttpServletRequest, Object, int)} to determine the view name for each
 	 * page dynamically.
 	 * 
-	 * @see #getViewName(javax.servlet.http.HttpServletRequest, Object, int)
+	 * @see #getViewName(jakarta.servlet.http.HttpServletRequest, Object, int)
 	 */
 	public final String[] getPages() {
 		return this.pages;
@@ -176,7 +176,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * The default implementation of that extended {@code getPageCount} variant returns the static
 	 * page count as determined by this {@code getPageCount()} method.
 	 * 
-	 * @see #getPageCount(javax.servlet.http.HttpServletRequest, Object)
+	 * @see #getPageCount(jakarta.servlet.http.HttpServletRequest, Object)
 	 */
 	protected final int getPageCount() {
 		return this.pages.length;
@@ -271,8 +271,8 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	/**
 	 * Consider an explicit finish or cancel request as a form submission too.
 	 * 
-	 * @see #isFinishRequest(javax.servlet.http.HttpServletRequest)
-	 * @see #isCancelRequest(javax.servlet.http.HttpServletRequest)
+	 * @see #isFinishRequest(jakarta.servlet.http.HttpServletRequest)
+	 * @see #isCancelRequest(jakarta.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	protected boolean isFormSubmission(HttpServletRequest request) {
@@ -452,8 +452,8 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * @param request current HTTP request
 	 * @return the name of the form session attribute, or {@code null} if not in session form mode
 	 * @see #getPageSessionAttributeName
-	 * @see #getFormSessionAttributeName(javax.servlet.http.HttpServletRequest)
-	 * @see javax.servlet.http.HttpSession#getAttribute
+	 * @see #getFormSessionAttributeName(jakarta.servlet.http.HttpServletRequest)
+	 * @see jakarta.servlet.http.HttpSession#getAttribute
 	 */
 	protected String getPageSessionAttributeName(HttpServletRequest request) {
 		return getPageSessionAttributeName();
@@ -469,7 +469,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * 
 	 * @return the name of the page session attribute
 	 * @see #getFormSessionAttributeName
-	 * @see javax.servlet.http.HttpSession#getAttribute
+	 * @see jakarta.servlet.http.HttpSession#getAttribute
 	 */
 	protected String getPageSessionAttributeName() {
 		return getClass().getName() + ".PAGE." + getCommandName();
@@ -771,7 +771,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * @throws Exception in case of invalid state or arguments
 	 * @see org.springframework.validation.Errors
 	 * @see org.springframework.validation.BindException#getModel
-	 * @see #showPage(javax.servlet.http.HttpServletRequest,
+	 * @see #showPage(jakarta.servlet.http.HttpServletRequest,
 	 *      org.springframework.validation.BindException, int)
 	 */
 	protected abstract ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command,

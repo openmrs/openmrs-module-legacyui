@@ -10,9 +10,9 @@
 package org.openmrs.web;
 
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.ui.context.Theme;
-import org.springframework.ui.context.ThemeSource;
-import org.springframework.ui.context.support.SimpleTheme;
+import org.openmrs.web.theme.Theme;
+import org.openmrs.web.theme.ThemeSource;
+import org.openmrs.web.theme.SimpleTheme;
 
 /**
  * A static messageSource theme that can be used as the parent theme source

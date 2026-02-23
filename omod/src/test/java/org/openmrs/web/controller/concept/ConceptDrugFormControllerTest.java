@@ -25,8 +25,8 @@ public class ConceptDrugFormControllerTest extends BaseModuleWebContextSensitive
 	
 	/**
 	 * @verifies should purge the concept drug
-	 * @see org.openmrs.web.controller.concept.ConceptDrugFormController#onSubmit(javax.servlet.http.HttpServletRequest,
-	 *      javax.servlet.http.HttpServletResponse, Object,
+	 * @see org.openmrs.web.controller.concept.ConceptDrugFormController#onSubmit(jakarta.servlet.http.HttpServletRequest,
+	 *      jakarta.servlet.http.HttpServletResponse, Object,
 	 *      org.springframework.validation.BindingResult)
 	 */
 	@Test

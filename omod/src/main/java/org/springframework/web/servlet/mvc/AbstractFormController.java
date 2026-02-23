@@ -28,10 +28,10 @@ package org.springframework.web.servlet.mvc;
 
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -317,7 +317,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @param request current HTTP request
 	 * @return the name of the form session attribute, or {@code null} if not in session form mode
 	 * @see #getFormSessionAttributeName
-	 * @see javax.servlet.http.HttpSession#getAttribute
+	 * @see jakarta.servlet.http.HttpSession#getAttribute
 	 */
 	protected String getFormSessionAttributeName(HttpServletRequest request) {
 		return getFormSessionAttributeName();
@@ -332,7 +332,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * name, which allows other code to access the session attribute directly.
 	 * 
 	 * @return the name of the form session attribute
-	 * @see javax.servlet.http.HttpSession#getAttribute
+	 * @see jakarta.servlet.http.HttpSession#getAttribute
 	 */
 	protected String getFormSessionAttributeName() {
 		return getClass().getName() + ".FORM." + getCommandName();
@@ -404,7 +404,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @param errors validation errors holder, allowing for additional custom registration of
 	 *            binding errors
 	 * @throws Exception in case of invalid state or arguments
-	 * @see #onBindOnNewForm(javax.servlet.http.HttpServletRequest, Object)
+	 * @see #onBindOnNewForm(jakarta.servlet.http.HttpServletRequest, Object)
 	 * @see #setBindOnNewForm
 	 */
 	protected void onBindOnNewForm(HttpServletRequest request, Object command, BindException errors) throws Exception {

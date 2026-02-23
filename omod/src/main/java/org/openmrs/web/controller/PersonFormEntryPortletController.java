@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.openmrs.Form;
 import org.openmrs.Person;
@@ -34,7 +34,7 @@ import org.openmrs.util.OpenmrsUtil;
 public class PersonFormEntryPortletController extends PortletController {
 	
 	/**
-	 * @see org.openmrs.web.controller.PortletController#populateModel(javax.servlet.http.HttpServletRequest,
+	 * @see org.openmrs.web.controller.PortletController#populateModel(jakarta.servlet.http.HttpServletRequest,
 	 *      java.util.Map)
 	 */
 	@Override

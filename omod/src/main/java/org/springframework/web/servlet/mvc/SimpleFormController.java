@@ -28,9 +28,9 @@ package org.springframework.web.servlet.mvc;
 
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -309,7 +309,7 @@ public class SimpleFormController extends AbstractFormController {
 	 * case.
 	 * <p>
 	 * The default implementation delegates to
-	 * {@link #isFormChangeRequest(javax.servlet.http.HttpServletRequest)}.
+	 * {@link #isFormChangeRequest(jakarta.servlet.http.HttpServletRequest)}.
 	 * 
 	 * @param request current HTTP request
 	 * @param command form object with request parameters bound onto it
@@ -338,7 +338,7 @@ public class SimpleFormController extends AbstractFormController {
 	
 	/**
 	 * Called during form submission if
-	 * {@link #isFormChangeRequest(javax.servlet.http.HttpServletRequest)} returns {@code true}.
+	 * {@link #isFormChangeRequest(jakarta.servlet.http.HttpServletRequest)} returns {@code true}.
 	 * Allows subclasses to implement custom logic to modify the command object to directly modify
 	 * data in the form.
 	 * <p>

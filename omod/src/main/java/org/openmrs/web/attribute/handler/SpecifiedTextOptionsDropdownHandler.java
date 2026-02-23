@@ -14,7 +14,7 @@ import org.openmrs.customdatatype.InvalidCustomValueException;
 import org.openmrs.customdatatype.datatype.SpecifiedTextOptionsDatatype;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +51,7 @@ public class SpecifiedTextOptionsDropdownHandler implements FieldGenDatatypeHand
 	
 	/**
 	 * @see org.openmrs.web.attribute.handler.FieldGenDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype,
-	 *      javax.servlet.http.HttpServletRequest, java.lang.String)
+	 *      jakarta.servlet.http.HttpServletRequest, java.lang.String)
 	 */
 	@Override
 	public String getValue(org.openmrs.customdatatype.datatype.SpecifiedTextOptionsDatatype datatype,

@@ -4,7 +4,7 @@
 <%-- 
 	Exceptions thrown from within jsps e.g those with scripts calling code that requires authentication, are
 	forwarded here so we need to be able to handle them too, but by the time we are on this JSP, the actual  
-	thrown exception has been wrapped into a javax.servlet.jsp.JspException, therefore we need to check the 
+	thrown exception has been wrapped into a jakarta.servlet.jsp.JspException, therefore we need to check the 
 	root cause exception to see if it is an authentication related exception and handle it appropriately.
 --%>
 <%

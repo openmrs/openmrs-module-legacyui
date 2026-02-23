@@ -12,7 +12,6 @@ package org.openmrs.web;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.theme.CookieThemeResolver;
 
 /**
  * Customization of the spring theme resolver so that an admin can set a global property for the
@@ -20,14 +19,15 @@ import org.springframework.web.servlet.theme.CookieThemeResolver;
  * retrieving that global property, since that prevent even an error page from being displayed
  * properly
  */
-public class OpenmrsCookieThemeResolver extends CookieThemeResolver {
+public class OpenmrsCookieThemeResolver {
 	
 	private static final String GP_THEME_NAME = OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_THEME;
+	
+	private String defaultThemeName = "theme";
 	
 	/**
 	 * Return the name of the default theme.
 	 */
-	@Override
 	public String getDefaultThemeName() {
 		
 		// check the global properties for the current theme
@@ -57,7 +57,14 @@ public class OpenmrsCookieThemeResolver extends CookieThemeResolver {
 		if (StringUtils.hasText(themeName)) {
 			return themeName;
 		} else {
-			return super.getDefaultThemeName();
+			return defaultThemeName;
 		}
+	}
+	
+	/**
+	 * @param defaultThemeName the defaultThemeName to set
+	 */
+	public void setDefaultThemeName(String defaultThemeName) {
+		this.defaultThemeName = defaultThemeName;
 	}
 }

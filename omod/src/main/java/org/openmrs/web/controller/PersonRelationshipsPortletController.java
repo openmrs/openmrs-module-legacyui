@@ -12,7 +12,7 @@ package org.openmrs.web.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.openmrs.RelationshipType;
 import org.openmrs.api.context.Context;
@@ -20,7 +20,7 @@ import org.openmrs.api.context.Context;
 public class PersonRelationshipsPortletController extends PortletController {
 	
 	/**
-	 * @see org.openmrs.web.controller.PortletController#populateModel(javax.servlet.http.HttpServletRequest,
+	 * @see org.openmrs.web.controller.PortletController#populateModel(jakarta.servlet.http.HttpServletRequest,
 	 *      java.util.Map)
 	 */
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
