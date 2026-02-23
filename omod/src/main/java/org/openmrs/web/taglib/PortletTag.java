@@ -19,10 +19,11 @@ import org.openmrs.util.OpenmrsUtil;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 import java.io.IOException;
 import java.util.Map;
 
-public class PortletTag extends ImportSupport {
+public class PortletTag extends ImportSupport implements TryCatchFinally {
 	
 	public static final long serialVersionUID = 21L;
 	
@@ -258,6 +259,16 @@ public class PortletTag extends ImportSupport {
 	
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
+	}
+	
+	@Override
+	public void doCatch(Throwable t) throws Throwable {
+		throw t;
+	}
+	
+	@Override
+	public void doFinally() {
+		resetValues();
 	}
 	
 }
