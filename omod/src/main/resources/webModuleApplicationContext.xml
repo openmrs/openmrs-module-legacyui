@@ -39,6 +39,9 @@
 	<!-- Alias for messageSource resolution - in Platform 3.0.0 services use @Service annotation -->
 	<alias name="messageSourceService" alias="messageSource"/>
 	
+	<!-- Prevent duplicate SimpleControllerHandlerAdapter registration from MVC namespace and @EnableWebMvc -->
+	<bean id="simpleControllerHandlerAdapter" class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+	
 	<bean id="legacyUiUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="interceptors">
 			<list>

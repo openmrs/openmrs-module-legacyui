@@ -209,7 +209,7 @@ public class ConceptFormValidator implements Validator {
 	        Double value, Double thresholdValue) {
 		errors.pushNestedPath("referenceRanges[" + index + "]");
 		errors.rejectValue(field,
-		    Context.getMessageSourceService().getMessage(errorCode, new Object[] { value, thresholdValue }, null),
+		    Context.getMessageSourceService().getMessage(errorCode, new Object[] { value, thresholdValue }, Context.getLocale()),
 		    "Concept.referenceRanges.error.absolute.value.invalid");
 		errors.popNestedPath();
 	}

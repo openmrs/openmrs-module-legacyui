@@ -66,6 +66,9 @@ public class WebComponentRegistrar implements ServletContextAware {
 	}
 	
 	private void addMappings(ServletRegistration reg, String... mappings) {
+		if (reg == null) {
+			return;
+		}
 		for (String mapping : mappings) {
 			reg.addMapping(mapping);
 		}
