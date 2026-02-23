@@ -17,7 +17,6 @@
        xmlns:jee="http://www.springframework.org/schema/jee"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:util="http://www.springframework.org/schema/util" 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
   		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -29,8 +28,6 @@
   		    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
   		    http://www.springframework.org/schema/aop
   		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-  		    http://www.springframework.org/schema/mvc   		    
-  		    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
@@ -38,9 +35,6 @@
 	
 	<!-- Alias for messageSource resolution - in Platform 3.0.0 services use @Service annotation -->
 	<alias name="messageSourceService" alias="messageSource"/>
-	
-	<!-- Prevent duplicate SimpleControllerHandlerAdapter registration from MVC namespace and @EnableWebMvc -->
-	<bean id="simpleControllerHandlerAdapter" class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
 	
 	<bean id="legacyUiUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="interceptors">
@@ -159,6 +153,14 @@
 				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>	
 
 				<prop key="**/*.htm">springController</prop>
+
+				<prop key="findPatient.htm">findPatientViewController</prop>
+				<prop key="admin/index.htm">adminIndexViewController</prop>
+				<prop key="dictionary/index.htm">dictionaryIndexViewController</prop>
+				<prop key="patients/index.htm">patientsIndexViewController</prop>
+				<prop key="encounters/index.htm">encountersIndexViewController</prop>
+				<prop key="observations/index.htm">observationsIndexViewController</prop>
+				<prop key="help.htm">helpViewController</prop>
  			</props>
 		</property>
 	</bean>
@@ -168,38 +170,43 @@
     <!-- Pages with no controllers - begin -->
 
     <!-- findPatient -->
-    <mvc:view-controller view-name="module/legacyui/findPatient" path="findPatient.htm"/>
+    <bean id="findPatientViewController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName" value="module/legacyui/findPatient"/>
+    </bean>
 
     <!-- index pages - begin -->
 	
 	<!-- admin -->
-	<mvc:view-controller view-name="module/legacyui/admin/index" path="admin/index.htm"/>				
+	<bean id="adminIndexViewController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="module/legacyui/admin/index"/>
+	</bean>
 	
 	<!-- dictionary -->
-	<mvc:view-controller view-name="module/legacyui/dictionary/index" path="dictionary/index.htm"/>				
+	<bean id="dictionaryIndexViewController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="module/legacyui/dictionary/index"/>
+	</bean>
 	
 	<!-- patients -->
-	<mvc:view-controller view-name="module/legacyui/admin/patients/index" path="patients/index.htm"/>				
+	<bean id="patientsIndexViewController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="module/legacyui/admin/patients/index"/>
+	</bean>
 	
 	<!-- encounters -->
-	<mvc:view-controller view-name="module/legacyui/admin/encounters/index" path="encounters/index.htm"/>
+	<bean id="encountersIndexViewController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="module/legacyui/admin/encounters/index"/>
+	</bean>
 
 	<!-- observations -->
-	<mvc:view-controller view-name="module/legacyui/admin/observations/index" path="observations/index.htm"/>
+	<bean id="observationsIndexViewController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="module/legacyui/admin/observations/index"/>
+	</bean>
 
     <!-- help -->
-    <mvc:view-controller view-name="module/legacyui/help" path="help.htm"/>
+    <bean id="helpViewController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName" value="module/legacyui/help"/>
+    </bean>
 
  	<!-- index pages - end -->
- 	
- 	<mvc:interceptors>
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-            <property name="paramName" value="lang" />
-        </bean>
-        <bean class="org.openmrs.web.theme.ThemeChangeInterceptor">
-			<property name="paramName"><value>theme</value></property>
-		</bean>
-    </mvc:interceptors>
 
     <!-- Pages with no controllers - end -->
  	 

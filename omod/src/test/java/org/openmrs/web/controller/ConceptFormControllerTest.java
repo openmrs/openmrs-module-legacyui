@@ -530,8 +530,8 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		final Concept concept = new Concept();
 		concept.addName(new ConceptName(CONCEPT_NAME, britishEn));
 		concept.setShortName(new ConceptName("shortname", britishEn));
-		concept.addDescription(new ConceptDescription("some description", null));
-		concept.setDatatype(Context.getConceptService().getConceptDatatype(1));
+		concept.addDescription(new ConceptDescription("some description", britishEn));
+		concept.setDatatype(Context.getConceptService().getConceptDatatype(4));
 		concept.setConceptClass(Context.getConceptService().getConceptClass(1));
 		cs.saveConcept(concept);
 		
@@ -548,8 +548,11 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		mockRequest.setMethod("POST");
 		mockRequest.setParameter("action", "");
 		mockRequest.setParameter("conceptId", concept.getConceptId().toString());
+		mockRequest.setParameter("namesByLocale[en_GB].name", CONCEPT_NAME);
+		mockRequest.setParameter("descriptionsByLocale[en_GB].description", "some description");
 		mockRequest.setParameter("shortNamesByLocale[en_GB].name", " ");
-		mockRequest.setParameter("concept.datatype", "1");
+		mockRequest.setParameter("concept.datatype", "4");
+		mockRequest.setParameter("concept.class", "1");
 		
 		ModelAndView mav = conceptFormController.handleRequest(mockRequest, response);
 		assertNotNull(mav);
