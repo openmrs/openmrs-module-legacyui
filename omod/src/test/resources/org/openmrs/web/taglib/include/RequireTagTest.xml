@@ -14,9 +14,9 @@
   <person person_id="2" gender="M" dead="false" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="2d70a8dc-d233-460b-8717-35169091f03f"/>
   <person_name person_name_id="2" preferred="true" person_id="2" given_name="John" middle_name=" " family_name="Doe" creator="1" date_created="2005-01-01 00:00:00.0" voided="false" uuid="55ccd5eb-aaab-458f-9507-7beffda23855"/>
   
-  <privilege privilege="Manage WhirleyGigs" description="Able to manage whirleygigs" uuid="b0da53a7-e5f5-4584-a9b9-bf911470fe57"/>
-  <privilege privilege="Manage WhoopDeDoos" description="Able to manage whoopdedoos" uuid="83756836-aa91-44d0-97de-2cfcf3a64808"/>
-  <privilege privilege="Manage Thingamajigs" description="Able to manage thingamajigs" uuid="68ba469c-22cc-46fd-a992-e4ec7db92b7f"/>
+  <privilege privilege="Manage WhirleyGigs" description="Able to manage whirleygigs" uuid="b0da53a7-e5f5-4584-a9b9-bf911470fe57" creator="1" date_created="2005-01-01 00:00:00.0"/>
+  <privilege privilege="Manage WhoopDeDoos" description="Able to manage whoopdedoos" uuid="83756836-aa91-44d0-97de-2cfcf3a64808" creator="1" date_created="2005-01-01 00:00:00.0"/>
+  <privilege privilege="Manage Thingamajigs" description="Able to manage thingamajigs" uuid="68ba469c-22cc-46fd-a992-e4ec7db92b7f" creator="1" date_created="2005-01-01 00:00:00.0"/>
   
   <role role="WhirleyGig Manager" description="Works with WhirleyGigs only" uuid="dddf8f8e-c6e3-49d3-8f70-2107a60f7df2"/>
   <role role="Manager" description="Works with all objects" uuid="fa2fd77d-a586-4e89-9bd0-193a34b6d01e"/>
