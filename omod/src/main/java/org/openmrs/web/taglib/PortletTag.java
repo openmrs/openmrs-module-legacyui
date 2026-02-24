@@ -9,18 +9,20 @@
  */
 package org.openmrs.web.taglib;
 
-import jakarta.servlet.jsp.tagext.BodyTagSupport;
+import java.io.IOException;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.Module;
 import org.openmrs.module.ModuleFactory;
 import org.openmrs.util.OpenmrsUtil;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.JspTagException;
 import jakarta.servlet.jsp.PageContext;
-import java.io.IOException;
-import java.util.Map;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 
 public class PortletTag extends BodyTagSupport {
 	
@@ -88,13 +90,17 @@ public class PortletTag extends BodyTagSupport {
 				pageContext.getRequest().setAttribute("org.openmrs.portlet.userId", userId);
 				pageContext.getRequest().setAttribute("org.openmrs.portlet.patientIds", patientIds);
 				pageContext.getRequest().setAttribute("org.openmrs.portlet.parameterMap", parameterMap);
+				
+				// include the portlet content
+				pageContext.getOut().flush();
+				pageContext.include(url);
 			}
 		}
-		catch (IOException e) {
+		catch (IOException | ServletException e) {
 			log.error("Error while starting portlet tag", e);
 		}
 		
-		return super.doStartTag();
+		return SKIP_BODY;
 	}
 	
 	public int doEndTag() throws JspException {
