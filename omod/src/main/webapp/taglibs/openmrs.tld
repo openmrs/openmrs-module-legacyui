@@ -780,7 +780,7 @@
 		<name>request</name>
 		<required>false</required>
 		<rtexprvalue>true</rtexprvalue>
-		<type>javax.servlet.http.HttpServletRequest</type>
+		<type>jakarta.servlet.http.HttpServletRequest</type>
 	</attribute>
 	<attribute>
 		<name>type</name>

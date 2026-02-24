@@ -9,8 +9,8 @@
  */
 package org.openmrs.web.controller.program;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,6 +62,8 @@ public class ProgramFormControllerTest extends BaseModuleWebContextSensitiveTest
 		
 		ProgramFormController controller = (ProgramFormController) applicationContext.getBean("programForm");
 		controller.handleRequest(request, new MockHttpServletResponse());
+
+		Context.clearSession();
 		
 		Assert.assertEquals(2, Context.getProgramWorkflowService().getProgram(3).getWorkflows().size());
 		

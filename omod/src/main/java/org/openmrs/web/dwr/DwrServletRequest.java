@@ -18,19 +18,21 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
+import jakarta.servlet.http.Part;
 
 /**
  * This class is to allow us modify the http servlet request's uri, url, and path info to those
@@ -77,7 +79,12 @@ public class DwrServletRequest implements HttpServletRequest {
 	public int getContentLength() {
 		return request.getContentLength();
 	}
-	
+
+	@Override
+	public long getContentLengthLong() {
+		return request.getContentLengthLong();
+	}
+
 	@Override
 	public String getContentType() {
 		return request.getContentType();
@@ -174,11 +181,7 @@ public class DwrServletRequest implements HttpServletRequest {
 		return request.getRequestDispatcher(path);
 	}
 	
-	@Override
-	public String getRealPath(String path) {
-		return request.getRealPath(path);
-	}
-	
+
 	@Override
 	public int getRemotePort() {
 		return request.getRemotePort();
@@ -234,7 +237,22 @@ public class DwrServletRequest implements HttpServletRequest {
 	public DispatcherType getDispatcherType() {
 		return request.getDispatcherType();
 	}
-	
+
+	@Override
+	public String getRequestId() {
+		return request.getRequestId();
+	}
+
+	@Override
+	public String getProtocolRequestId() {
+		return request.getProtocolRequestId();
+	}
+
+	@Override
+	public ServletConnection getServletConnection() {
+		return request.getServletConnection();
+	}
+
 	@Override
 	public String getAuthType() {
 		return request.getAuthType();
@@ -339,7 +357,12 @@ public class DwrServletRequest implements HttpServletRequest {
 	public HttpSession getSession() {
 		return request.getSession();
 	}
-	
+
+	@Override
+	public String changeSessionId() {
+		return request.changeSessionId();
+	}
+
 	@Override
 	public boolean isRequestedSessionIdValid() {
 		return request.isRequestedSessionIdValid();
@@ -355,11 +378,7 @@ public class DwrServletRequest implements HttpServletRequest {
 		return request.isRequestedSessionIdFromURL();
 	}
 	
-	@Override
-	public boolean isRequestedSessionIdFromUrl() {
-		return request.isRequestedSessionIdFromUrl();
-	}
-	
+
 	@Override
 	public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
 		return request.authenticate(response);
@@ -383,5 +402,10 @@ public class DwrServletRequest implements HttpServletRequest {
 	@Override
 	public Part getPart(String name) throws IOException, ServletException {
 		return request.getPart(name);
+	}
+
+	@Override
+	public <T extends HttpUpgradeHandler> T upgrade(Class<T> aClass) throws IOException, ServletException {
+		return request.upgrade(aClass);
 	}
 }

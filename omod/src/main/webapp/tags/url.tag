@@ -5,6 +5,9 @@ This tag prints out urls in a way that supports external ones
 and is backwards compatible to support modules that exclude
 a leading forward slash
  --%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+
 
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 

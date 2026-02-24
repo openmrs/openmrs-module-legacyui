@@ -1,5 +1,7 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:choose>
 	<c:when test="${not empty model.answerSet}">
 		<select name="${model.formFieldName}" id="${model.formFieldName}">

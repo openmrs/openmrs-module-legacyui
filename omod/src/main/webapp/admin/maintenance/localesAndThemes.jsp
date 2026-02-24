@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Manage Global Properties" otherwise="/login.htm" redirect="/admin/maintenance/LocalesAndThemes.form" />
@@ -26,15 +27,6 @@
 			</td>
 			<td class="description">
 				<openmrs:message code="LocalesAndThemes.locale.help"/>
-			</td>
-		</tr>
-		<tr>
-			<td><openmrs:message code="LocalesAndThemes.theme"/></td>
-			<td>
-				<input type="text" value="<c:out value='${theme}'/>" name="theme"/>
-			</td>
-			<td class="description">
-				<openmrs:message code="LocalesAndThemes.theme.help"/>
 			</td>
 		</tr>
 	</table>

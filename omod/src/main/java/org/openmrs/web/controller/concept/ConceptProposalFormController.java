@@ -19,10 +19,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,7 +74,7 @@ public class ConceptProposalFormController extends SimpleFormController {
 		}
 		cp.setMappedConcept(c);
 		
-		MessageSourceAccessor msa = getMessageSourceAccessor();
+		MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 		if (action.equals(msa.getMessage("general.cancel"))) {
 			httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "general.canceled");
 			return new ModelAndView(new RedirectView(getSuccessView()));
@@ -121,7 +121,7 @@ public class ConceptProposalFormController extends SimpleFormController {
 		String view = getFormView();
 		
 		Locale locale = Context.getLocale();
-		MessageSourceAccessor msa = getMessageSourceAccessor();
+		MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 		
 		if (Context.isAuthenticated()) {
 			// this concept proposal

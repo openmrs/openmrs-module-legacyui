@@ -9,8 +9,8 @@
  */
 package org.openmrs.web.patient;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openmrs.test.Verifies;
@@ -57,7 +57,7 @@ public class PatientDashboardGraphControllerTest extends BaseModuleWebContextSen
 		JsonNode actualJson = mapper.readTree(graph.toString());
 		
 		Assert.assertEquals(expectedJson.size(), actualJson.size());
-		for (Iterator<String> fieldNames = expectedJson.getFieldNames(); fieldNames.hasNext();) {
+		for (Iterator<String> fieldNames = expectedJson.fieldNames(); fieldNames.hasNext();) {
 			String field = fieldNames.next();
 			Assert.assertEquals(expectedJson.get(field), actualJson.get(field));
 		}

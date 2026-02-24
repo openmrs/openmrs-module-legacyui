@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,16 +16,15 @@
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:spring="http://www.springframework.org/tags"
-	xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">
+      xmlns:c="jakarta.tags.core"
+      xmlns:jsp="https://jakarta.ee/xml/ns/jakartaee"
+      xmlns:openmrs="urn:jsptld:/WEB-INF/view/module/legacyui/taglibs/openmrs.tld">
 	<head>
 		<script src="${pageContext.request.contextPath}/csrfguard" type="text/javascript"></script>
 		<openmrs:htmlInclude file="/moduleResources/legacyui/scripts/openmrs.js" />
 		<openmrs:htmlInclude file="/scripts/openmrsmessages.js" appendLocale="true" />
 		<openmrs:htmlInclude file="/moduleResources/legacyui/css/openmrs.css" />
-		<link href="<openmrs:contextPath/><spring:theme code='stylesheet' />" type="text/css" rel="stylesheet" />
+		<link href="<openmrs:contextPath/>/moduleResources/legacyui/css/openmrs_green.css" type="text/css" rel="stylesheet" />
 		<openmrs:htmlInclude file="/moduleResources/legacyui/css/style.css" />
         <openmrs:htmlInclude file="/moduleResources/legacyui/scripts/html-sanitizer-min.js" />
 		<openmrs:htmlInclude file="/dwr/engine.js" />
@@ -34,10 +34,10 @@
             <openmrs:htmlInclude file="/scripts/jquery-ui/js/jquery-ui-timepicker-addon.js" />
 			<openmrs:htmlInclude file="/scripts/jquery-ui/js/jquery-ui-datepicker-i18n.js" />
 			<openmrs:htmlInclude file="/scripts/jquery-ui/js/jquery-ui-timepicker-i18n.js" />
-			<link href="<openmrs:contextPath/>/scripts/jquery-ui/css/<spring:theme code='jqueryui.theme.name' />/jquery-ui.custom.css" type="text/css" rel="stylesheet" />
+			<link href="<openmrs:contextPath/>/scripts/jquery-ui/css/green/jquery-ui.custom.css" type="text/css" rel="stylesheet" />
 		</c:if>
-		<link rel="shortcut icon" type="image/ico" href="<openmrs:contextPath/><spring:theme code='favicon' />">
-		<link rel="icon" type="image/png" href="<openmrs:contextPath/><spring:theme code='favicon.png' />">
+		<link rel="shortcut icon" type="image/ico" href="<openmrs:contextPath/>/images/openmrs-favicon.ico">
+		<link rel="icon" type="image/png" href="<openmrs:contextPath/>/images/openmrs-favicon.png">
 
 		<c:choose>
 			<c:when test="${!empty pageTitle}">

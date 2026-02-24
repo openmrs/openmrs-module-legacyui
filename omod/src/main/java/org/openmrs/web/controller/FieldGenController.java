@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,9 +32,9 @@ public class FieldGenController implements Controller {
 	        IOException {
 		
 		// find the field that was identified in the openmrs:fieldGen taglib
-		Object uri = request.getAttribute("javax.servlet.include.servlet_path.fieldGen");
+		Object uri = request.getAttribute("jakarta.servlet.include.servlet_path.fieldGen");
 		if (uri == null) {
-			uri = request.getAttribute("javax.servlet.include.servlet_path");
+			uri = request.getAttribute("jakarta.servlet.include.servlet_path");
 		}
 		String fieldGenPath = "";
 		Map<String, Object> model = new HashMap<String, Object>();

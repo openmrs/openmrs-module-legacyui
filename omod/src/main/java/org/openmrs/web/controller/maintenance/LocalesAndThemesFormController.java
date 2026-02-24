@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.controller.maintenance;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
@@ -37,9 +37,6 @@ public class LocalesAndThemesFormController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/localesAndThemes.form")
 	public String showPage(ModelMap model) throws Exception {
-		String theme = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_THEME);
-		model.addAttribute("theme", theme);
-		
 		String locale = Context.getAdministrationService()
 		        .getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_LOCALE);
 		model.addAttribute("locale", locale);
@@ -58,19 +55,13 @@ public class LocalesAndThemesFormController {
 	 * @throws Exception
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/localesAndThemes.form")
-	public String saveDefaults(WebRequest request, @RequestParam("theme") String theme, @RequestParam("locale") String locale)
+	public String saveDefaults(WebRequest request, @RequestParam("locale") String locale)
 	        throws Exception {
 		boolean localeInList = false;
 		String allowedLocales = Context.getAdministrationService().getGlobalProperty(
 		    OpenmrsConstants.GLOBAL_PROPERTY_LOCALE_ALLOWED_LIST);
 		String[] allowedLocalesList = allowedLocales.split(",");
-		
-		// save the theme
-		GlobalProperty themeGP = Context.getAdministrationService().getGlobalPropertyObject(
-		    OpenmrsConstants.GLOBAL_PROPERTY_DEFAULT_THEME);
-		themeGP.setPropertyValue(theme);
-		Context.getAdministrationService().saveGlobalProperty(themeGP);
-		
+
 		// save the locale
 		for (String loc : allowedLocalesList) {
 			loc = loc.trim();

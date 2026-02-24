@@ -1,3 +1,4 @@
+# this build is designed to replicate the Travis CI workflow
 name: Build with Maven
 
 on:
@@ -11,5 +12,5 @@ jobs:
   build:
     uses: openmrs/openmrs-contrib-gha-workflows/.github/workflows/build-backend-module.yml@main
     with:
-      java_versions: '[8, 11, 17, 21, 25]'
-      main_java_version: '8'
+      java_versions: '[21, 25]'
+      main_java_version: '21'

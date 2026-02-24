@@ -1,4 +1,4 @@
-<%@page import="org.apache.commons.lang.StringUtils"%>
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="org.openmrs.web.WebConstants"%>
 <%@page import="org.openmrs.api.APIAuthenticationException"%>
 <%@page import="org.openmrs.api.context.ContextAuthenticationException"%>
@@ -19,9 +19,9 @@
 			session.setAttribute(WebConstants.UNCAUGHT_EXCEPTION_MESSAGE,
 			    StringUtils.isNotBlank(exception.getMessage()) ? exception.getMessage() : "");
 			
-			Object requestUrl = request.getAttribute("javax.servlet.error.request_uri");
+			Object requestUrl = request.getAttribute("jakarta.servlet.error.request_uri");
 			if (requestUrl != null) {
-				String uri = (String) request.getAttribute("javax.servlet.error.request_uri");
+				String uri = (String) request.getAttribute("jakarta.servlet.error.request_uri");
 				if (StringUtils.isNotBlank(uri))
 					session.setAttribute(WebConstants.DENIED_PAGE, uri);
 				
