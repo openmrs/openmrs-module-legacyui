@@ -45,7 +45,11 @@ public class LegacyCatchAllController implements Controller {
     private Controller personFormEntryPortletController;
 
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String path = request.getRequestURI();
+        // For included requests (e.g. pageContext.include()), use the include request URI
+        String path = (String) request.getAttribute("jakarta.servlet.include.request_uri");
+        if (path == null) {
+            path = request.getRequestURI();
+        }
         if (path == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
@@ -142,4 +146,3 @@ public class LegacyCatchAllController implements Controller {
         this.personFormEntryPortletController = personFormEntryPortletController;
     }
 }
-
