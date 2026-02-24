@@ -123,27 +123,22 @@
 				<prop key="admin/provider/providerAttributeType.list">providerAttributeTypeList</prop>
 				<prop key="admin/provider/providerAttributeType.form">providerAttributeTypeForm</prop>
 
-                <prop key="/**">legacyCatchAllController</prop>
+                <prop key="/**/globalProperties.portlet">globalPropertyPortletController</prop>
+                <prop key="/**/addressLayout.portlet">addressLayoutPortletController</prop>
+                <prop key="/**/nameLayout.portlet">nameLayoutPortletController</prop>
+                <prop key="/**/patientPrograms.portlet">patientProgramsPortletController</prop>
+                <prop key="/**/personRelationships.portlet">personRelationshipsPortletController</prop>
+                <prop key="/**/patientEncounters.portlet">patientEncountersPortletController</prop>
+                <prop key="/**/patientVisits.portlet">patientVisitsPortletController</prop>
+                <prop key="/**/personFormEntry.portlet">personFormEntryPortletController</prop>
+                <prop key="/**/*.field">fieldGenController</prop>
+                <prop key="/**/*.htm">springController</prop>
+                <prop key="/**/*.portlet">portletController</prop>
             </props>
 		</property>
 	</bean>
 	
 	<bean id="springController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
-
-    <bean id="legacyCatchAllController" class="org.openmrs.web.controller.LegacyCatchAllController">
-        <property name="springController" ref="springController"/>
-        <property name="fieldGenController" ref="fieldGenController"/>
-        <property name="portletController" ref="portletController"/>
-
-        <property name="globalPropertyPortletController" ref="globalPropertyPortletController"/>
-        <property name="addressLayoutPortletController" ref="addressLayoutPortletController"/>
-        <property name="nameLayoutPortletController" ref="nameLayoutPortletController"/>
-        <property name="patientProgramsPortletController" ref="patientProgramsPortletController"/>
-        <property name="personRelationshipsPortletController" ref="personRelationshipsPortletController"/>
-        <property name="patientEncountersPortletController" ref="patientEncountersPortletController"/>
-        <property name="patientVisitsPortletController" ref="patientVisitsPortletController"/>
-        <property name="personFormEntryPortletController" ref="personFormEntryPortletController"/>
-    </bean>
 
     <!-- ** Patient ** -->
 
