@@ -46,6 +46,7 @@ import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.util.OpenmrsConstants.PERSON_TYPE;
 import org.openmrs.validator.PersonAddressValidator;
 import org.openmrs.web.WebConstants;
+import org.openmrs.web.WebUtil;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -491,25 +492,25 @@ public class PersonFormController extends SimpleFormController {
 						pn.setPreferred(new Boolean(namePrefStatus[i]));
 					}
 					if (gNames.length >= i + 1) {
-						pn.setGivenName(gNames[i]);
+						pn.setGivenName(WebUtil.escapeHTML(gNames[i]));
 					}
 					if (mNames.length >= i + 1) {
-						pn.setMiddleName(mNames[i]);
+						pn.setMiddleName(WebUtil.escapeHTML(mNames[i]));
 					}
 					if (fNamePrefixes.length >= i + 1) {
-						pn.setFamilyNamePrefix(fNamePrefixes[i]);
+						pn.setFamilyNamePrefix(WebUtil.escapeHTML(fNamePrefixes[i]));
 					}
 					if (fNames.length >= i + 1) {
-						pn.setFamilyName(fNames[i]);
+						pn.setFamilyName(WebUtil.escapeHTML(fNames[i]));
 					}
 					if (fName2s.length >= i + 1) {
-						pn.setFamilyName2(fName2s[i]);
+						pn.setFamilyName2(WebUtil.escapeHTML(fName2s[i]));
 					}
 					if (fNameSuffixes.length >= i + 1) {
-						pn.setFamilyNameSuffix(fNameSuffixes[i]);
+						pn.setFamilyNameSuffix(WebUtil.escapeHTML(fNameSuffixes[i]));
 					}
 					if (degrees.length >= i + 1) {
-						pn.setDegree(degrees[i]);
+						pn.setDegree(WebUtil.escapeHTML(degrees[i]));
 					}
 					person.addName(pn);
 				}
@@ -615,46 +616,46 @@ public class PersonFormController extends SimpleFormController {
 			for (int i = 0; i < maxAddrs; i++) {
 				PersonAddress pa = new PersonAddress();
 				if (add1s.length >= i + 1) {
-					pa.setAddress1(add1s[i]);
+					pa.setAddress1(WebUtil.escapeHTML(add1s[i]));
 				}
 				if (add2s.length >= i + 1) {
-					pa.setAddress2(add2s[i]);
+					pa.setAddress2(WebUtil.escapeHTML(add2s[i]));
 				}
 				if (cities.length >= i + 1) {
-					pa.setCityVillage(cities[i]);
+					pa.setCityVillage(WebUtil.escapeHTML(cities[i]));
 				}
 				if (states.length >= i + 1) {
-					pa.setStateProvince(states[i]);
+					pa.setStateProvince(WebUtil.escapeHTML(states[i]));
 				}
 				if (countries.length >= i + 1) {
-					pa.setCountry(countries[i]);
+					pa.setCountry(WebUtil.escapeHTML(countries[i]));
 				}
 				if (lats.length >= i + 1) {
-					pa.setLatitude(lats[i]);
+					pa.setLatitude(WebUtil.escapeHTML(lats[i]));
 				}
 				if (longs.length >= i + 1) {
-					pa.setLongitude(longs[i]);
+					pa.setLongitude(WebUtil.escapeHTML(longs[i]));
 				}
 				if (pCodes.length >= i + 1) {
-					pa.setPostalCode(pCodes[i]);
+					pa.setPostalCode(WebUtil.escapeHTML(pCodes[i]));
 				}
 				if (counties.length >= i + 1) {
-					pa.setCountyDistrict(counties[i]);
+					pa.setCountyDistrict(WebUtil.escapeHTML(counties[i]));
 				}
 				if (add3s.length >= i + 1) {
-					pa.setAddress3(add3s[i]);
+					pa.setAddress3(WebUtil.escapeHTML(add3s[i]));
 				}
 				if (addPrefStatus != null && addPrefStatus.length > i) {
 					pa.setPreferred(new Boolean(addPrefStatus[i]));
 				}
 				if (add6s.length >= i + 1) {
-					pa.setAddress6(add6s[i]);
+					pa.setAddress6(WebUtil.escapeHTML(add6s[i]));
 				}
 				if (add5s.length >= i + 1) {
-					pa.setAddress5(add5s[i]);
+					pa.setAddress5(WebUtil.escapeHTML(add5s[i]));
 				}
 				if (add4s.length >= i + 1) {
-					pa.setAddress4(add4s[i]);
+					pa.setAddress4(WebUtil.escapeHTML(add4s[i]));
 				}
 				if (startDates.length >= i + 1 && StringUtils.isNotBlank(startDates[i])) {
 					pa.setStartDate(Context.getDateFormat().parse(startDates[i]));
