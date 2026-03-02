@@ -573,8 +573,33 @@ dojo.widget.defineWidget(
 	},
 	
 	cellCreator: function(options) {
-		if (dwr.util._isHTMLElement(options.data, "td") == true)
-			return options.data;
+		if (dwr.util._isHTMLElement(options.data, "td") == true) {
+			// LUI-208: Create a new td and transfer content from the original.
+			// The newer DWR util.js (from org.openmrs.contrib) always tries to
+			// appendChild(data) on the cell returned by cellCreator. When the
+			// cell IS the data (same object), this causes "Node.appendChild:
+			// The new child is an ancestor of the parent". By returning a
+			// different td object with the same content, we avoid this error.
+			var original = options.data;
+			var td = document.createElement("td");
+			td.className = original.className;
+			td.id = original.id;
+			if (original.colSpan > 1) td.colSpan = original.colSpan;
+			td.onclick = original.onclick;
+			td.onmouseover = original.onmouseover;
+			td.onmouseout = original.onmouseout;
+			while (original.firstChild) {
+				td.appendChild(original.firstChild);
+			}
+			// Clear the original to avoid duplicate ids and stale state
+			// in case DWR appends it as a nested element
+			original.className = '';
+			original.id = '';
+			original.onclick = null;
+			original.onmouseover = null;
+			original.onmouseout = null;
+			return td;
+		}
 		
 		return document.createElement("td");
 	},
