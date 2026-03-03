@@ -23,9 +23,14 @@ import org.openmrs.module.web.filter.RedirectAfterLoginFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class WebComponentRegistrar implements ServletContextAware {
-	
+
+    private static final Logger log = LoggerFactory.getLogger(WebComponentRegistrar.class);
+
 	@Override
 	public void setServletContext(@Nonnull ServletContext servletContext) {
 		try {
@@ -61,7 +66,8 @@ public class WebComponentRegistrar implements ServletContextAware {
 			//This happens on running openmrs after InitializationFilter or UpdateFilter
 			//hence requiring a restart to see any page other than index.htm
 			//After a restart, all mappings will then happen within Listener.contextInitialized()
-			ex.printStackTrace();
+
+            log.error("Error registering web component", ex);
 		}
 	}
 	
