@@ -19,9 +19,9 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import static org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload.isMultipartContent;
+import static org.apache.commons.fileupload2.jakarta.JakartaServletFileUpload.isMultipartContent;
 
 public class XSSFilter implements Filter {
 	
@@ -31,7 +31,7 @@ public class XSSFilter implements Filter {
 		
 		if (!"GET".equalsIgnoreCase(((HttpServletRequest) request).getMethod())) {
 			if (isMultipartContent((HttpServletRequest) request)) {
-				request = new XSSMultipartRequestWrapper((DefaultMultipartHttpServletRequest) request);
+				request = new XSSMultipartRequestWrapper((MultipartHttpServletRequest) request);
 			} else {
 				request = new XSSRequestWrapper((HttpServletRequest) request);
 			}
