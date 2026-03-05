@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import static org.apache.commons.fileupload2.jakarta.JakartaServletFileUpload.isMultipartContent;
+import static org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload.isMultipartContent;
 
 public class XSSFilter implements Filter {
 	

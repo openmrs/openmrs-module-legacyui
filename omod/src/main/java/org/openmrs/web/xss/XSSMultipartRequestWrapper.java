@@ -74,11 +74,7 @@ public class XSSMultipartRequestWrapper extends HttpServletRequestWrapper implem
 	public MultiValueMap<String, MultipartFile> getMultiFileMap() {
 		return getRequest().getMultiFileMap();
 	}
-	
-	@Override
-	public Enumeration<String> getParameterNames() {
-		return getRequest().getParameterNames();
-	}
+
 	
 	@Override
 	public List<MultipartFile> getFiles(String name) {
