@@ -12,9 +12,9 @@ package org.openmrs.web.controller.customdatatype;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.customdatatype.CustomDatatype;
@@ -49,7 +49,7 @@ public class CustomValueController {
 	 * @return html markup
 	 * @throws IOException
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "**/viewCustomValue.form")
+	@RequestMapping(method = RequestMethod.GET, value = "viewCustomValue.form")
 	@ResponseBody
 	public String viewCustomValue(@RequestParam("handler") String handlerClassname,
 	        @RequestParam(value = "datatype", required = true) String datatypeClassname,
@@ -77,7 +77,7 @@ public class CustomValueController {
 	 * @param valueReference
 	 * @throws IOException
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "**/downloadCustomValue.form")
+	@RequestMapping(method = RequestMethod.GET, value = "downloadCustomValue.form")
 	public void downloadCustomValue(HttpServletResponse response, @RequestParam("handler") String handlerClassname,
 	        @RequestParam(value = "datatype", required = true) String datatypeClassname,
 	        @RequestParam(value = "value", required = true) String valueReference) throws IOException {

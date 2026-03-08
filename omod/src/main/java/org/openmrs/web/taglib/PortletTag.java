@@ -9,20 +9,22 @@
  */
 package org.openmrs.web.taglib;
 
+import java.io.IOException;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.taglibs.standard.tag.common.core.ImportSupport;
 import org.openmrs.module.Module;
 import org.openmrs.module.ModuleFactory;
 import org.openmrs.util.OpenmrsUtil;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.PageContext;
-import java.io.IOException;
-import java.util.Map;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 
-public class PortletTag extends ImportSupport {
+public class PortletTag extends BodyTagSupport {
 	
 	public static final long serialVersionUID = 21L;
 	
@@ -47,6 +49,8 @@ public class PortletTag extends ImportSupport {
 	private String patientIds = "";
 	
 	private String moduleId = "";
+
+	private String url = "";
 	
 	public PageContext getPageContext() {
 		return this.pageContext;
@@ -86,13 +90,17 @@ public class PortletTag extends ImportSupport {
 				pageContext.getRequest().setAttribute("org.openmrs.portlet.userId", userId);
 				pageContext.getRequest().setAttribute("org.openmrs.portlet.patientIds", patientIds);
 				pageContext.getRequest().setAttribute("org.openmrs.portlet.parameterMap", parameterMap);
+				
+				// include the portlet content
+				pageContext.getOut().flush();
+				pageContext.include(url);
 			}
 		}
-		catch (IOException e) {
+		catch (IOException | ServletException e) {
 			log.error("Error while starting portlet tag", e);
 		}
 		
-		return super.doStartTag();
+		return SKIP_BODY;
 	}
 	
 	public int doEndTag() throws JspException {
@@ -259,5 +267,8 @@ public class PortletTag extends ImportSupport {
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
 	}
-	
+
+	public String getUrl() {
+		return url;
+	}
 }

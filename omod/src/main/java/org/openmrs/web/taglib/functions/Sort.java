@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.collections.comparators.ComparableComparator;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Functions used within taglibs in a webapp jsp page. <br>

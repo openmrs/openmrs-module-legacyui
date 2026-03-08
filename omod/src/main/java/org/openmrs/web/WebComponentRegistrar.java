@@ -9,10 +9,11 @@
  */
 package org.openmrs.web;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration.Dynamic;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
+import jakarta.annotation.Nonnull;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterRegistration.Dynamic;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
 import java.util.EnumSet;
 
 import org.openmrs.contrib.dwr.servlet.EfficientShutdownServletContextAttributeListener;
@@ -31,8 +32,7 @@ public class WebComponentRegistrar implements ServletContextAware {
     private static final Logger log = LoggerFactory.getLogger(WebComponentRegistrar.class);
 
 	@Override
-	public void setServletContext(ServletContext servletContext) {
-		
+	public void setServletContext(@Nonnull ServletContext servletContext) {
 		try {
 			String[] mappings = { "*.htm", "*.form", "*.list", "*.json", "*.field", "*.portlet", "*.page", "*.action" };
 			
@@ -72,9 +72,11 @@ public class WebComponentRegistrar implements ServletContextAware {
 	}
 	
 	private void addMappings(ServletRegistration reg, String... mappings) {
-		for (String mapping : mappings) {
-			reg.addMapping(mapping);
-		}
+        if (reg != null) {
+            for (String mapping : mappings) {
+                reg.addMapping(mapping);
+            }
+        }
 	}
 	
 }

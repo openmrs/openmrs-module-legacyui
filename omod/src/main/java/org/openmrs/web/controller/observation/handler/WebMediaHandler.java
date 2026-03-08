@@ -9,6 +9,7 @@
  */
 package org.openmrs.web.controller.observation.handler;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.List;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class WebMediaHandler extends MediaHandler {
 		
 		if (ComplexObsHandler.HTML_VIEW.equals(view)) {
 			String mediaTag = "";
-			String mimeType = OpenmrsUtil.getFileMimeType(getComplexDataFile(obs));
+			String mimeType = OpenmrsUtil.getFileMimeType(new File(parseDataKey(obs)));
 			if (mimeType.contains("video")) {
 				mediaTag = "<video controls>" + "<source src=\""
 				        + WebHandlerUtils.getHyperlink(obs, ComplexObsHandler.RAW_VIEW) + "\" type=\"" + mimeType

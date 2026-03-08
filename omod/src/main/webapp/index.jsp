@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:message var="pageTitle" code="index.title" scope="page"/>
@@ -15,7 +16,7 @@
 
 <c:if test="${not anyExtension}">
 <center>
-<img src="${pageContext.request.contextPath}<spring:theme code="image.logo.large" text="/images/openmrs_logo_white_large.png"/>" alt='<openmrs:message code="openmrs.title"/>' title='<openmrs:message code="openmrs.title"/>'/>
+<img src="${pageContext.request.contextPath}/moduleResources/legacyui/images/openmrs_logo_white_large.png" alt='<openmrs:message code="openmrs.title"/>' title='<openmrs:message code="openmrs.title"/>'/>
 	
 	<br/><br/><br/>
 	

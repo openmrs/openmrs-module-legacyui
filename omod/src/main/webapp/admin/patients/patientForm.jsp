@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/WEB-INF/view/module/legacyui/template/include.jsp" %>
 
 <openmrs:require privilege="Edit Patients" otherwise="/login.htm" redirect="/admin/patients/patient.form"/>

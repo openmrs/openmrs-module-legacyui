@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <iframe id="fieldWarningIframe" src="javascript:false;" frameBorder="0" scrolling="no"></iframe>
 <div id="fieldWarning">

@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.controller.maintenance;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.GlobalProperty;
 
 /**

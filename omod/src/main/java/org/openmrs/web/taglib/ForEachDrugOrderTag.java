@@ -16,14 +16,14 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.tagext.BodyTagSupport;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.DrugOrder;
@@ -91,7 +91,7 @@ public class ForEachDrugOrderTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
+	 * @see jakarta.servlet.jsp.tagext.IterationTag#doAfterBody()
 	 */
 	public int doAfterBody() throws JspException {
 		if (matchingDrugOrders.size() > count && (num == null || count < num.intValue())) {
@@ -103,7 +103,7 @@ public class ForEachDrugOrderTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see javax.servlet.jsp.tagext.Tag#doEndTag()
+	 * @see jakarta.servlet.jsp.tagext.Tag#doEndTag()
 	 */
 	public int doEndTag() throws JspException {
 		try {

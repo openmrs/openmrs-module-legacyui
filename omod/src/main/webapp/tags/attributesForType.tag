@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@tag import="java.util.List"%>
 <%@tag import="java.util.ArrayList"%>
 <%@tag import="org.openmrs.attribute.Attribute"%>

@@ -11,14 +11,14 @@ package org.openmrs.module.web.filter;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.web.user.UserProperties;
@@ -29,6 +29,8 @@ import org.openmrs.web.user.UserProperties;
  * the user to change his password.
  */
 public class ForcePasswordChangeFilter implements Filter {
+
+	private static boolean enabled = true;
 	
 	private String excludeURL;
 	
@@ -53,7 +55,7 @@ public class ForcePasswordChangeFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String requestURI = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		
-		if (Context.isAuthenticated()
+		if (enabled && Context.isAuthenticated()
 		        && new UserProperties(Context.getAuthenticatedUser().getUserProperties()).isSupposedToChangePassword()
 		        && shouldNotAllowAccessToUrl(requestURI)) {
 			config.getServletContext().getRequestDispatcher(changePasswordForm).forward(request, response);
@@ -92,5 +94,12 @@ public class ForcePasswordChangeFilter implements Filter {
 		excludedURLs = excludeURL.split(",");
 		changePasswordForm = config.getInitParameter("changePasswordForm");
 	}
-	
+
+	public static boolean isEnabled() {
+		return enabled;
+	}
+
+	public static void setEnabled(boolean enabled) {
+		ForcePasswordChangeFilter.enabled = enabled;
+	}
 }

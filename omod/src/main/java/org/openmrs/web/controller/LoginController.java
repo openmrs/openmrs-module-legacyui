@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.controller;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;

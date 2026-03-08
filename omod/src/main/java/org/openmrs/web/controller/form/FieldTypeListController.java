@@ -23,10 +23,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Vector;
 
@@ -58,7 +58,7 @@ public class FieldTypeListController extends SimpleFormController {
 			String success = "";
 			String error = "";
 			
-			MessageSourceAccessor msa = getMessageSourceAccessor();
+			MessageSourceAccessor msa = new MessageSourceAccessor(Context.getMessageSourceService());
 			String deleted = msa.getMessage("general.deleted");
 			String notDeleted = msa.getMessage("general.cannot.delete");
 			String textFieldType = msa.getMessage("FieldType.fieldType");

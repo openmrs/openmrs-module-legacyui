@@ -12,9 +12,9 @@ package org.openmrs.web.attribute.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.customdatatype.InvalidCustomValueException;
