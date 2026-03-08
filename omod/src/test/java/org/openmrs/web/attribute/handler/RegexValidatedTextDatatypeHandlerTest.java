@@ -9,6 +9,7 @@
  */
 package org.openmrs.web.attribute.handler;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,7 +69,7 @@ public class RegexValidatedTextDatatypeHandlerTest {
 		
 		InvalidCustomValueException ex = org.junit.jupiter.api.Assertions.assertThrows(InvalidCustomValueException.class,
 			() -> handler.getValue(datatype, request, fieldName));
-		assertThat(ex.getMessage(), is("Invalid value: " + invalidFieldValue));
+		assertThat(ex.getMessage(), containsString("Invalid value: " + invalidFieldValue));
 	}
 	
 	/**

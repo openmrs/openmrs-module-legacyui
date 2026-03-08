@@ -145,7 +145,7 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		// send the parameters to the controller
 		ModelAndView mav = controller.handleRequest(request, response);
 		
-		Assertions.assertNotSame("The purge attempt should have failed!", "index.htm", mav.getViewName());
+		Assertions.assertNotSame("index.htm", mav.getViewName(), "The purge attempt should have failed!");
 		Assertions.assertNotNull(cs.getConcept(3));
 		
 	}
