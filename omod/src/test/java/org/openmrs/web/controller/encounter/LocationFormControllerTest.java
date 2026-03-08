@@ -12,12 +12,12 @@ package org.openmrs.web.controller.encounter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -60,7 +60,7 @@ public class LocationFormControllerTest extends BaseModuleWebContextSensitiveTes
 		// make sure an error is returned because of the empty retire reason
 		BeanPropertyBindingResult bindingResult = (BeanPropertyBindingResult) modelAndView.getModel().get(
 		    "org.springframework.validation.BindingResult.location");
-		Assert.assertTrue(bindingResult.hasFieldErrors("retireReason"));
+		Assertions.assertTrue(bindingResult.hasFieldErrors("retireReason"));
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class LocationFormControllerTest extends BaseModuleWebContextSensitiveTes
 		((SimpleFormController) getLocationFormController()).handleRequest(request, response);
 		
 		Location retiredLocation = Context.getLocationService().getLocation(1);
-		Assert.assertTrue(retiredLocation.isRetired());
+		Assertions.assertTrue(retiredLocation.isRetired());
 	}
 	
 	/**
@@ -99,6 +99,6 @@ public class LocationFormControllerTest extends BaseModuleWebContextSensitiveTes
 		
 		// make sure there is an "locationId" filled in on the concept
 		Location command = (Location) modelAndView.getModel().get("location");
-		Assert.assertNotNull(command.getLocationId());
+		Assertions.assertNotNull(command.getLocationId());
 	}
 }

@@ -9,9 +9,9 @@
  */
 package org.openmrs.web.controller.patient;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
@@ -35,8 +35,8 @@ import org.openmrs.util.LocationUtility;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseWebContextSensitiveTest;
 import org.openmrs.web.test.WebTestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -78,10 +78,10 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		    (PersonAddress) mockWebRequest.getAttribute("personAddressCache", WebRequest.SCOPE_SESSION), null,
 		    (ShortPatientModel) mockWebRequest.getAttribute("patientModel", WebRequest.SCOPE_SESSION), errors);
 		
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertEquals("Patient.saved",
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertEquals("Patient.saved",
 		    mockWebRequest.getAttribute(WebConstants.OPENMRS_MSG_ATTR, WebRequest.SCOPE_SESSION));
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
 	}
 	
 	/**
@@ -112,15 +112,15 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		String redirectUrl = controller.saveShortPatient(mockWebRequest, new PersonName(), new PersonAddress(), null,
 		    patientModel, errors);
 		
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertNotNull(p.getId());
-		Assert.assertNotNull(p.getPersonName());
-		Assert.assertNotNull(p.getPersonName().getId());// the name was create
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertNotNull(p.getId());
+		Assertions.assertNotNull(p.getPersonName());
+		Assertions.assertNotNull(p.getPersonName().getId());// the name was create
 		// and added
-		Assert.assertEquals(patientCount + 1, Context.getPatientService().getAllPatients().size());
-		Assert.assertEquals("Patient.saved",
+		Assertions.assertEquals(patientCount + 1, Context.getPatientService().getAllPatients().size());
+		Assertions.assertEquals("Patient.saved",
 		    mockWebRequest.getAttribute(WebConstants.OPENMRS_MSG_ATTR, WebRequest.SCOPE_SESSION));
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
 	}
 	
 	/**
@@ -144,8 +144,8 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		String formUrl = controller.saveShortPatient(mockWebRequest, new PersonName(), new PersonAddress(), null,
 		    patientModel, errors);
 		
-		Assert.assertTrue("Should report validation errors", errors.hasErrors());
-		Assert.assertEquals("module/legacyui/admin/patients/shortPatientForm", formUrl);
+		Assertions.assertTrue(errors.hasErrors(), "Should report validation errors");
+		Assertions.assertEquals("module/legacyui/admin/patients/shortPatientForm", formUrl);
 	}
 	
 	/**
@@ -172,15 +172,15 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		String redirectUrl = controller.saveShortPatient(mockWebRequest, personNameCache, (PersonAddress) p
 		        .getPersonAddress().clone(), null, patientModel, errors);
 		
-		Assert.assertEquals(nameCount + 1, p.getNames().size());
-		Assert.assertTrue("The old name should be voided", oldPersonName.isVoided());
-		Assert.assertNotNull("The void reason should be set", oldPersonName.getVoidReason());
-		Assert.assertTrue("The old name should have remained un changed",
-		    oldGivenName.equalsIgnoreCase(oldPersonName.getGivenName()));
-		Assert.assertEquals("Changed", p.getGivenName());// the changes should
+		Assertions.assertEquals(nameCount + 1, p.getNames().size());
+		Assertions.assertTrue(oldPersonName.isVoided(), "The old name should be voided");
+		Assertions.assertNotNull(oldPersonName.getVoidReason(), "The void reason should be set");
+		Assertions.assertTrue(oldGivenName.equalsIgnoreCase(oldPersonName.getGivenName()),
+		    "The old name should have remained un changed");
+		Assertions.assertEquals("Changed", p.getGivenName());// the changes should
 		// have taken effect
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
 	}
 	
 	/**
@@ -195,7 +195,7 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		//to have at least one non voided name.
 		/*p.getPersonName().setVoided(true);
 		Context.getPatientService().savePatient(p);
-		Assert.assertNull(p.getPersonName());// make sure all names are voided*/
+		Assertions.assertNull(p.getPersonName());// make sure all names are voided*/
 		
 		// add a name that will used as a duplicate for testing purposes
 		PersonName newName = new PersonName("new", null, "name");
@@ -211,9 +211,9 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		String redirectUrl = controller.saveShortPatient(mockWebRequest, new PersonName(), (PersonAddress) p
 		        .getPersonAddress().clone(), null, patientModel, errors);
 		
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
-		Assert.assertNotNull(newName.getId());// name should have been added to
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertNotNull(newName.getId());// name should have been added to
 		// DB
 	}
 	
@@ -240,18 +240,18 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		        .getBean("shortPatientFormController");
 		String redirectUrl = controller.saveShortPatient(mockWebRequest,
 		    (PersonName) BeanUtils.cloneBean(p.getPersonName()), personAddressCache, null, patientModel, errors);
-		Assert.assertEquals(addressCount + 1, p.getAddresses().size());
-		Assert.assertTrue("The old address should be voided", oldPersonAddress.isVoided());
-		Assert.assertNotNull("The void reason should be set", oldPersonAddress.getVoidReason());
-		Assert.assertTrue("The old address should have remained the same",
-		    oldAddress1.equalsIgnoreCase(oldPersonAddress.getAddress1()));
-		Assert.assertEquals("Kampala", p.getPersonAddress().getAddress1());// the
+		Assertions.assertEquals(addressCount + 1, p.getAddresses().size());
+		Assertions.assertTrue(oldPersonAddress.isVoided(), "The old address should be voided");
+		Assertions.assertNotNull(oldPersonAddress.getVoidReason(), "The void reason should be set");
+		Assertions.assertTrue(oldAddress1.equalsIgnoreCase(oldPersonAddress.getAddress1()),
+		    "The old address should have remained the same");
+		Assertions.assertEquals("Kampala", p.getPersonAddress().getAddress1());// the
 		// changes
 		// should
 		// have
 		// taken
 		// effect
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
 	}
 	
 	/**
@@ -264,7 +264,7 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		Patient p = Context.getPatientService().getPatient(2);
 		p.getPersonAddress().setVoided(true);
 		Context.getPatientService().savePatient(p);
-		Assert.assertNull(p.getPersonAddress());// make sure all addresses are
+		Assertions.assertNull(p.getPersonAddress());// make sure all addresses are
 		// voided
 		
 		// add a name that will used as a duplicate for testing purposes
@@ -282,9 +282,9 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		String redirectUrl = controller.saveShortPatient(mockWebRequest,
 		    (PersonName) BeanUtils.cloneBean(p.getPersonName()), new PersonAddress(), null, patientModel, errors);
 		
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
-		Assert.assertNotNull(newAddress.getId());// name should have been added
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertNotNull(newAddress.getId());// name should have been added
 		// to DB
 	}
 	
@@ -299,7 +299,7 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		Context.getPatientService().savePatient(p);
 		// make sure all addresses are voided so that whatever is entered a new
 		// address
-		Assert.assertNull(p.getPersonAddress());
+		Assertions.assertNull(p.getPersonAddress());
 		
 		// add the new address
 		PersonAddress newAddress = new PersonAddress();
@@ -317,10 +317,10 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		String redirectUrl = controller.saveShortPatient(mockWebRequest,
 		    (PersonName) BeanUtils.cloneBean(p.getPersonName()), new PersonAddress(), null, patientModel, errors);
 		
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
 		// address should have been ignored
-		Assert.assertNull(p.getPersonAddress());
+		Assertions.assertNull(p.getPersonAddress());
 	}
 	
 	/**
@@ -353,15 +353,15 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		    (PersonName) mockWebRequest.getAttribute("personNameCache", WebRequest.SCOPE_SESSION),
 		    (PersonAddress) mockWebRequest.getAttribute("personAddressCache", WebRequest.SCOPE_SESSION), null,
 		    (ShortPatientModel) mockWebRequest.getAttribute("patientModel", WebRequest.SCOPE_SESSION), errors);
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
 		
-		Assert.assertEquals("Patient.saved",
+		Assertions.assertEquals("Patient.saved",
 		    mockWebRequest.getAttribute(WebConstants.OPENMRS_MSG_ATTR, WebRequest.SCOPE_SESSION));
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
 		//The new person attribute should have been added and saved
-		Assert.assertNotNull(p.getAttribute(2).getPersonAttributeId());
-		Assert.assertEquals(birthPlace, p.getAttribute(2).getValue());
-		Assert.assertEquals(originalAttributeCount + 1, p.getAttributes().size());
+		Assertions.assertNotNull(p.getAttribute(2).getPersonAttributeId());
+		Assertions.assertEquals(birthPlace, p.getAttribute(2).getValue());
+		Assertions.assertEquals(originalAttributeCount + 1, p.getAttributes().size());
 	}
 	
 	/**
@@ -391,12 +391,12 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		    (PersonAddress) mockWebRequest.getAttribute("personAddressCache", WebRequest.SCOPE_SESSION), null,
 		    (ShortPatientModel) mockWebRequest.getAttribute("patientModel", WebRequest.SCOPE_SESSION), errors);
 		
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertEquals("Patient.saved",
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertEquals("Patient.saved",
 		    mockWebRequest.getAttribute(WebConstants.OPENMRS_MSG_ATTR, WebRequest.SCOPE_SESSION));
-		Assert.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
+		Assertions.assertEquals("redirect:/patientDashboard.form?patientId=" + p.getPatientId(), redirectUrl);
 		//The new blank person attribute should have been ignored
-		Assert.assertEquals(originalAttributeCount, p.getAttributes().size());
+		Assertions.assertEquals(originalAttributeCount, p.getAttributes().size());
 	}
 	
 	/**
@@ -434,8 +434,8 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 			}
 		}
 		//ensure we found and edited it
-		Assert.assertNotNull(attributeToEdit);
-		Assert.assertNotNull(oldValue);
+		Assertions.assertNotNull(attributeToEdit);
+		Assertions.assertNotNull(oldValue);
 		
 		WebRequest mockWebRequest = new ServletWebRequest(new MockHttpServletRequest());
 		BindException errors = new BindException(patientModel, "patientModel");
@@ -450,12 +450,12 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		    (PersonAddress) mockWebRequest.getAttribute("personAddressCache", WebRequest.SCOPE_SESSION), null,
 		    (ShortPatientModel) mockWebRequest.getAttribute("patientModel", WebRequest.SCOPE_SESSION), errors);
 		
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertEquals("Patient.saved",
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertEquals("Patient.saved",
 		    mockWebRequest.getAttribute(WebConstants.OPENMRS_MSG_ATTR, WebRequest.SCOPE_SESSION));
 		
 		//the attribute should have been voided
-		Assert.assertEquals(originalActiveAttributeCount - 1, p.getActiveAttributes().size());
+		Assertions.assertEquals(originalActiveAttributeCount - 1, p.getActiveAttributes().size());
 	}
 	
 	/**
@@ -493,8 +493,8 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 			}
 		}
 		//ensure we found and edited it
-		Assert.assertNotNull(attributeToEdit);
-		Assert.assertNotNull(oldValue);
+		Assertions.assertNotNull(attributeToEdit);
+		Assertions.assertNotNull(oldValue);
 		
 		WebRequest mockWebRequest = new ServletWebRequest(new MockHttpServletRequest());
 		BindException errors = new BindException(patientModel, "patientModel");
@@ -509,14 +509,14 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		    (PersonAddress) mockWebRequest.getAttribute("personAddressCache", WebRequest.SCOPE_SESSION), null,
 		    (ShortPatientModel) mockWebRequest.getAttribute("patientModel", WebRequest.SCOPE_SESSION), errors);
 		
-		Assert.assertTrue("Should pass with no validation errors", !errors.hasErrors());
-		Assert.assertEquals("Patient.saved",
+		Assertions.assertTrue(!errors.hasErrors(), "Should pass with no validation errors");
+		Assertions.assertEquals("Patient.saved",
 		    mockWebRequest.getAttribute(WebConstants.OPENMRS_MSG_ATTR, WebRequest.SCOPE_SESSION));
 		
 		//a new replacement attribute should have been created with the new value
 		PersonAttribute newAttribute = p.getAttribute(attributeTypeId);
-		Assert.assertEquals(originalAttributeCount + 1, p.getAttributes().size());
-		Assert.assertEquals(newValue, newAttribute.getValue());
+		Assertions.assertEquals(originalAttributeCount + 1, p.getAttributes().size());
+		Assertions.assertEquals(newValue, newAttribute.getValue());
 		
 		PersonAttribute oldAttribute = null;
 		//find the voided attribute
@@ -531,9 +531,9 @@ public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiv
 		}
 		
 		//The old attribute should have been voided and maintained its old value
-		Assert.assertNotNull(oldAttribute);
-		Assert.assertEquals(oldValue, oldAttribute.getValue());
-		Assert.assertTrue(oldAttribute.isVoided());
+		Assertions.assertNotNull(oldAttribute);
+		Assertions.assertEquals(oldValue, oldAttribute.getValue());
+		Assertions.assertTrue(oldAttribute.isVoided());
 	}
 	
 	/**

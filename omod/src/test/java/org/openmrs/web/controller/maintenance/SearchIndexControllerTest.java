@@ -9,10 +9,8 @@
  */
 package org.openmrs.web.controller.maintenance;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -20,15 +18,15 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.context.UserContext;
 import org.openmrs.api.db.ContextDAO;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.doThrow;
@@ -46,13 +44,11 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 	@Mock
 	private UserContext userContext;
 	
-	@Before
+	@BeforeEach
 	public void before() {
 		controller = new SearchIndexController();
 	}
 	
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 	
 	/**
 	 * @verifies return the search index view
@@ -105,7 +101,6 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 		when(userContext.isAuthenticated()).thenReturn(false);
 		assertFalse(Context.getUserContext().isAuthenticated());
 		
-		when(contextDao.updateSearchIndexAsync()).thenReturn(null);
 		Map<String, Object> response = controller.rebuildSearchIndex();
 		assertEquals(false, response.get("success"));
 	}
@@ -166,8 +161,8 @@ public class SearchIndexControllerTest extends BaseModuleWebContextSensitiveTest
 	 */
 	@Test
 	public void getStatus_shouldThrowApiExceptionWhenRebuildSearchIndexNotHaveBeenCalledBefore() throws Exception {
-		expectedException.expect(APIException.class);
-		expectedException.expectMessage("There was a problem rebuilding the search index");
-		controller.getStatus();
+		APIException ex = org.junit.jupiter.api.Assertions.assertThrows(APIException.class,
+			() -> controller.getStatus());
+		assertTrue(ex.getMessage().contains("There was a problem rebuilding the search index"));
 	}
 }

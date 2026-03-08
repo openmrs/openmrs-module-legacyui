@@ -15,13 +15,13 @@ import java.util.List;
 import jakarta.servlet.jsp.tagext.BodyTag;
 import jakarta.servlet.jsp.tagext.Tag;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockPageContext;
 
 /**
@@ -47,13 +47,13 @@ public class ForEachEncounterTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setVar("enc");
 		tag.setNum(num);
 		// the tag passes
-		Assert.assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
+		Assertions.assertEquals(BodyTag.EVAL_BODY_BUFFERED, tag.doStartTag());
 		//the match count should not exceed the limit
-		Assert.assertTrue(num >= tag.matchingEncs.size());
+		Assertions.assertTrue(num >= tag.matchingEncs.size());
 		//check the sorting
-		Assert.assertEquals(11, tag.matchingEncs.get(0).getId().intValue());
-		Assert.assertEquals(16, tag.matchingEncs.get(1).getId().intValue());
-		Assert.assertEquals(7, tag.matchingEncs.get(2).getId().intValue());
+		Assertions.assertEquals(11, tag.matchingEncs.get(0).getId().intValue());
+		Assertions.assertEquals(16, tag.matchingEncs.get(1).getId().intValue());
+		Assertions.assertEquals(7, tag.matchingEncs.get(2).getId().intValue());
 	}
 	
 	/**
@@ -66,6 +66,6 @@ public class ForEachEncounterTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setPageContext(new MockPageContext());
 		tag.setEncounters(new ArrayList<Encounter>());
 		// the tag passes
-		Assert.assertEquals(Tag.SKIP_BODY, tag.doStartTag());
+		Assertions.assertEquals(Tag.SKIP_BODY, tag.doStartTag());
 	}
 }

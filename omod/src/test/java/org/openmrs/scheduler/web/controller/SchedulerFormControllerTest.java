@@ -9,8 +9,8 @@
  */
 package org.openmrs.scheduler.web.controller;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,15 +19,15 @@ import java.util.Date;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.Task;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -56,7 +56,7 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 	// in applicationContext-service.xml at the time of coding (Jan 2013)
 	private SchedulerService service;
 	
-	@Before
+	@BeforeEach
 	public void setUpSchedulerService() throws Exception {
 		executeDataSet(INITIAL_SCHEDULER_TASK_CONFIG_XML);
 		
@@ -86,7 +86,7 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
 		
-		Assert.assertNotSame(oldTaskInstance, task.getTaskInstance());
+		Assertions.assertNotSame(oldTaskInstance, task.getTaskInstance());
 	}
 	
 	/**
@@ -106,7 +106,7 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
 		
-		Assert.assertSame(oldTaskInstance, task.getTaskInstance());
+		Assertions.assertSame(oldTaskInstance, task.getTaskInstance());
 	}
 	
 	/**
@@ -126,7 +126,7 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
 		
-		Assert.assertSame(oldTaskInstance, task.getTaskInstance());
+		Assertions.assertSame(oldTaskInstance, task.getTaskInstance());
 	}
 	
 	/**
@@ -148,7 +148,7 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
 		
-		Assert.assertSame(oldTaskInstance, task.getTaskInstance());
+		Assertions.assertSame(oldTaskInstance, task.getTaskInstance());
 		deleteAllData();
 	}
 	
@@ -167,9 +167,9 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 		
 		ModelAndView mav = controller.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
-		Assert.assertNotNull(task.getRepeatInterval());
+		Assertions.assertNotNull(task.getRepeatInterval());
 		Long interval = 0L;
-		Assert.assertEquals(interval, task.getRepeatInterval());
+		Assertions.assertEquals(interval, task.getRepeatInterval());
 	}
 	
 }

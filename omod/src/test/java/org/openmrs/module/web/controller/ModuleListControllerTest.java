@@ -12,9 +12,9 @@ package org.openmrs.module.web.controller;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.jupiter.api.Assertions;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openmrs.module.Module;
 
 public class ModuleListControllerTest {
@@ -34,10 +34,10 @@ public class ModuleListControllerTest {
 		
 		List<Module> list = new ModuleListController().sortStartupOrder(Arrays.asList(appframework, kenyaemr, kenyaemr,
 		    uilibrary));
-		Assert.assertSame(uilibrary, list.get(0));
-		Assert.assertSame(appframework, list.get(1));
-		Assert.assertSame(kenyaemr, list.get(2));
-		Assert.assertSame(kenyaemr, list.get(3));
+		Assertions.assertSame(uilibrary, list.get(0));
+		Assertions.assertSame(appframework, list.get(1));
+		Assertions.assertSame(kenyaemr, list.get(2));
+		Assertions.assertSame(kenyaemr, list.get(3));
 	}
 	
 	/**

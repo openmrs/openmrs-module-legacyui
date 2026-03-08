@@ -15,10 +15,10 @@ import java.util.Date;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.jfree.chart.JFreeChart;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
@@ -39,7 +39,7 @@ public class ShowGraphServletTest extends BaseModuleWebContextSensitiveTest {
 		
 		JFreeChart chart = new ShowGraphServlet().getChart(request);
 		
-		Assert.assertEquals("CUSTOM UNITS", chart.getXYPlot().getRangeAxis().getLabel());
+		Assertions.assertEquals("CUSTOM UNITS", chart.getXYPlot().getRangeAxis().getLabel());
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class ShowGraphServletTest extends BaseModuleWebContextSensitiveTest {
 		
 		JFreeChart chart = new ShowGraphServlet().getChart(request);
 		
-		Assert.assertEquals("cells/mmL", chart.getXYPlot().getRangeAxis().getLabel());
+		Assertions.assertEquals("cells/mmL", chart.getXYPlot().getRangeAxis().getLabel());
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public class ShowGraphServletTest extends BaseModuleWebContextSensitiveTest {
 		
 		Date fromDate = new ShowGraphServlet().getFromDate(null);
 		
-		Assert.assertEquals(lastYear.getTimeInMillis(), fromDate.getTime(), 1000);
+		Assertions.assertEquals(lastYear.getTimeInMillis(), fromDate.getTime(), 1000);
 	}
 	
 	/**
@@ -80,7 +80,7 @@ public class ShowGraphServletTest extends BaseModuleWebContextSensitiveTest {
 	public void getFromDate_shouldReturnSameDateAsGivenStringParameter() throws Exception {
 		Long time = new Date().getTime() - 100000;
 		Date fromDate = new ShowGraphServlet().getFromDate(Long.toString(time));
-		Assert.assertEquals(time.longValue(), fromDate.getTime());
+		Assertions.assertEquals(time.longValue(), fromDate.getTime());
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public class ShowGraphServletTest extends BaseModuleWebContextSensitiveTest {
 		
 		Date toDate = new ShowGraphServlet().getToDate(null);
 		
-		Assert.assertEquals(nxtMonth.getTimeInMillis(), toDate.getTime(), 1000);
+		Assertions.assertEquals(nxtMonth.getTimeInMillis(), toDate.getTime(), 1000);
 	}
 	
 	/**
@@ -111,7 +111,7 @@ public class ShowGraphServletTest extends BaseModuleWebContextSensitiveTest {
 		
 		Date toDate = new ShowGraphServlet().getToDate(Long.toString(time));
 		
-		Assert.assertEquals(timeCal.getTimeInMillis(), toDate.getTime());
+		Assertions.assertEquals(timeCal.getTimeInMillis(), toDate.getTime());
 	}
 	
 	/**
@@ -121,9 +121,9 @@ public class ShowGraphServletTest extends BaseModuleWebContextSensitiveTest {
 	@Verifies(value = "should set hour minute and second to zero", method = "getToDate(String)")
 	public void getToDate_shouldSetHourMinuteAndSecondToZero() throws Exception {
 		Date toDate = new ShowGraphServlet().getToDate(Long.toString(new Date().getTime()));
-		Assert.assertEquals(0, toDate.getHours());
-		Assert.assertEquals(0, toDate.getMinutes());
-		Assert.assertEquals(0, toDate.getSeconds());
+		Assertions.assertEquals(0, toDate.getHours());
+		Assertions.assertEquals(0, toDate.getMinutes());
+		Assertions.assertEquals(0, toDate.getSeconds());
 	}
 	
 }

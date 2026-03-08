@@ -12,10 +12,10 @@ package org.openmrs.web.controller.form;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.WebTestHelper;
 import org.openmrs.web.test.WebTestHelper.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,6 @@ public class FieldTypeListControllerTest extends BaseModuleWebContextSensitiveTe
 		post.addParameter("fieldTypeId", "1");
 		
 		Response response = webTestHelper.handle(post);
-		Assert.assertNotNull(response.session.getAttribute(WebConstants.OPENMRS_ERROR_ATTR));
+		Assertions.assertNotNull(response.session.getAttribute(WebConstants.OPENMRS_ERROR_ATTR));
 	}
 }

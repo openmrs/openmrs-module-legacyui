@@ -9,9 +9,9 @@
  */
 package org.openmrs.web.dwr;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.Provider;
@@ -23,7 +23,7 @@ public class ProviderListItemTest {
 	private Provider provider;
 	
 	@SuppressWarnings("serial")
-	@Before
+	@BeforeEach
 	public void setup() {
 		provider = new Provider() {
 			
@@ -59,7 +59,7 @@ public class ProviderListItemTest {
 	public void getDisplayName_shouldReturnADisplayNameBasedOnWhetherProviderHasAPersonAssociated() throws Exception {
 		
 		ProviderListItem providerListItem = new ProviderListItem(provider);
-		Assert.assertEquals("givenName middleName familyName", providerListItem.getDisplayName());
+		Assertions.assertEquals("givenName middleName familyName", providerListItem.getDisplayName());
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class ProviderListItemTest {
 		Provider provider = new Provider();
 		provider.setIdentifier("identifier");
 		ProviderListItem providerListItem = new ProviderListItem(provider);
-		Assert.assertEquals("identifier", providerListItem.getIdentifier());
+		Assertions.assertEquals("identifier", providerListItem.getIdentifier());
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class ProviderListItemTest {
 		provider.setProviderId(2);
 		
 		ProviderListItem providerListItem = new ProviderListItem(provider);
-		Assert.assertEquals(Integer.valueOf(2), providerListItem.getProviderId());
+		Assertions.assertEquals(Integer.valueOf(2), providerListItem.getProviderId());
 	}
 	
 }

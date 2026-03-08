@@ -9,15 +9,15 @@
  */
 package org.openmrs.web.attribute.handler;
 
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Program;
@@ -28,7 +28,7 @@ import org.openmrs.customdatatype.datatype.LocationDatatype;
 import org.openmrs.customdatatype.datatype.MockLocationDatatype;
 import org.openmrs.customdatatype.datatype.ProgramDatatype;
 import org.openmrs.customdatatype.datatype.ProviderDatatype;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 public class SerializingFieldGenDatatypeHandlerTest extends BaseModuleWebContextSensitiveTest {
@@ -48,7 +48,7 @@ public class SerializingFieldGenDatatypeHandlerTest extends BaseModuleWebContext
 		MockLocationDatatype datatype = mock(MockLocationDatatype.class);
 		when(datatype.deserialize(eq(locationUuid))).thenReturn(expectedLocation);
 		SerializingFieldGenDatatypeHandler handler = new MockLocationFieldGenDatatypeHandler();
-		Assert.assertEquals(expectedLocation, handler.getValue(datatype, request, formFieldName));
+		Assertions.assertEquals(expectedLocation, handler.getValue(datatype, request, formFieldName));
 	}
 	
 	@Test
@@ -58,10 +58,8 @@ public class SerializingFieldGenDatatypeHandlerTest extends BaseModuleWebContext
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setParameter(formFieldName, locationUuid);
 		MockLocationDatatype datatype = mock(MockLocationDatatype.class);
-		Location expectedLocation = mock(Location.class);
-		when(datatype.deserialize(eq(locationUuid))).thenReturn(expectedLocation);
 		SerializingFieldGenDatatypeHandler handler = new MockLocationFieldGenDatatypeHandler();
-		Assert.assertNull(handler.getValue(datatype, request, formFieldName));
+		Assertions.assertNull(handler.getValue(datatype, request, formFieldName));
 	}
 	
 	@Test

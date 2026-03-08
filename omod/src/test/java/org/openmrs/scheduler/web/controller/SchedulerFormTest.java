@@ -9,12 +9,12 @@
  */
 package org.openmrs.scheduler.web.controller;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.junit.Test;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.junit.jupiter.api.Test;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;

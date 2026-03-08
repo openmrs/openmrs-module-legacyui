@@ -11,11 +11,11 @@ package org.openmrs.web.controller.patient;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -32,7 +32,7 @@ public class PatientIdentifierTypeFormControllerTest extends BaseModuleWebContex
 	
 	private PatientIdentifierTypeFormController controller;
 	
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		executeDataSet("org/openmrs/web/patient/include/PatientIdentifierTypeFormControllerTest.xml");
 		controller = (PatientIdentifierTypeFormController) applicationContext.getBean("patientIdentifierTypeForm");
@@ -51,9 +51,9 @@ public class PatientIdentifierTypeFormControllerTest extends BaseModuleWebContex
 		request.addParameter("save", "Save Identifier Type");
 		
 		ModelAndView mav = controller.handleRequest(request, response);
-		Assert.assertEquals("The save attempt should have failed!", "index.htm", mav.getViewName());
-		Assert.assertNotEquals("patientIdentifierType.form", mav.getViewName());
-		Assert.assertNotNull(Context.getPersonService().getPersonAttributeType(1));
+		Assertions.assertEquals("index.htm", mav.getViewName(), "The save attempt should have failed!");
+		Assertions.assertNotEquals("patientIdentifierType.form", mav.getViewName());
+		Assertions.assertNotNull(Context.getPersonService().getPersonAttributeType(1));
 	}
 	
 	@Test
@@ -62,9 +62,9 @@ public class PatientIdentifierTypeFormControllerTest extends BaseModuleWebContex
 		request.addParameter("retireReason", "Same reason");
 		
 		ModelAndView mav = controller.handleRequest(request, response);
-		Assert.assertEquals("The retire attempt should have failed!", "index.htm", mav.getViewName());
-		Assert.assertNotEquals("patientIdentifierType.form", mav.getViewName());
-		Assert.assertNotNull(Context.getPersonService().getPersonAttributeType(1));
+		Assertions.assertEquals("index.htm", mav.getViewName(), "The retire attempt should have failed!");
+		Assertions.assertNotEquals("patientIdentifierType.form", mav.getViewName());
+		Assertions.assertNotNull(Context.getPersonService().getPersonAttributeType(1));
 	}
 	
 	@Test
@@ -72,9 +72,9 @@ public class PatientIdentifierTypeFormControllerTest extends BaseModuleWebContex
 		request.addParameter("unretire", "Unretire Identifier Type");
 		
 		ModelAndView mav = controller.handleRequest(request, response);
-		Assert.assertEquals("The unretire attempt should have failed!", "index.htm", mav.getViewName());
-		Assert.assertNotEquals("patientIdentifierType.form", mav.getViewName());
-		Assert.assertNotNull(Context.getPersonService().getPersonAttributeType(1));
+		Assertions.assertEquals("index.htm", mav.getViewName(), "The unretire attempt should have failed!");
+		Assertions.assertNotEquals("patientIdentifierType.form", mav.getViewName());
+		Assertions.assertNotNull(Context.getPersonService().getPersonAttributeType(1));
 	}
 	
 	@Test
@@ -82,8 +82,8 @@ public class PatientIdentifierTypeFormControllerTest extends BaseModuleWebContex
 		request.addParameter("purge", "Delete Identifier Type");
 		
 		ModelAndView mav = controller.handleRequest(request, response);
-		Assert.assertEquals("The delete attempt should have failed!", "index.htm", mav.getViewName());
-		Assert.assertNotEquals("patientIdentifierType.form", mav.getViewName());
-		Assert.assertNotNull(Context.getPersonService().getPersonAttributeType(1));
+		Assertions.assertEquals("index.htm", mav.getViewName(), "The delete attempt should have failed!");
+		Assertions.assertNotEquals("patientIdentifierType.form", mav.getViewName());
+		Assertions.assertNotNull(Context.getPersonService().getPersonAttributeType(1));
 	}
 }

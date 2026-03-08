@@ -9,19 +9,19 @@
  */
 package org.openmrs.web.controller.observation;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Obs;
 import org.openmrs.Person;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -50,7 +50,7 @@ public class ObsFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		
 		// make sure there is an "encounterId" element on the obs
 		Obs commandObs = (Obs) modelAndView.getModel().get("command");
-		Assert.assertNotNull(commandObs.getEncounter());
+		Assertions.assertNotNull(commandObs.getEncounter());
 		
 	}
 	

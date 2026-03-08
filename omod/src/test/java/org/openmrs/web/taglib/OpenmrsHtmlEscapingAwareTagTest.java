@@ -9,10 +9,10 @@
  */
 package org.openmrs.web.taglib;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class OpenmrsHtmlEscapingAwareTagTest extends BaseModuleWebContextSensitiveTest {
 	
@@ -50,6 +50,6 @@ public class OpenmrsHtmlEscapingAwareTagTest extends BaseModuleWebContextSensiti
 		
 		objectUnderTest.setHtmlEscape(setValue);
 		
-		Assert.assertEquals(expectedValue, objectUnderTest.isHtmlEscape());
+		Assertions.assertEquals(expectedValue, objectUnderTest.isHtmlEscape());
 	}
 }

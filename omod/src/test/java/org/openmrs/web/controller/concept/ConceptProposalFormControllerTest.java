@@ -9,8 +9,8 @@
  */
 package org.openmrs.web.controller.concept;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Locale;
@@ -18,16 +18,16 @@ import java.util.Locale;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import junit.framework.Assert;
+import org.junit.jupiter.api.Assertions;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Concept;
 import org.openmrs.ConceptProposal;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -52,12 +52,12 @@ public class ConceptProposalFormControllerTest extends BaseModuleWebContextSensi
 		Concept conceptToMap = cs.getConcept(5);
 		Locale locale = Locale.ENGLISH;
 		//sanity checks
-		Assert.assertFalse(conceptToMap.hasName(cp.getOriginalText(), locale));
-		Assert.assertEquals(0, os.getObservationsByPersonAndConcept(cp.getEncounter().getPatient(), obsConcept).size());
+		Assertions.assertFalse(conceptToMap.hasName(cp.getOriginalText(), locale));
+		Assertions.assertEquals(0, os.getObservationsByPersonAndConcept(cp.getEncounter().getPatient(), obsConcept).size());
 		List<ConceptProposal> proposals = cs.getConceptProposals(cp.getOriginalText());
-		Assert.assertEquals(5, proposals.size());
+		Assertions.assertEquals(5, proposals.size());
 		for (ConceptProposal conceptProposal : proposals) {
-			Assert.assertNull(conceptProposal.getObs());
+			Assertions.assertNull(conceptProposal.getObs());
 		}
 		
 		// set up the controller
@@ -80,16 +80,16 @@ public class ConceptProposalFormControllerTest extends BaseModuleWebContextSensi
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
 		
-		Assert.assertEquals(cp.getOriginalText(), cp.getFinalText());
-		Assert.assertTrue(conceptToMap.hasName(cp.getOriginalText(), locale));
-		Assert.assertNotNull(cp.getObs());
+		Assertions.assertEquals(cp.getOriginalText(), cp.getFinalText());
+		Assertions.assertTrue(conceptToMap.hasName(cp.getOriginalText(), locale));
+		Assertions.assertNotNull(cp.getObs());
 		//Obs should have been created for the 2 proposals with same text, obsConcept but different encounters
-		Assert.assertEquals(2, os.getObservationsByPersonAndConcept(cp.getEncounter().getPatient(), obsConcept).size());
+		Assertions.assertEquals(2, os.getObservationsByPersonAndConcept(cp.getEncounter().getPatient(), obsConcept).size());
 		
 		//The proposal with a different obs concept should have been skipped
 		proposals = cs.getConceptProposals(cp.getFinalText());
-		Assert.assertEquals(1, proposals.size());
-		Assert.assertEquals(21, proposals.get(0).getObsConcept().getConceptId().intValue());
+		Assertions.assertEquals(1, proposals.size());
+		Assertions.assertEquals(21, proposals.get(0).getObsConcept().getConceptId().intValue());
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class ConceptProposalFormControllerTest extends BaseModuleWebContextSensi
 		Concept conceptToMap = cs.getConcept(4);
 		Locale locale = new Locale("en", "GB");
 		
-		Assert.assertFalse(conceptToMap.hasName(cp.getOriginalText(), locale));
+		Assertions.assertFalse(conceptToMap.hasName(cp.getOriginalText(), locale));
 		
 		ConceptProposalFormController controller = (ConceptProposalFormController) applicationContext
 		        .getBean("conceptProposalForm");
@@ -128,7 +128,7 @@ public class ConceptProposalFormControllerTest extends BaseModuleWebContextSensi
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
 		
-		Assert.assertEquals(cp.getOriginalText(), cp.getFinalText());
-		Assert.assertTrue(conceptToMap.hasName(cp.getOriginalText(), locale));
+		Assertions.assertEquals(cp.getOriginalText(), cp.getFinalText());
+		Assertions.assertTrue(conceptToMap.hasName(cp.getOriginalText(), locale));
 	}
 }

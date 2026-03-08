@@ -11,11 +11,11 @@ package org.openmrs.web.controller.user;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Role;
 import org.openmrs.User;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.ui.ModelMap;
 
 /**
@@ -31,7 +31,7 @@ public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	public void displayUsers_shouldGetAllUsersIfNoNameGiven() {
 		UserListController controller = new UserListController();
 		List<User> users = controller.getUsers("Search", "", null, false);
-		Assert.assertEquals(2, users.size());
+		Assertions.assertEquals(2, users.size());
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	public void displayUsers_shouldGetUsersJustGivenActionParameter() {
 		UserListController controller = new UserListController();
 		List<User> users = controller.getUsers("Search", null, null, null);
-		Assert.assertEquals(2, users.size());
+		Assertions.assertEquals(2, users.size());
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	public void displayUsers_shouldGetUsersWithAGivenRole() {
 		UserListController controller = new UserListController();
 		List<User> users = controller.getUsers("Search", null, new Role("Provider"), null);
-		Assert.assertEquals(1, users.size());
+		Assertions.assertEquals(1, users.size());
 	}
 	
 	/**
@@ -64,6 +64,6 @@ public class UserListControllerTest extends BaseModuleWebContextSensitiveTest {
 	public void displayUsers_shouldIncludeDisabledUsersIfRequested() {
 		UserListController controller = new UserListController();
 		List<User> users = controller.getUsers("Search", "", new Role(""), true);
-		Assert.assertEquals(3, users.size());
+		Assertions.assertEquals(3, users.size());
 	}
 }

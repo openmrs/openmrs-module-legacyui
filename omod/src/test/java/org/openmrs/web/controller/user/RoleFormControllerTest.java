@@ -11,12 +11,12 @@ package org.openmrs.web.controller.user;
 
 import java.util.HashSet;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Role;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.openmrs.web.test.WebTestHelper;
 import org.openmrs.web.test.WebTestHelper.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class RoleFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		
 		wth.handle(requestPOST);
 		
-		Assert.assertEquals("updated child", getUS().getRole("child").getDescription());
+		Assertions.assertEquals("updated child", getUS().getRole("child").getDescription());
 		
 		deleteAllData();
 	}

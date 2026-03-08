@@ -14,14 +14,14 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.db.ConceptDAO;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -49,7 +49,7 @@ public class DownloadDictionaryServletTest extends BaseModuleWebContextSensitive
 		        + "3,\"COUGH SYRUP\",\"This is used for coughs\",\"COUGH SYRUP\",\"\",\"\",\"Drug\",\"N/A\",\"\",\"Super User\"\n"
 		        + "5,\"SINGLE\",\"Some description\",\"SINGLE\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n"
 		        + "6,\"MARRIED\",\"Some description\",\"MARRIED\",\"\",\"\",\"Misc\",\"N/A\",\"\",\"Super User\"\n";
-		Assert.assertEquals(expectedContent, actualContent);
+		Assertions.assertEquals(expectedContent, actualContent);
 	}
 	
 	@Test
@@ -90,7 +90,7 @@ public class DownloadDictionaryServletTest extends BaseModuleWebContextSensitive
 	public void shouldPrintColumnsWithEmptyQuotesForNullFields() throws Exception {
 		String actualContent = runServletWithConcepts(new Concept(1));
 		String expectedContent = EXPECTED_HEADER + "1,\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"\n";
-		Assert.assertEquals(expectedContent, actualContent);
+		Assertions.assertEquals(expectedContent, actualContent);
 	}
 	
 	private String runServletWithConcepts(Concept... concepts) throws Exception {
@@ -108,23 +108,23 @@ public class DownloadDictionaryServletTest extends BaseModuleWebContextSensitive
 	}
 	
 	private void assertContent(String expectedStart, String expectedEnd, String[] expectedLineSections, String actualContent) {
-		Assert.assertTrue(actualContent.startsWith(expectedStart));
-		Assert.assertTrue(actualContent.endsWith(expectedEnd));
+		Assertions.assertTrue(actualContent.startsWith(expectedStart));
+		Assertions.assertTrue(actualContent.endsWith(expectedEnd));
 		
 		// The content with line breaks can come in any order so test for the content flexibly
 		String lineBreakContent = actualContent.substring(expectedStart.length(),
 		    actualContent.length() - expectedEnd.length());
 		
 		// Should start and end with "
-		Assert.assertTrue(lineBreakContent.startsWith("\""));
-		Assert.assertTrue(lineBreakContent.endsWith("\""));
+		Assertions.assertTrue(lineBreakContent.startsWith("\""));
+		Assertions.assertTrue(lineBreakContent.endsWith("\""));
 		
 		lineBreakContent = lineBreakContent.replace("\"", "");
 		List<String> actualLineBreakSections = Arrays.asList(lineBreakContent.split("\n"));
 		
-		Assert.assertEquals(expectedLineSections.length, actualLineBreakSections.size());
+		Assertions.assertEquals(expectedLineSections.length, actualLineBreakSections.size());
 		for (String expectedSection : expectedLineSections) {
-			Assert.assertTrue(actualLineBreakSections.contains(expectedSection));
+			Assertions.assertTrue(actualLineBreakSections.contains(expectedSection));
 		}
 	}
 }

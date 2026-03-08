@@ -9,13 +9,13 @@
  */
 package org.openmrs.web.controller.encounter;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.validation.BindException;
@@ -49,18 +49,18 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 		
 		Patient oldPatient = encounter.getPatient();
 		Patient newPatient = Context.getPatientService().getPatient(201);
-		Assert.assertNotEquals(oldPatient, newPatient);
+		Assertions.assertNotEquals(oldPatient, newPatient);
 		
 		List<Encounter> newEncounter = Context.getEncounterService().getEncountersByPatientId(newPatient.getPatientId());
-		Assert.assertEquals(0, newEncounter.size());
+		Assertions.assertEquals(0, newEncounter.size());
 		
 		BindException errors = new BindException(encounter, "encounterRole");
 		
 		controller.onSubmit(request, response, encounter, errors);
 		
-		Assert.assertEquals(true, encounter.isVoided());
+		Assertions.assertEquals(true, encounter.isVoided());
 		newEncounter = Context.getEncounterService().getEncountersByPatientId(newPatient.getPatientId());
-		Assert.assertEquals(1, newEncounter.size());
-		Assert.assertEquals(false, newEncounter.get(0).isVoided());
+		Assertions.assertEquals(1, newEncounter.size());
+		Assertions.assertEquals(false, newEncounter.get(0).isVoided());
 	}
 }

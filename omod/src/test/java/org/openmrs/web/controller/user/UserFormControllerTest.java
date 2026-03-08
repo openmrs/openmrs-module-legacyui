@@ -9,14 +9,14 @@
  */
 package org.openmrs.web.controller.user;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.openmrs.PersonName;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -64,7 +64,7 @@ public class UserFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		WebRequest request = new ServletWebRequest(new MockHttpServletRequest());
 		//A user with userId=2 is preset in the Test DataSet and the relevant details are passed
 		User user = Context.getUserService().getUser(2);
-		Assert.assertTrue(Context.getProviderService().getProvidersByPerson(user.getPerson()).isEmpty());
+		Assertions.assertTrue(Context.getProviderService().getProvidersByPerson(user.getPerson()).isEmpty());
 		ModelMap model = new ModelMap();
 		model.addAttribute("isProvider", false);
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -72,8 +72,8 @@ public class UserFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		controller.handleSubmission(request, new MockHttpSession(), new ModelMap(), "", null, "Test1234",
 		    "valid secret question", "valid secret answer", "Test1234", false, new String[] { "Provider" }, "true",
 		    "addToProviderTable", user, new BindException(user, "user"), response);
-		Assert.assertFalse(Context.getProviderService().getProvidersByPerson(user.getPerson()).isEmpty());
-		Assert.assertEquals(200, response.getStatus());
+		Assertions.assertFalse(Context.getProviderService().getProvidersByPerson(user.getPerson()).isEmpty());
+		Assertions.assertEquals(200, response.getStatus());
 	}
 	
 	@Test
@@ -86,7 +86,7 @@ public class UserFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		controller.handleSubmission(request, new MockHttpSession(), new ModelMap(), "", null, "Test123",
 		    "valid secret question", "valid secret answer", "Test1234", false, new String[] { "Provider" }, "true",
 		    "addToProviderTable", user, new BindException(user, "user"), response);
-		Assert.assertEquals(400, response.getStatus());
+		Assertions.assertEquals(400, response.getStatus());
 	}
 	
 }

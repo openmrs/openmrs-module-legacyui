@@ -13,13 +13,13 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.PersonAttributeType;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ModelMap;
 
@@ -48,7 +48,7 @@ public class PersonAttributeTypeListControllerTest extends BaseModuleWebContextS
 		ModelMap map = new ModelMap();
 		new PersonAttributeTypeListController().displayPage(map);
 		List<PersonAttributeType> alltypes = (List<PersonAttributeType>) map.get("personAttributeTypeList");
-		Assert.assertEquals(3, alltypes.size());
+		Assertions.assertEquals(3, alltypes.size());
 	}
 	
 	/**
@@ -59,13 +59,13 @@ public class PersonAttributeTypeListControllerTest extends BaseModuleWebContextS
 	public void moveDown_shouldMoveSelectedIdsDownInTheList() throws Exception {
 		// sanity check
 		List<PersonAttributeType> allTypes = Context.getPersonService().getAllPersonAttributeTypes();
-		Assert.assertEquals(1, allTypes.get(0).getId().intValue());
+		Assertions.assertEquals(1, allTypes.get(0).getId().intValue());
 		
 		// the test
 		Integer[] ids = new Integer[] { 1 };
 		new PersonAttributeTypeListController().moveDown(ids, new MockHttpSession());
 		allTypes = Context.getPersonService().getAllPersonAttributeTypes();
-		Assert.assertEquals("The types didn't move correctly", 8, allTypes.get(0).getId().intValue());
+		Assertions.assertEquals(8, allTypes.get(0).getId().intValue(), "The types didn't move correctly");
 	}
 	
 	/**
@@ -76,13 +76,13 @@ public class PersonAttributeTypeListControllerTest extends BaseModuleWebContextS
 	public void moveDown_shouldNotFailIfGivenLastId() throws Exception {
 		// sanity check
 		List<PersonAttributeType> allTypes = Context.getPersonService().getAllPersonAttributeTypes();
-		Assert.assertEquals(2, allTypes.get(allTypes.size() - 1).getId().intValue());
+		Assertions.assertEquals(2, allTypes.get(allTypes.size() - 1).getId().intValue());
 		
 		// the test
 		Integer[] ids = new Integer[] { 2 };
 		new PersonAttributeTypeListController().moveDown(ids, new MockHttpSession());
 		allTypes = Context.getPersonService().getAllPersonAttributeTypes();
-		Assert.assertEquals(2, allTypes.get(allTypes.size() - 1).getId().intValue());
+		Assertions.assertEquals(2, allTypes.get(allTypes.size() - 1).getId().intValue());
 	}
 	
 	/**
@@ -104,13 +104,13 @@ public class PersonAttributeTypeListControllerTest extends BaseModuleWebContextS
 		
 		// sanity check
 		List<PersonAttributeType> allTypes = Context.getPersonService().getAllPersonAttributeTypes();
-		Assert.assertEquals(8, allTypes.get(1).getId().intValue());
+		Assertions.assertEquals(8, allTypes.get(1).getId().intValue());
 		
 		// the test
 		Integer[] ids = new Integer[] { 8 };
 		new PersonAttributeTypeListController().moveUp(ids, new MockHttpSession());
 		allTypes = Context.getPersonService().getAllPersonAttributeTypes();
-		Assert.assertEquals("The types didn't move correctly", 8, allTypes.get(0).getId().intValue());
+		Assertions.assertEquals(8, allTypes.get(0).getId().intValue(), "The types didn't move correctly");
 	}
 	
 	/**
@@ -121,7 +121,7 @@ public class PersonAttributeTypeListControllerTest extends BaseModuleWebContextS
 	public void moveUp_shouldNotFailIfGivenFirstId() throws Exception {
 		// sanity check
 		List<PersonAttributeType> allTypes = Context.getPersonService().getAllPersonAttributeTypes();
-		Assert.assertEquals(1, allTypes.get(0).getId().intValue());
+		Assertions.assertEquals(1, allTypes.get(0).getId().intValue());
 		
 		// the test
 		new PersonAttributeTypeListController().moveUp(new Integer[] { 1 }, new MockHttpSession());
@@ -146,6 +146,6 @@ public class PersonAttributeTypeListControllerTest extends BaseModuleWebContextS
 		new PersonAttributeTypeListController().updateGlobalProperties("asdf", "", "", "", "", new MockHttpSession());
 		String attr = Context.getAdministrationService().getGlobalProperty(
 		    OpenmrsConstants.GLOBAL_PROPERTY_PATIENT_LISTING_ATTRIBUTES);
-		Assert.assertEquals("asdf", attr);
+		Assertions.assertEquals("asdf", attr);
 	}
 }

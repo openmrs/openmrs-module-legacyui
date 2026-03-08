@@ -9,11 +9,11 @@
  */
 package org.openmrs.layout;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.layout.name.NameSupport;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class NameSupportTest extends BaseModuleWebContextSensitiveTest {
 	
@@ -28,10 +28,10 @@ public class NameSupportTest extends BaseModuleWebContextSensitiveTest {
 	@Verifies(value = "getInstance() should return a layout.web.name.NameSupport instance", method = "getInstance()")
 	public void getInstance_shouldFindNameSupportBean() throws Exception {
 		NameSupport nameSupport = NameSupport.getInstance();
-		Assert.assertNotNull(nameSupport);
-		Assert.assertNotNull(nameSupport.getDefaultLayoutFormat());
+		Assertions.assertNotNull(nameSupport);
+		Assertions.assertNotNull(nameSupport.getDefaultLayoutFormat());
 		//make sure that all 5 layout templates defined at the time of the package change continue to work
-		Assert.assertTrue(nameSupport.getLayoutTemplates().size() >= 5);
+		Assertions.assertTrue(nameSupport.getLayoutTemplates().size() >= 5);
 	}
 	
 }

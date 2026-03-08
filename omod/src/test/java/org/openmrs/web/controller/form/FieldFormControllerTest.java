@@ -12,12 +12,12 @@ package org.openmrs.web.controller.form;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Field;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +48,7 @@ public class FieldFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		
 		// make sure there is a "userId" filled in on the concept
 		Field command = (Field) modelAndView.getModel().get("field");
-		Assert.assertNotNull(command.getFieldId());
+		Assertions.assertNotNull(command.getFieldId());
 	}
 	
 	/**
@@ -103,6 +103,6 @@ public class FieldFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		
 		controller.handleRequest(request, response);
 		
-		Assert.assertNull(Context.getFormService().getField(Integer.valueOf(FIELD_ID)));
+		Assertions.assertNull(Context.getFormService().getField(Integer.valueOf(FIELD_ID)));
 	}
 }

@@ -11,12 +11,12 @@ package org.openmrs.web.controller.form;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.FormService;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -31,7 +31,7 @@ public class FormFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	private FormFormController controller;
 	
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		if (formService == null) {
 			formService = Context.getFormService();
@@ -59,10 +59,10 @@ public class FormFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		request.setContentType("application/x-www-form-urlencoded");
 		
 		ModelAndView mav = controller.handleRequest(request, response);
-		Assert.assertEquals("The save attempt should have failed!", "index.htm", mav.getViewName());
-		Assert.assertNotEquals("formEdit.form", mav.getViewName());
-		Assert.assertSame(controller.getFormView(), mav.getViewName());
-		Assert.assertNotNull(formService.getForm(1));
+		Assertions.assertEquals("index.htm", mav.getViewName(), "The save attempt should have failed!");
+		Assertions.assertNotEquals("formEdit.form", mav.getViewName());
+		Assertions.assertSame(controller.getFormView(), mav.getViewName());
+		Assertions.assertNotNull(formService.getForm(1));
 	}
 	
 	@Test
@@ -79,9 +79,9 @@ public class FormFormControllerTest extends BaseModuleWebContextSensitiveTest {
 		request.setContentType("application/x-www-form-urlencoded");
 		
 		ModelAndView mav = controller.handleRequest(request, response);
-		Assert.assertEquals("The duplicate attempt should have failed!", "index.htm", mav.getViewName());
-		Assert.assertNotEquals("formEdit.form", mav.getViewName());
-		Assert.assertSame(controller.getFormView(), mav.getViewName());
-		Assert.assertNotNull(formService.getForm(1));
+		Assertions.assertEquals("index.htm", mav.getViewName(), "The duplicate attempt should have failed!");
+		Assertions.assertNotEquals("formEdit.form", mav.getViewName());
+		Assertions.assertSame(controller.getFormView(), mav.getViewName());
+		Assertions.assertNotNull(formService.getForm(1));
 	}
 }

@@ -14,13 +14,13 @@ import java.net.BindException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.ConceptSource;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -48,8 +48,8 @@ public class ConceptSourceFormControllerTest extends BaseModuleWebContextSensiti
 		controller.handleRequest(mockRequest, new MockHttpServletResponse());
 		
 		ConceptSource conceptSource = cs.getConceptSource(3);
-		Assert.assertTrue(conceptSource.isRetired());
-		Assert.assertEquals("dummy reason for retirement", conceptSource.getRetireReason());
+		Assertions.assertTrue(conceptSource.isRetired());
+		Assertions.assertEquals("dummy reason for retirement", conceptSource.getRetireReason());
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class ConceptSourceFormControllerTest extends BaseModuleWebContextSensiti
 		controller.handleRequest(mockRequest, new MockHttpServletResponse());
 		
 		ConceptSource nullConceptSource = cs.getConceptSource(3);
-		Assert.assertNull(nullConceptSource);
+		Assertions.assertNull(nullConceptSource);
 	}
 	
 	/**
@@ -92,8 +92,8 @@ public class ConceptSourceFormControllerTest extends BaseModuleWebContextSensiti
 		controller.handleRequest(mockRequest, new MockHttpServletResponse());
 		
 		ConceptSource conceptSource = cs.getConceptSource(3);
-		Assert.assertTrue(conceptSource.isRetired());
-		Assert.assertEquals("dummy reason for retirement", conceptSource.getRetireReason());
+		Assertions.assertTrue(conceptSource.isRetired());
+		Assertions.assertEquals("dummy reason for retirement", conceptSource.getRetireReason());
 		
 		MockHttpServletRequest restoreMockRequest = new MockHttpServletRequest();
 		restoreMockRequest.setMethod("POST");
@@ -103,7 +103,7 @@ public class ConceptSourceFormControllerTest extends BaseModuleWebContextSensiti
 		controller.handleRequest(restoreMockRequest, new MockHttpServletResponse());
 		
 		ConceptSource newConceptSource = cs.getConceptSource(3);
-		Assert.assertNotNull("Error, Object is null", newConceptSource);
-		Assert.assertTrue(!newConceptSource.isRetired());
+		Assertions.assertNotNull(newConceptSource, "Error, Object is null");
+		Assertions.assertTrue(!newConceptSource.isRetired());
 	}
 }
