@@ -9,7 +9,7 @@
  */
 package org.openmrs.web.taglib;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,7 +17,7 @@ import org.openmrs.module.Module;
 import org.openmrs.module.ModuleFactory;
 import org.openmrs.test.Verifies;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mockStatic;
 
 /**

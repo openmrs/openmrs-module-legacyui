@@ -15,11 +15,11 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
@@ -59,7 +59,7 @@ public class PortletControllerTest extends BaseModuleWebContextSensitiveTest {
 	public void handleRequest_shouldCalculateBmiIntoPatientBmiAsString() throws Exception {
 		executeDataSet("org/openmrs/web/controller/include/PortletControllerTest-bmi.xml");
 		Map<String, Object> modelmap = getModelFromController(7);
-		Assert.assertEquals("61.7", modelmap.get("patientBmiAsString"));
+		Assertions.assertEquals("61.7", modelmap.get("patientBmiAsString"));
 	}
 	
 	/**
@@ -69,6 +69,6 @@ public class PortletControllerTest extends BaseModuleWebContextSensitiveTest {
 	@Verifies(value = "should not fail with empty height and weight properties", method = "handleRequest(HttpServletRequest,HttpServletResponse)")
 	public void handleRequest_shouldNotFailWithEmptyHeightAndWeightProperties() throws Exception {
 		Map<String, Object> modelmap = getModelFromController(7);
-		Assert.assertEquals("?", modelmap.get("patientBmiAsString"));
+		Assertions.assertEquals("?", modelmap.get("patientBmiAsString"));
 	}
 }

@@ -13,12 +13,12 @@ import java.util.Locale;
 
 import jakarta.servlet.http.HttpSession;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.ConceptStopWord;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
@@ -45,8 +45,8 @@ public class ConceptStopWordFormControllerTest extends BaseModuleWebContextSensi
 		
 		controller.handleSubmission(mockSession, new ConceptStopWord("As", Locale.ENGLISH), errors);
 		
-		Assert.assertEquals("ConceptStopWord.saved", mockSession.getAttribute(WebConstants.OPENMRS_MSG_ATTR));
-		Assert.assertNull(mockSession.getAttribute(WebConstants.OPENMRS_ERROR_ATTR));
+		Assertions.assertEquals("ConceptStopWord.saved", mockSession.getAttribute(WebConstants.OPENMRS_MSG_ATTR));
+		Assertions.assertNull(mockSession.getAttribute(WebConstants.OPENMRS_ERROR_ATTR));
 	}
 	
 	/**
@@ -69,8 +69,8 @@ public class ConceptStopWordFormControllerTest extends BaseModuleWebContextSensi
 		controller.handleSubmission(mockSession, conceptStopWord, errors);
 		ObjectError objectError = (ObjectError) errors.getAllErrors().get(0);
 		
-		Assert.assertTrue(errors.hasErrors());
-		Assert.assertEquals(1, errors.getErrorCount());
-		Assert.assertEquals("ConceptStopWord.error.value.empty", objectError.getCode());
+		Assertions.assertTrue(errors.hasErrors());
+		Assertions.assertEquals(1, errors.getErrorCount());
+		Assertions.assertEquals("ConceptStopWord.error.value.empty", objectError.getCode());
 	}
 }

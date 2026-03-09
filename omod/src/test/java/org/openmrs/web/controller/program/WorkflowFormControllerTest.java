@@ -9,11 +9,11 @@
  */
 package org.openmrs.web.controller.program;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,7 +43,7 @@ public class WorkflowFormControllerTest extends BaseModuleWebContextSensitiveTes
 		ModelAndView modelAndView = controller.handleRequest(request, response);
 		
 		ProgramWorkflow command = (ProgramWorkflow) modelAndView.getModel().get("workflow");
-		Assert.assertNotNull(command.getProgramWorkflowId());
+		Assertions.assertNotNull(command.getProgramWorkflowId());
 	}
 	
 }

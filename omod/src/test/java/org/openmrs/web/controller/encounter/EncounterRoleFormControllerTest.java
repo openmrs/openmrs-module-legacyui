@@ -13,12 +13,12 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.EncounterRole;
 import org.openmrs.api.context.Context;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -42,7 +42,7 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		encounterRole.setDescription("person in charge");
 		BindException errors = new BindException(encounterRole, "encounterRole");
 		controller.save(session, encounterRole, errors);
-		Assert.assertNotNull(encounterRole.getId());
+		Assertions.assertNotNull(encounterRole.getId());
 		
 	}
 	
@@ -60,8 +60,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		encounterRole.setDescription("person in charge");
 		BindException errors = new BindException(encounterRole, "encounterRole");
 		controller.save(session, encounterRole, errors);
-		Assert.assertNull(encounterRole.getId());
-		Assert.assertEquals(1, errors.getErrorCount());
+		Assertions.assertNull(encounterRole.getId());
+		Assertions.assertEquals(1, errors.getErrorCount());
 	}
 	
 	/**
@@ -82,9 +82,9 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		encounterRole.setDescription(description);
 		BindException errors = new BindException(encounterRole, "encounterRole");
 		controller.save(session, encounterRole, errors);
-		Assert.assertNotNull(encounterRole.getId());
-		Assert.assertEquals(roleName, encounterRole.getName());
-		Assert.assertEquals(description, encounterRole.getDescription());
+		Assertions.assertNotNull(encounterRole.getId());
+		Assertions.assertEquals(roleName, encounterRole.getName());
+		Assertions.assertEquals(description, encounterRole.getDescription());
 	}
 	
 	/**
@@ -102,9 +102,9 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		encounterRole.setRetireReason("this role is no more existing");
 		BindException errors = new BindException(encounterRole, "encounterRole");
 		controller.retire(session, encounterRole, errors);
-		Assert.assertNotNull(encounterRole.getId());
-		Assert.assertTrue(encounterRole.isRetired());
-		Assert.assertEquals("EncounterRole.retiredSuccessfully", session.getAttribute(WebConstants.OPENMRS_MSG_ATTR));
+		Assertions.assertNotNull(encounterRole.getId());
+		Assertions.assertTrue(encounterRole.isRetired());
+		Assertions.assertEquals("EncounterRole.retiredSuccessfully", session.getAttribute(WebConstants.OPENMRS_MSG_ATTR));
 	}
 	
 	/**
@@ -121,8 +121,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		EncounterRole encounterRole = Context.getEncounterService().getEncounterRole(2);
 		BindException errors = new BindException(encounterRole, "encounterRole");
 		controller.unretire(session, encounterRole, errors);
-		Assert.assertFalse(encounterRole.isRetired());
-		Assert.assertEquals("EncounterRole.unretired", session.getAttribute(WebConstants.OPENMRS_MSG_ATTR));
+		Assertions.assertFalse(encounterRole.isRetired());
+		Assertions.assertEquals("EncounterRole.unretired", session.getAttribute(WebConstants.OPENMRS_MSG_ATTR));
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		EncounterRole encounterRole = Context.getEncounterService().getEncounterRole(1);
 		BindException errors = new BindException(encounterRole, "encounterRole");
 		controller.purge(session, encounterRole, errors);
-		Assert.assertEquals("EncounterRole.purgedSuccessfully", session.getAttribute(WebConstants.OPENMRS_MSG_ATTR));
+		Assertions.assertEquals("EncounterRole.purgedSuccessfully", session.getAttribute(WebConstants.OPENMRS_MSG_ATTR));
 	}
 	
 	/**
@@ -152,8 +152,8 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		executeDataSet(ENC_INITIAL_DATA_XML);
 		EncounterRoleFormController controller = new EncounterRoleFormController();
 		String viewName = controller.getEncounterList(modelMap);
-		Assert.assertEquals("/module/legacyui/admin/encounters/encounterRoleList", viewName);
-		Assert.assertEquals(3, ((List) modelMap.get("encounterRoles")).size());
+		Assertions.assertEquals("/module/legacyui/admin/encounters/encounterRoleList", viewName);
+		Assertions.assertEquals(3, ((List) modelMap.get("encounterRoles")).size());
 	}
 	
 	/**
@@ -171,7 +171,7 @@ public class EncounterRoleFormControllerTest extends BaseModuleWebContextSensiti
 		encounterRole.setRetireReason(""); //setting empty retire reason so that it will raise an error.
 		BindException errors = new BindException(encounterRole, "encounterRole");
 		controller.retire(session, encounterRole, errors);
-		Assert.assertEquals(1, errors.getErrorCount());
+		Assertions.assertEquals(1, errors.getErrorCount());
 	}
 	
 }

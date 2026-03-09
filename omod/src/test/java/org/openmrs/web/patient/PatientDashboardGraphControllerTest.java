@@ -11,12 +11,12 @@ package org.openmrs.web.patient;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.controller.patient.PatientDashboardGraphController;
 import org.openmrs.web.controller.patient.PatientGraphData;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.ui.ModelMap;
 
 import java.util.Calendar;
@@ -56,10 +56,10 @@ public class PatientDashboardGraphControllerTest extends BaseModuleWebContextSen
 		JsonNode expectedJson = mapper.readTree(expectedData);
 		JsonNode actualJson = mapper.readTree(graph.toString());
 		
-		Assert.assertEquals(expectedJson.size(), actualJson.size());
+		Assertions.assertEquals(expectedJson.size(), actualJson.size());
 		for (Iterator<String> fieldNames = expectedJson.fieldNames(); fieldNames.hasNext();) {
 			String field = fieldNames.next();
-			Assert.assertEquals(expectedJson.get(field), actualJson.get(field));
+			Assertions.assertEquals(expectedJson.get(field), actualJson.get(field));
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class PatientDashboardGraphControllerTest extends BaseModuleWebContextSen
 	@Verifies(value = "return form for rendering the json data", method = "showGraphData(Integer, Integer, ModelMap)")
 	public void shouldDisplayPatientDashboardGraphForm() throws Exception {
 		executeDataSet("org/openmrs/api/include/ObsServiceTest-initial.xml");
-		Assert.assertEquals("module/legacyui/patientGraphJsonForm",
+		Assertions.assertEquals("module/legacyui/patientGraphJsonForm",
 		    new PatientDashboardGraphController().showGraphData(2, 1, new ModelMap()));
 	}
 }

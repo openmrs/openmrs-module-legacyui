@@ -13,14 +13,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 	
@@ -32,7 +32,7 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 	
 	private TaskHelper taskHelper;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		executeDataSet(INITIAL_SCHEDULER_TASK_CONFIG_XML);
 		
@@ -47,7 +47,7 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 	@Test
 	public void getTime_shouldGetATimeInTheFuture() throws Exception {
 		Date then = taskHelper.getTime(Calendar.SECOND, 123);
-		Assert.assertTrue(then.after(new Date()));
+		Assertions.assertTrue(then.after(new Date()));
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 	@Test
 	public void getTime_shouldGetATimeInThePast() throws Exception {
 		Date then = taskHelper.getTime(Calendar.SECOND, -123);
-		Assert.assertTrue(then.before(new Date()));
+		Assertions.assertTrue(then.before(new Date()));
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 	public void getScheduledTaskDefinition_shouldReturnATaskThatHasBeenStarted() throws Exception {
 		Date time = taskHelper.getTime(Calendar.SECOND, 1);
 		TaskDefinition task = taskHelper.getScheduledTaskDefinition(time);
-		Assert.assertTrue(task.getStarted());
+		Assertions.assertTrue(task.getStarted());
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 	public void getUnscheduledTaskDefinition_shouldReturnATaskThatHasNotBeenStarted() throws Exception {
 		Date time = taskHelper.getTime(Calendar.SECOND, 1);
 		TaskDefinition task = taskHelper.getUnscheduledTaskDefinition(time);
-		Assert.assertFalse(task.getStarted());
+		Assertions.assertFalse(task.getStarted());
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 		TaskDefinition task = taskHelper.getScheduledTaskDefinition(time);
 		taskHelper.waitUntilTaskIsExecuting(task, MAX_WAIT_TIME_IN_MILLISECONDS);
 		
-		Assert.assertTrue(task.getTaskInstance().isExecuting());
+		Assertions.assertTrue(task.getTaskInstance().isExecuting());
 		deleteAllData();
 	}
 	
@@ -100,11 +100,13 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 	 * @verifies raise a timeout exception when the timeout is exceeded
 	 * @see TaskHelper#waitUntilTaskIsExecuting(org.openmrs.scheduler.TaskDefinition, long)
 	 */
-	@Test(expected = TimeoutException.class)
+	@Test
 	public void waitUntilTaskIsExecuting_shouldRaiseATimeoutExceptionWhenTheTimeoutIsExceeded() throws SchedulerException,
-	        TimeoutException, InterruptedException {
-		Date time = taskHelper.getTime(Calendar.MINUTE, 1);
-		TaskDefinition task = taskHelper.getScheduledTaskDefinition(time);
-		taskHelper.waitUntilTaskIsExecuting(task, 10);
+	        InterruptedException {
+		Assertions.assertThrows(TimeoutException.class, () -> {
+			Date time = taskHelper.getTime(Calendar.MINUTE, 1);
+			TaskDefinition task = taskHelper.getScheduledTaskDefinition(time);
+			taskHelper.waitUntilTaskIsExecuting(task, 10);
+		});
 	}
 }

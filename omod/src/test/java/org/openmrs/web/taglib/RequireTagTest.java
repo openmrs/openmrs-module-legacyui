@@ -12,13 +12,13 @@ package org.openmrs.web.taglib;
 import jakarta.servlet.jsp.PageContext;
 import jakarta.servlet.jsp.tagext.Tag;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.SkipBaseSetup;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockPageContext;
 
@@ -43,7 +43,7 @@ public class RequireTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setAnyPrivilege("Manage WhirleyGigs, Manage WhoopDeDoos");
 		
 		// the tag passes
-		Assert.assertEquals(Tag.SKIP_BODY, tag.doStartTag());
+		Assertions.assertEquals(Tag.SKIP_BODY, tag.doStartTag());
 		
 		Context.logout();
 	}
@@ -64,7 +64,7 @@ public class RequireTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setAllPrivileges("Manage WhirleyGigs, Manage WhoopDeDoos, Manage Thingamajigs");
 		
 		// the tag passes
-		Assert.assertEquals(Tag.SKIP_BODY, tag.doStartTag());
+		Assertions.assertEquals(Tag.SKIP_BODY, tag.doStartTag());
 		
 		Context.logout();
 	}
@@ -85,7 +85,7 @@ public class RequireTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setPrivilege("Manage WhirleyGigs");
 		
 		// the tag passes
-		Assert.assertEquals(Tag.SKIP_BODY, tag.doStartTag());
+		Assertions.assertEquals(Tag.SKIP_BODY, tag.doStartTag());
 		
 		Context.logout();
 	}
@@ -106,7 +106,7 @@ public class RequireTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setAllPrivileges("Manage WhirleyGigs, Manage WhoopDeDoos, Manage Thingamajigs");
 		
 		// the tag passes
-		Assert.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
+		Assertions.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
 		
 		Context.logout();
 	}
@@ -127,7 +127,7 @@ public class RequireTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setAnyPrivilege("Random Privilege, Other Random Privilege");
 		
 		// the tag passes
-		Assert.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
+		Assertions.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
 		
 		Context.logout();
 	}
@@ -148,7 +148,7 @@ public class RequireTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setPrivilege("Some Random Privilege");
 		
 		// the tag passes
-		Assert.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
+		Assertions.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
 		
 		Context.logout();
 	}
@@ -173,10 +173,10 @@ public class RequireTagTest extends BaseModuleWebContextSensitiveTest {
 		String redirect = "/myRedirect.html";
 		tag.setRedirect(redirect);
 		
-		Assert.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
-		Assert.assertEquals(true, pageContext.getAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, PageContext.SESSION_SCOPE));
-		Assert.assertNotNull(pageContext.getAttribute(WebConstants.REQUIRED_PRIVILEGES, PageContext.SESSION_SCOPE));
-		Assert.assertEquals(redirect, pageContext.getAttribute(WebConstants.DENIED_PAGE, PageContext.SESSION_SCOPE)
+		Assertions.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
+		Assertions.assertEquals(true, pageContext.getAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, PageContext.SESSION_SCOPE));
+		Assertions.assertNotNull(pageContext.getAttribute(WebConstants.REQUIRED_PRIVILEGES, PageContext.SESSION_SCOPE));
+		Assertions.assertEquals(redirect, pageContext.getAttribute(WebConstants.DENIED_PAGE, PageContext.SESSION_SCOPE)
 		        .toString());
 		
 		Context.logout();
@@ -201,10 +201,10 @@ public class RequireTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setAllPrivileges("Manage WhirleyGigs,Manage Thingamajigs");
 		tag.setRedirect("");
 		
-		Assert.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
-		Assert.assertEquals(true, pageContext.getAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, PageContext.SESSION_SCOPE));
-		Assert.assertNotNull(pageContext.getAttribute(WebConstants.REQUIRED_PRIVILEGES, PageContext.SESSION_SCOPE));
-		Assert.assertEquals(referer, pageContext.getAttribute(WebConstants.DENIED_PAGE, PageContext.SESSION_SCOPE)
+		Assertions.assertEquals(Tag.SKIP_PAGE, tag.doStartTag());
+		Assertions.assertEquals(true, pageContext.getAttribute(WebConstants.INSUFFICIENT_PRIVILEGES, PageContext.SESSION_SCOPE));
+		Assertions.assertNotNull(pageContext.getAttribute(WebConstants.REQUIRED_PRIVILEGES, PageContext.SESSION_SCOPE));
+		Assertions.assertEquals(referer, pageContext.getAttribute(WebConstants.DENIED_PAGE, PageContext.SESSION_SCOPE)
 		        .toString());
 		
 		Context.logout();

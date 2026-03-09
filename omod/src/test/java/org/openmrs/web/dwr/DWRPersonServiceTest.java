@@ -11,10 +11,10 @@ package org.openmrs.web.dwr;
 
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 /**
  * Test the different aspects of {@link DWRPersonService}
@@ -31,8 +31,8 @@ public class DWRPersonServiceTest extends BaseModuleWebContextSensitiveTest {
 		
 		List<Object> persons = dwrPersonService.findPeopleByRoles("12345K", false, null);
 		
-		Assert.assertEquals(1, persons.size());
-		Assert.assertEquals(new PersonListItem(6), persons.get(0));
+		Assertions.assertEquals(1, persons.size());
+		Assertions.assertEquals(new PersonListItem(6), persons.get(0));
 	}
 	
 	/**

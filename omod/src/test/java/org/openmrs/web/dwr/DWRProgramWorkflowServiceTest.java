@@ -9,17 +9,17 @@
  */
 package org.openmrs.web.dwr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 import java.util.Vector;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.PatientProgram;
@@ -28,7 +28,7 @@ import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class DWRProgramWorkflowServiceTest extends BaseModuleWebContextSensitiveTest {
 	
@@ -38,7 +38,7 @@ public class DWRProgramWorkflowServiceTest extends BaseModuleWebContextSensitive
 	
 	protected static final String PROGRAM_NEXT_STATES_XML = "org/openmrs/web/dwr/include/DWRProgramWorkflowServiceTest-initialStates.xml";
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		dwrProgramWorkflowService = new DWRProgramWorkflowService();
 		executeDataSet(PROGRAM_WITH_OUTCOMES_XML);

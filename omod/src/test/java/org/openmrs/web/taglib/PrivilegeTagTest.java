@@ -9,13 +9,13 @@
  */
 package org.openmrs.web.taglib;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.SkipBaseSetup;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockPageContext;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.hamcrest.core.Is.is;
 

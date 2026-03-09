@@ -16,13 +16,13 @@ import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import junit.framework.Assert;
+import org.junit.jupiter.api.Assertions;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 public class GlobalPropertyPortletControllerTest extends BaseModuleWebContextSensitiveTest {
@@ -49,9 +49,9 @@ public class GlobalPropertyPortletControllerTest extends BaseModuleWebContextSen
 		//then
 		portletController.populateModel(request, model);
 		List<GlobalProperty> properties = (List<GlobalProperty>) model.get("properties");
-		Assert.assertFalse(properties.contains(globalProperties[0]));
-		Assert.assertFalse(properties.contains(globalProperties[1]));
-		Assert.assertTrue(properties.contains(globalProperties[2]));
+		Assertions.assertFalse(properties.contains(globalProperties[0]));
+		Assertions.assertFalse(properties.contains(globalProperties[1]));
+		Assertions.assertTrue(properties.contains(globalProperties[2]));
 	}
 	
 	/**
@@ -70,9 +70,9 @@ public class GlobalPropertyPortletControllerTest extends BaseModuleWebContextSen
 		
 		//then
 		portletController.setupModelForModule(model);
-		Assert.assertEquals(forModule + ".", model.get("propertyPrefix"));
-		Assert.assertEquals("true", model.get("hidePrefix"));
-		Assert.assertEquals(forModule + ".started;" + forModule + ".mandatory", model.get("excludePrefix"));
+		Assertions.assertEquals(forModule + ".", model.get("propertyPrefix"));
+		Assertions.assertEquals("true", model.get("hidePrefix"));
+		Assertions.assertEquals(forModule + ".started;" + forModule + ".mandatory", model.get("excludePrefix"));
 	}
 	
 	/**
@@ -89,9 +89,9 @@ public class GlobalPropertyPortletControllerTest extends BaseModuleWebContextSen
 		
 		//then
 		portletController.setupModelForModule(model);
-		Assert.assertNull(model.get("propertyPrefix"));
-		Assert.assertNull(model.get("hidePrefix"));
-		Assert.assertNull(model.get("excludePrefix"));
+		Assertions.assertNull(model.get("propertyPrefix"));
+		Assertions.assertNull(model.get("hidePrefix"));
+		Assertions.assertNull(model.get("excludePrefix"));
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class GlobalPropertyPortletControllerTest extends BaseModuleWebContextSen
 		
 		//then
 		portletController.setupModelForModule(model);
-		Assert.assertEquals(excludePrefix + ";" + forModule + ".started;" + forModule + ".mandatory",
+		Assertions.assertEquals(excludePrefix + ";" + forModule + ".started;" + forModule + ".mandatory",
 		    model.get("excludePrefix"));
 	}
 }

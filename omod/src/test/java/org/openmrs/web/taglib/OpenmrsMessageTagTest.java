@@ -14,12 +14,12 @@ import java.util.Locale;
 import jakarta.servlet.jsp.PageContext;
 import jakarta.servlet.jsp.tagext.TagSupport;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.BeansException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.mock.web.MockBodyContent;
@@ -46,7 +46,7 @@ public class OpenmrsMessageTagTest extends BaseModuleWebContextSensitiveTest {
 	
 	private MockPageContext mockPageContext;
 	
-	@Before
+	@BeforeEach
 	public void createMockPageContext() throws Exception {
 		
 		MockServletContext sc = new MockServletContext();
@@ -263,7 +263,7 @@ public class OpenmrsMessageTagTest extends BaseModuleWebContextSensitiveTest {
 		try {
 			openmrsMessageTag.doEndTag();
 			
-			Assert.assertTrue("doEndTag should have thrown an exception", false);
+			Assertions.assertTrue(false, "doEndTag should have thrown an exception");
 		}
 		catch (Exception e) {
 			//Do nothing.  Test successful
@@ -274,8 +274,8 @@ public class OpenmrsMessageTagTest extends BaseModuleWebContextSensitiveTest {
 		final int tagReturnValue = openmrsMessageTag.doEndTag();
 		final String output = (String) mockPageContext.getAttribute(varName, scope);
 		
-		Assert.assertEquals("Tag should return 'EVAL_PAGE'", TagSupport.EVAL_PAGE, tagReturnValue);
-		Assert.assertEquals(String.format("Variable '%s' should be '%s'", varName, expectedOutput), output, expectedOutput);
+		Assertions.assertEquals(TagSupport.EVAL_PAGE, tagReturnValue, "Tag should return 'EVAL_PAGE'");
+		Assertions.assertEquals(output, expectedOutput, String.format("Variable '%s' should be '%s'", varName, expectedOutput));
 	}
 	
 	/**
@@ -289,8 +289,8 @@ public class OpenmrsMessageTagTest extends BaseModuleWebContextSensitiveTest {
 		int tagReturnValue = openmrsMessageTag.doEndTag();
 		String output = ((MockHttpServletResponse) mockPageContext.getResponse()).getContentAsString();
 		
-		Assert.assertEquals("Tag should return 'EVAL_PAGE'", TagSupport.EVAL_PAGE, tagReturnValue);
-		Assert.assertEquals(String.format("Output should be '%s'", expectedOutput), expectedOutput, output);
+		Assertions.assertEquals(TagSupport.EVAL_PAGE, tagReturnValue, "Tag should return 'EVAL_PAGE'");
+		Assertions.assertEquals(expectedOutput, output, String.format("Output should be '%s'", expectedOutput));
 	}
 	
 	/**

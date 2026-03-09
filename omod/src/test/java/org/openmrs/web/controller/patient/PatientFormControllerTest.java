@@ -9,15 +9,15 @@
  */
 package org.openmrs.web.controller.patient;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Patient;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
-import org.openmrs.web.test.BaseWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.validation.BindException;
@@ -54,7 +54,7 @@ public class PatientFormControllerTest extends BaseModuleWebContextSensitiveTest
 		BindException errors = new BindException(p, "patient");
 		ModelAndView modelAndview = controller.onSubmit(request, response, p, errors);
 		
-		Assert.assertTrue(p.isVoided());
+		Assertions.assertTrue(p.isVoided());
 	}
 	
 	/**
@@ -78,8 +78,8 @@ public class PatientFormControllerTest extends BaseModuleWebContextSensitiveTest
 		BindException errors = new BindException(p, "patient");
 		ModelAndView modelAndview = controller.onSubmit(request, response, p, errors);
 		
-		Assert.assertTrue(!p.isVoided());
+		Assertions.assertTrue(!p.isVoided());
 		String tmp = request.getSession().getAttribute(WebConstants.OPENMRS_ERROR_ATTR).toString();
-		Assert.assertEquals(tmp, "Patient.error.void.reasonEmpty");
+		Assertions.assertEquals(tmp, "Patient.error.void.reasonEmpty");
 	}
 }

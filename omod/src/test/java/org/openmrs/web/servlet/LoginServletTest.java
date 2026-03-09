@@ -9,10 +9,10 @@
  */
 package org.openmrs.web.servlet;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -39,7 +39,7 @@ public class LoginServletTest extends BaseModuleWebContextSensitiveTest {
 		
 		loginServlet.service(request, response);
 		
-		Assert.assertEquals("/somecontextpath/login.htm", response.getRedirectedUrl());
+		Assertions.assertEquals("/somecontextpath/login.htm", response.getRedirectedUrl());
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class LoginServletTest extends BaseModuleWebContextSensitiveTest {
 		// this test depends on being able to log in as "admin:test".
 		Context.logout();
 		Context.authenticate("admin", "test");
-		Assert.assertTrue(Context.isAuthenticated());
+		Assertions.assertTrue(Context.isAuthenticated());
 		
 		// do the test now
 		LoginServlet loginServlet = new LoginServlet();
@@ -66,7 +66,7 @@ public class LoginServletTest extends BaseModuleWebContextSensitiveTest {
 		
 		loginServlet.service(request, response);
 		
-		Assert.assertNotSame("/somecontextpath/login.htm", response.getRedirectedUrl());
+		Assertions.assertNotSame("/somecontextpath/login.htm", response.getRedirectedUrl());
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class LoginServletTest extends BaseModuleWebContextSensitiveTest {
 		// this test depends on being able to log in as "admin:test".
 		Context.logout();
 		Context.authenticate("admin", "test");
-		Assert.assertTrue(Context.isAuthenticated());
+		Assertions.assertTrue(Context.isAuthenticated());
 		
 		// do the test now
 		LoginServlet loginServlet = new LoginServlet();
@@ -105,6 +105,6 @@ public class LoginServletTest extends BaseModuleWebContextSensitiveTest {
 		request.setParameter("pw", "test");
 		loginServlet.service(request, response);
 		
-		Assert.assertNotSame("/somecontextpath/login.htm", response.getRedirectedUrl());
+		Assertions.assertNotSame("/somecontextpath/login.htm", response.getRedirectedUrl());
 	}
 }

@@ -14,12 +14,12 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,7 +33,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 	
 	protected static final String TEST_DATA = "org/openmrs/web/controller/include/ForgotPasswordFormControllerTest.xml";
 	
-	@Before
+	@BeforeEach
 	public void runBeforeEachTest() throws Exception {
 		executeDataSet(TEST_DATA);
 		Context.logout();
@@ -58,7 +58,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		
 		controller.handleRequest(request, response);
 		
-		Assert.assertEquals("invaliduser", request.getAttribute("uname"));
+		Assertions.assertEquals("invaliduser", request.getAttribute("uname"));
 		
 		List<String> questions = new ArrayList<String>();
 		
@@ -71,7 +71,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		questions.add(Context.getMessageSourceService().getMessage("Which city were you born in?"));
 		
 		//Check that one of the fake questions is assigned to the invalid username
-		Assert.assertTrue(questions.contains(request.getAttribute("secretQuestion")));
+		Assertions.assertTrue(questions.contains(request.getAttribute("secretQuestion")));
 	}
 	
 	@Test
@@ -87,8 +87,8 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		
 		HttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = controller.handleRequest(request, response);
-		Assert.assertEquals("/options.form#Change Login Info", ((RedirectView) mv.getView()).getUrl());
-		Assert.assertEquals(2, Context.getAuthenticatedUser().getId().intValue());
+		Assertions.assertEquals("/options.form#Change Login Info", ((RedirectView) mv.getView()).getUrl());
+		Assertions.assertEquals(2, Context.getAuthenticatedUser().getId().intValue());
 	}
 	
 	/**
@@ -109,10 +109,10 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		
 		HttpServletResponse response = new MockHttpServletResponse();
 		controller.handleRequest(request, response);
-		Assert.assertEquals("valid secret question", request.getAttribute("secretQuestion"));
-		Assert.assertEquals("auth.answer.invalid", request.getSession().getAttribute(WebConstants.OPENMRS_ERROR_ATTR));
-		Assert.assertEquals("auth.question.fill", request.getSession().getAttribute(WebConstants.OPENMRS_MSG_ATTR));
-		Assert.assertFalse(Context.isAuthenticated());
+		Assertions.assertEquals("valid secret question", request.getAttribute("secretQuestion"));
+		Assertions.assertEquals("auth.answer.invalid", request.getSession().getAttribute(WebConstants.OPENMRS_ERROR_ATTR));
+		Assertions.assertEquals("auth.question.fill", request.getSession().getAttribute(WebConstants.OPENMRS_MSG_ATTR));
+		Assertions.assertFalse(Context.isAuthenticated());
 	}
 	
 	/**
@@ -141,7 +141,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		request.addParameter("uname", "validuser");
 		
 		controller.handleRequest(request, new MockHttpServletResponse());
-		Assert.assertNull(request.getAttribute("secretQuestion"));
+		Assertions.assertNull(request.getAttribute("secretQuestion"));
 	}
 	
 	/**
@@ -172,7 +172,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		request.addParameter("secretAnswer", "valid secret answer");
 		controller.handleRequest(request, new MockHttpServletResponse());
 		
-		Assert.assertFalse(Context.isAuthenticated());
+		Assertions.assertFalse(Context.isAuthenticated());
 	}
 	
 	/**
@@ -205,7 +205,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		
 		controller.handleRequest(request, new MockHttpServletResponse());
 		
-		Assert.assertFalse(Context.isAuthenticated());
+		Assertions.assertFalse(Context.isAuthenticated());
 	}
 	
 	/**
@@ -235,7 +235,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		
 		controller.handleRequest(request, new MockHttpServletResponse());
 		
-		Assert.assertNotNull(request.getAttribute("secretQuestion"));
+		Assertions.assertNotNull(request.getAttribute("secretQuestion"));
 		
 		// now the user has 5 chances at the secret answer
 		
@@ -246,7 +246,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		request5.addParameter("uname", "validuser");
 		request5.addParameter("secretAnswer", "invalid answer");
 		controller.handleRequest(request5, new MockHttpServletResponse());
-		Assert.assertNotNull(request5.getAttribute("secretQuestion"));
+		Assertions.assertNotNull(request5.getAttribute("secretQuestion"));
 		
 		// sixth request (should not lock out because is after valid username)
 		MockHttpServletRequest request6 = new MockHttpServletRequest();
@@ -256,7 +256,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		request6.addParameter("secretAnswer", "invalid answer");
 		request.setMethod("POST");
 		controller.handleRequest(request6, new MockHttpServletResponse());
-		Assert.assertNotNull(request6.getAttribute("secretQuestion"));
+		Assertions.assertNotNull(request6.getAttribute("secretQuestion"));
 		
 		// seventh request (should Accept with valid answer)
 		MockHttpServletRequest request7 = new MockHttpServletRequest();
@@ -266,7 +266,7 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		request7.addParameter("secretAnswer", "valid secret answer");
 		controller.handleRequest(request7, new MockHttpServletResponse());
 		
-		Assert.assertTrue(Context.isAuthenticated());
+		Assertions.assertTrue(Context.isAuthenticated());
 	}
 	
 	@Test
@@ -280,6 +280,6 @@ public class ForgotPasswordFormControllerTest extends BaseModuleWebContextSensit
 		HttpServletResponse response = new MockHttpServletResponse();
 		
 		controller.handleRequest(request, response);
-		Assert.assertFalse(Context.isAuthenticated());
+		Assertions.assertFalse(Context.isAuthenticated());
 	}
 }

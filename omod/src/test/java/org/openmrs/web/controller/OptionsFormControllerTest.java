@@ -11,15 +11,16 @@ package org.openmrs.web.controller;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.net.BindException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openmrs.GlobalProperty;
@@ -145,7 +146,7 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 		testHelper.handle(post);
 		
 		//then
-		Assert.assertThat("ab@gmail.com", is(Context.getAuthenticatedUser().getUsername()));
+		MatcherAssert.assertThat("ab@gmail.com", is(Context.getAuthenticatedUser().getUsername()));
 	}
 	
 	/**
@@ -164,7 +165,7 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 		testHelper.handle(post);
 		
 		//then
-		Assert.assertThat("ab@", is(not(Context.getAuthenticatedUser().getUsername())));
+		MatcherAssert.assertThat("ab@", is(not(Context.getAuthenticatedUser().getUsername())));
 	}
 	
 	/**
@@ -181,7 +182,7 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 		testHelper.handle(post);
 		
 		//then
-		Assert.assertThat("ab", is(Context.getAuthenticatedUser().getUsername()));
+		MatcherAssert.assertThat("ab", is(Context.getAuthenticatedUser().getUsername()));
 	}
 	
 	/**
@@ -198,7 +199,7 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 		testHelper.handle(post);
 		
 		//then
-		Assert.assertThat("a", is(not(Context.getAuthenticatedUser().getUsername())));
+		MatcherAssert.assertThat("a", is(not(Context.getAuthenticatedUser().getUsername())));
 	}
 	
 	@Test
@@ -216,7 +217,7 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 		
 		BeanPropertyBindingResult bindingResult = (BeanPropertyBindingResult) modelAndView.getModel().get(
 		    "org.springframework.validation.BindingResult.opts");
-		Assert.assertTrue(bindingResult.hasErrors());
+		Assertions.assertTrue(bindingResult.hasErrors());
 	}
 	
 	@Test
@@ -248,7 +249,7 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 		
 		BeanPropertyBindingResult bindingResult = (BeanPropertyBindingResult) modelAndView.getModel().get(
 		    "org.springframework.validation.BindingResult.opts");
-		Assert.assertTrue(bindingResult.hasErrors());
+		Assertions.assertTrue(bindingResult.hasErrors());
 	}
 	
 	@Test
@@ -263,9 +264,9 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 		request.setParameter("secretAnswerConfirm", "easy answer");
 		
 		controller.handleRequest(request, response);
-		Assert.assertEquals("easy question", loginCredential.getSecretQuestion());
+		Assertions.assertEquals("easy question", loginCredential.getSecretQuestion());
 		String hashedAnswer = Security.encodeString("easy answer" + loginCredential.getSalt());
-		Assert.assertEquals(hashedAnswer, loginCredential.getSecretAnswer());
+		Assertions.assertEquals(hashedAnswer, loginCredential.getSecretAnswer());
 		String oldPassword = loginCredential.getHashedPassword();
 		
 		request.removeAllParameters();
@@ -279,7 +280,7 @@ public class OptionsFormControllerTest extends BaseModuleWebContextSensitiveTest
 			request.setParameter("secretQuestionNew", "");
 			mav = controller.handleRequest(request, response);
 		}
-		Assert.assertEquals(hashedAnswer, loginCredential.getSecretAnswer());
-		Assert.assertEquals("easy question", loginCredential.getSecretQuestion());
+		Assertions.assertEquals(hashedAnswer, loginCredential.getSecretAnswer());
+		Assertions.assertEquals("easy question", loginCredential.getSecretQuestion());
 	}
 }

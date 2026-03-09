@@ -14,13 +14,13 @@ import java.util.Locale;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -37,7 +37,7 @@ public class GlobalPropertyControllerTest extends BaseModuleWebContextSensitiveT
 	
 	private AdministrationService administrationService;
 	
-	@Before
+	@BeforeEach
 	public void before() {
 		messageSource = Context.getMessageSourceService();
 		administrationService = Context.getAdministrationService();
@@ -65,14 +65,14 @@ public class GlobalPropertyControllerTest extends BaseModuleWebContextSensitiveT
 		
 		controller.handleRequest(request, response);
 		
-		Assert.assertEquals(2, administrationService.getAllGlobalProperties().size());
+		Assertions.assertEquals(2, administrationService.getAllGlobalProperties().size());
 		for (GlobalProperty globalProperty : administrationService.getAllGlobalProperties()) {
 			if (globalProperty.getProperty().equals("test2")) {
-				Assert.assertEquals("test2_value", globalProperty.getPropertyValue());
+				Assertions.assertEquals("test2_value", globalProperty.getPropertyValue());
 			} else if (globalProperty.getProperty().equals("test3")) {
-				Assert.assertEquals("test3_value", globalProperty.getPropertyValue());
+				Assertions.assertEquals("test3_value", globalProperty.getPropertyValue());
 			} else {
-				Assert.fail("Should be either test2 or test3");
+				Assertions.fail("Should be either test2 or test3");
 			}
 		}
 	}
@@ -99,14 +99,14 @@ public class GlobalPropertyControllerTest extends BaseModuleWebContextSensitiveT
 		
 		controller.handleRequest(request, response);
 		
-		Assert.assertEquals(2, administrationService.getAllGlobalProperties().size());
+		Assertions.assertEquals(2, administrationService.getAllGlobalProperties().size());
 		for (GlobalProperty globalProperty : administrationService.getAllGlobalProperties()) {
 			if (globalProperty.getProperty().equals("test1")) {
-				Assert.assertEquals(globalProperty.getPropertyValue(), "test1_new_value");
+				Assertions.assertEquals(globalProperty.getPropertyValue(), "test1_new_value");
 			} else if (globalProperty.getProperty().equals("test2")) {
-				Assert.assertEquals("test2_value", globalProperty.getPropertyValue());
+				Assertions.assertEquals("test2_value", globalProperty.getPropertyValue());
 			} else {
-				Assert.fail("Should be either test1 or test2");
+				Assertions.fail("Should be either test1 or test2");
 			}
 		}
 	}

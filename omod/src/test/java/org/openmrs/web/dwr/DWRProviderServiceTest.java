@@ -17,11 +17,11 @@ import java.util.Vector;
 import org.apache.commons.collections.Closure;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class DWRProviderServiceTest extends BaseModuleWebContextSensitiveTest {
 	
@@ -31,7 +31,7 @@ public class DWRProviderServiceTest extends BaseModuleWebContextSensitiveTest {
 	
 	private DWRProviderService service;
 	
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		service = new DWRProviderService();
 		
@@ -47,7 +47,7 @@ public class DWRProviderServiceTest extends BaseModuleWebContextSensitiveTest {
 	public void findProvider_shouldReturnAMessageWithNoMatchesFoundWhenNoProvidersAreFound() throws Exception {
 		Vector<Object> providers = service.findProvider("noProvider", false, 0, 1);
 		
-		Assert.assertEquals("Provider.noMatchesFound", ((String) providers.get(0)));
+		Assertions.assertEquals("Provider.noMatchesFound", ((String) providers.get(0)));
 	}
 	
 	/**
@@ -60,9 +60,9 @@ public class DWRProviderServiceTest extends BaseModuleWebContextSensitiveTest {
 	        throws Exception {
 		
 		Vector<Object> providers = service.findProvider("provider", true, 0, 10);
-		Assert.assertEquals(4, providers.size());
+		Assertions.assertEquals(4, providers.size());
 		
-		Assert.assertTrue(CollectionUtils.exists(providers, new Predicate() {
+		Assertions.assertTrue(CollectionUtils.exists(providers, new Predicate() {
 			
 			@Override
 			public boolean evaluate(Object object) {
@@ -79,7 +79,7 @@ public class DWRProviderServiceTest extends BaseModuleWebContextSensitiveTest {
 	public void findProvider_shouldReturnTheListOfProvidersMatchingTheSearchName() throws Exception {
 		
 		Vector<Object> providers = service.findProvider("provider", false, 0, 10);
-		Assert.assertEquals(2, providers.size());
+		Assertions.assertEquals(2, providers.size());
 		
 		final ArrayList<String> providerNames = new ArrayList<String>();
 		
@@ -91,7 +91,7 @@ public class DWRProviderServiceTest extends BaseModuleWebContextSensitiveTest {
 			}
 		});
 		
-		Assert.assertTrue(providerNames.containsAll(Arrays.asList("Bruno Otterbourg", "Hippocrates of Cos")));
+		Assertions.assertTrue(providerNames.containsAll(Arrays.asList("Bruno Otterbourg", "Hippocrates of Cos")));
 	}
 	
 	/**
@@ -100,12 +100,12 @@ public class DWRProviderServiceTest extends BaseModuleWebContextSensitiveTest {
 	 *           list
 	 */
 	@Test
-	@Ignore("This test fails because we have the order by for person names mentioned in the person.hbm.xml for the names set. "
+	@Disabled("This test fails because we have the order by for person names mentioned in the person.hbm.xml for the names set. "
 	        + "H2 is expecting a group by clause for all the columns mentioned in the order by which is not needed to execute a query in mysql."
 	        + "Keeping the test case here because this might be a problem in other databases too")
 	public void findProviderCountAndProvider_shouldReturnTheCountOfAllProvidersMatchingTheSearchedNameAlongWithProviderList()
 	        throws Exception {
 		Map<String, Object> countAndProviders = service.findProviderCountAndProvider("provider", true, 0, 2);
-		Assert.assertEquals(3, countAndProviders.get("count"));
+		Assertions.assertEquals(3, countAndProviders.get("count"));
 	}
 }

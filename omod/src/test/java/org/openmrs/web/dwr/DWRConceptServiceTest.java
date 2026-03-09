@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Locale;
 
 import org.hibernate.Hibernate;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.GlobalProperty;
@@ -25,13 +25,13 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 	
 	private DWRConceptService dwrConceptService = new DWRConceptService();
 	
-	@Before
+	@BeforeEach
 	public void before() throws Exception {
 		executeDataSet("org/openmrs/web/dwr/include/DWRConceptServiceTest-coded-concept-with-no-answers.xml");
 		updateSearchIndex();
@@ -59,8 +59,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		Concept expected = Context.getConceptService().getConcept(phrase);
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null, null, null,
 		    null);
-		Assert.assertNotNull(result);
-		Assert.assertTrue(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -77,8 +77,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		includeClassNames.add("Question");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, includeClassNames, null, null,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertTrue(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -96,8 +96,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		includeClassNames.add("test");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, includeClassNames, null, null,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertFalse(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -114,8 +114,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		excludeClassNames.add("Question");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, excludeClassNames, null,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertFalse(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -132,8 +132,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		includeDatatypes.add("Coded");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, includeDatatypes,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertTrue(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -151,8 +151,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		includeDatatypes.add("test");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, includeDatatypes,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertFalse(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -169,8 +169,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		excludeDatatypes.add("Coded");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null,
 		    excludeDatatypes, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertFalse(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -230,11 +230,11 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		List<Object> findConceptAnswers = dwrConceptService.findConceptAnswers("T", 21, false, true);
 		
 		//then
-		Assert.assertEquals(2, findConceptAnswers.size());
+		Assertions.assertEquals(2, findConceptAnswers.size());
 		for (Object findConceptAnswer : findConceptAnswers) {
 			ConceptListItem answer = (ConceptListItem) findConceptAnswer;
 			if (!answer.getConceptId().equals(7) && !answer.getConceptId().equals(8)) {
-				Assert.fail("Should have found an answer with id 7 or 8");
+				Assertions.fail("Should have found an answer with id 7 or 8");
 			}
 		}
 	}
@@ -268,11 +268,11 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		List<Object> findConceptAnswers = dwrConceptService.findConceptAnswers("T", 21, false, true);
 		
 		//then
-		Assert.assertEquals(1, findConceptAnswers.size());
+		Assertions.assertEquals(1, findConceptAnswers.size());
 		for (Object findConceptAnswer : findConceptAnswers) {
 			ConceptListItem answer = (ConceptListItem) findConceptAnswer;
 			if (!answer.getConceptId().equals(7)) {
-				Assert.fail("Should have found an answer with id 7");
+				Assertions.fail("Should have found an answer with id 7");
 			}
 		}
 		
@@ -284,9 +284,9 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		Concept expected = Context.getConceptService().getConcept(phrase);
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null, null, null,
 		    null);
-		Assert.assertNotNull(result);
-		Assert.assertEquals(1, result.size());
-		Assert.assertTrue(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(1, result.size());
+		Assertions.assertTrue(isConceptFound(expected, result));
 	}
 	
 	//Tests for search by Concept's UUID
@@ -302,8 +302,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null, null, null,
 		    null);
-		Assert.assertNotNull(result);
-		Assert.assertTrue(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -320,8 +320,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		includeClassNames.add("Question");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, includeClassNames, null, null,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertTrue(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -339,8 +339,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		includeClassNames.add("test");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, includeClassNames, null, null,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertFalse(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -357,8 +357,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		excludeClassNames.add("Question");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, excludeClassNames, null,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertFalse(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -375,8 +375,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		includeDatatypes.add("Coded");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, includeDatatypes,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertTrue(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -394,8 +394,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		includeDatatypes.add("test");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, includeDatatypes,
 		    null, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertFalse(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -412,8 +412,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		excludeDatatypes.add("Coded");
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null,
 		    excludeDatatypes, null, null);
-		Assert.assertNotNull(result);
-		Assert.assertFalse(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertFalse(isConceptFound(expected, result));
 	}
 	
 	/**
@@ -427,8 +427,8 @@ public class DWRConceptServiceTest extends BaseModuleWebContextSensitiveTest {
 		Concept expected = Context.getConceptService().getConceptByUuid(phrase);
 		List<Object> result = dwrConceptService.findBatchOfConcepts(phrase, Boolean.FALSE, null, null, null, null, null,
 		    null);
-		Assert.assertNotNull(result);
-		Assert.assertEquals(1, result.size());
-		Assert.assertTrue(isConceptFound(expected, result));
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(1, result.size());
+		Assertions.assertTrue(isConceptFound(expected, result));
 	}
 }

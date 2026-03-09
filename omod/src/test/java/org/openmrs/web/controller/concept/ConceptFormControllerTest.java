@@ -11,19 +11,18 @@ package org.openmrs.web.controller.concept;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.openmrs.ConceptMap;
 import org.openmrs.ConceptNumeric;
 import org.openmrs.web.controller.ConceptFormController;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
 	@Test
 	public void ConceptFormBackingObject_shouldCopyNumericAttributes() {
 		ConceptNumeric concept = Mockito.mock(ConceptNumeric.class);
-		Mockito.when(concept.isNumeric()).thenReturn(Boolean.TRUE);
 		Mockito.when(concept.getHiAbsolute()).thenReturn(5.2);
 		Mockito.when(concept.getLowAbsolute()).thenReturn(1.0);
 		
@@ -43,18 +42,18 @@ public class ConceptFormControllerTest extends BaseModuleWebContextSensitiveTest
 		ConceptFormController.ConceptFormBackingObject conceptFormBackingObject = controller.new ConceptFormBackingObject(
 		                                                                                                                  concept);
 		
-		org.junit.Assert.assertEquals(Double.valueOf(5.2), conceptFormBackingObject.getHiAbsolute());
-		org.junit.Assert.assertEquals(Double.valueOf(1.0), conceptFormBackingObject.getLowAbsolute());
+		org.junit.jupiter.api.Assertions.assertEquals(Double.valueOf(5.2), conceptFormBackingObject.getHiAbsolute());
+		org.junit.jupiter.api.Assertions.assertEquals(Double.valueOf(1.0), conceptFormBackingObject.getLowAbsolute());
 		
-		org.junit.Assert.assertEquals(Double.valueOf(4.1), conceptFormBackingObject.getHiCritical());
-		org.junit.Assert.assertEquals(Double.valueOf(2.1), conceptFormBackingObject.getLowCritical());
+		org.junit.jupiter.api.Assertions.assertEquals(Double.valueOf(4.1), conceptFormBackingObject.getHiCritical());
+		org.junit.jupiter.api.Assertions.assertEquals(Double.valueOf(2.1), conceptFormBackingObject.getLowCritical());
 		
-		org.junit.Assert.assertEquals(Double.valueOf(3.1), conceptFormBackingObject.getLowNormal());
-		org.junit.Assert.assertEquals(Double.valueOf(3.9), conceptFormBackingObject.getHiNormal());
+		org.junit.jupiter.api.Assertions.assertEquals(Double.valueOf(3.1), conceptFormBackingObject.getLowNormal());
+		org.junit.jupiter.api.Assertions.assertEquals(Double.valueOf(3.9), conceptFormBackingObject.getHiNormal());
 		
-		org.junit.Assert.assertEquals(Integer.valueOf(42), conceptFormBackingObject.getDisplayPrecision());
+		org.junit.jupiter.api.Assertions.assertEquals(Integer.valueOf(42), conceptFormBackingObject.getDisplayPrecision());
 		
-		org.junit.Assert.assertEquals("ml", conceptFormBackingObject.getUnits());
+		org.junit.jupiter.api.Assertions.assertEquals("ml", conceptFormBackingObject.getUnits());
 	}
 	
 }

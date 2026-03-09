@@ -9,16 +9,15 @@
  */
 package org.openmrs.web.attribute.handler;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.customdatatype.InvalidCustomValueException;
 import org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype;
@@ -28,9 +27,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
  * Tests {@code RegexValidatedTextDatatypeHandler}.
  */
 public class RegexValidatedTextDatatypeHandlerTest {
-	
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 	
 	private final RegexValidatedTextDatatypeHandler handler = new RegexValidatedTextDatatypeHandler();
 	
@@ -71,9 +67,9 @@ public class RegexValidatedTextDatatypeHandlerTest {
 		RegexValidatedTextDatatype datatype = new RegexValidatedTextDatatype();
 		datatype.setConfiguration("^[012]$");
 		
-		expectedException.expect(InvalidCustomValueException.class);
-		expectedException.expectMessage("Invalid value: " + invalidFieldValue);
-		handler.getValue(datatype, request, fieldName);
+		InvalidCustomValueException ex = org.junit.jupiter.api.Assertions.assertThrows(InvalidCustomValueException.class,
+			() -> handler.getValue(datatype, request, fieldName));
+		assertThat(ex.getMessage(), containsString("Invalid value: " + invalidFieldValue));
 	}
 	
 	/**

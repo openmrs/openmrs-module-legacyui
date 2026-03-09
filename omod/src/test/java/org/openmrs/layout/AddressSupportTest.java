@@ -12,14 +12,14 @@ package org.openmrs.layout;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.layout.address.AddressSupport;
 import org.openmrs.layout.address.AddressTemplate;
 import org.openmrs.test.Verifies;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class AddressSupportTest extends BaseModuleWebContextSensitiveTest {
 	
@@ -41,12 +41,12 @@ public class AddressSupportTest extends BaseModuleWebContextSensitiveTest {
 		//(in the 'web' package differs from the updated classname in the DB
 		String newAddressTemplateClass = "org.openmrs.layout.address.AddressTemplate";
 		String xml = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_ADDRESS_TEMPLATE);
-		Assert.assertTrue(StringUtils.contains(xml, newAddressTemplateClass));
-		Assert.assertEquals(newAddressTemplateClass, AddressTemplate.class.getName());
+		Assertions.assertTrue(StringUtils.contains(xml, newAddressTemplateClass));
+		Assertions.assertEquals(newAddressTemplateClass, AddressTemplate.class.getName());
 		
 		AddressSupport addressSupport = AddressSupport.getInstance();
 		List<AddressTemplate> addressTemplates = addressSupport.getAddressTemplate();
-		Assert.assertNotNull(addressTemplates.get(0));
+		Assertions.assertNotNull(addressTemplates.get(0));
 	}
 	
 }

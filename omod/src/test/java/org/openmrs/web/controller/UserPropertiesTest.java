@@ -9,11 +9,11 @@
  */
 package org.openmrs.web.controller;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openmrs.User;
 import org.openmrs.test.Verifies;
 import org.openmrs.util.OpenmrsConstants;

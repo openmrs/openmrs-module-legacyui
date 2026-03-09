@@ -11,18 +11,18 @@ package org.openmrs.web.controller.patient;
 
 import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.lang.reflect.Method;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Patient;
 import org.openmrs.web.WebConstants;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ModelMap;
@@ -49,7 +49,7 @@ public class PatientDashboardControllerTest extends BaseModuleWebContextSensitiv
 	
 	private Method getPatientMethod;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws NoSuchMethodException, SecurityException {
 		getPatientMethod = PatientDashboardController.class.getDeclaredMethod("getPatient", new Class[] { String.class });
 		getPatientMethod.setAccessible(true);

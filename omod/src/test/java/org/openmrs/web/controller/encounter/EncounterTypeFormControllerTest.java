@@ -11,11 +11,11 @@ package org.openmrs.web.controller.encounter;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -51,9 +51,9 @@ public class EncounterTypeFormControllerTest extends BaseModuleWebContextSensiti
 		// send the parameters to the controller
 		ModelAndView mav = controller.handleRequest(request, response);
 		
-		Assert.assertEquals("The purge attempt should have failed!", "EncounterType.form", mav.getViewName());
-		Assert.assertSame(controller.getFormView(), mav.getViewName());
-		Assert.assertNotNull(es.getEncounterType(1));
+		Assertions.assertEquals("EncounterType.form", mav.getViewName(), "The purge attempt should have failed!");
+		Assertions.assertSame(controller.getFormView(), mav.getViewName());
+		Assertions.assertNotNull(es.getEncounterType(1));
 	}
 	
 	@Test
@@ -78,8 +78,8 @@ public class EncounterTypeFormControllerTest extends BaseModuleWebContextSensiti
 		
 		ModelAndView mav = controller.handleRequest(request, response);
 		
-		Assert.assertSame(controller.getFormView(), mav.getViewName());
-		Assert.assertNotEquals("The save attempt should have passed!", "index.htm", mav.getViewName());
-		Assert.assertNotNull(es.getEncounterType(1));
+		Assertions.assertSame(controller.getFormView(), mav.getViewName());
+		Assertions.assertNotEquals("index.htm", mav.getViewName(), "The save attempt should have passed!");
+		Assertions.assertNotNull(es.getEncounterType(1));
 	}
 }

@@ -9,11 +9,11 @@
  */
 package org.openmrs.web.controller.concept;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openmrs.Drug;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.validation.BindException;
@@ -37,7 +37,7 @@ public class ConceptDrugFormControllerTest extends BaseModuleWebContextSensitive
 		
 		Integer drugId = new Integer(444);
 		Drug drug = service.getDrug(drugId);
-		org.junit.Assert.assertEquals(drugId, drug.getDrugId());
+		org.junit.jupiter.api.Assertions.assertEquals(drugId, drug.getDrugId());
 		
 		MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 		MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
@@ -46,6 +46,6 @@ public class ConceptDrugFormControllerTest extends BaseModuleWebContextSensitive
 		
 		controller.onSubmit(mockHttpServletRequest, mockHttpServletResponse, drug, errors);
 		Context.flushSession();
-		org.junit.Assert.assertNull(service.getDrug(drugId));
+		org.junit.jupiter.api.Assertions.assertNull(service.getDrug(drugId));
 	}
 }
