@@ -1,18 +1,17 @@
-# this build is designed to replicate the Travis CI workflow
-name: Build with Maven
+name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
     uses: openmrs/openmrs-contrib-gha-workflows/.github/workflows/build-backend-module.yml@main
     with:
-      java_versions: '[21, 25]'
+      java_versions: '["21", "25"]'
       main_java_version: '21'
     secrets:
       NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
