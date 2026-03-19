@@ -225,12 +225,23 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	 */
 	@Transactional(readOnly = true)
 	public Provider getProviderForUser(User user) {
-		ProviderService ps = Context.getProviderService();
-		Collection<Provider> providers = ps.getProvidersByPerson(user.getPerson(), true);
-		if (providers.isEmpty()) {
-			throw new IllegalStateException("User " + user + " has no provider accounts, unable to create orders");
-		}
-		return providers.iterator().next();
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
+        if (user.getPerson() == null) {
+            throw new IllegalStateException("User has no associated person record");
+        }
+
+        ProviderService ps = Context.getProviderService();
+
+        Collection<Provider> providers = ps.getProvidersByPerson(user.getPerson(), true);
+
+        if (providers.isEmpty()) {
+            throw new IllegalStateException("User " + user + " has no provider accounts, unable to create orders");
+        }
+
+        return providers.iterator().next();
 	}
 	
 	/**
