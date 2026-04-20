@@ -308,8 +308,12 @@ public class OptionsFormController extends SimpleFormController {
 			opts.setDefaultLocation(props.get(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION));
 			opts.setDefaultLocale(props.get(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCALE));
 			opts.setProficientLocales(props.get(OpenmrsConstants.USER_PROPERTY_PROFICIENT_LOCALES));
-			opts.setShowRetiredMessage(new Boolean(props.get(OpenmrsConstants.USER_PROPERTY_SHOW_RETIRED)));
-			opts.setVerbose(new Boolean(props.get(OpenmrsConstants.USER_PROPERTY_SHOW_VERBOSE)));
+            opts.setShowRetiredMessage(Boolean.parseBoolean(
+                    String.valueOf(props.get(OpenmrsConstants.USER_PROPERTY_SHOW_RETIRED))
+            ));
+            opts.setVerbose(Boolean.parseBoolean(
+                    String.valueOf(props.get(OpenmrsConstants.USER_PROPERTY_SHOW_VERBOSE))
+            ));
 			opts.setUsername(user.getUsername());
 			
 			PersonName personName;
