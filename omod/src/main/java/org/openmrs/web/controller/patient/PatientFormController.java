@@ -156,7 +156,7 @@ public class PatientFormController extends PersonFormController {
 								pi.setLocation(ls.getLocation(Integer.valueOf(locs[i])));
 							}
 							if (idPrefStatus != null && idPrefStatus.length > i) {
-								pi.setPreferred(new Boolean(idPrefStatus[i]));
+								pi.setPreferred(Boolean.parseBoolean(idPrefStatus[i]));
 							}
 							
 							BindException piErrors = new BindException(pi, "patientIdentifier");
