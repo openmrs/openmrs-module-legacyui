@@ -22,6 +22,7 @@ import org.openmrs.PersonName;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.Verifies;
+import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -32,20 +33,28 @@ import java.util.List;
 import java.util.Set;
 
 public class ShortPatientFormValidatorTest extends BaseModuleWebContextSensitiveTest {
-	
+
+	// Resets the AddressSupport singleton (which caches a global property across tests)
+	// so PersonAddressValidator does not inherit required-element state from earlier tests.
+	private static final String EMPTY_REQUIRED_ELEMENTS_ADDRESS_TEMPLATE = "<org.openmrs.layout.address.AddressTemplate>"
+	        + "<nameMappings class=\"properties\"/>" + "<sizeMappings class=\"properties\"/>" + "<lineByLineFormat/>"
+	        + "<requiredElements/>" + "</org.openmrs.layout.address.AddressTemplate>";
+
 	ShortPatientFormValidator validator = null;
-	
+
 	PatientService ps = null;
-	
+
 	/**
 	 * Run this before each unit test in this class.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@BeforeEach
 	public void runBeforeAllTests() throws Exception {
 		validator = new ShortPatientFormValidator();
 		ps = Context.getPatientService();
+		Context.getAdministrationService().setGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_ADDRESS_TEMPLATE,
+		    EMPTY_REQUIRED_ELEMENTS_ADDRESS_TEMPLATE);
 	}
 	
 	/**
