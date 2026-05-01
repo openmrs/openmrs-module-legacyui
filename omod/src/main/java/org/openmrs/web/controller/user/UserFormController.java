@@ -47,11 +47,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * Used for creating/editing User
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.EDIT_USERS)
 public class UserFormController {
 	
 	protected static final Log log = LogFactory.getLog(UserFormController.class);

@@ -34,11 +34,14 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This is the controller for the relationshipTypeView.form page. It controls the way that
  * relationship types are viewed in openmrs.
  */
+@RequirePrivilege(PrivilegeConstants.MANAGE_RELATIONSHIP_TYPES)
 public class RelationshipTypeViewFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

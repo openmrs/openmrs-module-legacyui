@@ -64,11 +64,13 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * This class controls the encounter.form jsp page. See
  * /web/WEB-INF/view/admin/encounters/encounterForm.jsp
  */
+@RequirePrivilege(PrivilegeConstants.EDIT_ENCOUNTERS)
 public class EncounterFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

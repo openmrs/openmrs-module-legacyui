@@ -11,8 +11,11 @@ package org.openmrs.web.controller.provider;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_PROVIDERS)
 public class ManageProviderController {
 	
 	@RequestMapping(value = "admin/provider/index")

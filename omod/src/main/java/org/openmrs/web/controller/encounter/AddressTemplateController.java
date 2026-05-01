@@ -25,12 +25,15 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for managing {@link LocationTag}s
  */
 @Controller
 @SessionAttributes("addressTemplate")
+@RequirePrivilege(PrivilegeConstants.MANAGE_ADDRESS_TEMPLATES)
 public class AddressTemplateController {
 	
 	/**

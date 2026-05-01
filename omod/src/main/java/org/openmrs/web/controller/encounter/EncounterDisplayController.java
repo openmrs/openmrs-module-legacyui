@@ -33,11 +33,14 @@ import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This is the java controller for the /openmrs/admin/encounters/encounterDisplay.list page. The jsp
  * for this display popup is located at /web/WEB-INF/view/encounters/encounterDisplay.jsp
  */
+@RequirePrivilege(PrivilegeConstants.GET_ENCOUNTERS)
 public class EncounterDisplayController implements Controller {
 	
 	protected final Log log = LogFactory.getLog(getClass());

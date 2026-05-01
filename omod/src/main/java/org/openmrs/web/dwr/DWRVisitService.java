@@ -20,6 +20,8 @@ import org.openmrs.Visit;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
+import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * Contains methods for processing DWR requests for visits
@@ -40,6 +42,7 @@ public class DWRVisitService {
 	 * @see VisitListItem
 	 * @throws APIException
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_VISITS)
 	public Vector<Object> findVisitsByPatient(Integer patientId, boolean includeInactive, boolean includeVoided)
 	        throws APIException {
 		// List to return
@@ -79,6 +82,7 @@ public class DWRVisitService {
 	 * @return the {@link VisitListItem} for the matching visit
 	 * @throws APIException
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_VISITS)
 	public VisitListItem getVisit(Integer visitId) throws APIException {
 		Visit v = Context.getVisitService().getVisit(visitId);
 		return v == null ? null : new VisitListItem(v);
@@ -91,6 +95,7 @@ public class DWRVisitService {
 	 * @return list of encounters
 	 * @throws APIException
 	 */
+	@RequirePrivilege(value = { PrivilegeConstants.GET_VISITS, PrivilegeConstants.GET_ENCOUNTERS }, requireAll = true)
 	public Vector<Object> findEncountersByVisit(Integer visitId) throws APIException {
 		// List to return
 		Vector<Object> objectList = new Vector<Object>();

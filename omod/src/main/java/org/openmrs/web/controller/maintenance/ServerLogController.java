@@ -31,6 +31,8 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Get the log lines from the MEMORY_APPENDER appender of log4j as a String list and give it to the
@@ -38,6 +40,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * 
  * @see org.openmrs.util.MemoryAppender
  */
+@RequirePrivilege(PrivilegeConstants.VIEW_ADMIN_FUNCTIONS)
 public class ServerLogController extends SimpleFormController {
 	
 	protected final Log log = LogFactory.getLog(getClass());

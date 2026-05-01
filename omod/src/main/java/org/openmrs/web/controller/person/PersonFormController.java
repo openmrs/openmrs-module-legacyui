@@ -58,6 +58,8 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This class controls the generic person properties (address, name, attributes). The Patient and
@@ -65,6 +67,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * 
  * @see org.openmrs.web.controller.patient.PatientFormController
  */
+@RequirePrivilege(PrivilegeConstants.EDIT_PERSONS)
 public class PersonFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

@@ -34,11 +34,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Lists visits.
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.GET_VISITS)
 public class VisitListController {
 	
 	protected final Logger log = Logger.getLogger(getClass());

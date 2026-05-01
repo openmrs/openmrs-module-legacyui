@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This backs the maintenance/databaseChangesInfo.jsp page that lists off all changes that have been
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @see DatabaseUpdater
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.GET_DATABASE_CHANGES)
 public class DatabaseChangesInfoController {
 	
 	/**

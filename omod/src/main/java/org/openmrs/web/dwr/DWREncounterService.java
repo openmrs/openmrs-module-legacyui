@@ -23,6 +23,8 @@ import org.openmrs.api.EncounterService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
+import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.web.security.RequirePrivilege;
 import org.owasp.encoder.Encode;
 
 public class DWREncounterService {
@@ -38,6 +40,7 @@ public class DWREncounterService {
 	 * @return list of the matching encounters
 	 * @throws APIException
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_ENCOUNTERS)
 	public Vector findEncounters(String phrase, boolean includeVoided) throws APIException {
 		
 		return findBatchOfEncounters(phrase, includeVoided, null, null);
@@ -56,6 +59,7 @@ public class DWREncounterService {
 	 * @throws APIException
 	 * @since 1.8
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_ENCOUNTERS)
 	public Vector findBatchOfEncounters(String phrase, boolean includeVoided, Integer start, Integer length)
 	        throws APIException {
 		return findBatchOfEncountersByPatient(phrase, null, includeVoided, null, null);
@@ -77,6 +81,7 @@ public class DWREncounterService {
 	 * @since 1.10
 	 */
 	@SuppressWarnings("rawtypes")
+	@RequirePrivilege(PrivilegeConstants.GET_ENCOUNTERS)
 	public Vector findBatchOfEncountersByPatient(String phrase, Integer patientId, boolean includeVoided, Integer start,
 	        Integer length) throws APIException {
 		
@@ -146,6 +151,7 @@ public class DWREncounterService {
 	 * @since 1.8
 	 */
 	@SuppressWarnings("unchecked")
+	@RequirePrivilege(PrivilegeConstants.GET_ENCOUNTERS)
 	public Map<String, Object> findCountAndEncounters(String phrase, boolean includeVoided, Integer start, Integer length,
 	        boolean getMatchCount) throws APIException {
 		//Map to return
@@ -187,6 +193,7 @@ public class DWREncounterService {
 		return resultsMap;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_ENCOUNTERS)
 	public EncounterListItem getEncounter(Integer encounterId) {
 		EncounterService es = Context.getEncounterService();
 		Encounter e = es.getEncounter(encounterId);
@@ -194,6 +201,7 @@ public class DWREncounterService {
 		return e == null ? null : new EncounterListItem(e);
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_LOCATIONS)
 	public Vector findLocations(String searchValue) {
 		
 		return findBatchOfLocations(searchValue, false, null, null);
@@ -212,6 +220,7 @@ public class DWREncounterService {
 	 * @throws APIException
 	 * @since 1.8
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_LOCATIONS)
 	public Vector<Object> findBatchOfLocations(String searchValue, boolean includeRetired, Integer start, Integer length)
 	        throws APIException {
 		
@@ -240,6 +249,7 @@ public class DWREncounterService {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@RequirePrivilege(PrivilegeConstants.GET_LOCATIONS)
 	public Vector getLocations() {
 		
 		Vector locationList = new Vector();
@@ -263,6 +273,7 @@ public class DWREncounterService {
 		return locationList;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_LOCATIONS)
 	public LocationListItem getLocation(Integer locationId) {
 		LocationService ls = Context.getLocationService();
 		Location l = ls.getLocation(locationId);
@@ -284,6 +295,7 @@ public class DWREncounterService {
 	 * @throws APIException
 	 * @since 1.8
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_LOCATIONS)
 	public Map<String, Object> findCountAndLocations(String phrase, boolean includeRetired, Integer start, Integer length,
 	        boolean getMatchCount) throws APIException {
 		

@@ -48,6 +48,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * This is the controller for the "My Profile" page. This lets logged in users set personal
@@ -55,6 +56,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * 
  * @see OptionsForm
  */
+@RequirePrivilege
 public class OptionsFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

@@ -20,12 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Backs the localesAndThemes.jsp page to let the admin change the default locale, default theme,
  * etc
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_GLOBAL_PROPERTIES)
 public class LocalesAndThemesFormController {
 	
 	/**

@@ -44,7 +44,9 @@ import org.openmrs.module.legacyui.api.LegacyUIService;
 import org.openmrs.patient.IdentifierValidator;
 import org.openmrs.patient.UnallowedIdentifierException;
 import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebUtil;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * DWR patient methods. The methods in here are used in the webapp to get data from the database via
@@ -74,6 +76,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @should get results for patients that have edited themselves
 	 * @should logged in user should load their own patient object
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public Collection<Object> findPatients(String searchValue, boolean includeVoided) {
 		return findBatchOfPatients(searchValue, includeVoided, null, null);
 	}
@@ -94,6 +97,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @return Collection&lt;Object&gt; of PatientListItem or String
 	 * @since 1.8
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public Collection<Object> findBatchOfPatients(String searchValue, boolean includeVoided, Integer start, Integer length) {
 		if (maximumResults == null) {
 			setMaximumResults(getMaximumSearchResults());
@@ -176,6 +180,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @return a map of results
 	 * @throws APIException
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public Map<String, Object> findCountAndPatientsWithVoided(String searchValue, Integer start, Integer length,
 	        boolean getMatchCount, Boolean includeVoided) throws APIException {
 		
@@ -315,6 +320,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @should not signal for a new search if the new search value has no matches
 	 * @should match patient with identifiers that contain no digit
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public Map<String, Object> findCountAndPatients(String searchValue, Integer start, Integer length, boolean getMatchCount)
 	        throws APIException {
 		return findCountAndPatientsWithVoided(searchValue, start, length, getMatchCount, false);
@@ -327,6 +333,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @param patientId the {@link Patient#getPatientId()} to match on
 	 * @return a truncated Patient object in the form of a PatientListItem
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public PatientListItem getPatient(Integer patientId) {
 		PatientService ps = Context.getPatientService();
 		Patient p = ps.getPatient(patientId);
@@ -345,6 +352,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @param identifiers
 	 * @return list of patientListItems
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public Vector<Object> findPatientsByIdentifier(String[] identifiers) {
 		Vector<Object> patientList = new Vector<>();
 		for (String identifier : identifiers) {
@@ -362,6 +370,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @param searchOn
 	 * @return list of patientListItems
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public Vector<Object> findDuplicatePatients(String[] searchOn) {
 		Vector<Object> patientList = new Vector<Object>();
 		
@@ -396,6 +405,8 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @param identifierLocationId
 	 * @return empty string or, in case of an error, a message key for the error description
 	 */
+	@RequirePrivilege(value = { PrivilegeConstants.ADD_PATIENT_IDENTIFIERS,
+	        PrivilegeConstants.EDIT_PATIENTS }, requireAll = true)
 	public String addIdentifier(Integer patientId, String identifierType, String identifier, Integer identifierLocationId) {
 		
 		String ret = "";
@@ -480,6 +491,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @param otherReason
 	 * @return empty string or, in case of an error, a description of the error
 	 */
+	@RequirePrivilege(PrivilegeConstants.EDIT_PATIENTS)
 	public String exitPatientFromCare(Integer patientId, Integer exitReasonId, String exitDateStr,
 	        Integer causeOfDeathConceptId, String otherReason) {
 		log.debug("Entering exitfromcare with [" + patientId + "] [" + exitReasonId + "] [" + exitDateStr + "]");
@@ -618,6 +630,7 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @param locationId
 	 * @return empty string
 	 */
+	@RequirePrivilege(PrivilegeConstants.EDIT_PATIENTS)
 	public String changeHealthCenter(Integer patientId, Integer locationId) {
 		log.warn("Deprecated method in 'DWRPatientService.changeHealthCenter'");
 		

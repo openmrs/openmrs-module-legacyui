@@ -14,11 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This backs the maintenance/systemInfo.jsp page that lists off all the system information.
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.VIEW_ADMIN_FUNCTIONS)
 public class SystemInformationController {
 	
 	/**

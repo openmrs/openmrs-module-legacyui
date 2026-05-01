@@ -29,12 +29,15 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for editing visit types.
  * 
  * @since 1.9
  */
+@RequirePrivilege(PrivilegeConstants.MANAGE_VISIT_TYPES)
 public class VisitTypeFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

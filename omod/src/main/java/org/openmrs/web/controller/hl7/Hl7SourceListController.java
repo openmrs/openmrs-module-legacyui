@@ -23,11 +23,14 @@ import org.openmrs.hl7.HL7Source;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This is the controlling class for hl7SourceList.jsp page. It initBinder and formBackingObject are
  * called before page load
  */
+@RequirePrivilege(PrivilegeConstants.GET_HL7_SOURCE)
 public class Hl7SourceListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

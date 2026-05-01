@@ -52,11 +52,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * Controller that backs the /admin/modules/modules.list page. This controller makes a list of
  * modules available and lets the user start, stop, and unload modules one at a time.
  */
+@RequirePrivilege(PrivilegeConstants.MANAGE_MODULES)
 public class ModuleListController extends SimpleFormController {
 	
 	/**

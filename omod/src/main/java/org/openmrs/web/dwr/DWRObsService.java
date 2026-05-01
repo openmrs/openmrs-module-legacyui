@@ -30,6 +30,8 @@ import org.openmrs.Person;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  *
@@ -44,6 +46,7 @@ public class DWRObsService {
 	 * @param obsId
 	 * @param reason
 	 */
+	@RequirePrivilege(PrivilegeConstants.EDIT_OBS)
 	public void voidObservation(Integer obsId, String reason) {
 		Obs obs = Context.getObsService().getObs(obsId);
 		if (obs == null) {
@@ -62,6 +65,7 @@ public class DWRObsService {
 	 * @param encounterId
 	 * @return list of observations
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_OBS)
 	public Vector<Object> getObservations(Integer encounterId) {
 		
 		log.info("Get observations for encounter " + encounterId);
@@ -97,6 +101,7 @@ public class DWRObsService {
 	 * @param valueText
 	 * @param obsDateStr
 	 */
+	@RequirePrivilege(PrivilegeConstants.ADD_OBS)
 	public void createObs(Integer personId, Integer encounterId, Integer conceptId, String valueText, String obsDateStr)
 	        throws Exception {
 		createNewObs(personId, encounterId, null, conceptId, valueText, obsDateStr);
@@ -112,6 +117,7 @@ public class DWRObsService {
 	 * @param valueText
 	 * @param obsDateStr
 	 */
+	@RequirePrivilege(PrivilegeConstants.ADD_OBS)
 	public void createNewObs(Integer personId, Integer encounterId, Integer locationId, Integer conceptId, String valueText,
 	        String obsDateStr) throws Exception {
 		
@@ -271,6 +277,7 @@ public class DWRObsService {
 	 * @param encounterId
 	 * @return list of obs items
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_OBS)
 	public Vector<ObsListItem> getObsByPatientConceptEncounter(String personId, String conceptId, String encounterId) {
 		log.debug("Started with: [" + personId + "] [" + conceptId + "] [" + encounterId + "]");
 		
@@ -334,6 +341,7 @@ public class DWRObsService {
 	 * @param obsId
 	 * @return list item or null
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_OBS)
 	public ObsListItem getObs(Integer obsId) {
 		Obs o = null;
 		if (obsId != null) {

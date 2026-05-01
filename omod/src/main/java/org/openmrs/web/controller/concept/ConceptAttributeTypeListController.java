@@ -13,6 +13,8 @@ import org.openmrs.api.context.Context;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for listing all concept attribute types.
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2.0
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPT_ATTRIBUTE_TYPES)
 public class ConceptAttributeTypeListController {
 	
 	/**

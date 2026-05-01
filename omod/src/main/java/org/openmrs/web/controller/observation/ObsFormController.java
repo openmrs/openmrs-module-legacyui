@@ -55,11 +55,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This controller gives the backing object and does the saving for the obs.form page. The jsp for
  * this page is located in /web/WEB-INF/view/admin/observations/obsForm.jsp
  */
+@RequirePrivilege(PrivilegeConstants.EDIT_OBS)
 public class ObsFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

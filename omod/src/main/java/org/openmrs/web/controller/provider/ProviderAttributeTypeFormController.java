@@ -32,12 +32,15 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for editing visit attribute types.
  * 
  * @since 1.9
  */
+@RequirePrivilege(value = { PrivilegeConstants.MANAGE_PROVIDERS,PrivilegeConstants.PURGE_PROVIDERS }, requireAll = true)
 public class ProviderAttributeTypeFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */
