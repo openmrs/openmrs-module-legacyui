@@ -32,6 +32,8 @@ public class WebMediaHandler extends MediaHandler {
 	
 	/** Views supported by this handler */
 	private static final String[] supportedViews = { ComplexObsHandler.URI_VIEW, ComplexObsHandler.HTML_VIEW, };
+
+	private String[] runtimeSupportedViews = null;
 	
 	/**
 	 * Default Constructor
@@ -90,11 +92,13 @@ public class WebMediaHandler extends MediaHandler {
 	 */
 	@Override
 	public String[] getSupportedViews() {
-		List view_list = new ArrayList(Arrays.asList(supportedViews));
-		view_list.addAll(Arrays.asList(super.getSupportedViews()));
-		String[] views = new String[view_list.size()];
-		view_list.toArray(views);
-		return views;
+		if (runtimeSupportedViews == null) {
+			String[] baseSupportedViews = super.getSupportedViews();
+			runtimeSupportedViews = new String[supportedViews.length + baseSupportedViews.length];
+			System.arraycopy(supportedViews, 0, runtimeSupportedViews, 0, supportedViews.length);
+			System.arraycopy(baseSupportedViews, 0, runtimeSupportedViews, supportedViews.length, baseSupportedViews.length);
+		}
+		return runtimeSupportedViews;
 	}
 	
 }

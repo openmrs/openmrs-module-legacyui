@@ -47,11 +47,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller class for creating, editing, deleting, restoring and purging a visit
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.EDIT_VISITS)
 public class VisitFormController {
 	
 	private static final Log log = LogFactory.getLog(VisitFormController.class);

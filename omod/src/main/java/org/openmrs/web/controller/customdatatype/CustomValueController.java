@@ -27,11 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * Controller for accessing custom datatype values
  */
 @Controller
+@RequirePrivilege
 public class CustomValueController {
 	
 	private final Log log = LogFactory.getLog(getClass());

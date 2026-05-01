@@ -36,7 +36,10 @@ import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.MANAGE_ROLES)
 public class RoleListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

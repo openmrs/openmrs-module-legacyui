@@ -29,11 +29,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Shows the location hierarchy, in tree form
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_LOCATION_TAGS)
 public class HierarchyController {
 	
 	@RequestMapping("/admin/locations/hierarchy.list")

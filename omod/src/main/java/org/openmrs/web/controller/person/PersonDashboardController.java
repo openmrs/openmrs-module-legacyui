@@ -17,10 +17,13 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  *
  */
+@RequirePrivilege(PrivilegeConstants.GET_PERSONS)
 public class PersonDashboardController extends SimpleFormController {
 	
 	protected final Log log = LogFactory.getLog(getClass());

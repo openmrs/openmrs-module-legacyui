@@ -20,45 +20,42 @@ import org.openmrs.contrib.dwr.WebContextFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.notification.MessageService;
 import org.openmrs.notification.NotificationConstants;
+import org.openmrs.web.security.RequirePrivilege;
 
 public class DWRMessageService {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
+	@RequirePrivilege
 	public boolean sendFeedback(String sender, String subject, String content) {
-		
+
 		HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
-		
-		if (!Context.isAuthenticated()) {
-			try {
-				MessageService messageService = Context.getMessageService();
-				
-				String recipients = NotificationConstants.FEEDBACK_EMAIL_ADDRESS;
-				if (StringUtils.isEmpty(subject)) {
-					subject = NotificationConstants.FEEDBACK_EMAIL_SUBJECT;
-				}
-				
-				String referer = request.getPathTranslated();
-				String userName = "an Anonymous User";
-				if (Context.isAuthenticated()) {
-					userName = Context.getAuthenticatedUser().getPersonName().getFullName();
-				}
-				
-				content += "\n\n This email sent from: " + referer + " by: " + userName;
-				
-				messageService.sendMessage(recipients, sender, subject, content);
-				
-				return true;
-				
+
+		try {
+			MessageService messageService = Context.getMessageService();
+
+			String recipients = NotificationConstants.FEEDBACK_EMAIL_ADDRESS;
+			if (StringUtils.isEmpty(subject)) {
+				subject = NotificationConstants.FEEDBACK_EMAIL_SUBJECT;
 			}
-			catch (Exception e) {
-				log.error("Error sending feedback", e);
-			}
+
+			String referer = request.getPathTranslated();
+			String userName = Context.getAuthenticatedUser().getPersonName().getFullName();
+
+			content += "\n\n This email sent from: " + referer + " by: " + userName;
+
+			messageService.sendMessage(recipients, sender, subject, content);
+
+			return true;
 		}
-		
+		catch (Exception e) {
+			log.error("Error sending feedback", e);
+		}
+
 		return false;
 	}
 	
+	@RequirePrivilege
 	public Vector<Object> sendMessage(String recipients, String sender, String subject, String content) {
 		
 		// List to return

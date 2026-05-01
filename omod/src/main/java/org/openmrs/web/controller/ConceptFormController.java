@@ -90,6 +90,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * This is the controlling class for the conceptForm.jsp page. It initBinder and formBackingObject
@@ -98,6 +99,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * 
  * @see org.openmrs.Concept
  */
+@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPTS)
 public class ConceptFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

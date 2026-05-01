@@ -22,12 +22,15 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller used to merge duplicate fields
  * <p>
  * This class calls the FormService's mergeDuplicateFields
  */
+@RequirePrivilege(PrivilegeConstants.MANAGE_FORMS)
 public class AuditFieldController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

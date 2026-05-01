@@ -23,13 +23,16 @@ import org.openmrs.Relationship;
 import org.openmrs.RelationshipType;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.validator.RelationshipValidator;
+import org.openmrs.web.security.RequirePrivilege;
 import org.springframework.validation.MapBindingResult;
 
 public class DWRRelationshipService {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
+	@RequirePrivilege(PrivilegeConstants.ADD_RELATIONSHIPS)
 	public String[] createRelationship(Integer personAId, Integer personBId, Integer relationshipTypeId, String startDateStr)
 	        throws Exception {
 		PersonService ps = Context.getPersonService();
@@ -56,10 +59,12 @@ public class DWRRelationshipService {
 		return errmsgs;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.EDIT_RELATIONSHIPS)
 	public void voidRelationship(Integer relationshipId, String voidReason) {
 		Context.getPersonService().voidRelationship(Context.getPersonService().getRelationship(relationshipId), voidReason);
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.EDIT_RELATIONSHIPS)
 	public boolean changeRelationshipDates(Integer relationshipId, String startDateStr, String endDateStr) throws Exception {
 		Relationship r = Context.getPersonService().getRelationship(relationshipId);
 		Date startDate = null;
@@ -83,6 +88,7 @@ public class DWRRelationshipService {
 		}
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_RELATIONSHIPS)
 	public Vector<RelationshipListItem> getRelationships(Integer personId, Integer relationshipTypeId) {
 		// hack to make sure other relationships aren't still hanging around
 		Context.clearSession();

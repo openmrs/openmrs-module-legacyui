@@ -14,7 +14,10 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.EDIT_USERS)
 public class UserController extends SimpleFormController {
 	
 	/**

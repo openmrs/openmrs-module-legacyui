@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This class controls the encounter.form jsp page. See
@@ -40,6 +42,7 @@ import static org.springframework.util.StringUtils.hasText;
  */
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_ENCOUNTER_ROLES)
 public class EncounterRoleFormController {
 	
 	/**

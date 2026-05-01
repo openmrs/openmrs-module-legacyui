@@ -25,7 +25,9 @@ import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebUtil;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * A collection of methods used by DWR for access users. These methods are similar to the
@@ -46,6 +48,7 @@ public class DWRUserService {
 	 * @return list of {@link UserListItem}s (or String warning message if none found)
 	 */
 	@SuppressWarnings("unchecked")
+	@RequirePrivilege(PrivilegeConstants.GET_USERS)
 	public Collection<UserListItem> findUsers(String searchValue, List<String> rolesStrings, boolean includeVoided) {
 		
 		Vector userList = new Vector();
@@ -87,6 +90,7 @@ public class DWRUserService {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@RequirePrivilege(PrivilegeConstants.GET_USERS)
 	public Collection<UserListItem> getAllUsers(List<String> roleStrings, boolean includeVoided) {
 		
 		Vector userList = new Vector();
@@ -141,6 +145,7 @@ public class DWRUserService {
 	 * @param userId
 	 * @return found user item or, if the current user is not authenticated, a dummy user object
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_USERS)
 	public UserListItem getUser(Integer userId) {
 		UserListItem user = new UserListItem();
 		

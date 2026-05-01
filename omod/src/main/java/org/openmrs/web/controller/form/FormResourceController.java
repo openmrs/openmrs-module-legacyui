@@ -29,11 +29,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for listing resources on a form, and adding and deleting them
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_FORMS)
 public class FormResourceController {
 	
 	protected final Log log = LogFactory.getLog(getClass());

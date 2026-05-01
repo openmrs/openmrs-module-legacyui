@@ -24,11 +24,14 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for the page that shows an administrator's view of all a patients observations
  * (possibly only for a specified concept)
  */
+@RequirePrivilege(PrivilegeConstants.EDIT_OBS)
 public class PersonObsFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

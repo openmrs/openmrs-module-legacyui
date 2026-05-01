@@ -13,11 +13,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * This controller is left around only so that a message can be displayed where the old Manage Tribe
  * link was. This controller will be removed in the next version.
  */
+@RequirePrivilege("Manage Tribes")
 public class TribeFormController extends SimpleFormController {
 	
 	/**

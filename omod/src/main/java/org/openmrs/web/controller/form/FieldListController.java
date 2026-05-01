@@ -14,7 +14,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 public class FieldListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

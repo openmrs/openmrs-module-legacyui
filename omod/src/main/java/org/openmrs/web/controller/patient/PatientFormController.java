@@ -53,6 +53,7 @@ import org.openmrs.validator.PatientIdentifierValidator;
 import org.openmrs.validator.PatientValidator;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.controller.person.PersonFormController;
+import org.openmrs.web.security.RequirePrivilege;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
@@ -70,6 +71,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * 
  * @see org.openmrs.web.controller.person.PersonFormController
  */
+@RequirePrivilege(PrivilegeConstants.EDIT_PATIENTS)
 public class PatientFormController extends PersonFormController {
 	
 	/** Logger for this class and subclasses */

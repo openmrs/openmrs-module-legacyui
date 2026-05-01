@@ -24,6 +24,7 @@
 		<property name="interceptors">
 			<list>
 				<ref bean="localeChangeInterceptor" />
+				<ref bean="legacyUiAuthorizationInterceptor" />
 			</list>
 		</property>
 		<property name="order" value="100"/>
@@ -901,6 +902,34 @@
 	<bean id="localeChangeInterceptor"
 		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 		<property name="paramName" value="lang"/>
+	</bean>
+
+	<bean id="legacyUiAuthorizationInterceptor"
+		class="org.openmrs.web.security.AuthorizationHandlerInterceptor"/>
+
+	<!--
+		Wraps the interceptor as a MappedInterceptor so the annotation-driven
+		RequestMappingHandlerMapping (used by legacyui's @Controller classes) picks it up.
+		Patterns are scoped to the URL prefixes legacyui owns - matching the JSP/webapp
+		directory layout - so the interceptor does not run on URLs served by other modules.
+	-->
+	<bean class="org.springframework.web.servlet.handler.MappedInterceptor">
+		<constructor-arg name="includePatterns">
+			<array>
+				<value>/admin/**</value>
+				<value>/dictionary/**</value>
+				<value>/encounters/**</value>
+				<value>/portlets/**</value>
+				<value>/q/**</value>
+				<value>/remotecommunication/**</value>
+				<value>/template/**</value>
+				<value>/options.form</value>
+				<value>/personDashboard.form</value>
+				<value>/patientDashboard.form</value>
+				<value>/forgotPassword.form</value>
+			</array>
+		</constructor-arg>
+		<constructor-arg name="interceptor" ref="legacyUiAuthorizationInterceptor"/>
 	</bean>
 	
 	<bean class="org.openmrs.web.CopyLegacyUiContentToWebInf" />

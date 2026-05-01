@@ -29,7 +29,10 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPT_SOURCES)
 public class ConceptSourceListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

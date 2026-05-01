@@ -41,7 +41,10 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.EDIT_PATIENTS)
 public class MergePatientsFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

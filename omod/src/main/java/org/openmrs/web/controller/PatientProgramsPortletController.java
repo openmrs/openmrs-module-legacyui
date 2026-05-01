@@ -17,7 +17,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.openmrs.Location;
 import org.openmrs.Program;
 import org.openmrs.api.context.Context;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)
 public class PatientProgramsPortletController extends PortletController {
 	
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {

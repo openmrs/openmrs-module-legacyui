@@ -16,7 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.openmrs.RelationshipType;
 import org.openmrs.api.context.Context;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.GET_RELATIONSHIPS)
 public class PersonRelationshipsPortletController extends PortletController {
 	
 	/**

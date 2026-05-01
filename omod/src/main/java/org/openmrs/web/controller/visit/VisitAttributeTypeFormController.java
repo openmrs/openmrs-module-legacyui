@@ -32,6 +32,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for editing visit attribute types.
@@ -39,6 +41,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * @since 1.9
  */
 @SuppressWarnings("deprecation")
+@RequirePrivilege(value = { PrivilegeConstants.MANAGE_VISIT_ATTRIBUTE_TYPES,PrivilegeConstants.PURGE_VISIT_ATTRIBUTE_TYPES }, requireAll = true)
 public class VisitAttributeTypeFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

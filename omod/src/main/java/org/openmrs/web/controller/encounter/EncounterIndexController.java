@@ -11,8 +11,11 @@ package org.openmrs.web.controller.encounter;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.GET_ENCOUNTERS)
 public class EncounterIndexController {
 	
 	@RequestMapping(value = "admin/encounters/index")

@@ -27,8 +27,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.EDIT_USERS)
 public class UserListController {
 	
 	/** Logger for this class and subclasses */

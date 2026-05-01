@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    This Source Code Form is subject to the terms of the Mozilla Public License,
+    v. 2.0. If a copy of the MPL was not distributed with this file, You can
+    obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+    the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+
+    Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+    graphic logo is a trademark of OpenMRS Inc.
+
+-->
+<dataset>
+  <person person_id="507" gender="M" dead="false" creator="1" date_created="2008-08-15 15:46:47.0" voided="false" uuid="f9a0e5a0-1234-4444-8888-aaaaaaaaaaaa"/>
+  <person_name person_name_id="507" preferred="true" person_id="507" given_name="Limited" middle_name=" " family_name="User" creator="1" date_created="2008-08-15 15:46:47.0" voided="false" uuid="0e5a0f9a-1234-4444-8888-bbbbbbbbbbbb"/>
+  <users user_id="507" person_id="507" system_id="507-7" username="limiteduser" password="4a1750c8607d0fa237de36c6305715c223415189" salt="c788c6ad82a157b712392ca695dfcf2eed193d7f" secret_question="" creator="1" date_created="2008-08-15 15:57:09.0" changed_by="1" date_changed="2008-08-18 11:51:56.0" retired="false" retire_reason="" uuid="aaaa0e5a-1234-4444-8888-cccccccccccc"/>
+
+  <privilege name="Get HL7 Source" privilege="Get HL7 Source" description="Able to view HL7 sources" uuid="bbbb0e5a-1234-4444-8888-aaaaaaaa1111" creator="1" retired="false" date_created="2008-08-15 15:46:47.0"/>
+
+  <person person_id="508" gender="F" dead="false" creator="1" date_created="2008-08-15 15:46:47.0" voided="false" uuid="f9a0e5a0-1234-4444-8888-dddddddddddd"/>
+  <person_name person_name_id="508" preferred="true" person_id="508" given_name="HL7" middle_name=" " family_name="Reader" creator="1" date_created="2008-08-15 15:46:47.0" voided="false" uuid="0e5a0f9a-1234-4444-8888-eeeeeeeeeeee"/>
+  <users user_id="508" person_id="508" system_id="508-3" username="hl7reader" password="4a1750c8607d0fa237de36c6305715c223415189" salt="c788c6ad82a157b712392ca695dfcf2eed193d7f" secret_question="" creator="1" date_created="2008-08-15 15:57:09.0" changed_by="1" date_changed="2008-08-18 11:51:56.0" retired="false" retire_reason="" uuid="aaaa0e5a-1234-4444-8888-ffffffffffff"/>
+
+  <role role="HL7 Reader" description="Can view HL7 sources but not modify them" uuid="bbbb0e5a-1234-4444-8888-111111111111"/>
+  <role_privilege role="HL7 Reader" privilege="Get HL7 Source"/>
+  <user_role user_id="508" role="HL7 Reader"/>
+</dataset>

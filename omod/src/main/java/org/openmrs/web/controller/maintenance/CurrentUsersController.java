@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * Display the current users logged in the system.
@@ -29,6 +30,7 @@ import java.util.List;
  * @see LoginServlet
  * @see org.openmrs.web.SessionListener
  */
+@RequirePrivilege(PrivilegeConstants.VIEW_ADMIN_FUNCTIONS)
 public class CurrentUsersController extends SimpleFormController {
 	
 	protected final Log log = LogFactory.getLog(getClass());

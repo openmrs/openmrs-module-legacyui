@@ -34,9 +34,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 @Controller
 @RequestMapping("/admin/provider/provider.form")
+@RequirePrivilege(PrivilegeConstants.MANAGE_PROVIDERS)
 public class ProviderFormController {
 	
 	protected final Log log = LogFactory.getLog(getClass());

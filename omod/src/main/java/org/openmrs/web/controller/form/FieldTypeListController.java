@@ -29,7 +29,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Vector;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.MANAGE_FIELD_TYPES)
 public class FieldTypeListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

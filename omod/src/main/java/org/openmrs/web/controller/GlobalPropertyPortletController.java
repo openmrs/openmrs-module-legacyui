@@ -17,6 +17,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Parameters to specify: * 'propertyPrefix' will limit to only global properties starting with that
@@ -27,6 +29,7 @@ import org.openmrs.api.context.Context;
  * 'title' will display that title * 'showHeader' whether or not to show a header row in the table
  * (default true) Values put in the model: * 'properties' -&gt; List&lt;GlobalProperty&gt;
  */
+@RequirePrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES)
 public class GlobalPropertyPortletController extends PortletController {
 	
 	/**

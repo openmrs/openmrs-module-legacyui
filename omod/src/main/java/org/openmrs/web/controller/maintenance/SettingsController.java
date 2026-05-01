@@ -36,11 +36,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Allows to manage settings.
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_GLOBAL_PROPERTIES)
 public class SettingsController {
 	
 	protected final Logger log = Logger.getLogger(getClass());

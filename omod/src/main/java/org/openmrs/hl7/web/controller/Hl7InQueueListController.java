@@ -29,8 +29,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.GET_HL7_IN_QUEUE)
 public class Hl7InQueueListController {
 	
 	/**

@@ -37,8 +37,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.EDIT_PATIENT_PROGRAMS)
 public class PatientProgramFormController {
 	
 	protected final Log log = LogFactory.getLog(getClass());

@@ -15,11 +15,14 @@ import org.openmrs.hl7.Hl7InArchivesMigrateThread;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Processes requests for the page for managing the hl7InArchive migration
  */
 @Controller
+@RequirePrivilege(value = { PrivilegeConstants.GET_HL7_IN_ARCHIVE,PrivilegeConstants.PRIV_PURGE_HL7_IN_ARCHIVE,PrivilegeConstants.PRIV_ADD_HL7_IN_QUEUE }, requireAll = true)
 public class Hl7InArchiveMigrationController {
 	
 	/**

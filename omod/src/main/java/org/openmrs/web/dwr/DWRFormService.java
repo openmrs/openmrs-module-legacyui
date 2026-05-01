@@ -31,7 +31,9 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.FormService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.FormUtil;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebUtil;
+import org.openmrs.web.security.RequirePrivilege;
 import org.owasp.encoder.Encode;
 
 /**
@@ -50,6 +52,7 @@ public class DWRFormService {
 	 * @param includeUnpublished true/false whether to include unpublished forms
 	 * @return list of {@link FormListItem}s
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 	public List<FormListItem> findForms(String text, boolean includeUnpublished) {
 		List<FormListItem> forms = new Vector<FormListItem>();
 		
@@ -67,6 +70,7 @@ public class DWRFormService {
 	 * @param includeUnpublished true/false to include unpublished forms
 	 * @return list of {@link FormListItem}s
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 	public List<FormListItem> getForms(boolean includeUnpublished) {
 		List<FormListItem> formListItems = new Vector<FormListItem>();
 		
@@ -80,6 +84,7 @@ public class DWRFormService {
 		return formListItems;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 	public Field getField(Integer fieldId) {
 		Field f;
 		FormService fs = Context.getFormService();
@@ -87,6 +92,7 @@ public class DWRFormService {
 		return f;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 	public FormFieldListItem getFormField(Integer formFieldId) {
 		FormField f;
 		FormService fs = Context.getFormService();
@@ -94,6 +100,7 @@ public class DWRFormService {
 		return new FormFieldListItem(f, Context.getLocale());
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 	public List<FormFieldListItem> getFormFields(Integer formId) {
 		List<FormFieldListItem> formFields = new Vector<FormFieldListItem>();
 		Form form = Context.getFormService().getForm(formId);
@@ -103,6 +110,7 @@ public class DWRFormService {
 		return formFields;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 	public List<FieldListItem> findFields(String txt) {
 		List<FieldListItem> fields = new Vector<FieldListItem>();
 		
@@ -123,6 +131,7 @@ public class DWRFormService {
 		return fields;
 	}
 	
+	@RequirePrivilege(value = { PrivilegeConstants.GET_FORMS, PrivilegeConstants.GET_CONCEPTS }, requireAll = true)
 	public List<Object> findFieldsAndConcepts(String txt) {
 		Locale locale = Context.getLocale();
 		
@@ -189,12 +198,14 @@ public class DWRFormService {
 		return objects;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 	public String getJSTree(Integer formId) {
 		Form form = Context.getFormService().getForm(formId);
 		Map<Integer, TreeSet<FormField>> formFields = FormUtil.getFormStructure(form);
 		return generateJSTree(formFields, 0, Context.getLocale());
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.MANAGE_FORMS)
 	public Integer[] saveFormField(Integer fieldId, String name, String fieldDesc, Integer fieldTypeId, Integer conceptId,
 	        String table, String attr, String defaultValue, boolean multiple, Integer formFieldId, Integer formId,
 	        Integer parent, Integer number, String part, Integer page, Integer min, Integer max, boolean required,
@@ -265,6 +276,7 @@ public class DWRFormService {
 		return arr;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.MANAGE_FORMS)
 	public void deleteFormField(Integer id) {
 		if (Context.isAuthenticated()) {
 			Context.getFormService().purgeFormField(Context.getFormService().getFormField(id));

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.Controller;
 /**
  * Redirects the request to the given <code>formView</code>
  */
+@SuppressWarnings("unused")
 public class RedirectController implements Controller {
 	
 	private String redirectView = "";

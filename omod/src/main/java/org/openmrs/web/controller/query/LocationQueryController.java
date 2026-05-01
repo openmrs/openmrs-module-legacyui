@@ -26,11 +26,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This class contains ajax-accessible queries relating to Locations
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.GET_LOCATIONS)
 public class LocationQueryController {
 	
 	@RequestMapping("/q/locationHierarchy")

@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This is the controlling class for the conceptStopWordForm.jsp page. This class used to add a new
@@ -37,6 +39,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  */
 @Controller
 @RequestMapping(value = "admin/concepts/conceptStopWord.form")
+@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPT_STOP_WORDS)
 public class ConceptStopWordFormController {
 	
 	/**

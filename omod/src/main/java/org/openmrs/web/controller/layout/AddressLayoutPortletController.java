@@ -13,7 +13,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.layout.LayoutSupport;
 import org.openmrs.layout.address.AddressSupport;
+import org.openmrs.web.security.RequirePrivilege;
 
+@RequirePrivilege
 public class AddressLayoutPortletController extends LayoutPortletController {
 	
 	private static Log log = LogFactory.getLog(AddressLayoutPortletController.class);

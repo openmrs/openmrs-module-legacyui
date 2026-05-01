@@ -25,12 +25,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * controller for the HL7 archives list view; only displays HL7s that have not been migrated to the
  * filesystem
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.GET_HL7_IN_ARCHIVE)
 public class Hl7InArchiveListController {
 	
 	/**

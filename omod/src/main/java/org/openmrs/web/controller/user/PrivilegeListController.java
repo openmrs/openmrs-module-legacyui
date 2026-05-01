@@ -32,7 +32,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.MANAGE_PRIVILEGES)
 public class PrivilegeListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

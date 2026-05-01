@@ -35,7 +35,10 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.ADD_CONCEPT_PROPOSALS)
 public class ProposeConceptFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

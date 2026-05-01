@@ -26,11 +26,14 @@ import org.openmrs.module.Extension.MEDIA_TYPE;
 import org.openmrs.module.web.FormEntryContext;
 import org.openmrs.module.web.extension.FormEntryHandler;
 import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for the PersonFormEntry portlet Provides a map telling which url to hit to enter each
  * form
  */
+@RequirePrivilege(PrivilegeConstants.GET_FORMS)
 public class PersonFormEntryPortletController extends PortletController {
 	
 	/**

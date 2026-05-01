@@ -25,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Collection;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPT_ATTRIBUTE_TYPES)
 public class ConceptAttributeTypeFormController {
 	
 	private static final String CONCEPT_ATTRIBUTE_TYPES_LIST_URL = "redirect:/admin/concepts/conceptAttributeTypes.list";

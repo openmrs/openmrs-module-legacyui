@@ -29,6 +29,8 @@ import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.ProgramWorkflowService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.web.security.RequirePrivilege;
 
 public class DWRProgramWorkflowService {
 	
@@ -36,10 +38,12 @@ public class DWRProgramWorkflowService {
 	
 	DateFormat ymdDf = new SimpleDateFormat("yyyy-MM-dd");
 	
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)
 	public PatientProgramItem getPatientProgram(Integer patientProgramId) {
 		return new PatientProgramItem(Context.getProgramWorkflowService().getPatientProgram(patientProgramId));
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_PROGRAMS)
 	public Vector<ListItem> getPossibleOutcomes(Integer programId) {
 		Vector<ListItem> ret = new Vector<ListItem>();
 		List<Concept> possibleOutcomes = Context.getProgramWorkflowService().getPossibleOutcomes(programId);
@@ -52,6 +56,7 @@ public class DWRProgramWorkflowService {
 		return ret;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)
 	public Vector<PatientStateItem> getPatientStates(Integer patientProgramId, Integer programWorkflowId) {
 		Vector<PatientStateItem> ret = new Vector<PatientStateItem>();
 		ProgramWorkflowService s = Context.getProgramWorkflowService();
@@ -63,6 +68,7 @@ public class DWRProgramWorkflowService {
 		return ret;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_PROGRAMS)
 	public Vector<ListItem> getWorkflowsByProgram(Integer programId) {
 		Vector<ListItem> ret = new Vector<ListItem>();
 		Program program = Context.getProgramWorkflowService().getProgram(programId);
@@ -122,6 +128,7 @@ public class DWRProgramWorkflowService {
 		return workflow;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_PROGRAMS)
 	public Vector<ListItem> getStatesByWorkflow(String workflowLookup) {
 		log.debug("In getStatesByWorkflow with workflow uuid of " + workflowLookup);
 		Vector<ListItem> ret = new Vector<ListItem>();
@@ -173,6 +180,7 @@ public class DWRProgramWorkflowService {
 	 * @param outcomeId
 	 * @throws ParseException
 	 */
+	@RequirePrivilege(PrivilegeConstants.EDIT_PATIENT_PROGRAMS)
 	public void updatePatientProgram(Integer patientProgramId, String enrollmentDateYmd, String completionDateYmd,
 	        Integer locationId, Integer outcomeId) throws ParseException {
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
@@ -230,6 +238,7 @@ public class DWRProgramWorkflowService {
 		}
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.EDIT_PATIENT_PROGRAMS)
 	public void deletePatientProgram(Integer patientProgramId, String reason) {
 		PatientProgram p = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		Context.getProgramWorkflowService().voidPatientProgram(p, reason);
@@ -238,6 +247,7 @@ public class DWRProgramWorkflowService {
 	/**
 	 * @should return a list consisting of active, not retired, states.
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)
 	public Vector<ListItem> getPossibleNextStates(Integer patientProgramId, Integer programWorkflowId) {
 		Vector<ListItem> ret = new Vector<ListItem>();
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
@@ -256,6 +266,7 @@ public class DWRProgramWorkflowService {
 	
 	//TODO there doesn't seem to be any way in the administrator interface to retire a state, just a concept.
 	
+	@RequirePrivilege(PrivilegeConstants.EDIT_PATIENT_PROGRAMS)
 	public void changeToState(Integer patientProgramId, Integer programWorkflowId, Integer programWorkflowStateId,
 	        String onDateDMY) throws ParseException {
 		ProgramWorkflowService s = Context.getProgramWorkflowService();
@@ -269,6 +280,7 @@ public class DWRProgramWorkflowService {
 		s.savePatientProgram(pp);
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.EDIT_PATIENT_PROGRAMS)
 	public void voidLastState(Integer patientProgramId, Integer programWorkflowId, String voidReason) {
 		ProgramWorkflowService s = Context.getProgramWorkflowService();
 		PatientProgram pp = s.getPatientProgram(patientProgramId);

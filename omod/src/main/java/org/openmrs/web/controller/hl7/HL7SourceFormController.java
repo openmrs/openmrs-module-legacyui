@@ -20,7 +20,9 @@ import org.openmrs.hl7.HL7Source;
 import org.openmrs.api.APIException;
 import org.openmrs.hl7.HL7Service;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
+import org.openmrs.web.security.RequirePrivilege;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindException;
@@ -34,6 +36,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * called before page load. After submission,The onSubmit function receives the form/command object
  * that was modified by the input form and saves it to the db
  */
+@RequirePrivilege(PrivilegeConstants.PRIV_UPDATE_HL7_SOURCE)
 public class HL7SourceFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

@@ -16,6 +16,8 @@ import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.api.context.Context;
 import org.openmrs.hl7.Hl7InArchivesMigrateThread;
 import org.openmrs.hl7.Hl7InArchivesMigrateThread.Status;
+import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * DWR archive migration methods. The methods in here are used in the webapp to start and stop the
@@ -36,6 +38,9 @@ public class DWRHL7Service {
 	 * @return an object array with a boolean value at index 0 indicating if the migration was
 	 *         started or not, at the second index is an optional descriptive message.
 	 */
+	@RequirePrivilege(value = { PrivilegeConstants.GET_HL7_IN_ARCHIVE,
+	        PrivilegeConstants.PRIV_PURGE_HL7_IN_ARCHIVE,
+	        PrivilegeConstants.PRIV_ADD_HL7_IN_QUEUE }, requireAll = true)
 	public Object[] startHl7ArchiveMigration(Integer daysToKeep) {
 		if (Hl7InArchivesMigrateThread.isActive()) {
 			return new Object[] { false,
@@ -62,6 +67,9 @@ public class DWRHL7Service {
 	 * 
 	 * @return a descriptive message
 	 */
+	@RequirePrivilege(value = { PrivilegeConstants.GET_HL7_IN_ARCHIVE,
+	        PrivilegeConstants.PRIV_PURGE_HL7_IN_ARCHIVE,
+	        PrivilegeConstants.PRIV_ADD_HL7_IN_QUEUE }, requireAll = true)
 	public String stopHl7ArchiveMigration() {
 		Hl7InArchivesMigrateThread.stopMigration();
 		setHl7MigrationThread(null);
@@ -74,6 +82,9 @@ public class DWRHL7Service {
 	 * @return a map containing the number migrated, the state of the migrate thread at a given time
 	 *         when it is running and a message string.
 	 */
+	@RequirePrivilege(value = { PrivilegeConstants.GET_HL7_IN_ARCHIVE,
+	        PrivilegeConstants.PRIV_PURGE_HL7_IN_ARCHIVE,
+	        PrivilegeConstants.PRIV_ADD_HL7_IN_QUEUE }, requireAll = true)
 	public Map<String, Object> getMigrationStatus() {
 		Map<String, Object> statusMap = new HashMap<String, Object>();
 		statusMap.put("numberMigrated", Hl7InArchivesMigrateThread.getNumberTransferred());

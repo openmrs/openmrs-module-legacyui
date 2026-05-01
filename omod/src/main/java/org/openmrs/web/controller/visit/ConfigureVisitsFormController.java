@@ -39,12 +39,14 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * This class controls the configureVisits.form jsp page. See
  * /web/WEB-INF/view/admin/visits/configureVisits.jsp
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.CONFIGURE_VISITS)
 public class ConfigureVisitsFormController {
 	
 	public static final String CONFIGURE_VISITS_PATH = "/admin/visits/configureVisits.list";

@@ -23,12 +23,15 @@ import org.openmrs.api.context.Context;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for listing visit attribute types.
  * 
  * @since 1.9
  */
+@RequirePrivilege(value = { PrivilegeConstants.MANAGE_VISIT_ATTRIBUTE_TYPES,PrivilegeConstants.PURGE_VISIT_ATTRIBUTE_TYPES }, requireAll = true)
 public class VisitAttributeTypeListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

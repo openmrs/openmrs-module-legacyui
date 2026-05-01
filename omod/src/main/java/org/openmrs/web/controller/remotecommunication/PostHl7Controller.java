@@ -24,7 +24,10 @@ import org.openmrs.hl7.HL7Source;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.PRIV_ADD_HL7_IN_QUEUE)
 public class PostHl7Controller implements Controller {
 	
 	protected final Log log = LogFactory.getLog(getClass());

@@ -27,7 +27,10 @@ import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.GET_CONCEPT_PROPOSALS)
 public class ConceptProposalListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

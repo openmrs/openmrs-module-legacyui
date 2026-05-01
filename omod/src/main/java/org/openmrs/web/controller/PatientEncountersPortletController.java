@@ -14,11 +14,14 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for the patientEncounters portlet. Provides a map telling which forms have their view
  * and edit links overridden by form entry modules
  */
+@RequirePrivilege(PrivilegeConstants.GET_ENCOUNTERS)
 public class PatientEncountersPortletController extends PortletController {
 	
 	/**
