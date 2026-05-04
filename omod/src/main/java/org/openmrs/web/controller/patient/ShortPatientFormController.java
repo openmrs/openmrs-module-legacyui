@@ -51,6 +51,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This controller is used for the "mini"/"new"/"short" patient form. Only key/important attributes
@@ -60,6 +62,7 @@ import org.springframework.web.context.request.WebRequest;
  */
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.ADD_PATIENTS)
 public class ShortPatientFormController {
 	
 	private static final Log log = LogFactory.getLog(ShortPatientFormController.class);

@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for creating/editing a location attribute type.
@@ -32,6 +34,7 @@ import org.springframework.web.context.request.WebRequest;
  * @since 1.9
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_LOCATION_ATTRIBUTE_TYPES)
 public class LocationAttributeTypeFormController {
 	
 	@ModelAttribute("datatypes")

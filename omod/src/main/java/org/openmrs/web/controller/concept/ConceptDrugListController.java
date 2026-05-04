@@ -21,7 +21,10 @@ import org.openmrs.Drug;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
+@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPTS)
 public class ConceptDrugListController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

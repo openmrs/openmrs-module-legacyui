@@ -22,6 +22,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.notification.Alert;
 import org.openmrs.notification.AlertService;
 import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.web.security.RequirePrivilege;
 
 public class DWRAlertService {
 	
@@ -33,6 +34,7 @@ public class DWRAlertService {
 	 * 
 	 * @return list of alerts
 	 */
+	@RequirePrivilege
 	public List<AlertListItem> getAlerts() {
 		
 		// The list of AlertListItems that we will return
@@ -59,6 +61,7 @@ public class DWRAlertService {
 	 * 
 	 * @param alertId
 	 */
+	@RequirePrivilege
 	public void markAlertRead(Integer alertId) {
 		
 		try {
@@ -94,10 +97,10 @@ public class DWRAlertService {
 	 * @param text the string to set as the alert text
 	 * @return true if the alert was successfully created and saved otherwise false
 	 */
+	@RequirePrivilege(PrivilegeConstants.MANAGE_ALERTS)
 	public boolean createAlert(String text) {
 		if (StringUtils.isNotBlank(text)) {
 			try {
-				Context.addProxyPrivilege(PrivilegeConstants.MANAGE_ALERTS);
 				Context.addProxyPrivilege(PrivilegeConstants.GET_USERS);
 				Context.addProxyPrivilege(PrivilegeConstants.GET_ROLES);
 				
@@ -111,7 +114,6 @@ public class DWRAlertService {
 				log.error("Error while creating an alert ", e);
 			}
 			finally {
-				Context.removeProxyPrivilege(PrivilegeConstants.MANAGE_ALERTS);
 				Context.removeProxyPrivilege(PrivilegeConstants.GET_USERS);
 				Context.removeProxyPrivilege(PrivilegeConstants.GET_ROLES);
 			}
@@ -123,6 +125,7 @@ public class DWRAlertService {
 	/**
 	 * Marks all alert as read
 	 */
+	@RequirePrivilege
 	public void markAllAlertsRead() {
 		AlertService as = Context.getAlertService();
 		// Get the alert objects

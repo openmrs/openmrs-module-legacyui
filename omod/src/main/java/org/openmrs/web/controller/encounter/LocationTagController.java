@@ -33,12 +33,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller for managing {@link LocationTag}s
  */
 @Controller
 @SessionAttributes("locationTag")
+@RequirePrivilege(PrivilegeConstants.MANAGE_LOCATION_TAGS)
 public class LocationTagController {
 	
 	/**

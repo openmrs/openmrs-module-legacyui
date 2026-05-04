@@ -11,8 +11,11 @@ package org.openmrs.web.controller.patient;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 @Controller
+@RequirePrivilege(PrivilegeConstants.EDIT_PATIENTS)
 public class FindDuplicatePatientsController {
 	
 	@RequestMapping(value = "admin/patients/findDuplicatePatients")

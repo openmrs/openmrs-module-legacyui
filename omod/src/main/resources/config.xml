@@ -70,7 +70,6 @@
 				<param name="class" value="org.openmrs.web.dwr.DWRPatientService" />
 				<include method="findPatients"/>
 				<include method="getPatient"/>
-				<include method="getSimilarPatients"/>
 				<include method="findDuplicatePatients" />
                 <include method="findPatientsByIdentifier" />
 				<include method="addIdentifier" />
@@ -177,15 +176,10 @@
 	
 			<create creator="new" javascript="DWRRelationshipService">
 				<param name="class" value="org.openmrs.web.dwr.DWRRelationshipService"/>
-				<include method="getRelationshipTypes"/>
-				<include method="getRelationshipTypeId"/>
 				<include method="createRelationship"/>
 				<include method="voidRelationship"/>
 				<include method="changeRelationshipDates"/>
-				<include method="setRelationshipTo"/>
 				<include method="getRelationships"/>
-				<include method="getRelationshipsToPerson"/>
-				<include method="getRelationshipsFromPerson"/>
 			</create>
 	
 			<create creator="new" javascript="DWRCohortService">
@@ -339,17 +333,41 @@
 		<servlet-class>org.openmrs.web.dwr.OpenmrsDWRServlet</servlet-class>
 	</servlet>
 	
+	<!--
+		DWR authorization. Must run before dwrFilter so the rewrite/forward to the
+		DWR servlet does not happen for unauthorized callers. Mapped to all three
+		entry points: the public /dwr/* and /ms/call/plaincall/* aliases AND the
+		rewrite-target /ms/legacyui/dwr-invoker/* path, so a caller cannot bypass
+		authorization by going directly to the module servlet.
+	-->
 	<filter>
-		<filter-name>dwrFilter</filter-name> 
-		<filter-class>org.openmrs.web.dwr.DwrFilter</filter-class> 
+		<filter-name>dwrAuthorizationFilter</filter-name>
+		<filter-class>org.openmrs.web.security.DwrAuthorizationFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>dwrFilter</filter-name> 
-		<url-pattern>/dwr/*</url-pattern> 
+		<filter-name>dwrAuthorizationFilter</filter-name>
+		<url-pattern>/dwr/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
-		<filter-name>dwrFilter</filter-name> 
-		<url-pattern>/ms/call/plaincall/*</url-pattern> 
+		<filter-name>dwrAuthorizationFilter</filter-name>
+		<url-pattern>/ms/call/plaincall/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>dwrAuthorizationFilter</filter-name>
+		<url-pattern>/ms/legacyui/dwr-invoker/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>dwrFilter</filter-name>
+		<filter-class>org.openmrs.web.dwr.DwrFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>dwrFilter</filter-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>dwrFilter</filter-name>
+		<url-pattern>/ms/call/plaincall/*</url-pattern>
 	</filter-mapping>
 	
 	<filter>

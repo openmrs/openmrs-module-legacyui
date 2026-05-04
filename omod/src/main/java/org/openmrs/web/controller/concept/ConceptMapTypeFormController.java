@@ -28,11 +28,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Controller class for processing requests for managing concept map types
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPT_MAP_TYPES)
 public class ConceptMapTypeFormController {
 	
 	/**

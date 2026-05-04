@@ -45,7 +45,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.validator.ConceptReferenceTermValidator;
+import org.openmrs.web.security.RequirePrivilege;
 import org.owasp.encoder.Encode;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -73,6 +75,7 @@ public class DWRConceptService {
 	 * @param includeDrugConcepts Specifies if drugs with matching conceptNames should be included
 	 * @return a list of conceptListItems matching the given arguments
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<Object> findConcepts(String phrase, boolean includeRetired, List<String> includeClassNames,
 	        List<String> excludeClassNames, List<String> includeDatatypeNames, List<String> excludeDatatypeNames,
 	        boolean includeDrugConcepts) {
@@ -103,6 +106,7 @@ public class DWRConceptService {
 	 * @should not return duplicates when searching by concept id
 	 * @since 1.8
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<Object> findBatchOfConcepts(String phrase, boolean includeRetired, List<String> includeClassNames,
 	        List<String> excludeClassNames, List<String> includeDatatypeNames, List<String> excludeDatatypeNames,
 	        Integer start, Integer length) {
@@ -253,6 +257,7 @@ public class DWRConceptService {
 	 * @param conceptId the id to look for
 	 * @return a {@link ConceptListItem} or null if conceptId is not found
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public ConceptListItem getConcept(Integer conceptId) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
@@ -266,6 +271,7 @@ public class DWRConceptService {
 		return new ConceptListItem(c, cn, locale);
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPT_PROPOSALS)
 	public List<ConceptListItem> findProposedConcepts(String text) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
@@ -295,6 +301,7 @@ public class DWRConceptService {
 	 * @should search for concept answers in all search locales
 	 * @should not return duplicates
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<Object> findConceptAnswers(String text, Integer conceptId, boolean includeVoided, boolean includeDrugConcepts)
 	        throws Exception {
 		
@@ -351,6 +358,7 @@ public class DWRConceptService {
 		return items;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<Object> getConceptSet(Integer conceptId) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
@@ -386,6 +394,7 @@ public class DWRConceptService {
 		return returnList;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<ConceptListItem> getQuestionsForAnswer(Integer conceptId) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
@@ -403,6 +412,7 @@ public class DWRConceptService {
 		return items;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public ConceptDrugListItem getDrug(Integer drugId) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
@@ -411,6 +421,7 @@ public class DWRConceptService {
 		return d == null ? null : new ConceptDrugListItem(d, locale);
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<Object> getDrugs(Integer conceptId, boolean showConcept) {
 		Locale locale = Context.getLocale();
 		ConceptService cs = Context.getConceptService();
@@ -444,6 +455,7 @@ public class DWRConceptService {
 		return items;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<Object> findDrugs(String phrase, boolean includeRetired) throws APIException {
 		if (includeRetired) {
 			throw new APIException("you.should.not.included.voideds", (Object[]) null);
@@ -468,18 +480,21 @@ public class DWRConceptService {
 		return items;
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public boolean isValidNumericValue(Float value, Integer conceptId) {
 		ConceptNumeric conceptNumeric = Context.getConceptService().getConceptNumeric(conceptId);
 		
 		return OpenmrsUtil.isValidNumericValue(value, conceptNumeric);
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public String getConceptNumericUnits(Integer conceptId) {
 		ConceptNumeric conceptNumeric = Context.getConceptService().getConceptNumeric(conceptId);
 		
 		return conceptNumeric.getUnits();
 	}
 	
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<ConceptListItem> getAnswersForQuestion(Integer conceptId) {
 		List<ConceptListItem> ret = new ArrayList<ConceptListItem>();
 		Concept c = Context.getConceptService().getConcept(conceptId);
@@ -502,6 +517,7 @@ public class DWRConceptService {
 	 * @param conceptId the conceptId of the concept to be converted
 	 * @return String to act as a signal if successfully converted or an error message
 	 */
+	@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPTS)
 	public String convertBooleanConceptToCoded(Integer conceptId) {
 		
 		try {
@@ -539,6 +555,7 @@ public class DWRConceptService {
 	 * @throws APIException
 	 * @since 1.8
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public Map<String, Object> findCountAndConcepts(String phrase, boolean includeRetired, List<String> includeClassNames,
 	        List<String> excludeClassNames, List<String> includeDatatypeNames, List<String> excludeDatatypeNames,
 	        Integer start, Integer length, boolean getMatchCount) throws APIException {
@@ -663,6 +680,7 @@ public class DWRConceptService {
 	 * @param conceptReferenceTermId the id to look for
 	 * @return a {@link ConceptReferenceTermListItem} or null if conceptReferenceTermId is not found
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPT_REFERENCE_TERMS)
 	public ConceptReferenceTermListItem getConceptReferenceTerm(Integer conceptReferenceTermId) {
 		ConceptReferenceTerm term = Context.getConceptService().getConceptReferenceTerm(conceptReferenceTermId);
 		if (term == null) {
@@ -682,6 +700,7 @@ public class DWRConceptService {
 	 * @param includeRetired Specifies if retired concept reference terms should be included or not
 	 * @return a {@link List} of {@link ConceptReferenceTermListItem}
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPT_REFERENCE_TERMS)
 	public List<Object> findBatchOfConceptReferenceTerms(String phrase, Integer sourceId, Integer start, Integer length,
 	        boolean includeRetired) {
 		List<Object> objectList = new ArrayList<Object>();
@@ -731,6 +750,7 @@ public class DWRConceptService {
 	 * @return map with keys "count" and "objectList"
 	 * @throws APIException
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_CONCEPT_REFERENCE_TERMS)
 	public Map<String, Object> findCountAndConceptReferenceTerms(String phrase, Integer sourceId, Integer start,
 	        Integer length, boolean includeRetired, boolean getMatchCount) throws APIException {
 		//Map to return
@@ -774,6 +794,7 @@ public class DWRConceptService {
 	 * @param name the unique name for the reference term
 	 * @return a list of error messages
 	 */
+	@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPT_REFERENCE_TERMS)
 	public List<String> createConceptReferenceTerm(String code, Integer conceptSourceId, String name) {
 		List<String> errors = new ArrayList<String>();
 		MessageSourceService mss = Context.getMessageSourceService();

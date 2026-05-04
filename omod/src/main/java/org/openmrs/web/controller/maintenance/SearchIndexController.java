@@ -21,11 +21,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * A controller for the search index
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.MANAGE_SEARCH_INDEX)
 public class SearchIndexController {
 	
 	protected final Log log = LogFactory.getLog(getClass());

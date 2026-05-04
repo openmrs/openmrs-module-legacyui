@@ -13,7 +13,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.layout.LayoutSupport;
 import org.openmrs.layout.name.NameSupport;
+import org.openmrs.web.security.RequirePrivilege;
 
+@RequirePrivilege
 public class NameLayoutPortletController extends LayoutPortletController {
 	
 	private static final Log log = LogFactory.getLog(NameLayoutPortletController.class);

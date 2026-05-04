@@ -40,7 +40,9 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
 
+@RequirePrivilege(PrivilegeConstants.MANAGE_ALERTS)
 public class AlertFormController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

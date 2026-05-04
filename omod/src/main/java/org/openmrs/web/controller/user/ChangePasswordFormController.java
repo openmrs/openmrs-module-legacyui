@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * Used for changing the password when the force password change option is set during a new user
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping(value = "/admin/users/changePassword.form")
+@RequirePrivilege
 public class ChangePasswordFormController {
 	
 	/**

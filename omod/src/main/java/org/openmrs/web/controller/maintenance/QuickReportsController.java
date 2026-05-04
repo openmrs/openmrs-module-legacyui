@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * Display the quick reports in the system.
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @see org.openmrs.web.SessionListener
  */
 @Controller
+@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 public class QuickReportsController {
 	
 	protected final Log log = LogFactory.getLog(getClass());

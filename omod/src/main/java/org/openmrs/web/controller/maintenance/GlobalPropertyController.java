@@ -30,10 +30,13 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  *
  */
+@RequirePrivilege(PrivilegeConstants.MANAGE_GLOBAL_PROPERTIES)
 public class GlobalPropertyController extends SimpleFormController {
 	
 	public static final String PROP_NAME = "property";

@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.openmrs.web.security.RequirePrivilege;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * This is the controlling class for the conceptStopWordList.jsp page. This class used to view the
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping(value = "admin/concepts/conceptStopWord.list")
+@RequirePrivilege(PrivilegeConstants.MANAGE_CONCEPT_STOP_WORDS)
 public class ConceptStopWordListController {
 	
 	/**

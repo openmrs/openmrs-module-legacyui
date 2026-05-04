@@ -32,7 +32,9 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebUtil;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * DWR methods for ajaxy effects on {@link Person} objects.
@@ -54,6 +56,7 @@ public class DWRPersonService {
 	 * @param gender
 	 * @return list of people
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PERSONS)
 	public List<?> getSimilarPeople(String name, String birthdate, String age, String gender) {
 		Vector<Object> personList;
 		
@@ -109,6 +112,7 @@ public class DWRPersonService {
 	 * @param includeVoided
 	 * @return list of people
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PERSONS)
 	public List<?> findPeople(String searchPhrase, boolean includeVoided) {
 		return findPeopleByRoles(searchPhrase, includeVoided, null);
 	}
@@ -126,6 +130,7 @@ public class DWRPersonService {
 	 * @should match on patient identifiers
 	 * @should allow null roles parameter
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PERSONS)
 	public List<Object> findPeopleByRoles(String searchPhrase, boolean includeVoided, String roles) {
 		return findBatchOfPeopleByRoles(searchPhrase, includeVoided, roles, null, null);
 	}
@@ -142,6 +147,7 @@ public class DWRPersonService {
 	 * @param gender
 	 * @return PersonListItem person stub created
 	 */
+	@RequirePrivilege(PrivilegeConstants.ADD_PERSONS)
 	public Object createPerson(String given, String middle, String family, String birthdate, String dateformat, String age,
 	        String gender) {
 		log.error(given + " " + middle + " " + family + " " + birthdate + " " + dateformat + " " + age + " " + gender);
@@ -189,6 +195,7 @@ public class DWRPersonService {
 	 * @param personId
 	 * @return person or null
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PERSONS)
 	public PersonListItem getPerson(Integer personId) {
 		Person p = Context.getPersonService().getPerson(personId);
 		return PersonListItem.createBestMatch(p);
@@ -246,6 +253,7 @@ public class DWRPersonService {
 	 * @return list of persons that match the given searchPhrase. The PersonListItems
 	 * @since 1.8
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PERSONS)
 	public Vector<Object> findBatchOfPeopleByRoles(String searchPhrase, boolean includeRetired, String roles, Integer start,
 	        Integer length) {
 		Vector<Object> personList = new Vector<Object>();
@@ -317,6 +325,7 @@ public class DWRPersonService {
 	 * @throws APIException
 	 * @since 1.8
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PERSONS)
 	public Map<String, Object> findCountAndPeople(String phrase, boolean includeRetired, String roles, Integer start,
 	        Integer length, boolean getMatchCount) throws APIException {
 		

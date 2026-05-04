@@ -21,7 +21,9 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebUtil;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * DWR Provider methods. The methods in here are used in the webapp to get data from the database
@@ -46,6 +48,7 @@ public class DWRProviderService {
 	 * @should return the list of providers matching the search name
 	 * @should return the list of providers including retired providers for the matching search name
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PROVIDERS)
 	public Vector<Object> findProvider(String name, boolean includeRetired, Integer start, Integer length) {
 		Vector<Object> providerListItem = new Vector<Object>();
 		List<Provider> providerList = Context.getProviderService().getProviders(name, start, length, null, includeRetired);
@@ -74,6 +77,7 @@ public class DWRProviderService {
 	 * @should return the count of all providers matching the searched name along with provider list
 	 *         for given length
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PROVIDERS)
 	public Map<String, Object> findProviderCountAndProvider(String name, boolean includeRetired, Integer start,
 	        Integer length) throws APIException {
 		Map<String, Object> providerMap = new HashMap<String, Object>();
@@ -98,6 +102,7 @@ public class DWRProviderService {
 	 * @param providerId
 	 * @return provider
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PROVIDERS)
 	public ProviderListItem getProvider(Integer providerId) {
 		return new ProviderListItem(Context.getProviderService().getProvider(providerId));
 	}

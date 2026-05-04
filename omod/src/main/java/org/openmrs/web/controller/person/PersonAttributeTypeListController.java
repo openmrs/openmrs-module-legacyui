@@ -27,17 +27,20 @@ import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * Controls the moving/deleting of {@link PersonAttributeType}s.
  */
 @Controller
 @RequestMapping(value = "/admin/person/personAttributeType.list")
+@RequirePrivilege(PrivilegeConstants.MANAGE_PERSON_ATTRIBUTE_TYPES)
 public class PersonAttributeTypeListController {
 	
 	/** Logger for this class and subclasses */

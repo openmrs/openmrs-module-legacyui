@@ -10,6 +10,7 @@
 package org.openmrs.web;
 
 import org.openmrs.PersonName;
+import org.openmrs.web.controller.OptionsFormController;
 
 /**
  * This is the model/backing object for the "My Profile" page. This lets logged in users set

@@ -11,6 +11,8 @@ package org.openmrs.web.dwr;
 
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  *
@@ -23,6 +25,7 @@ public class DWRAdministrationService {
 	 * @param name
 	 * @return property value
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES)
 	public String getGlobalProperty(String name) {
 		return Context.getAdministrationService().getGlobalProperty(name);
 	}
@@ -33,6 +36,7 @@ public class DWRAdministrationService {
 	 * @param name
 	 * @param newValue
 	 */
+	@RequirePrivilege(PrivilegeConstants.MANAGE_GLOBAL_PROPERTIES)
 	public void setGlobalProperty(String name, String newValue) {
 		Context.getAdministrationService().saveGlobalProperty(new GlobalProperty(name, newValue));
 	}

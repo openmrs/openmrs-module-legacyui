@@ -16,6 +16,8 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.PrivilegeConstants;
+import org.openmrs.web.security.RequirePrivilege;
 
 /**
  * This class exposes some of the methods in {@link org.openmrs.api.CohortService} via the dwr
@@ -32,6 +34,7 @@ public class DWRCohortService {
 	 * @param cohortId - Identifies the {@link Cohort} to add to
 	 * @param patientId - Identifies the {@link Patient} to add
 	 */
+	@RequirePrivilege(PrivilegeConstants.EDIT_COHORTS)
 	public void addPatientToCohort(Integer cohortId, Integer patientId) {
 		Patient p = Context.getPatientService().getPatient(patientId);
 		Cohort c = Context.getCohortService().getCohort(cohortId);
@@ -45,6 +48,7 @@ public class DWRCohortService {
 	 * @param cohortId - Identifies the {@link Cohort} to remove from
 	 * @param patientId - Identifies the {@link Patient} to remove
 	 */
+	@RequirePrivilege(PrivilegeConstants.EDIT_COHORTS)
 	public void removePatientFromCohort(Integer cohortId, Integer patientId) {
 		Patient p = Context.getPatientService().getPatient(patientId);
 		Cohort c = Context.getCohortService().getCohort(cohortId);
@@ -56,6 +60,7 @@ public class DWRCohortService {
 	 * 
 	 * @return Vector&lt;ListItem&gt; - all saved Cohorts
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENT_COHORTS)
 	public Vector<ListItem> getCohorts() {
 		Vector<ListItem> ret = new Vector<ListItem>();
 		for (Cohort c : Context.getCohortService().getAllCohorts()) {
@@ -72,6 +77,7 @@ public class DWRCohortService {
 	 * @return Vector&lt;ListItem&gt; - of all saved Cohorts containing the {@link Patient}
 	 *         identified by <code>patientId</code>
 	 */
+	@RequirePrivilege(PrivilegeConstants.GET_PATIENT_COHORTS)
 	public Vector<ListItem> getCohortsContainingPatient(Integer patientId) {
 		Vector<ListItem> ret = new Vector<ListItem>();
 		for (Cohort c : Context.getCohortService().getCohortsContainingPatientId(patientId)) {
