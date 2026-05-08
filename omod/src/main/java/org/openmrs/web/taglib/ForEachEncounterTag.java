@@ -52,9 +52,11 @@ public class ForEachEncounterTag extends BodyTagSupport {
 	private String var;
 	
 	/**
+	 * <p>
+	 * <b>Should</b> sort encounters by encounterDatetime in descending order.<br>
+	 * <b>Should</b> pass for a patient with no encounters.
+	 * 
 	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
-	 * @should sort encounters by encounterDatetime in descending order
-	 * @should pass for a patient with no encounters
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override

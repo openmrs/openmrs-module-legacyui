@@ -33,9 +33,11 @@ import org.openmrs.util.PrivilegeConstants;
 public class GlobalPropertyPortletController extends PortletController {
 	
 	/**
+	 * <p>
+	 * <b>Should</b> exclude multiple prefixes.
+	 * 
 	 * @see org.openmrs.web.controller.PortletController#populateModel(javax.servlet.http.HttpServletRequest,
 	 *      java.util.Map)
-	 * @should exclude multiple prefixes
 	 */
 	@Override
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
@@ -87,10 +89,10 @@ public class GlobalPropertyPortletController extends PortletController {
 	 * Sets propertyPrefix to "${forModule}.", hidePrefix to "true" and excludePrefix to
 	 * excludePrefix + "${forModule}.started;${forModule}.mandatory" if forModule parameter is
 	 * present.
-	 * 
-	 * @should change model if forModule is present
-	 * @should not change mode if forModule is not present
-	 * @should not override excludePrefix but concatenate
+	 * <p>
+	 * <b>Should</b> change model if forModule is present.<br>
+	 * <b>Should</b> not change mode if forModule is not present.<br>
+	 * <b>Should</b> not override excludePrefix but concatenate.
 	 */
 	protected void setupModelForModule(Map<String, Object> model) {
 		if (Context.isAuthenticated()) {

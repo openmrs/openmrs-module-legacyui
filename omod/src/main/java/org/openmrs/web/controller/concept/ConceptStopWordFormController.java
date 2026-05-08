@@ -49,14 +49,15 @@ public class ConceptStopWordFormController {
 	
 	/**
 	 * Handle the add new ConceptStopWord
+	 * <p>
+	 * <b>Should</b> add new ConceptStopWord.<br>
+	 * <b>Should</b> return error message if a duplicate ConceptStopWord is added.<br>
+	 * <b>Should</b> return error message for an empty ConceptStopWord.
 	 * 
 	 * @param httpSession
 	 * @param conceptStopWord
 	 * @param errors
 	 * @return path to forward to or an error message
-	 * @should add new ConceptStopWord
-	 * @should return error message if a duplicate ConceptStopWord is added
-	 * @should return error message for an empty ConceptStopWord
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public String handleSubmission(HttpSession httpSession, @ModelAttribute("command") ConceptStopWord conceptStopWord,

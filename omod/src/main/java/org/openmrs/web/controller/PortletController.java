@@ -91,9 +91,9 @@ public class PortletController implements Controller {
 	 *          (Map&lt;Integer, Concept&gt;) conceptMap
 	 *          (Map&lt;String, Concept&gt;) conceptMapByStringIds
 	 * </pre>
-	 * 
-	 * @should calculate bmi into patientBmiAsString
-	 * @should not fail with empty height and weight properties
+	 * <p>
+	 * <b>Should</b> calculate bmi into patientBmiAsString.<br>
+	 * <b>Should</b> not fail with empty height and weight properties.
 	 */
 	@SuppressWarnings("unchecked")
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,

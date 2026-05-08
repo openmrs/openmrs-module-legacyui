@@ -22,14 +22,15 @@ public class GeneralUtils {
 	/**
 	 * Get the concept by id, the id can either be 1)an integer id like 5090 or 2)mapping type id
 	 * like "XYZ:HT" or 3)uuid like "a3e12268-74bf-11df-9768-17cfc9833272"
+	 * <p>
+	 * <b>Should</b> find a concept by its conceptId.<br>
+	 * <b>Should</b> find a concept by its mapping.<br>
+	 * <b>Should</b> find a concept by its uuid.<br>
+	 * <b>Should</b> return null otherwise.<br>
+	 * <b>Should</b> find a concept by its mapping with a space in between.
 	 * 
-	 * @param id
+	 * @param id the conceptId, mapping, or uuid identifying the concept
 	 * @return the concept if exist, else null
-	 * @should find a concept by its conceptId
-	 * @should find a concept by its mapping
-	 * @should find a concept by its uuid
-	 * @should return null otherwise
-	 * @should find a concept by its mapping with a space in between
 	 */
 	public static Concept getConcept(String id) {
 		Concept cpt = null;

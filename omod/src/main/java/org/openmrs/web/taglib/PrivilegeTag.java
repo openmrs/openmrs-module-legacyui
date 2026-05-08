@@ -45,7 +45,6 @@ import org.openmrs.api.context.UserContext;
  *   &lt;openmrs:portlet url="patientHeader" id="patientDashboardHeader" patientId="${patient.patientId}" /&gt;
  * &lt;openmrs:hasPrivilege/&gt;
  * </pre>
- * </p>
  */
 public class PrivilegeTag extends TagSupport {
 	
@@ -69,22 +68,24 @@ public class PrivilegeTag extends TagSupport {
 	 * acts as an AND if {@code hasAll} is set to "true"/"TRUE". The tags behavior on how the list
 	 * of privileges is treated can be inversed by setting {@code inverse} to "true"/"TRUE".
 	 * </p>
+	 * <p>
+	 * <b>Should</b> include body for user with the privilege.<br>
+	 * <b>Should</b> skip body for user without the privilege.<br>
+	 * <b>Should</b> skip body for user with the privilege if inverse is true.<br>
+	 * <b>Should</b> include body for user with any of the privileges.<br>
+	 * <b>Should</b> skip body for user with any of the privileges if inverse is true.<br>
+	 * <b>Should</b> include body for user with all of the privileges if hasAll is true.<br>
+	 * <b>Should</b> skip body for user with not all of the privileges if hasAll is true.<br>
+	 * <b>Should</b> skip body for user with all of the privileges if hasAll is true and inverse is
+	 * true.<br>
+	 * <b>Should</b> include body for user without the privilege if inverse is true.<br>
+	 * <b>Should</b> skip body for user without any of the privileges.<br>
+	 * <b>Should</b> include body for user without any of the privileges if inverse is true.<br>
+	 * <b>Should</b> skip body for user without any of the privileges if hasAll is true.<br>
+	 * <b>Should</b> include body for user without any of the privileges if hasAll is true and
+	 * inverse is true.
 	 * 
 	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
-	 * @should include body for user with the privilege
-	 * @should skip body for user without the privilege
-	 * @should skip body for user with the privilege if inverse is true
-	 * @should include body for user with any of the privileges
-	 * @should skip body for user with any of the privileges if inverse is true
-	 * @should include body for user with all of the privileges if hasAll is true
-	 * @should skip body for user with not all of the privileges if hasAll is true
-	 * @should skip body for user with all of the privileges if hasAll is true and inverse is true
-	 * @should include body for user without the privilege if inverse is true
-	 * @should skip body for user without any of the privileges
-	 * @should include body for user without any of the privileges if inverse is true
-	 * @should skip body for user without any of the privileges if hasAll is true
-	 * @should include body for user without any of the privileges if hasAll is true and inverse is
-	 *         true
 	 */
 	public int doStartTag() {
 		

@@ -123,10 +123,11 @@ public class AddPersonController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
+	 * <p>
+	 * <b>Should</b> catch an invalid birthdate.<br>
+	 * <b>Should</b> catch pass for a valid birthdate.
 	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
-	 * @should catch an invalid birthdate
-	 * @should catch pass for a valid birthdate
 	 */
 	@Override
 	protected List<PersonListItem> formBackingObject(HttpServletRequest request) throws ServletException {

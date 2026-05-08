@@ -71,8 +71,7 @@ import org.springframework.web.servlet.ModelAndView;
  * {@link BaseCommandController}.
  * </p>
  * <p>
- * <b><a name="workflow">Workflow (<a href="BaseCommandController.html#workflow">and that defined by
- * superclass</a>):</b><br>
+ * <b>Workflow (and that defined by superclass):</b>
  * <ol>
  * <li><b>The controller receives a request for a new form (typically a GET).</b></li>
  * <li>Call to {@link #formBackingObject formBackingObject()} which by default, returns an instance
@@ -116,7 +115,7 @@ import org.springframework.web.servlet.ModelAndView;
  * to bean properties, to be seen by the Validator).</li>
  * <li>If {@code validateOnBinding} is set, a registered Validator will be invoked. The Validator
  * will check the form object properties, and register corresponding errors via the given
- * {@link org.springframework.validation.Errors Errors}</li> object.
+ * {@link org.springframework.validation.Errors Errors} object.</li>
  * <li>Call to {@link #onBindAndValidate onBindAndValidate()} which allows you to do custom
  * processing after binding and validation (e.g. to manually bind request parameters, and to
  * validate them outside a Validator).</li>
@@ -125,7 +124,6 @@ import org.springframework.web.servlet.ModelAndView;
  * processFormSubmission()} to process the submission, with or without binding errors. This method
  * has to be implemented in subclasses.</li>
  * </ol>
- * </p>
  * <p>
  * In session form mode, a submission without an existing form object in the session is considered
  * invalid, like in case of a resubmit/reload by the browser. The {@link #handleInvalidSubmit
@@ -140,13 +138,13 @@ import org.springframework.web.servlet.ModelAndView;
  * access a HTTP session.
  * </p>
  * <p>
- * <b><a name="config">Exposed configuration properties</a> (<a
- * href="BaseCommandController.html#config">and those defined by superclass</a>):</b><br>
+ * <b>Exposed configuration properties (and those defined by superclass):</b>
  * <table border="1">
+ * <caption>Configuration properties</caption>
  * <tr>
- * <td><b>name</b></td>
- * <td><b>default</b></td>
- * <td><b>description</b></td>
+ * <th>name</th>
+ * <th>default</th>
+ * <th>description</th>
  * </tr>
  * <tr>
  * <td>bindOnNewForm</td>
@@ -163,7 +161,6 @@ import org.springframework.web.servlet.ModelAndView;
  * when showing the form again after validation errors).</td>
  * </tr>
  * </table>
- * </p>
  * 
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -191,7 +188,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * doesn't need to be set when overriding {@link #formBackingObject}, since the latter
 	 * determines the class anyway.
 	 * <p>
-	 * "cacheSeconds" is by default set to 0 (-> no caching for all form controllers).
+	 * "cacheSeconds" is by default set to 0 (-&gt; no caching for all form controllers).
 	 * 
 	 * @see #setCommandName
 	 * @see #setCommandClass

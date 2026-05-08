@@ -32,13 +32,14 @@ public class UserProperties {
 	/**
 	 * Sets the user property which determines if a new user should change his password upon logging
 	 * in the first time.
+	 * <p>
+	 * <b>Should</b> add forcePassword property in user properties map when value is set to true.<br>
+	 * <b>Should</b> do not add forcePassword property in user properties when set to false.<br>
+	 * <b>Should</b> remove forcePassword property from user properties when set to false.<br>
+	 * <b>Should</b> do not add forcePassword property in user properties when set to null.<br>
+	 * <b>Should</b> remove forcePassword property from user properties when set to null.
 	 * 
 	 * @param change decides if the user should be forced to change the password
-	 * @should add forcePassword property in user properties map when value is set to true
-	 * @should do not add forcePassword property in user properties when set to false
-	 * @should remove forcePassword property from user properties when set to false
-	 * @should do not add forcePassword property in user properties when set to null
-	 * @should remove forcePassword property from user properties when set to null
 	 */
 	public void setSupposedToChangePassword(Boolean change) {
 		if ((change == null || !change)) {
@@ -78,10 +79,11 @@ public class UserProperties {
 	
 	/**
 	 * Method to read the value of forcePassword property
+	 * <p>
+	 * <b>Should</b> return true or false depending on the presence or absence of forcePassword key
+	 * in the user properties.
 	 * 
 	 * @return true or false based on the value of forcePassword property
-	 * @should 
-	 *         "return true or false depending on the presence or absence of forcePassword key in the user properties"
 	 */
 	public Boolean isSupposedToChangePassword() {
 		return Boolean.valueOf(getProperties().get(OpenmrsConstants.USER_PROPERTY_CHANGE_PASSWORD));

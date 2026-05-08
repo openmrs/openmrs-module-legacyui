@@ -31,10 +31,11 @@ public class ExtensionUtil {
 	/**
 	 * Searches for all modules implementing {@link AddEncounterToVisitExtension} and returns the
 	 * set of links.
+	 * <p>
+	 * <b>Should</b> return empty set if there is no AddEncounterToVisitExtension.<br>
+	 * <b>Should</b> return links if there are AddEncounterToVisitExtensions.
 	 * 
 	 * @return the set of Links
-	 * @should return empty set if there is no AddEncounterToVisitExtension
-	 * @should return links if there are AddEncounterToVisitExtensions
 	 */
 	public static Set<Link> getAllAddEncounterToVisitLinks() {
 		List<Extension> extensions = ModuleFactory

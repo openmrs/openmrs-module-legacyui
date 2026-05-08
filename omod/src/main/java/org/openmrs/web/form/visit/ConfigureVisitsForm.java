@@ -15,7 +15,7 @@ import java.util.List;
 import org.openmrs.VisitType;
 
 /**
- * Form used by {@link ConfigureVisitsFormController}.
+ * Form used by {@link org.openmrs.web.controller.visit.ConfigureVisitsFormController}.
  */
 public class ConfigureVisitsForm {
 	

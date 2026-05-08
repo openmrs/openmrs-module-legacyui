@@ -131,17 +131,19 @@ public class PortletTag extends ImportSupport {
 	 * <li>Module portlets are expected to be in the /WEB-INF/view/module/{@code moduleId}/portlets/
 	 * folder.</li>
 	 * </ul>
+	 * <p>
+	 * <b>Should</b> return the correct url for a core portlet.<br>
+	 * <b>Should</b> return the correct url for a module portlet.<br>
+	 * <b>Should</b> replace period in a module id with a forward slash when building a module
+	 * portlet url.<br>
+	 * <b>Should</b> not update the moduleId field for a module portlet.<br>
+	 * <b>Should</b> return a core portlet url when the specified module cannot be found.<br>
+	 * <b>Should</b> append .portlet to the url if not specified.<br>
+	 * <b>Should</b> treat both an empty and null module id as core portlets.
 	 * 
 	 * @param portletUrl The portlet url.
 	 * @param moduleId The optional portlet module id.
 	 * @return The url for the portlet.
-	 * @should return the correct url for a core portlet
-	 * @should return the correct url for a module portlet
-	 * @should replace period in a module id with a forward slash when building a module portlet url
-	 * @should not update the moduleId field for a module portlet
-	 * @should return a core portlet url when the specified module cannot be found
-	 * @should append .portlet to the url if not specified
-	 * @should treat both an empty and null module id as core portlets
 	 */
 	protected String generatePortletUrl(String portletUrl, String moduleId) {
 		String result = null;

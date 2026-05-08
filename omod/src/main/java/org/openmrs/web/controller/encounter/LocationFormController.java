@@ -78,12 +78,13 @@ public class LocationFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
+	 * <p>
+	 * <b>Should</b> retire location.<br>
+	 * <b>Should</b> not retire location if reason is empty.
 	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
-	 * @should retire location
-	 * @should not retire location if reason is empty
 	 */
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
 	        BindException errors) throws Exception {
@@ -143,9 +144,10 @@ public class LocationFormController extends SimpleFormController {
 	/**
 	 * This is called prior to displaying a form for the first time. It tells Spring the
 	 * form/command object to load into the request
+	 * <p>
+	 * <b>Should</b> return valid location given valid locationId.
 	 * 
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
-	 * @should return valid location given valid locationId
 	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
 		

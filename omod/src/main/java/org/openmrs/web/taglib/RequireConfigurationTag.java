@@ -39,12 +39,14 @@ public class RequireConfigurationTag extends TagSupport {
 	private String configurationPage;
 	
 	/**
+	 * <p>
+	 * <b>Should</b> redirect if any properties are not set.<br>
+	 * <b>Should</b> not be sensitive to extraneous whitespace.<br>
+	 * <b>Should</b> not be sensitive to empty values.<br>
+	 * <b>Should</b> not be sensitive trailing commas.<br>
+	 * <b>Should</b> be encoding agnostic.
+	 * 
 	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
-	 * @should redirect if any properties are not set
-	 * @should not be sensitive to extraneous whitespace
-	 * @should not be sensitive to empty values
-	 * @should not be sensitive trailing commas
-	 * @should be encoding agnostic
 	 */
 	public int doStartTag() throws JspException {
 		HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();

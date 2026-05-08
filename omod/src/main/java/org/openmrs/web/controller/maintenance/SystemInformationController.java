@@ -32,13 +32,14 @@ public class SystemInformationController {
 	
 	/**
 	 * Called for GET requests only on the systemInfo page.
+	 * <p>
+	 * <b>Should</b> add openmrs information attribute to the model map.<br>
+	 * <b>Should</b> add java runtime information attribute to the model map.<br>
+	 * <b>Should</b> add database information attribute to the model map.<br>
+	 * <b>Should</b> add memory information attribute to the model map.<br>
+	 * <b>Should</b> add module information attribute to the model map.
 	 * 
 	 * @param model map
-	 * @should add openmrs information attribute to the model map
-	 * @should add java runtime information attribute to the model map
-	 * @should add database information attribute to the model map
-	 * @should add memory information attribute to the model map
-	 * @should add module information attribute to the model map
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/systemInfo.htm")
 	public String showPage(ModelMap model) {

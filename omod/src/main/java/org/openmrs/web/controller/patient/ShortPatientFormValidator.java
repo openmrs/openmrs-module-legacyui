@@ -53,25 +53,26 @@ public class ShortPatientFormValidator implements Validator {
 	
 	/**
 	 * Validates the given Patient.
+	 * <p>
+	 * <b>Should</b> pass if the minimum required fields are provided and are valid.<br>
+	 * <b>Should</b> fail validation if gender is blank.<br>
+	 * <b>Should</b> fail validation if birthdate is blank.<br>
+	 * <b>Should</b> fail validation if birthdate makes patient 120 years old or older.<br>
+	 * <b>Should</b> fail validation if birthdate is a future date.<br>
+	 * <b>Should</b> fail validation if causeOfDeath is blank when patient is dead.<br>
+	 * <b>Should</b> fail if all name fields are empty or white space characters.<br>
+	 * <b>Should</b> fail if no identifiers are added.<br>
+	 * <b>Should</b> fail if all identifiers have been voided.<br>
+	 * <b>Should</b> fail if any name has more than 50 characters.<br>
+	 * <b>Should</b> fail validation if deathdate is a future date.<br>
+	 * <b>Should</b> fail if the deathdate is before the birthdate incase the patient is dead.<br>
+	 * <b>Should</b> reject a duplicate name.<br>
+	 * <b>Should</b> reject a duplicate address.
 	 * 
 	 * @param obj The patient to validate.
 	 * @param errors The patient to validate.
 	 * @see org.springframework.validation.Validator#validate(java.lang.Object,
 	 *      org.springframework.validation.Errors)
-	 * @should pass if the minimum required fields are provided and are valid
-	 * @should fail validation if gender is blank
-	 * @should fail validation if birthdate is blank
-	 * @should fail validation if birthdate makes patient 120 years old or older
-	 * @should fail validation if birthdate is a future date
-	 * @should fail validation if causeOfDeath is blank when patient is dead
-	 * @should fail if all name fields are empty or white space characters
-	 * @should fail if no identifiers are added
-	 * @should fail if all identifiers have been voided
-	 * @should fail if any name has more than 50 characters
-	 * @should fail validation if deathdate is a future date
-	 * @should fail if the deathdate is before the birthdate incase the patient is dead
-	 * @should reject a duplicate name
-	 * @should reject a duplicate address
 	 */
 	@Override
 	public void validate(Object obj, Errors errors) {

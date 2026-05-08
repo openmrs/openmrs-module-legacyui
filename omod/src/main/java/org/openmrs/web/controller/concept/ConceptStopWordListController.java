@@ -39,14 +39,15 @@ public class ConceptStopWordListController {
 	
 	/**
 	 * Handle the delete action
+	 * <p>
+	 * <b>Should</b> delete the given ConceptStopWord in the request parameter.<br>
+	 * <b>Should</b> add the success delete message in session attribute.<br>
+	 * <b>Should</b> add the already deleted error message in session attribute if delete the same
+	 * word twice.
 	 * 
 	 * @param session http session
 	 * @param conceptStopWordsToBeDeleted array of words to be deleted
 	 * @return ConceptStopWordList view
-	 * @should delete the given ConceptStopWord in the request parameter
-	 * @should add the success delete message in session attribute
-	 * @should add the already deleted error message in session attribute if delete the same word
-	 *         twice
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public String handleSubmission(HttpSession session,
@@ -73,11 +74,12 @@ public class ConceptStopWordListController {
 	/**
 	 * This method to load all the Concept Stop Words in the request attribute and return the
 	 * ConceptStopWordList view
+	 * <p>
+	 * <b>Should</b> return Concept Stop Word List View.<br>
+	 * <b>Should</b> add all ConceptStopWords in session attribute.
 	 * 
 	 * @param session http session
 	 * @return ConceptStopWordList view
-	 * @should return Concept Stop Word List View
-	 * @should add all ConceptStopWords in session attribute
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String showForm(HttpSession session) {

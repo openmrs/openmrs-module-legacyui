@@ -46,11 +46,11 @@ public class PatientDashboardController {
 	
 	/**
 	 * render the patient dashboard model and direct to the view
-	 * 
-	 * @should render patient dashboard if given patient id is an existing id
-	 * @should render patient dashboard if given patient id is an existing uuid
-	 * @should redirect to find patient page if given patient id is not an existing id
-	 * @should redirect to find patient page if given patient id is not an existing uuid
+	 * <p>
+	 * <b>Should</b> render patient dashboard if given patient id is an existing id.<br>
+	 * <b>Should</b> render patient dashboard if given patient id is an existing uuid.<br>
+	 * <b>Should</b> redirect to find patient page if given patient id is not an existing id.<br>
+	 * <b>Should</b> redirect to find patient page if given patient id is not an existing uuid.
 	 */
 	@RequestMapping("/patientDashboard.form")
 	protected String renderDashboard(@RequestParam("patientId") String patientId, ModelMap map, HttpServletRequest request)
@@ -141,14 +141,15 @@ public class PatientDashboardController {
 	
 	/**
 	 * Get {@code Patient} by ID or UUID string.
+	 * <p>
+	 * <b>Should</b> return patient if given patient id is an existing id.<br>
+	 * <b>Should</b> return patient if given patient id is an existing uuid.<br>
+	 * <b>Should</b> return null if given null or whitespaces only.<br>
+	 * <b>Should</b> return null if given patient id is not an existing id.<br>
+	 * <b>Should</b> return null if given patient id is not an existing uuid.
 	 * 
 	 * @param patientId the id or uuid of wanted patient
 	 * @return patient matching given patient id
-	 * @should return patient if given patient id is an existing id
-	 * @should return patient if given patient id is an existing uuid
-	 * @should return null if given null or whitespaces only
-	 * @should return null if given patient id is not an existing id
-	 * @should return null if given patient id is not an existing uuid
 	 */
 	private Patient getPatient(String patientId) {
 		
