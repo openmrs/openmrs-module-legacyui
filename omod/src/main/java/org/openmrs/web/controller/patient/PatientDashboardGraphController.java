@@ -33,13 +33,14 @@ public class PatientDashboardGraphController {
 	
 	/**
 	 * Method to formulate a JSON string used by flot for rendering the patient graph
+	 * <p>
+	 * <b>Should</b> return json data with observation details and critical values for the concept.<br>
+	 * <b>Should</b> return form for rendering the json data.
 	 * 
 	 * @param patientId identifier for the patient
 	 * @param conceptId identifier of the concept for which the graph has to be plotted
 	 * @param map
 	 * @return form which will render the JSON data
-	 * @should return json data with observation details and critical values for the concept
-	 * @should return form for rendering the json data
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.GET)

@@ -127,7 +127,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * Create a new AbstractWizardFormController.
 	 * <p>
 	 * "sessionForm" is automatically turned on, "validateOnBinding" turned off, and "cacheSeconds"
-	 * set to 0 by the base class (-> no caching for all form controllers).
+	 * set to 0 by the base class (-&gt; no caching for all form controllers).
 	 */
 	public AbstractWizardFormController() {
 		// AbstractFormController sets default cache seconds to 0.

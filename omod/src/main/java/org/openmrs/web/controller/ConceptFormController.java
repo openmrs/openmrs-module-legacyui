@@ -170,21 +170,22 @@ public class ConceptFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
+	 * <p>
+	 * <b>Should</b> display numeric values from table.<br>
+	 * <b>Should</b> copy numeric values into numeric concepts.<br>
+	 * <b>Should</b> return a concept with a null id if no match is found.<br>
+	 * <b>Should</b> void a synonym marked as preferred when it is removed.<br>
+	 * <b>Should</b> set the local preferred name.<br>
+	 * <b>Should</b> add a new Concept map to an existing concept.<br>
+	 * <b>Should</b> remove a concept map from an existing concept.<br>
+	 * <b>Should</b> ignore new concept map row if the user did not select a term.<br>
+	 * <b>Should</b> add a new Concept map when creating a concept.<br>
+	 * <b>Should</b> not save changes if there are validation errors.<br>
+	 * <b>Should</b> edit short name when there are multiple allowed locales.
 	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
-	 * @should display numeric values from table
-	 * @should copy numeric values into numeric concepts
-	 * @should return a concept with a null id if no match is found
-	 * @should void a synonym marked as preferred when it is removed
-	 * @should set the local preferred name
-	 * @should add a new Concept map to an existing concept
-	 * @should remove a concept map from an existing concept
-	 * @should ignore new concept map row if the user did not select a term
-	 * @should add a new Concept map when creating a concept
-	 * @should not save changes if there are validation errors
-	 * @should edit short name when there are multiple allowed locales
 	 */
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
@@ -322,11 +323,13 @@ public class ConceptFormController extends SimpleFormController {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> add error if source is not saved.<br>
+	 * <b>Should</b> add error if map type is not saved.<br>
+	 * <b>Should</b> add error if term b is not saved.
+	 * 
 	 * @param concept
 	 * @param errors
-	 * @should add error if source is not saved
-	 * @should add error if map type is not saved
-	 * @should add error if term b is not saved
 	 */
 	void validateConceptUsesPersistedObjects(Concept concept, Errors errors) {
 		if (concept.getConceptMappings() != null) {
@@ -552,9 +555,10 @@ public class ConceptFormController extends SimpleFormController {
 		/**
 		 * This method takes all the form data from the input boxes and puts it onto the concept
 		 * object so that it can be saved to the database
+		 * <p>
+		 * <b>Should</b> set concept on concept answers.
 		 * 
 		 * @return the concept to be saved to the database
-		 * @should set concept on concept answers
 		 */
 		public Concept getConceptFromFormData() {
 			

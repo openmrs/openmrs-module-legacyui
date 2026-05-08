@@ -79,7 +79,7 @@ public class WebAttributeUtil {
 	private static Pattern betweenSquareBrackets = Pattern.compile("\\[(\\d*)\\]");
 	
 	/**
-	 * something[3] -> 3
+	 * something[3] -&gt; 3
 	 * 
 	 * @param input
 	 * @return

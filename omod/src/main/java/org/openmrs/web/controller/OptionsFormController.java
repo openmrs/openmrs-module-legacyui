@@ -104,14 +104,15 @@ public class OptionsFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
+	 * <p>
+	 * <b>Should</b> accept 2 characters as username.<br>
+	 * <b>Should</b> accept email address as username if enabled.<br>
+	 * <b>Should</b> reject 1 character as username.<br>
+	 * <b>Should</b> reject invalid email address as username if enabled.
 	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
-	 * @should accept 2 characters as username
-	 * @should accept email address as username if enabled
-	 * @should reject 1 character as username
-	 * @should reject invalid email address as username if enabled
 	 */
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
 	        BindException errors) throws Exception {

@@ -55,13 +55,15 @@ public class EncounterRoleFormController {
 	public static final String ENCOUNTERS_PATH = "admin/encounters/";
 	
 	/**
+	 * <p>
+	 * <b>Should</b> save a new encounter role object.<br>
+	 * <b>Should</b> raise an error if validation of encounter role fails.<br>
+	 * <b>Should</b> edit and save an existing encounter.
+	 * 
 	 * @param session HttpSession for the user
 	 * @param encounterRole encounterRole object submitted from the form
 	 * @param errors list of errors if exists @return logical view name to resolve
 	 * @throws Exception
-	 * @should save a new encounter role object
-	 * @should raise an error if validation of encounter role fails
-	 * @should edit and save an existing encounter
 	 */
 	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.POST, params = "saveEncounterRole")
 	public String save(HttpSession session, @ModelAttribute("encounterRole") EncounterRole encounterRole,
@@ -78,12 +80,14 @@ public class EncounterRoleFormController {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> retire an existing encounter.<br>
+	 * <b>Should</b> raise an error if retire reason is not filled.
+	 * 
 	 * @param session HttpSession for the user
 	 * @param encounterRole encounterRole object submitted from the form
 	 * @param errors list of errors if exists @return logical view name to resolve
 	 * @throws Exception
-	 * @should retire an existing encounter
-	 * @should raise an error if retire reason is not filled
 	 */
 	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.POST, params = "retire")
 	public String retire(HttpSession session, @ModelAttribute("encounterRole") EncounterRole encounterRole,
@@ -103,11 +107,13 @@ public class EncounterRoleFormController {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> unretire an existing encounter.
+	 * 
 	 * @param session HttpSession for the user
 	 * @param encounterRole encounterRole object submitted from the form
 	 * @param errors list of errors if exists @return logical view name to resolve
 	 * @throws Exception
-	 * @should unretire an existing encounter
 	 */
 	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.POST, params = "unretire")
 	public String unretire(HttpSession session, @ModelAttribute("encounterRole") EncounterRole encounterRole,
@@ -123,13 +129,15 @@ public class EncounterRoleFormController {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> retire and unretire an existing encounter.<br>
+	 * <b>Should</b> raise an error if retire reason is not filled.<br>
+	 * <b>Should</b> purge an existing encounter.
+	 * 
 	 * @param session HttpSession for the user
 	 * @param encounterRole encounterRole object submitted from the form
 	 * @param errors list of errors if exists @return logical view name to resolve
 	 * @throws Exception
-	 * @should retire and unretire an existing encounter
-	 * @should raise an error if retire reason is not filled
-	 * @should purge an existing encounter
 	 */
 	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.form", method = RequestMethod.POST, params = "purge")
 	public String purge(HttpSession session, @ModelAttribute("encounterRole") EncounterRole encounterRole,
@@ -160,9 +168,11 @@ public class EncounterRoleFormController {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> add list of encounter role objects to the model.
+	 * 
 	 * @param modelMap
 	 * @return logical view for the encounter list
-	 * @should add list of encounter role objects to the model
 	 */
 	@RequestMapping(value = ENCOUNTERS_PATH + "encounterRole.list", method = RequestMethod.GET)
 	public String getEncounterList(ModelMap modelMap) {

@@ -66,10 +66,12 @@ public class SchedulerFormController extends SimpleFormController {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> not throw null pointer exception if repeat interval is null.
+	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
-	 * @should not throw null pointer exception if repeat interval is null
 	 */
 	@Override
 	protected ModelAndView processFormSubmission(HttpServletRequest request, HttpServletResponse response, Object command,
@@ -116,14 +118,15 @@ public class SchedulerFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
+	 * <p>
+	 * <b>Should</b> reschedule a currently scheduled task.<br>
+	 * <b>Should</b> not reschedule a task that is not currently scheduled.<br>
+	 * <b>Should</b> not reschedule a task if the start time has passed.<br>
+	 * <b>Should</b> not reschedule an executing task.
 	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
-	 * @should reschedule a currently scheduled task
-	 * @should not reschedule a task that is not currently scheduled
-	 * @should not reschedule a task if the start time has passed
-	 * @should not reschedule an executing task
 	 */
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command,

@@ -177,6 +177,25 @@ public class ShortPatientFormController {
 	
 	/**
 	 * Handles the form submission by validating the form fields and saving it to the DB
+	 * <p>
+	 * <b>Should</b> pass if all the form data is valid.<br>
+	 * <b>Should</b> create a new patient.<br>
+	 * <b>Should</b> send the user back to the form in case of validation errors.<br>
+	 * <b>Should</b> void a name and replace it with a new one if it is changed to a unique value.<br>
+	 * <b>Should</b> void an address and replace it with a new one if it is changed to a unique
+	 * value.<br>
+	 * <b>Should</b> add a new name if the person had no names.<br>
+	 * <b>Should</b> add a new address if the person had none.<br>
+	 * <b>Should</b> ignore a new address that was added and voided at same time.<br>
+	 * <b>Should</b> set the cause of death as none a coded concept.<br>
+	 * <b>Should</b> set the cause of death as a none coded concept.<br>
+	 * <b>Should</b> void the cause of death obs that is none coded.<br>
+	 * <b>Should</b> add a new person attribute with a non empty value.<br>
+	 * <b>Should</b> not add a new person attribute with an empty value.<br>
+	 * <b>Should</b> void an existing person attribute with an empty value.<br>
+	 * <b>Should</b> should replace an existing attribute with a new one when edited.<br>
+	 * <b>Should</b> not void address if it was not changed.<br>
+	 * <b>Should</b> void address if it was changed.
 	 * 
 	 * @param request the webRequest object
 	 * @param relationshipsMap
@@ -184,23 +203,6 @@ public class ShortPatientFormController {
 	 *            fields
 	 * @param result
 	 * @return the view to forward to
-	 * @should pass if all the form data is valid
-	 * @should create a new patient
-	 * @should send the user back to the form in case of validation errors
-	 * @should void a name and replace it with a new one if it is changed to a unique value
-	 * @should void an address and replace it with a new one if it is changed to a unique value
-	 * @should add a new name if the person had no names
-	 * @should add a new address if the person had none
-	 * @should ignore a new address that was added and voided at same time
-	 * @should set the cause of death as none a coded concept
-	 * @should set the cause of death as a none coded concept
-	 * @should void the cause of death obs that is none coded
-	 * @should add a new person attribute with a non empty value
-	 * @should not add a new person attribute with an empty value
-	 * @should void an existing person attribute with an empty value
-	 * @should should replace an existing attribute with a new one when edited
-	 * @should not void address if it was not changed
-	 * @should void address if it was changed
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = SHORT_PATIENT_FORM_URL)
 	public String saveShortPatient(WebRequest request, @ModelAttribute("personNameCache") PersonName personNameCache,

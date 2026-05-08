@@ -48,9 +48,9 @@ public class PersonAttributeTypeListController {
 	
 	/**
 	 * Show the page to the user.
-	 * 
-	 * @should not fail if not authenticated
-	 * @should put all attribute types into map
+	 * <p>
+	 * <b>Should</b> not fail if not authenticated.<br>
+	 * <b>Should</b> put all attribute types into map.
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.GET)
@@ -90,6 +90,8 @@ public class PersonAttributeTypeListController {
 	
 	/**
 	 * The user has selected the bottom save button to update the GPs
+	 * <p>
+	 * <b>Should</b> save given personListingAttributeTypes.
 	 * 
 	 * @param patientListingAttributeTypes patient list gp
 	 * @param patientViewingAttributeTypes patient viewing gp
@@ -97,7 +99,6 @@ public class PersonAttributeTypeListController {
 	 * @param userListingAttributeTypes user listing gp
 	 * @param userViewingAttributeTypes user viewing gp
 	 * @param httpSession the current session
-	 * @should save given personListingAttributeTypes
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "action=attrs")
 	protected String updateGlobalProperties(String patientListingAttributeTypes, String patientViewingAttributeTypes,
@@ -124,12 +125,13 @@ public class PersonAttributeTypeListController {
 	
 	/**
 	 * Moves the selected types up one in the order
+	 * <p>
+	 * <b>Should</b> move selected ids up one in the list.<br>
+	 * <b>Should</b> not fail if given first id.<br>
+	 * <b>Should</b> not fail if not given any ids.
 	 * 
 	 * @param personAttributeTypeId list of ids to move up
 	 * @param httpSession the current session
-	 * @should move selected ids up one in the list
-	 * @should not fail if given first id
-	 * @should not fail if not given any ids
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "action=moveup")
 	public String moveUp(Integer[] personAttributeTypeId, HttpSession httpSession) {
@@ -173,12 +175,13 @@ public class PersonAttributeTypeListController {
 	
 	/**
 	 * Moves the selected types down in the order
+	 * <p>
+	 * <b>Should</b> move selected ids down in the list.<br>
+	 * <b>Should</b> not fail if given last id.<br>
+	 * <b>Should</b> not fail if not given any ids.
 	 * 
 	 * @param personAttributeTypeId list of ids to move down
 	 * @param httpSession the current session
-	 * @should move selected ids down in the list
-	 * @should not fail if given last id
-	 * @should not fail if not given any ids
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "action=movedown")
 	public String moveDown(Integer[] personAttributeTypeId, HttpSession httpSession) {

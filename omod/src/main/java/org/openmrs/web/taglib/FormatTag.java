@@ -406,11 +406,12 @@ public class FormatTag extends TagSupport {
 	/**
 	 * Formats a Concept and prints it to sb, respecting conceptNameType and conceptNameTag if they
 	 * are specified and a match is found. (This will always prints something.)
+	 * <p>
+	 * <b>Should</b> print the name with the correct name and type.<br>
+	 * <b>Should</b> escape html tags.
 	 * 
 	 * @param sb
 	 * @param concept
-	 * @should print the name with the correct name and type
-	 * @should escape html tags
 	 */
 	protected void printConcept(StringBuilder sb, Concept concept) {
 		Locale loc = Context.getLocale();

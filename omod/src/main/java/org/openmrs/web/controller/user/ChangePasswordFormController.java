@@ -41,8 +41,9 @@ public class ChangePasswordFormController {
 	
 	/**
 	 * The model from which the data binding happens on the view
+	 * <p>
+	 * <b>Should</b> return an authenticated User.
 	 * 
-	 * @should return an authenticated User
 	 * @return authenticated user
 	 */
 	@ModelAttribute("user")
@@ -66,19 +67,23 @@ public class ChangePasswordFormController {
 	/**
 	 * Method to save changes of the new password for a user. The password will be validated against
 	 * the current rules and will display error messages in case the password is not strong enough.
+	 * <p>
+	 * <b>Should</b> display an error message when the password and confirm password entries are
+	 * different.<br>
+	 * <b>Should</b> not display error message if password and confirm password are the same.<br>
+	 * <b>Should</b> display error message when the password is empty.<br>
+	 * <b>Should</b> display error message if password is weak.<br>
+	 * <b>Should</b> display error message when question is empty and answer is not empty.<br>
+	 * <b>Should</b> display error message when the answer and the confirm answer entered are not
+	 * the same.<br>
+	 * <b>Should</b> display error message when the answer is empty and question is not empty.<br>
+	 * <b>Should</b> navigate to the home page if the authentication is successful.<br>
+	 * <b>Should</b> set the user property forcePassword to false after successful password change.<br>
+	 * <b>Should</b> not set the user property forcePassword to false after unsuccessful password
+	 * change.<br>
+	 * <b>Should</b> remain on the changePasswordForm page if there are errors.<br>
+	 * <b>Should</b> set the secret question and answer of the user.
 	 * 
-	 * @should display an error message when the password and confirm password entries are different
-	 * @should not display error message if password and confirm password are the same
-	 * @should display error message when the password is empty
-	 * @should display error message if password is weak
-	 * @should display error message when question is empty and answer is not empty
-	 * @should display error message when the answer and the confirm answer entered are not the same
-	 * @should display error message when the answer is empty and question is not empty
-	 * @should navigate to the home page if the authentication is successful
-	 * @should set the user property forcePassword to false after successful password change
-	 * @should not set the user property forcePassword to false after unsuccessful password change
-	 * @should remain on the changePasswordForm page if there are errors
-	 * @should set the secret question and answer of the user
 	 * @param password to be applied
 	 * @param confirmPassword confirmation for the password to be applied
 	 * @param question in case of a forgotten password

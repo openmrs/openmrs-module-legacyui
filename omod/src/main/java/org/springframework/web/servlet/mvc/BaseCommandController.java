@@ -82,24 +82,21 @@ import org.springframework.web.context.request.ServletWebRequest;
  * which can be used in a View to render any input problems.
  * </p>
  * <p>
- * <b><a name="workflow">Workflow (<a href="AbstractController.html#workflow">and that defined by
- * superclass</a>):</b><br>
- * Since this class is an abstract base class for more specific implementation, it does not override
- * the handleRequestInternal() method and also has no actual workflow. Implementing classes like
- * {@link AbstractFormController AbstractFormController}, {@link AbstractCommandController
- * AbstractcommandController}, {@link SimpleFormController SimpleFormController} and
- * {@link AbstractWizardFormController AbstractWizardFormController} provide actual functionality
- * and workflow. More information on workflow performed by superclasses can be found <a
- * href="AbstractController.html#workflow">here</a>.
- * </p>
+ * <b>Workflow (and that defined by superclass):</b> Since this class is an abstract base class for
+ * more specific implementation, it does not override the handleRequestInternal() method and also
+ * has no actual workflow. Implementing classes like {@link AbstractFormController
+ * AbstractFormController}, {@code AbstractCommandController}, {@link SimpleFormController
+ * SimpleFormController} and {@link AbstractWizardFormController AbstractWizardFormController}
+ * provide actual functionality and workflow. More information on workflow performed by superclasses
+ * can be found in the superclass documentation.
  * <p>
- * <b><a name="config">Exposed configuration properties</a> (<a
- * href="AbstractController.html#config">and those defined by superclass</a>):</b><br>
+ * <b>Exposed configuration properties (and those defined by superclass):</b>
  * <table border="1">
+ * <caption>Configuration properties</caption>
  * <tr>
- * <td><b>name</b></th>
- * <td><b>default</b></td>
- * <td><b>description</b></td>
+ * <th>name</th>
+ * <th>default</th>
+ * <th>description</th>
  * </tr>
  * <tr>
  * <td>commandName</td>
@@ -132,7 +129,6 @@ import org.springframework.web.context.request.ServletWebRequest;
  * with request parameters.</td>
  * </tr>
  * </table>
- * </p>
  * 
  * @author Rod Johnson
  * @author Juergen Hoeller

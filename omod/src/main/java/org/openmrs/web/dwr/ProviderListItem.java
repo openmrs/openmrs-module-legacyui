@@ -44,25 +44,31 @@ public class ProviderListItem {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> return the identifier that is mentioned for the provider when a person is not
+	 * specified.
+	 * 
 	 * @return the identifier of the provider
-	 * @should return the identifier that is mentioned for the provider when a person is not
-	 *         specified
 	 */
 	public String getIdentifier() {
 		return identifier;
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> return a display name based on whether provider has a person associated.
+	 * 
 	 * @return the display name for the provider
-	 * @should return a display name based on whether provider has a person associated
 	 */
 	public String getDisplayName() {
 		return displayName;
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> return the provider id.
+	 * 
 	 * @return the provider id
-	 * @should return the provider id
 	 */
 	public Integer getProviderId() {
 		return providerId;

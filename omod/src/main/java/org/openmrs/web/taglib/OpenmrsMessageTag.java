@@ -176,15 +176,18 @@ public class OpenmrsMessageTag extends OpenmrsHtmlEscapingAwareTag {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> evaluate specified message resolvable.<br>
+	 * <b>Should</b> resolve message by code.<br>
+	 * <b>Should</b> resolve message in locale that different from default.<br>
+	 * <b>Should</b> return code if no message resolved.<br>
+	 * <b>Should</b> use body content as fallback if no message resolved.<br>
+	 * <b>Should</b> use text attribute as fallback if no message resolved.<br>
+	 * <b>Should</b> use body content in prior to text attribute as fallback if no message resolved.
+	 * <br>
+	 * <b>Should</b> ignore fallbacks if tag locale differs from context locale.
+	 * 
 	 * @see MessageTag#doStartTagInternal()
-	 * @should evaluate specified message resolvable
-	 * @should resolve message by code
-	 * @should resolve message in locale that different from default
-	 * @should return code if no message resolved
-	 * @should use body content as fallback if no message resolved
-	 * @should use text attribute as fallback if no message resolved
-	 * @should use body content in prior to text attribute as fallback if no message resolved
-	 * @should ignore fallbacks if tag locale differs from context locale
 	 */
 	@Override
 	protected int doEndTagInternal() throws JspException, IOException {

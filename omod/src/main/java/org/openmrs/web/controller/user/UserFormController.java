@@ -145,7 +145,8 @@ public class UserFormController {
 	}
 	
 	/**
-	 * @should work for an example
+	 * <p>
+	 * <b>Should</b> work for an example.
 	 */
 	@RequestMapping(value = "/admin/users/user.form", method = RequestMethod.POST)
 	public String handleSubmission(WebRequest request, HttpSession httpSession, ModelMap model,

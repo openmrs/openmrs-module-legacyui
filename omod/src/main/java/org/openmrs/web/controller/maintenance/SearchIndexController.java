@@ -36,7 +36,9 @@ public class SearchIndexController {
 	private Future<?> updateSearchIndexAsync = null;
 	
 	/**
-	 * @should return the search index view
+	 * <p>
+	 * <b>Should</b> return the search index view.
+	 * 
 	 * @return the searchIndex view
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "admin/maintenance/searchIndex.htm")
@@ -45,8 +47,10 @@ public class SearchIndexController {
 	}
 	
 	/**
-	 * @should return true for success if the update does not fail
-	 * @should return false for success if a RuntimeException is thrown
+	 * <p>
+	 * <b>Should</b> return true for success if the update does not fail.<br>
+	 * <b>Should</b> return false for success if a RuntimeException is thrown.
+	 * 
 	 * @return a marker indicating success
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "admin/maintenance/rebuildSearchIndex.htm")
@@ -70,9 +74,11 @@ public class SearchIndexController {
 	}
 	
 	/**
-	 * @should return return inProgress for status if a rebuildSearchIndex is not completed
-	 * @should return success for status if a rebuildSearchIndex is completed successfully
-	 * @should return error for status if a rebuildSearchIndex is not completed normally
+	 * <p>
+	 * <b>Should</b> return return inProgress for status if a rebuildSearchIndex is not completed.<br>
+	 * <b>Should</b> return success for status if a rebuildSearchIndex is completed successfully.<br>
+	 * <b>Should</b> return error for status if a rebuildSearchIndex is not completed normally.
+	 * 
 	 * @return hashMap of String, String holds a key named "status" indicating the status of rebuild
 	 *         search index
 	 */

@@ -38,10 +38,11 @@ public class UserListController {
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	/**
-	 * @should get users just given action parameter
-	 * @should get all users if no name given
-	 * @should get users with a given role
-	 * @should include disabled users if requested
+	 * <p>
+	 * <b>Should</b> get users just given action parameter.<br>
+	 * <b>Should</b> get all users if no name given.<br>
+	 * <b>Should</b> get users with a given role.<br>
+	 * <b>Should</b> include disabled users if requested.
 	 */
 	@RequestMapping(value = "/admin/users/users.list")
 	public String displayUsers(ModelMap model, @RequestParam(value = "action", required = false) String action,

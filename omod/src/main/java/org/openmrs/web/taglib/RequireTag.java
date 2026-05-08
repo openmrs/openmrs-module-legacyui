@@ -68,16 +68,18 @@ public class RequireTag extends TagSupport {
 	 * need be. <br>
 	 * <br>
 	 * Returns SKIP_PAGE if the user doesn't have the privilege and SKIP_BODY if it does.
+	 * <p>
+	 * <b>Should</b> allow user with the privilege.<br>
+	 * <b>Should</b> allow user to have any privilege.<br>
+	 * <b>Should</b> allow user with all privileges.<br>
+	 * <b>Should</b> reject user without the privilege.<br>
+	 * <b>Should</b> reject user without any of the privileges.<br>
+	 * <b>Should</b> reject user without all of the privileges.<br>
+	 * <b>Should</b> set the right session attributes if the authenticated user misses some
+	 * privileges.<br>
+	 * <b>Should</b> set the referer as the denied page url if no redirect url is specified.
 	 * 
 	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
-	 * @should allow user with the privilege
-	 * @should allow user to have any privilege
-	 * @should allow user with all privileges
-	 * @should reject user without the privilege
-	 * @should reject user without any of the privileges
-	 * @should reject user without all of the privileges
-	 * @should set the right session attributes if the authenticated user misses some privileges
-	 * @should set the referer as the denied page url if no redirect url is specified
 	 */
 	public int doStartTag() {
 		

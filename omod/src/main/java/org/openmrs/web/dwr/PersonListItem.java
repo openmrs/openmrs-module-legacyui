@@ -72,11 +72,12 @@ public class PersonListItem {
 	 * Creates an instance of a subclass of PersonListItem which is best suited for the parameter.
 	 * If a {@link Patient} is passed in, a {@link PatientListItem} is returned, otherwise a
 	 * {@link PersonListItem} is returned.
+	 * <p>
+	 * <b>Should</b> return PatientListItem given patient parameter.<br>
+	 * <b>Should</b> return PersonListItem given person parameter.
 	 * 
 	 * @param person the {@link Person} object to covert to a {@link PersonListItem}
 	 * @return a {@link PersonListItem} or subclass thereof
-	 * @should return PatientListItem given patient parameter
-	 * @should return PersonListItem given person parameter
 	 */
 	public static PersonListItem createBestMatch(Person person) {
 		if (person instanceof Patient) {
@@ -104,9 +105,10 @@ public class PersonListItem {
 	/**
 	 * Convenience constructor that creates a PersonListItem from the given Person. All relevant
 	 * attributes are pulled off of the Person object and copied to this PersonListItem
+	 * <p>
+	 * <b>Should</b> put attribute toString value into attributes map.
 	 * 
 	 * @param person the Person to turn into a PersonListItem
-	 * @should put attribute toString value into attributes map
 	 */
 	public PersonListItem(Person person) {
 		
@@ -155,14 +157,15 @@ public class PersonListItem {
 	 * Convenience constructor that creates a PersonListItem from the given Person. All relevant
 	 * attributes are pulled off of the Person object and copied to this PersonListItem. And set the
 	 * best match name based on the search criteria.
+	 * <p>
+	 * <b>Should</b> identify best matching name for the family name.<br>
+	 * <b>Should</b> identify best matching name as preferred name even if other names match.<br>
+	 * <b>Should</b> identify best matching name as other name for the middle name.<br>
+	 * <b>Should</b> identify best matching name as other name for the given name.<br>
+	 * <b>Should</b> identify best matching name in multiple search names.
 	 * 
 	 * @param person the Person to turn into a PersonListItem
 	 * @param searchName Search query string of the name
-	 * @should identify best matching name for the family name
-	 * @should identify best matching name as preferred name even if other names match
-	 * @should identify best matching name as other name for the middle name
-	 * @should identify best matching name as other name for the given name
-	 * @should identify best matching name in multiple search names
 	 */
 	public PersonListItem(Person person, String searchName) {
 		this(person);
@@ -191,11 +194,12 @@ public class PersonListItem {
 	/**
 	 * Helper method to check if all the search names(separated by spaces) are contained in the
 	 * person's full name.
+	 * <p>
+	 * <b>Should</b> return true when all searched names are found in full name.<br>
+	 * <b>Should</b> return false if even one of the searched names are not found in full name.
 	 * 
 	 * @param fullName the fullName upon which the search names are to be compared
 	 * @param searchNames Array&lt;String&gt; of searched names
-	 * @should return true when all searched names are found in full name
-	 * @should return false if even one of the searched names are not found in full name
 	 */
 	private boolean containsAll(String fullName, String[] searchNames) {
 		for (String name : searchNames) {

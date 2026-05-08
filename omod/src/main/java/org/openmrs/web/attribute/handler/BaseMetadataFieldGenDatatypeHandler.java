@@ -19,9 +19,11 @@ import org.openmrs.customdatatype.datatype.BaseMetadataDatatype;
 public abstract class BaseMetadataFieldGenDatatypeHandler<DT extends BaseMetadataDatatype<T>, T extends OpenmrsMetadata> extends SerializingFieldGenDatatypeHandler<DT, T> {
 	
 	/**
+	 * <p>
+	 * <b>Should</b> return the name.
+	 * 
 	 * @see SerializingFieldGenDatatypeHandler#toHtml(org.openmrs.customdatatype.CustomDatatype,
 	 *      String)
-	 * @should return the name
 	 */
 	@Override
 	public String toHtml(CustomDatatype<T> datatype, String valueReference) {
@@ -29,9 +31,11 @@ public abstract class BaseMetadataFieldGenDatatypeHandler<DT extends BaseMetadat
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> use the name in the html summary instance.
+	 * 
 	 * @see SerializingFieldGenDatatypeHandler#toHtmlSummary(org.openmrs.customdatatype.CustomDatatype,
 	 *      String)
-	 * @should use the name in the html summary instance
 	 */
 	@Override
 	public CustomDatatype.Summary toHtmlSummary(CustomDatatype<T> datatype, String valueReference) {

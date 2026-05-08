@@ -145,11 +145,12 @@ public class ShowGraphServlet extends HttpServlet {
 	/**
 	 * The main method for this class. It will create a JFreeChart object to be written to the
 	 * response.
+	 * <p>
+	 * <b>Should</b> set value axis label to given units.<br>
+	 * <b>Should</b> set value axis label to concept numeric units if given units is null.
 	 * 
 	 * @param request the current request will all the parameters needed
 	 * @return JFreeChart object to be rendered
-	 * @should set value axis label to given units
-	 * @should set value axis label to concept numeric units if given units is null
 	 */
 	protected JFreeChart getChart(HttpServletRequest request) {
 		// All available GET parameters
@@ -439,11 +440,12 @@ public class ShowGraphServlet extends HttpServlet {
 	/**
 	 * Get the FromDate object from the given string that is the time in milliseconds. If
 	 * dateFromRequest is null, return 1 year ago from today.
+	 * <p>
+	 * <b>Should</b> return one year previous to today if parameter is null.<br>
+	 * <b>Should</b> return same date as given string parameter.
 	 * 
 	 * @param dateFromRequest String that was passed into this servlet
 	 * @return Date parsed from dateFromRequest string
-	 * @should return one year previous to today if parameter is null
-	 * @should return same date as given string parameter
 	 */
 	protected Date getFromDate(String dateFromRequest) {
 		Date returnedDate = new Date(); // default to right now
@@ -463,12 +465,13 @@ public class ShowGraphServlet extends HttpServlet {
 	/**
 	 * Get the toDate object from the given string that is the time in milliseconds. If
 	 * dateFromRequest is null, return tomorrow's date.
+	 * <p>
+	 * <b>Should</b> return next months date if parameter is null.<br>
+	 * <b>Should</b> return date one day after given string date.<br>
+	 * <b>Should</b> set hour minute and second to zero.
 	 * 
 	 * @param dateFromRequest String that was passed into this servlet
 	 * @return Date parsed from dateFromRequest string
-	 * @should return next months date if parameter is null
-	 * @should return date one day after given string date
-	 * @should set hour minute and second to zero
 	 */
 	protected Date getToDate(String dateFromRequest) {
 		Calendar cal = Calendar.getInstance();

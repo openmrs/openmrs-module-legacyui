@@ -85,6 +85,16 @@ public class DWRConceptService {
 	
 	/**
 	 * Gets a list of conceptListItems matching the given arguments
+	 * <p>
+	 * <b>Should</b> return concept by given id if exclude and include lists are empty.<br>
+	 * <b>Should</b> return concept by given id if classname is included.<br>
+	 * <b>Should</b> not return concept by given id if classname is not included.<br>
+	 * <b>Should</b> not return concept by given id if classname is excluded.<br>
+	 * <b>Should</b> return concept by given id if datatype is included.<br>
+	 * <b>Should</b> not return concept by given id if datatype is not included.<br>
+	 * <b>Should</b> not return concept by given id if datatype is excluded.<br>
+	 * <b>Should</b> include.<br>
+	 * <b>Should</b> not return duplicates when searching by concept id.
 	 * 
 	 * @param phrase the concept name string to match against
 	 * @param includeRetired boolean if false, will exclude retired concepts
@@ -95,15 +105,6 @@ public class DWRConceptService {
 	 * @param start the beginning index
 	 * @param length the number of matching concepts to return
 	 * @return a list of conceptListItems matching the given arguments
-	 * @should return concept by given id if exclude and include lists are empty
-	 * @should return concept by given id if classname is included
-	 * @should not return concept by given id if classname is not included
-	 * @should not return concept by given id if classname is excluded
-	 * @should return concept by given id if datatype is included
-	 * @should not return concept by given id if datatype is not included
-	 * @should not return concept by given id if datatype is excluded
-	 * @should include
-	 * @should not return duplicates when searching by concept id
 	 * @since 1.8
 	 */
 	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
@@ -288,6 +289,11 @@ public class DWRConceptService {
 	/**
 	 * Find a list of {@link ConceptListItem} or {@link ConceptDrugListItem}s that are answers to
 	 * the given question. The given question is determined by the given <code>conceptId</code>
+	 * <p>
+	 * <b>Should</b> not fail if the specified concept has no answers (regression test for
+	 * TRUNK-2807).<br>
+	 * <b>Should</b> search for concept answers in all search locales.<br>
+	 * <b>Should</b> not return duplicates.
 	 * 
 	 * @param text the text to search for within the answers
 	 * @param conceptId the conceptId of the question concept
@@ -297,9 +303,6 @@ public class DWRConceptService {
 	 * @return list of {@link ConceptListItem} or {@link ConceptDrugListItem} answers that match the
 	 *         query
 	 * @throws Exception if given conceptId is not found
-	 * @should not fail if the specified concept has no answers (regression test for TRUNK-2807)
-	 * @should search for concept answers in all search locales
-	 * @should not return duplicates
 	 */
 	@RequirePrivilege(PrivilegeConstants.GET_CONCEPTS)
 	public List<Object> findConceptAnswers(String text, Integer conceptId, boolean includeVoided, boolean includeDrugConcepts)

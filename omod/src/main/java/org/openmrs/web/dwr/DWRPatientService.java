@@ -63,18 +63,19 @@ public class DWRPatientService implements GlobalPropertyListener {
 	/**
 	 * Search on the <code>searchValue</code>. If a number is in the search string, do an identifier
 	 * search. Else, do a name search
+	 * <p>
+	 * <b>Should</b> return only patient list items with nonnumeric search.<br>
+	 * <b>Should</b> return string warning if invalid patient identifier.<br>
+	 * <b>Should</b> not return string warning if searching with valid identifier.<br>
+	 * <b>Should</b> include string in results if doing extra decapitated search.<br>
+	 * <b>Should</b> not return duplicate patient list items if doing decapitated search.<br>
+	 * <b>Should</b> not do decapitated search if numbers are in the search string.<br>
+	 * <b>Should</b> get results for patients that have edited themselves.<br>
+	 * <b>Should</b> logged in user should load their own patient object.
 	 * 
 	 * @param searchValue string to be looked for
 	 * @param includeVoided true/false whether or not to included voided patients
 	 * @return Collection&lt;Object&gt; of PatientListItem or String
-	 * @should return only patient list items with nonnumeric search
-	 * @should return string warning if invalid patient identifier
-	 * @should not return string warning if searching with valid identifier
-	 * @should include string in results if doing extra decapitated search
-	 * @should not return duplicate patient list items if doing decapitated search
-	 * @should not do decapitated search if numbers are in the search string
-	 * @should get results for patients that have edited themselves
-	 * @should logged in user should load their own patient object
 	 */
 	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public Collection<Object> findPatients(String searchValue, boolean includeVoided) {
@@ -307,6 +308,12 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * matching patients (depending on values of start and length parameters) while the keys are are
 	 * 'count' and 'objectList' respectively, if the length parameter is not specified, then all
 	 * matches will be returned from the start index if specified.
+	 * <p>
+	 * <b>Should</b> signal for a new search if the new search value has matches and is a first
+	 * call.<br>
+	 * <b>Should</b> not signal for a new search if it is not the first ajax call.<br>
+	 * <b>Should</b> not signal for a new search if the new search value has no matches.<br>
+	 * <b>Should</b> match patient with identifiers that contain no digit.
 	 * 
 	 * @param searchValue patient name or identifier
 	 * @param start the beginning index
@@ -315,10 +322,6 @@ public class DWRPatientService implements GlobalPropertyListener {
 	 * @return a map of results
 	 * @throws APIException
 	 * @since 1.8
-	 * @should signal for a new search if the new search value has matches and is a first call
-	 * @should not signal for a new search if it is not the first ajax call
-	 * @should not signal for a new search if the new search value has no matches
-	 * @should match patient with identifiers that contain no digit
 	 */
 	@RequirePrivilege(PrivilegeConstants.GET_PATIENTS)
 	public Map<String, Object> findCountAndPatients(String searchValue, Integer start, Integer length, boolean getMatchCount)

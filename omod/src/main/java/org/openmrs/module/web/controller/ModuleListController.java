@@ -305,10 +305,12 @@ public class ModuleListController extends SimpleFormController {
 	}
 	
 	/**
+	 * <p>
+	 * <b>Should</b> sort modules correctly.
+	 * 
 	 * @param modulesToStart
 	 * @return a new list, with the same elements as modulesToStart, sorted so that no module is
 	 *         before a module it depends on
-	 * @should sort modules correctly
 	 */
 	List<Module> sortStartupOrder(List<Module> modulesToStart) {
 		// can't use Collections.sort--we need a slower algorithm that guarantees to compare every pair of elements

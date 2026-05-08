@@ -119,6 +119,9 @@ public class DWRPersonService {
 	
 	/**
 	 * Find Person objects based on the given searchPhrase
+	 * <p>
+	 * <b>Should</b> match on patient identifiers.<br>
+	 * <b>Should</b> allow null roles parameter.
 	 * 
 	 * @param searchPhrase partial name or partial identifier
 	 * @param includeVoided true/false whether to include the voided objects
@@ -127,8 +130,6 @@ public class DWRPersonService {
 	 *         contain as much information as possible about the matching persons, e.g. considering
 	 *         whether they are patients or users, which for example is useful for displaying
 	 *         patient identifiers in PersonSearch-widgets.
-	 * @should match on patient identifiers
-	 * @should allow null roles parameter
 	 */
 	@RequirePrivilege(PrivilegeConstants.GET_PERSONS)
 	public List<Object> findPeopleByRoles(String searchPhrase, boolean includeVoided, String roles) {

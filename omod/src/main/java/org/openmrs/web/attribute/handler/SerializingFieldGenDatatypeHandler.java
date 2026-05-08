@@ -34,9 +34,11 @@ import org.openmrs.propertyeditor.ProviderEditor;
 public abstract class SerializingFieldGenDatatypeHandler<DT extends SerializingCustomDatatype<T>, T> implements FieldGenDatatypeHandler<DT, T> {
 	
 	/**
+	 * <p>
+	 * <b>Should</b> return the correct typed value.
+	 * 
 	 * @see org.openmrs.web.attribute.handler.FieldGenDatatypeHandler#getValue(org.openmrs.customdatatype.CustomDatatype,
 	 *      javax.servlet.http.HttpServletRequest, java.lang.String)
-	 * @should return the correct typed value
 	 */
 	@Override
 	public T getValue(DT datatype, HttpServletRequest request, String formFieldName) throws InvalidCustomValueException {

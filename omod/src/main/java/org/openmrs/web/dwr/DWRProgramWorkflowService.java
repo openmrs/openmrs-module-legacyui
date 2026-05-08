@@ -245,7 +245,8 @@ public class DWRProgramWorkflowService {
 	}
 	
 	/**
-	 * @should return a list consisting of active, not retired, states.
+	 * <p>
+	 * <b>Should</b> return a list consisting of active, not retired, states.
 	 */
 	@RequirePrivilege(PrivilegeConstants.GET_PATIENT_PROGRAMS)
 	public Vector<ListItem> getPossibleNextStates(Integer patientProgramId, Integer programWorkflowId) {

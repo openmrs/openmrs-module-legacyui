@@ -49,8 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
  * form view and a success view can be configured declaratively.
  * </p>
  * <p>
- * <b><a name="workflow">Workflow (<a href="AbstractFormController.html#workflow">in addition to the
- * superclass</a>):</b><br>
+ * <b>Workflow (in addition to the superclass):</b>
  * <ol>
  * <li>Call to {@link #processFormSubmission processFormSubmission} which inspects the
  * {@link org.springframework.validation.Errors Errors} object to see if any errors have occurred
@@ -71,22 +70,20 @@ import org.springframework.web.servlet.ModelAndView;
  * implementing {@link #doSubmitAction} doSubmitAction for simply performing a submit action and
  * rendering the success view.</li>
  * </ol>
- * </p>
  * <p>
  * The submit behavior can be customized by overriding one of the {@link #onSubmit onSubmit}
  * methods. Submit actions can also perform custom validation if necessary (typically
  * database-driven checks), calling
  * {@link #showForm(HttpServletRequest, HttpServletResponse, BindException) showForm} in case of
  * validation errors to show the form view again.
- * </p>
  * <p>
- * <b><a name="config">Exposed configuration properties</a> (<a
- * href="AbstractFormController.html#config">and those defined by superclass</a>):</b><br>
+ * <b>Exposed configuration properties (and those defined by superclass):</b>
  * <table border="1">
+ * <caption>Configuration properties</caption>
  * <tr>
- * <td><b>name</b></td>
- * <td><b>default</b></td>
- * <td><b>description</b></td>
+ * <th>name</th>
+ * <th>default</th>
+ * <th>description</th>
  * </tr>
  * <tr>
  * <td>formView</td>
@@ -101,8 +98,7 @@ import org.springframework.web.servlet.ModelAndView;
  * view could e.g. display a submission summary. More sophisticated actions can be implemented by
  * overriding one of the {@link #onSubmit(Object) onSubmit()} methods.</td>
  * </tr>
- * <table>
- * </p>
+ * </table>
  * 
  * @author Juergen Hoeller
  * @author Rob Harrop

@@ -62,7 +62,7 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	 * @param dateExited - the declared date/time of the patient's exit
 	 * @param reasonForExit - the concept that corresponds with why the patient has been declared as
 	 *            exited
-	 * @throws APIException
+	 * @throws APIException if any input parameter is invalid
 	 */
 	public void exitFromCare(Patient patient, Date dateExited, Concept reasonForExit) throws APIException {
 		
@@ -167,9 +167,6 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	 * Copied from OpenMRS core 1.12.1 See
 	 * https://github.com/openmrs/openmrs-core/blob/1.12.1/api/src
 	 * /main/java/org/openmrs/api/impl/ProgramWorkflowServiceImpl.java#L450
-	 * 
-	 * @see org.openmrs.api.ProgramWorkflowService#triggerStateConversion(org.openmrs.Patient,
-	 *      org.openmrs.Concept, java.util.Date)
 	 */
 	public void triggerStateConversion(Patient patient, Concept trigger, Date dateConverted) {
 		
@@ -221,7 +218,10 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	}
 	
 	/**
-	 * @see OrderExtensionService#getProviderForUser(User)
+	 * Returns the first active {@link Provider} account associated with the given user.
+	 * 
+	 * @param user the user whose provider account to look up
+	 * @return the provider associated with the given user
 	 */
 	@Transactional(readOnly = true)
 	public Provider getProviderForUser(User user) {
@@ -238,15 +238,15 @@ public class LegacyUIImpl extends BaseOpenmrsService implements LegacyUIService 
 	 * https://github.com/openmrs/openmrs-core/blob/1.9.13/api/src
 	 * /main/java/org/openmrs/order/OrderUtil.java#L52 Discontinues all current orders for the given
 	 * <code>patient</code>
+	 * <p>
+	 * <b>Should</b> discontinue all orders for the given patient if none are yet discontinued.<br>
+	 * <b>Should</b> not affect orders that were already discontinued on the specified date.<br>
+	 * <b>Should</b> not affect orders that end before the specified date.<br>
+	 * <b>Should</b> not affect orders that start after the specified date.
 	 * 
-	 * @param patient
-	 * @param discontinueReason
-	 * @param discontinueDate
-	 * @see OrderService#discontinueOrder(org.openmrs.Order, Concept, Date)
-	 * @should discontinue all orders for the given patient if none are yet discontinued
-	 * @should not affect orders that were already discontinued on the specified date
-	 * @should not affect orders that end before the specified date
-	 * @should not affect orders that start after the specified date
+	 * @param patient the patient whose orders to discontinue
+	 * @param discontinueReason the concept describing why the orders are being discontinued
+	 * @param discontinueDate the date on which to discontinue the orders
 	 */
 	public void discontinueAllDrugOrders(Patient patient, Concept discontinueReason, Date discontinueDate) {
 		if (log.isDebugEnabled())

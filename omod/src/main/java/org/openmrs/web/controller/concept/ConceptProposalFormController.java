@@ -108,12 +108,13 @@ public class ConceptProposalFormController extends SimpleFormController {
 	/**
 	 * The onSubmit function receives the form/command object that was modified by the input form
 	 * and saves it to the db
+	 * <p>
+	 * <b>Should</b> create a single unique synonym and obs for all similar proposals.<br>
+	 * <b>Should</b> work properly for country locales.
 	 * 
 	 * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, java.lang.Object,
 	 *      org.springframework.validation.BindException)
-	 * @should create a single unique synonym and obs for all similar proposals
-	 * @should work properly for country locales
 	 */
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object obj,
 	        BindException errors) throws Exception {
