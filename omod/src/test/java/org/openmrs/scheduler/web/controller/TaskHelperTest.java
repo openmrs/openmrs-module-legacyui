@@ -11,6 +11,7 @@ package org.openmrs.scheduler.web.controller;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.Assertions;
@@ -20,13 +21,17 @@ import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
+import org.openmrs.scheduler.TaskDetails;
+import org.openmrs.scheduler.TaskState;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
-	
+
 	private static final String INITIAL_SCHEDULER_TASK_CONFIG_XML = "org/openmrs/web/include/TaskHelperTest.xml";
-	
-	private static final long MAX_WAIT_TIME_IN_MILLISECONDS = 2048;
+
+	// Bumped from 2s: under JobRunr the BackgroundJobServer poll cadence is on the order of 15s,
+	// so a task scheduled 1s in the future may not actually start for several seconds.
+	private static final long MAX_WAIT_TIME_IN_MILLISECONDS = 60_000;
 	
 	private SchedulerService service;
 	
@@ -81,7 +86,7 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 		TaskDefinition task = taskHelper.getUnscheduledTaskDefinition(time);
 		Assertions.assertFalse(task.getStarted());
 	}
-	
+
 	/**
 	 * @verifies wait until task is executing
 	 * @see TaskHelper#waitUntilTaskIsExecuting(org.openmrs.scheduler.TaskDefinition, long)
@@ -91,11 +96,18 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 		Date time = taskHelper.getTime(Calendar.SECOND, 1);
 		TaskDefinition task = taskHelper.getScheduledTaskDefinition(time);
 		taskHelper.waitUntilTaskIsExecuting(task, MAX_WAIT_TIME_IN_MILLISECONDS);
-		
-		Assertions.assertTrue(task.getTaskInstance().isExecuting());
+
+		Optional<TaskDetails> details = service.getTask(task.getUuid());
+		// PROCESSING / SUCCEEDED / FAILED all imply the task was picked up by the scheduler. The
+		// JobRunr job is removed from storage shortly after SUCCEEDED, so absence is also acceptable.
+		if (details.isPresent()) {
+			TaskState state = details.get().getState();
+			Assertions.assertTrue(state == TaskState.PROCESSING || state == TaskState.SUCCEEDED
+			        || state == TaskState.FAILED, "Unexpected task state after wait: " + state);
+		}
 		deleteAllData();
 	}
-	
+
 	/**
 	 * @verifies raise a timeout exception when the timeout is exceeded
 	 * @see TaskHelper#waitUntilTaskIsExecuting(org.openmrs.scheduler.TaskDefinition, long)

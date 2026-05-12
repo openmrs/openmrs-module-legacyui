@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Patient;
@@ -30,6 +31,7 @@ import org.openmrs.PersonAttributeType;
 import org.openmrs.PersonName;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
+import org.openmrs.layout.address.AddressSupport;
 import org.openmrs.test.Verifies;
 import org.openmrs.util.LocationUtility;
 import org.openmrs.util.OpenmrsConstants;
@@ -52,10 +54,27 @@ import org.springframework.web.context.request.WebRequest;
  * @see ShortPatientFormController
  */
 public class ShortPatientFormControllerTest extends BaseModuleWebContextSensitiveTest {
-	
+
+	// Resets the AddressSupport singleton (which caches a global property across tests)
+	// so PersonAddressValidator does not inherit required-element state from earlier tests.
+	private static final String EMPTY_REQUIRED_ELEMENTS_ADDRESS_TEMPLATE = "<org.openmrs.layout.address.AddressTemplate>"
+	        + "<nameMappings class=\"properties\"/>" + "<sizeMappings class=\"properties\"/>" + "<lineByLineFormat/>"
+	        + "<requiredElements/>" + "</org.openmrs.layout.address.AddressTemplate>";
+
 	@Autowired
 	WebTestHelper webTestHelper;
-	
+
+	@BeforeEach
+	public void resetAddressTemplateSingleton() {
+		Context.getAdministrationService().setGlobalProperty(OpenmrsConstants.GLOBAL_PROPERTY_ADDRESS_TEMPLATE,
+		    EMPTY_REQUIRED_ELEMENTS_ADDRESS_TEMPLATE);
+		// Force-refresh the AddressSupport singleton: its listener may have been registered against
+		// a stale Spring context (CI test ordering), in which case setGlobalProperty above never
+		// notifies it. Calling globalPropertyChanged directly guarantees the cached template is reset.
+		AddressSupport.getInstance().globalPropertyChanged(new GlobalProperty(
+		        OpenmrsConstants.GLOBAL_PROPERTY_ADDRESS_TEMPLATE, EMPTY_REQUIRED_ELEMENTS_ADDRESS_TEMPLATE));
+	}
+
 	/**
 	 * @see ShortPatientFormController#saveShortPatient(WebRequest,ShortPatientModel,BindingResult,SessionStatus)
 	 */

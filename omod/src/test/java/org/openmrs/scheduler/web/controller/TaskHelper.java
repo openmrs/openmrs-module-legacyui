@@ -14,9 +14,12 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
+import org.openmrs.scheduler.TaskDetails;
+import org.openmrs.scheduler.TaskState;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -77,31 +80,43 @@ public class TaskHelper {
 	}
 	
 	/**
-	 * Waits until a task is executing or until a timeout occurs.
-	 * 
-	 * @param task the task that is expected to be executing
+	 * Waits until a task has been picked up by the scheduler (PROCESSING) or has finished (SUCCEEDED
+	 * / FAILED), or until a timeout occurs. Under JobRunr (TRUNK-6558) {@link TaskDefinition} no
+	 * longer carries an in-memory {@code taskInstance}, so progress is observed via
+	 * {@link SchedulerService#getTask(String)}.
+	 *
+	 * @param task the task that is expected to start executing
 	 * @param timeoutInMilliseconds defines how long to wait before raising a timeout exception
 	 * @throws InterruptedException if an interrupt occurs while waiting
-	 * @throws TimeoutException if the task is not executing after the specified timeout
+	 * @throws TimeoutException if the task has not started executing within the specified timeout
 	 * @should wait until task is executing
 	 * @should raise a timeout exception when the timeout is exceeded
 	 */
 	public void waitUntilTaskIsExecuting(TaskDefinition task, long timeoutInMilliseconds) throws InterruptedException,
 	        TimeoutException {
 		long scheduledBefore = System.currentTimeMillis();
-		
+
 		log.debug("waiting for test task to start executing");
-		
-		while (!task.getTaskInstance().isExecuting()) {
+
+		while (!hasStarted(task)) {
 			if (System.currentTimeMillis() - scheduledBefore > timeoutInMilliseconds) {
 				throw new TimeoutException("A timeout has occurred while starting a test task. The task has been scheduled "
 				        + timeoutInMilliseconds + " milliseconds ago and is not yet executing.");
 			}
-			Thread.sleep(10);
+			Thread.sleep(50);
 		}
-		
+
 		log.debug("test task has started executing " + (System.currentTimeMillis() - scheduledBefore)
 		        + " milliseconds after having been scheduled");
+	}
+
+	private boolean hasStarted(TaskDefinition task) {
+		Optional<TaskDetails> details = service.getTask(task.getUuid());
+		if (!details.isPresent()) {
+			return false;
+		}
+		TaskState state = details.get().getState();
+		return state == TaskState.PROCESSING || state == TaskState.SUCCEEDED || state == TaskState.FAILED;
 	}
 	
 }

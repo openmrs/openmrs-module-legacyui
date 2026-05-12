@@ -24,6 +24,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.TaskDefinition;
+import org.openmrs.scheduler.TaskDetails;
+import org.openmrs.scheduler.TaskState;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.WebUtil;
@@ -138,12 +140,12 @@ public class SchedulerFormController extends SimpleFormController {
 		task.setStartTimePattern(DEFAULT_DATE_PATTERN);
 		log.info("task started? " + task.getStarted());
 		
-		//TODO Add unit test method to check that an executing task doesn't get rescheduled, it would require adding a test task 
-		//that runs for a period that spans beyond time it takes to execute all the necessary assertions in the test method
-		
-		//only reschedule a task if it is started, is not running and the time is not in the past
+		//only reschedule a task if it is started, is not running and the time is not in the past.
+		//Under JobRunr (TRUNK-6558) TaskDefinition.taskInstance is no longer populated, so we
+		//query the live task state via SchedulerService.getTask(uuid) instead.
+		TaskState liveState = Context.getSchedulerService().getTask(task.getUuid()).map(TaskDetails::getState).orElse(null);
 		if (task.getStarted() && OpenmrsUtil.compareWithNullAsEarliest(task.getStartTime(), new Date()) > 0
-		        && (task.getTaskInstance() == null || !task.getTaskInstance().isExecuting())) {
+		        && liveState != TaskState.PROCESSING) {
 			Context.getSchedulerService().rescheduleTask(task);
 		}
 		Context.getSchedulerService().saveTaskDefinition(task);
