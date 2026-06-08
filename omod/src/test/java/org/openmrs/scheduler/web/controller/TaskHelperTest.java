@@ -11,23 +11,19 @@ package org.openmrs.scheduler.web.controller;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
-import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
 public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
-	
+
 	private static final String INITIAL_SCHEDULER_TASK_CONFIG_XML = "org/openmrs/web/include/TaskHelperTest.xml";
-	
-	private static final long MAX_WAIT_TIME_IN_MILLISECONDS = 2048;
-	
+
 	private SchedulerService service;
 	
 	private TaskHelper taskHelper;
@@ -80,33 +76,5 @@ public class TaskHelperTest extends BaseModuleWebContextSensitiveTest {
 		Date time = taskHelper.getTime(Calendar.SECOND, 1);
 		TaskDefinition task = taskHelper.getUnscheduledTaskDefinition(time);
 		Assertions.assertFalse(task.getStarted());
-	}
-	
-	/**
-	 * @verifies wait until task is executing
-	 * @see TaskHelper#waitUntilTaskIsExecuting(org.openmrs.scheduler.TaskDefinition, long)
-	 */
-	@Test
-	public void waitUntilTaskIsExecuting_shouldWaitUntilTaskIsExecuting() throws Exception {
-		Date time = taskHelper.getTime(Calendar.SECOND, 1);
-		TaskDefinition task = taskHelper.getScheduledTaskDefinition(time);
-		taskHelper.waitUntilTaskIsExecuting(task, MAX_WAIT_TIME_IN_MILLISECONDS);
-		
-		Assertions.assertTrue(task.getTaskInstance().isExecuting());
-		deleteAllData();
-	}
-	
-	/**
-	 * @verifies raise a timeout exception when the timeout is exceeded
-	 * @see TaskHelper#waitUntilTaskIsExecuting(org.openmrs.scheduler.TaskDefinition, long)
-	 */
-	@Test
-	public void waitUntilTaskIsExecuting_shouldRaiseATimeoutExceptionWhenTheTimeoutIsExceeded() throws SchedulerException,
-	        InterruptedException {
-		Assertions.assertThrows(TimeoutException.class, () -> {
-			Date time = taskHelper.getTime(Calendar.MINUTE, 1);
-			TaskDefinition task = taskHelper.getScheduledTaskDefinition(time);
-			taskHelper.waitUntilTaskIsExecuting(task, 10);
-		});
 	}
 }

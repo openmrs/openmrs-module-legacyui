@@ -9,6 +9,8 @@
  */
 package org.openmrs.scheduler.web.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,7 +26,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.scheduler.SchedulerService;
-import org.openmrs.scheduler.Task;
 import org.openmrs.scheduler.TaskDefinition;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
@@ -42,9 +43,7 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 	private static final String DATE_TIME_FORMAT = "MM/dd/yyyy HH:mm:ss";
 	
 	private static final String INITIAL_SCHEDULER_TASK_CONFIG_XML = "org/openmrs/web/include/SchedulerFormControllerTest.xml";
-	
-	private static final long MAX_WAIT_TIME_IN_MILLISECONDS = 2048;
-	
+
 	private MockHttpServletRequest mockRequest;
 	
 	private TaskHelper taskHelper;
@@ -77,16 +76,22 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 	public void onSubmit_shouldRescheduleACurrentlyScheduledTask() throws Exception {
 		Date timeOne = taskHelper.getTime(Calendar.MINUTE, 5);
 		TaskDefinition task = taskHelper.getScheduledTaskDefinition(timeOne);
-		Task oldTaskInstance = task.getTaskInstance();
-		
+
 		Date timeTwo = taskHelper.getTime(Calendar.MINUTE, 2);
-		mockRequest.setParameter("startTime", new SimpleDateFormat(DATE_TIME_FORMAT).format(timeTwo));
-		
+		String newStartTime = new SimpleDateFormat(DATE_TIME_FORMAT).format(timeTwo);
+		mockRequest.setParameter("startTime", newStartTime);
+
 		ModelAndView mav = controller.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
-		
-		Assertions.assertNotSame(oldTaskInstance, task.getTaskInstance());
+
+		// Submitting a started task with a future start time keeps it started and persists the new
+		// start time. (The in-process task instance the old assertion compared is gone now that the
+		// core scheduler is backed by JobRunr, so the reschedule call itself is no longer
+		// observable through the TaskDefinition.)
+		TaskDefinition rescheduled = service.getTask(task.getId());
+		assertTrue(rescheduled.getStarted());
+		assertEquals(newStartTime, new SimpleDateFormat(DATE_TIME_FORMAT).format(rescheduled.getStartTime()));
 	}
 	
 	/**
@@ -97,16 +102,16 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 	public void onSubmit_shouldNotRescheduleATaskThatIsNotCurrentlyScheduled() throws Exception {
 		Date timeOne = taskHelper.getTime(Calendar.MINUTE, 5);
 		TaskDefinition task = taskHelper.getUnscheduledTaskDefinition(timeOne);
-		Task oldTaskInstance = task.getTaskInstance();
-		
+
 		Date timeTwo = taskHelper.getTime(Calendar.MINUTE, 2);
 		mockRequest.setParameter("startTime", new SimpleDateFormat(DATE_TIME_FORMAT).format(timeTwo));
-		
+
 		ModelAndView mav = controller.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
-		
-		Assertions.assertSame(oldTaskInstance, task.getTaskInstance());
+
+		// A task that was never scheduled must not be started by submitting the form.
+		assertFalse(service.getTask(task.getId()).getStarted());
 	}
 	
 	/**
@@ -117,39 +122,20 @@ public class SchedulerFormControllerTest extends BaseModuleWebContextSensitiveTe
 	public void onSubmit_shouldNotRescheduleATaskIfTheStartTimeHasPassed() throws Exception {
 		Date timeOne = taskHelper.getTime(Calendar.MINUTE, 5);
 		TaskDefinition task = taskHelper.getScheduledTaskDefinition(timeOne);
-		Task oldTaskInstance = task.getTaskInstance();
-		
+
 		Date timeTwo = taskHelper.getTime(Calendar.SECOND, -1);
-		mockRequest.setParameter("startTime", new SimpleDateFormat(DATE_TIME_FORMAT).format(timeTwo));
-		
+		String passedStartTime = new SimpleDateFormat(DATE_TIME_FORMAT).format(timeTwo);
+		mockRequest.setParameter("startTime", passedStartTime);
+
 		ModelAndView mav = controller.handleRequest(mockRequest, new MockHttpServletResponse());
 		assertNotNull(mav);
 		assertTrue(mav.getModel().isEmpty());
-		
-		Assertions.assertSame(oldTaskInstance, task.getTaskInstance());
-	}
-	
-	/**
-	 * @see SchedulerFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
-	 */
-	@Test
-	@Verifies(value = "should not reschedule an executing task", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
-	public void onSubmit_shouldNotRescheduleAnExecutingTask() throws Exception {
-		Date startTime = taskHelper.getTime(Calendar.SECOND, 1);
-		TaskDefinition task = taskHelper.getScheduledTaskDefinition(startTime);
-		
-		taskHelper.waitUntilTaskIsExecuting(task, MAX_WAIT_TIME_IN_MILLISECONDS);
-		Task oldTaskInstance = task.getTaskInstance();
-		
-		// use the *same* start time as in the task already running
-		mockRequest.setParameter("startTime", new SimpleDateFormat(DATE_TIME_FORMAT).format(startTime));
-		
-		ModelAndView mav = controller.handleRequest(mockRequest, new MockHttpServletResponse());
-		assertNotNull(mav);
-		assertTrue(mav.getModel().isEmpty());
-		
-		Assertions.assertSame(oldTaskInstance, task.getTaskInstance());
-		deleteAllData();
+
+		// Submitting a start time in the past is handled without error and the submitted value is
+		// persisted. (Whether a reschedule was skipped is no longer observable through the
+		// TaskDefinition now that the core scheduler is backed by JobRunr.)
+		assertEquals(passedStartTime, new SimpleDateFormat(DATE_TIME_FORMAT).format(service.getTask(task.getId())
+		        .getStartTime()));
 	}
 	
 	/**

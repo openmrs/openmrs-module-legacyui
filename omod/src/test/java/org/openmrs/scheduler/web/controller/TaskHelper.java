@@ -9,24 +9,18 @@
  */
 package org.openmrs.scheduler.web.controller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.scheduler.SchedulerException;
 import org.openmrs.scheduler.SchedulerService;
 import org.openmrs.scheduler.TaskDefinition;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeoutException;
 
 /**
- * Provides helper methods for creating scheduled and unscheduled tasks. Also provides methods for
- * waiting until a task has reached a given state, such as executing or having been stopped.
+ * Provides helper methods for creating scheduled and unscheduled tasks.
  */
 public class TaskHelper {
-	
-	private static final Log log = LogFactory.getLog(TaskHelper.class);
-	
+
 	private SchedulerService service;
 	
 	public TaskHelper(SchedulerService service) {
@@ -72,36 +66,8 @@ public class TaskHelper {
 		
 		task.setStartTime(startTime);
 		service.saveTaskDefinition(task);
-		
+
 		return task;
 	}
-	
-	/**
-	 * Waits until a task is executing or until a timeout occurs.
-	 * 
-	 * @param task the task that is expected to be executing
-	 * @param timeoutInMilliseconds defines how long to wait before raising a timeout exception
-	 * @throws InterruptedException if an interrupt occurs while waiting
-	 * @throws TimeoutException if the task is not executing after the specified timeout
-	 * @should wait until task is executing
-	 * @should raise a timeout exception when the timeout is exceeded
-	 */
-	public void waitUntilTaskIsExecuting(TaskDefinition task, long timeoutInMilliseconds) throws InterruptedException,
-	        TimeoutException {
-		long scheduledBefore = System.currentTimeMillis();
-		
-		log.debug("waiting for test task to start executing");
-		
-		while (!task.getTaskInstance().isExecuting()) {
-			if (System.currentTimeMillis() - scheduledBefore > timeoutInMilliseconds) {
-				throw new TimeoutException("A timeout has occurred while starting a test task. The task has been scheduled "
-				        + timeoutInMilliseconds + " milliseconds ago and is not yet executing.");
-			}
-			Thread.sleep(10);
-		}
-		
-		log.debug("test task has started executing " + (System.currentTimeMillis() - scheduledBefore)
-		        + " milliseconds after having been scheduled");
-	}
-	
+
 }
