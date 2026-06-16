@@ -23,19 +23,20 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 public class XSSFilter implements Filter {
-	
+
+	private static final String WEB_SERVICE_PATH = "/ws/";
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 	        ServletException {
-		
-		if (!"GET".equalsIgnoreCase(((HttpServletRequest) request).getMethod())) {
-			if (ServletFileUpload.isMultipartContent((HttpServletRequest) request)) {
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		if (!"GET".equalsIgnoreCase(httpRequest.getMethod()) && !isWebServiceRequest(httpRequest)) {
+			if (ServletFileUpload.isMultipartContent(httpRequest)) {
 				request = new XSSMultipartRequestWrapper((DefaultMultipartHttpServletRequest) request);
 			} else {
-				request = new XSSRequestWrapper((HttpServletRequest) request);
+				request = new XSSRequestWrapper(httpRequest);
 			}
 		}
-		
 		chain.doFilter(request, response);
 	}
 	
@@ -47,5 +48,14 @@ public class XSSFilter implements Filter {
 	@Override
 	public void destroy() {
 		
+	}
+
+	private boolean isWebServiceRequest(HttpServletRequest request) {
+		String requestUri = request.getRequestURI();
+		if (requestUri == null) {
+			return false;
+		}
+		String path = requestUri.substring(request.getContextPath().length());
+		return path.startsWith(WEB_SERVICE_PATH);
 	}
 }
