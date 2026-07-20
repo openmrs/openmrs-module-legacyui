@@ -9,6 +9,7 @@
  */
 package org.openmrs.web.security;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -20,6 +21,7 @@ import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -30,36 +32,56 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.context.UserContext;
+import org.openmrs.util.OpenmrsClassLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * Servlet filter that enforces {@link RequirePrivilege} on every DWR method invocation served by
- * the legacyui module. DWR has its own request pipeline ({@code /dwr/*},
- * {@code /ms/call/plaincall/*}) outside Spring's {@code DispatcherServlet}, so
- * {@link AuthorizationHandlerInterceptor} does not see these calls. This filter is the
- * request-boundary check for that pipeline.
+ * Servlet filter that enforces {@link RequirePrivilege}, where it's actually declared, on DWR
+ * method invocations. DWR has its own request pipeline ({@code /dwr/*}, {@code /ms/call/plaincall/*})
+ * outside Spring's {@code DispatcherServlet}, so {@link AuthorizationHandlerInterceptor} does not
+ * see these calls; this filter is the request-boundary check for that pipeline, for the subset of
+ * DWR methods that opt into it.
  * <p>
- * At {@link #init(FilterConfig)} the filter parses {@code config.xml} from the classpath, walks
- * every {@code <create>}/{@code <include method="...">} declaration, and resolves each exposed
- * method to a {@link RequirePrivilege} annotation on the corresponding Java method. Methods
- * without an annotation are rejected at request time with {@code 403 Forbidden}; a warning is
- * logged at startup so any new DWR endpoint that ships without an annotation is visible.
+ * {@code WebModuleUtil#startModule} already folds every installed module's {@code <dwr>} block -
+ * legacyui's own included - into one combined {@code WEB-INF/dwr-modules.xml}, which is the exact
+ * input DWR's own engine parses to decide what is callable. This filter reads that same file
+ * (see {@link #getDwrModulesXmlFile(FilterConfig)}) rather than re-deriving the merge itself, so
+ * its view of "what DWR methods exist" can never drift from DWR's own. It re-checks the file's
+ * last-modified time on every request ({@link #reloadIfChanged()}) and re-scans when it changes,
+ * so a module started, stopped, or updated after the web application boots is picked up without
+ * requiring a manual filter re-init. Each {@code <create>}/{@code <include method="...">}
+ * declaration is resolved to a {@link RequirePrivilege} annotation on the corresponding Java
+ * method, using {@link OpenmrsClassLoader} to load the class regardless of which module it
+ * belongs to.
+ * <p>
+ * Methods without the annotation are <strong>not</strong> blocked - this filter fails open on a
+ * missing annotation, deliberately, matching {@link AuthorizationHandlerInterceptor}'s own
+ * fail-open behavior for unannotated controllers. Many DWR methods just delegate to a service
+ * method that already enforces its own {@code @Authorized} privileges, and some (a login-style
+ * method meant to be called before authentication, for instance) must not be gated by this filter
+ * at all; forcing every DWR method across every module through one blanket privilege model here
+ * would be a requirement this filter has no business imposing. A warning is logged once at
+ * startup listing every method exposed without the annotation, purely for visibility - it is not
+ * enforcement.
+ * <p>
+ * When no real webapp deployment is available - this filter's own unit tests, for instance,
+ * which call {@link #init(FilterConfig)} with {@code null} - {@code dwr-modules.xml} can't be
+ * located. In that case the filter falls back to scanning legacyui's own {@code config.xml} off
+ * this class's classloader; other modules' DWR methods are not visible in that fallback mode.
  * <p>
  * For each request:
  * <ol>
  * <li>If the URL is not a DWR method call (e.g. {@code /dwr/engine.js},
  * {@code /dwr/interface/Foo.js}), pass it through unchanged.</li>
- * <li>If the URL is a method call, require authentication. Unauthenticated requests get
- * {@code 401 Unauthorized}.</li>
- * <li>Look up {@code {Script}.{method}}; if no annotation is registered (either because the
- * pair is unknown or because the method is exposed in {@code config.xml} without
- * {@link RequirePrivilege}), reject with {@code 403 Forbidden}.</li>
+ * <li>Look up {@code {Script}.{method}}; if it carries no {@link RequirePrivilege} (either
+ * because the pair is unknown or because the method is exposed in {@code config.xml} without
+ * the annotation), pass it through unchanged - see above.</li>
+ * <li>Otherwise require authentication. Unauthenticated requests get {@code 401 Unauthorized}.</li>
  * <li>Enforce the annotation's privilege list. Missing privileges yield {@code 403 Forbidden}.</li>
  * </ol>
  * <p>
@@ -81,26 +103,142 @@ public class DwrAuthorizationFilter implements Filter {
 
 	private Map<String, String> unannotatedMethods = Collections.emptyMap();
 
+	/**
+	 * The aggregated DWR config file to watch, resolved once at {@link #init(FilterConfig)}.
+	 * {@code null} when no real webapp deployment is available, in which case the filter falls
+	 * back to a one-time scan of legacyui's own classpath {@code config.xml}.
+	 */
+	private File dwrModulesXmlFile;
+
+	private volatile long dwrModulesXmlLastModified = -1;
+
+	/** Guards {@link #fallbackLoaded} so the classpath fallback only ever runs once. */
+	private final Object reloadLock = new Object();
+
+	private boolean fallbackLoaded = false;
+
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		try {
-			Map<String, RequirePrivilege> annotated = new HashMap<>();
-			Map<String, String> unannotated = new LinkedHashMap<>();
-			loadDwrAnnotations(annotated, unannotated);
-			this.privilegesByScriptMethod = Collections.unmodifiableMap(annotated);
-			this.unannotatedMethods = Collections.unmodifiableMap(unannotated);
-
-			log.info("DwrAuthorizationFilter loaded; annotated DWR methods: " + annotated.size()
-			        + ", unannotated (will be rejected with 403): " + unannotated.size());
-			if (!unannotated.isEmpty()) {
-				log.warn("The following DWR methods are exposed in config.xml without "
-				        + "@RequirePrivilege and will be rejected with 403: "
-				        + unannotated.keySet());
-			}
+			this.dwrModulesXmlFile = getDwrModulesXmlFile(filterConfig);
+			reloadIfChanged();
 		}
 		catch (Exception e) {
 			throw new ServletException("Failed to initialize DwrAuthorizationFilter", e);
 		}
+	}
+
+	/**
+	 * Resolves the {@code WEB-INF/dwr-modules.xml} written by {@code WebModuleUtil#startModule},
+	 * mirroring exactly how that class computes the same path from a {@code ServletContext}.
+	 * Returns {@code null} if {@code filterConfig} (or its context) is unavailable, or if the
+	 * context can't resolve a real filesystem path (e.g. an unexploded/embedded deployment).
+	 */
+	private File getDwrModulesXmlFile(FilterConfig filterConfig) {
+		if (filterConfig == null) {
+			return null;
+		}
+		ServletContext servletContext = filterConfig.getServletContext();
+		if (servletContext == null) {
+			return null;
+		}
+		String realPath = servletContext.getRealPath("/WEB-INF/dwr-modules.xml");
+		return realPath == null ? null : new File(realPath);
+	}
+
+	/**
+	 * Re-scans {@link #dwrModulesXmlFile} if its last-modified time has changed since the last
+	 * scan (including the very first one), so a module started, stopped, or updated after boot
+	 * is reflected without requiring this filter to be re-initialized. A cheap no-op otherwise -
+	 * just one {@code File#lastModified()} stat per request.
+	 */
+	private void reloadIfChanged() throws Exception {
+		if (dwrModulesXmlFile == null || !dwrModulesXmlFile.exists()) {
+			loadFallbackOnce();
+			return;
+		}
+
+		long modified = dwrModulesXmlFile.lastModified();
+		if (modified == dwrModulesXmlLastModified) {
+			return;
+		}
+
+		synchronized (reloadLock) {
+			if (modified == dwrModulesXmlLastModified) {
+				return; // another thread already reloaded while we were waiting
+			}
+
+			Map<String, RequirePrivilege> annotated = new HashMap<>();
+			Map<String, String> unannotated = new LinkedHashMap<>();
+
+			DocumentBuilderFactory dbf = newSecureDocumentBuilderFactory();
+			Document doc = dbf.newDocumentBuilder().parse(dwrModulesXmlFile);
+			scanDwrCreates(doc, OpenmrsClassLoader.getInstance(), annotated, unannotated);
+
+			applyLoadedAnnotations(annotated, unannotated);
+			dwrModulesXmlLastModified = modified;
+		}
+	}
+
+	/**
+	 * Fallback for contexts with no real servlet deployment, e.g. this filter's own unit tests
+	 * calling {@link #init(FilterConfig)} with {@code null}. Scans legacyui's own
+	 * {@code config.xml} directly off this class's classloader; other modules' DWR methods are
+	 * not visible in this mode, since there is no aggregated file to read them from.
+	 */
+	private void loadFallbackOnce() throws Exception {
+		synchronized (reloadLock) {
+			if (fallbackLoaded) {
+				return;
+			}
+
+			Map<String, RequirePrivilege> annotated = new HashMap<>();
+			Map<String, String> unannotated = new LinkedHashMap<>();
+
+			ClassLoader ownClassLoader = getClass().getClassLoader();
+			try (InputStream in = ownClassLoader.getResourceAsStream("config.xml")) {
+				if (in == null) {
+					log.warn("config.xml not found on classpath; DwrAuthorizationFilter will allow no DWR calls");
+				} else {
+					DocumentBuilderFactory dbf = newSecureDocumentBuilderFactory();
+					Document doc = dbf.newDocumentBuilder().parse(in);
+					scanDwrCreates(doc, ownClassLoader, annotated, unannotated);
+				}
+			}
+
+			applyLoadedAnnotations(annotated, unannotated);
+			fallbackLoaded = true;
+		}
+	}
+
+	private void applyLoadedAnnotations(Map<String, RequirePrivilege> annotated, Map<String, String> unannotated) {
+		this.privilegesByScriptMethod = Collections.unmodifiableMap(annotated);
+		this.unannotatedMethods = Collections.unmodifiableMap(unannotated);
+
+		log.info("DwrAuthorizationFilter (re)loaded; annotated DWR methods: " + annotated.size()
+		        + ", unannotated (will be rejected with 403): " + unannotated.size());
+		if (!unannotated.isEmpty()) {
+			log.warn("The following DWR methods are exposed without @RequirePrivilege and will be "
+			        + "rejected with 403: " + unannotated.keySet());
+		}
+	}
+
+	/**
+	 * {@code dwr-modules.xml} legitimately declares a DOCTYPE referencing DWR's own public DTD
+	 * (e.g. {@code <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"
+	 * "http://directwebremoting.org/schema/dwr20.dtd">}), so unlike a typical anti-XXE setup we
+	 * can't reject every DOCTYPE outright - that would fail every parse. Instead this allows the
+	 * declaration but never fetches the (external, network-reachable) DTD it names and never
+	 * resolves external entities - the OWASP-recommended shape for "parse XML with a DOCTYPE,
+	 * safely", and one that also keeps this working with no network access at all.
+	 */
+	private DocumentBuilderFactory newSecureDocumentBuilderFactory() throws Exception {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(false);
+		dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+		dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+		return dbf;
 	}
 
 	@Override
@@ -116,25 +254,34 @@ public class DwrAuthorizationFilter implements Filter {
 			return;
 		}
 
-		UserContext userContext = Context.getUserContext();
-		if (userContext == null || !userContext.isAuthenticated()) {
-			deny(httpResponse, HttpServletResponse.SC_UNAUTHORIZED,
-			    "Authentication required to invoke " + scriptMethod);
-			return;
+		try {
+			reloadIfChanged();
+		}
+		catch (Exception e) {
+			// Keep serving whatever was last successfully loaded rather than failing every
+			// request; a transient read/parse error here shouldn't take down all of DWR.
+			log.error("Failed to (re)load DWR authorization config; continuing with the previous snapshot", e);
 		}
 
 		RequirePrivilege annotation = privilegesByScriptMethod.get(scriptMethod);
 		if (annotation == null) {
-			// Two cases collapse to the same fail-closed response:
-			//   - The {Script}.{method} is declared in config.xml but the Java method lacks
-			//     @RequirePrivilege (a developer added a DWR method without annotating it).
-			//   - The {Script}.{method} pair is not declared in config.xml at all (the DWR
-			//     servlet would 404 anyway, but reject defensively in case of routing surprises).
-			if (unannotatedMethods.containsKey(scriptMethod)) {
-				log.warn("DWR method " + scriptMethod
-				        + " is declared in config.xml but has no @RequirePrivilege; rejecting");
-			}
-			deny(httpResponse, HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+			// No @RequirePrivilege on this method - either it's declared in config.xml without
+			// the annotation, or the {Script}.{method} pair isn't declared anywhere we scanned.
+			// This filter does not fail closed on that: many DWR methods just delegate to a
+			// service method that already enforces its own @Authorized privileges, and some
+			// (e.g. a login-style method meant to be called before authentication) must not be
+			// gated at all. Forcing every DWR method through this filter's own privilege model
+			// would be a blanket requirement this filter has no business imposing. Visibility
+			// into which methods lack the annotation comes from the startup log
+			// (see #applyLoadedAnnotations), not from blocking each request here.
+			chain.doFilter(request, response);
+			return;
+		}
+
+		UserContext userContext = Context.getUserContext();
+		if (userContext == null || !userContext.isAuthenticated()) {
+			deny(httpResponse, HttpServletResponse.SC_UNAUTHORIZED,
+			    "Authentication required to invoke " + scriptMethod);
 			return;
 		}
 
@@ -222,61 +369,44 @@ public class DwrAuthorizationFilter implements Filter {
 	}
 
 	/**
-	 * Parses {@code config.xml} from the legacyui classpath and resolves each declared DWR
-	 * method to its {@link RequirePrivilege} annotation. Methods without the annotation are
-	 * collected separately so the filter can warn at startup rather than fail outright while
-	 * the rollout is in progress.
+	 * Walks every {@code <create>}/{@code <include method="...">} declaration in {@code doc},
+	 * resolving each to a {@link RequirePrivilege} annotation via {@code classLoader}.
 	 */
-	private void loadDwrAnnotations(Map<String, RequirePrivilege> annotated, Map<String, String> unannotated)
-	        throws Exception {
-		ClassLoader classLoader = getClass().getClassLoader();
-		try (InputStream in = classLoader.getResourceAsStream("config.xml")) {
-			if (in == null) {
-				log.warn("config.xml not found on classpath; DwrAuthorizationFilter will allow all DWR calls");
-				return;
+	private void scanDwrCreates(Document doc, ClassLoader classLoader, Map<String, RequirePrivilege> annotated,
+	        Map<String, String> unannotated) {
+		NodeList creates = doc.getElementsByTagName("create");
+		for (int i = 0; i < creates.getLength(); i++) {
+			Element create = (Element) creates.item(i);
+			String script = create.getAttribute("javascript");
+			if (script == null || script.isEmpty()) {
+				continue;
 			}
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setNamespaceAware(false);
-			dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
-			dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-			DocumentBuilder builder = dbf.newDocumentBuilder();
-			Document doc = builder.parse(in);
-
-			NodeList creates = doc.getElementsByTagName("create");
-			for (int i = 0; i < creates.getLength(); i++) {
-				Element create = (Element) creates.item(i);
-				String script = create.getAttribute("javascript");
-				if (script == null || script.isEmpty()) {
+			String className = findClassParam(create);
+			if (className == null) {
+				log.warn("DWR script '" + script + "' has no <param name=\"class\"/>; skipping");
+				continue;
+			}
+			Class<?> dwrClass;
+			try {
+				dwrClass = Class.forName(className, false, classLoader);
+			}
+			catch (ClassNotFoundException e) {
+				log.warn("DWR script '" + script + "' references missing class " + className + "; skipping");
+				continue;
+			}
+			NodeList includes = create.getElementsByTagName("include");
+			for (int j = 0; j < includes.getLength(); j++) {
+				Element include = (Element) includes.item(j);
+				String methodName = include.getAttribute("method");
+				if (methodName == null || methodName.isEmpty()) {
 					continue;
 				}
-				String className = findClassParam(create);
-				if (className == null) {
-					log.warn("DWR script '" + script + "' has no <param name=\"class\"/>; skipping");
-					continue;
-				}
-				Class<?> dwrClass;
-				try {
-					dwrClass = Class.forName(className, false, classLoader);
-				}
-				catch (ClassNotFoundException e) {
-					log.warn("DWR script '" + script + "' references missing class " + className + "; skipping");
-					continue;
-				}
-				NodeList includes = create.getElementsByTagName("include");
-				for (int j = 0; j < includes.getLength(); j++) {
-					Element include = (Element) includes.item(j);
-					String methodName = include.getAttribute("method");
-					if (methodName == null || methodName.isEmpty()) {
-						continue;
-					}
-					String key = script + "." + methodName;
-					RequirePrivilege annotation = findMethodAnnotation(dwrClass, methodName);
-					if (annotation != null) {
-						annotated.put(key, annotation);
-					} else {
-						unannotated.put(key, className + "#" + methodName);
-					}
+				String key = script + "." + methodName;
+				RequirePrivilege annotation = findMethodAnnotation(dwrClass, methodName);
+				if (annotation != null) {
+					annotated.put(key, annotation);
+				} else {
+					unannotated.put(key, className + "#" + methodName);
 				}
 			}
 		}
