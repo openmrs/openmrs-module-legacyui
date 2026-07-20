@@ -57,11 +57,13 @@ public class DwrAuthorizationFilterTest extends BaseModuleWebContextSensitiveTes
 
 	@Test
 	public void init_everyDeclaredDwrMethodShouldBeAnnotated() {
-		// fail-closed contract: every method exposed in config.xml must carry @RequirePrivilege.
-		// If this fails, a developer has added a DWR method without annotating it; the filter
-		// will start up but reject that endpoint with 403 at request time.
+		// Best practice for legacyui's own DWR methods, not something this filter enforces:
+		// the filter itself fails open on a missing @RequirePrivilege (see class javadoc and
+		// doFilter_shouldPassUnannotatedMethodThroughWithoutAuth below), but there's no reason
+		// for legacyui's own classes to skip the annotation, so keep this as a completeness
+		// check on our own code.
 		assertTrue(filter.getUnannotatedMethods().isEmpty(),
-		    "All DWR methods must carry @RequirePrivilege. Unannotated: "
+		    "legacyui's own DWR methods should all carry @RequirePrivilege. Unannotated: "
 		            + filter.getUnannotatedMethods().keySet());
 	}
 
@@ -153,11 +155,15 @@ public class DwrAuthorizationFilterTest extends BaseModuleWebContextSensitiveTes
 	}
 
 	@Test
-	public void doFilter_unknownScriptMethod_shouldRejectEvenAdmin() throws Exception {
-		// fail-closed: any URL that doesn't resolve to a registered annotated method is 403,
-		// even for an admin. This protects against routing surprises and against future
-		// regressions where a method gets added to a DWR class but not config.xml.
-		Context.authenticate("admin", "test");
+	public void doFilter_unknownScriptMethod_shouldPassThroughEvenUnauthenticated() throws Exception {
+		// Fail-open: a {Script}.{method} pair this filter has no @RequirePrivilege for - whether
+		// because it's genuinely undeclared anywhere, or declared without the annotation - is
+		// passed straight to the chain, not blocked here. This is deliberate (see class javadoc):
+		// this filter only enforces what a module explicitly opted into via @RequirePrivilege.
+		// An unauthenticated caller is used here specifically to prove this isn't just "falls
+		// back to requiring auth" - login-style DWR methods (called before authentication) rely
+		// on exactly this.
+		Context.logout();
 
 		MockHttpServletRequest request = new MockHttpServletRequest("POST",
 		    "/openmrs/dwr/call/plaincall/NoSuchScript.noSuchMethod.dwr");
@@ -165,9 +171,8 @@ public class DwrAuthorizationFilterTest extends BaseModuleWebContextSensitiveTes
 
 		filter.doFilter(request, response, chain);
 
-		assertEquals(403, response.getStatus(),
-		    "Calls to {Script}.{method} pairs not declared in config.xml must be rejected even for admin");
-		assertFalse(chain.invoked);
+		assertTrue(chain.invoked,
+		    "Calls to {Script}.{method} pairs with no @RequirePrivilege must pass through, even unauthenticated");
 	}
 
 	private static class RecordingFilterChain implements FilterChain {
