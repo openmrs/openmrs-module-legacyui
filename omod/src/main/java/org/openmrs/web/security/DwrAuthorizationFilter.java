@@ -96,8 +96,8 @@ public class DwrAuthorizationFilter implements Filter {
 	/**
 	 * Map keyed by {@code {scriptName}.{methodName}}. Value is the resolved
 	 * {@link RequirePrivilege} for that method. Methods declared in {@code config.xml} but
-	 * lacking an annotation are present in {@link #unannotatedMethods}; lookups fall back to
-	 * authentication-only for those.
+	 * lacking an annotation are present in {@link #unannotatedMethods}; lookups for those pass
+	 * straight through to the chain, with no authentication or privilege check at all.
 	 */
 	private Map<String, RequirePrivilege> privilegesByScriptMethod = Collections.emptyMap();
 
@@ -198,7 +198,7 @@ public class DwrAuthorizationFilter implements Filter {
 			ClassLoader ownClassLoader = getClass().getClassLoader();
 			try (InputStream in = ownClassLoader.getResourceAsStream("config.xml")) {
 				if (in == null) {
-					log.warn("config.xml not found on classpath; DwrAuthorizationFilter will allow no DWR calls");
+					log.warn("config.xml not found on classpath; DwrAuthorizationFilter will gate no DWR calls");
 				} else {
 					DocumentBuilderFactory dbf = newSecureDocumentBuilderFactory();
 					Document doc = dbf.newDocumentBuilder().parse(in);
@@ -216,10 +216,10 @@ public class DwrAuthorizationFilter implements Filter {
 		this.unannotatedMethods = Collections.unmodifiableMap(unannotated);
 
 		log.info("DwrAuthorizationFilter (re)loaded; annotated DWR methods: " + annotated.size()
-		        + ", unannotated (will be rejected with 403): " + unannotated.size());
+		        + ", unannotated (not gated by this filter): " + unannotated.size());
 		if (!unannotated.isEmpty()) {
-			log.warn("The following DWR methods are exposed without @RequirePrivilege and will be "
-			        + "rejected with 403: " + unannotated.keySet());
+			log.warn("The following DWR methods are exposed without @RequirePrivilege and are not gated "
+			        + "by this filter; only their own service-layer checks apply: " + unannotated.keySet());
 		}
 	}
 

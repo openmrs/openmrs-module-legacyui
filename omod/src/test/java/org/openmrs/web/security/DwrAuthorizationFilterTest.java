@@ -59,7 +59,7 @@ public class DwrAuthorizationFilterTest extends BaseModuleWebContextSensitiveTes
 	public void init_everyDeclaredDwrMethodShouldBeAnnotated() {
 		// Best practice for legacyui's own DWR methods, not something this filter enforces:
 		// the filter itself fails open on a missing @RequirePrivilege (see class javadoc and
-		// doFilter_shouldPassUnannotatedMethodThroughWithoutAuth below), but there's no reason
+		// doFilter_unknownScriptMethod_shouldPassThroughEvenUnauthenticated below), but there's no reason
 		// for legacyui's own classes to skip the annotation, so keep this as a completeness
 		// check on our own code.
 		assertTrue(filter.getUnannotatedMethods().isEmpty(),
