@@ -50,7 +50,10 @@ public class LoginServlet extends HttpServlet {
 	
 	public static final long serialVersionUID = 134231247523L;
 	
+	public static final String GP_MAXIMUM_ALLOWED_LOGINS = "security.allowedFailedLoginsBeforeLockout";
+	
 	protected static final Log log = LogFactory.getLog(LoginServlet.class);
+	
 	
 	/**
 	 * The mapping from user's IP address to the number of attempts at logging in from that IP
@@ -66,10 +69,11 @@ public class LoginServlet extends HttpServlet {
 	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse)
 	 */
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession httpSession = request.getSession();
-		
+		Integer loginAttemptsByUserName;
 		String ipAddress = request.getRemoteAddr();
 		Integer loginAttempts = loginAttemptsByIP.get(ipAddress);
 		if (loginAttempts == null) {
@@ -77,7 +81,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		
 		loginAttempts++;
-		
+		loginAttemptsByUserName = loginAttempts - 1;
 		boolean lockedOut = false;
 		// look up the allowed # of attempts per IP
 		Integer allowedLockoutAttempts = 100;
@@ -187,7 +191,18 @@ public class LoginServlet extends HttpServlet {
 			catch (ContextAuthenticationException e) {
 				// set the error message for the user telling them
 				// to try again
-				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.password.invalid");
+		
+				String maximumAttempts = Context.getAdministrationService().getGlobalProperty(GP_MAXIMUM_ALLOWED_LOGINS, "7");
+				Integer maximumAlowedAttempts = Integer.valueOf(maximumAttempts);
+	           
+					if (loginAttemptsByUserName <= maximumAlowedAttempts) {				
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "auth.password.invalid");
+				
+					}
+				
+					if (loginAttemptsByUserName > maximumAlowedAttempts) {
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "legacyui.lockedOutMessage");
+					}
 			}
 			
 		}
