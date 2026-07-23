@@ -315,7 +315,7 @@ public class EncounterFormController extends SimpleFormController {
 			map.put("encounterRoles", es.getAllEncounterRoles(false));
 			map.put("forms", Context.getFormService().getAllForms());
 			// loop over the encounter's observations to find the edited obs
-			for (Obs o : encounter.getObsAtTopLevel(true)) {
+			for (Obs o : encounter.getAllObsIncludingArchived()) {
 				
 				// only edited obs has previous version
 				if (o.hasPreviousVersion()) {

@@ -11,7 +11,9 @@ package org.openmrs.web.dwr;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 import java.util.Vector;
@@ -29,6 +31,7 @@ import org.openmrs.Obs;
 import org.openmrs.Person;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.impl.ObsArchiveHelper;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.security.RequirePrivilege;
@@ -317,13 +320,23 @@ public class DWRObsService {
 		
 		if (p != null && c != null) {
 			log.debug("Getting obss with patient and concept");
-			obss = Context.getObsService().getObservationsByPersonAndConcept(p, c);
+			obss = new ArrayList<Obs>(Context.getObsService().getObservations(
+			    Collections.singletonList(p), null, Collections.singletonList(c), null, null, null, null, null, null, null, null, true));
+			ObsArchiveHelper archiveHelper = Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
+			if (archiveHelper != null) {
+				obss.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(p.getPersonId(), c.getConceptId()));
+			}
 		} else if (e != null) {
 			log.debug("Getting obss by encounter");
-			obss = e.getAllObs();
+			obss = e.getAllObsIncludingArchived();
 		} else if (p != null) {
 			log.debug("Getting obss with just patient");
-			obss = Context.getObsService().getObservationsByPerson(p);
+			obss = new ArrayList<Obs>(Context.getObsService().getObservations(
+			    Collections.singletonList(p), null, null, null, null, null, null, null, null, null, null, true));
+			ObsArchiveHelper archiveHelper = Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
+			if (archiveHelper != null) {
+				obss.addAll(archiveHelper.getArchivedObsByPersonId(p.getPersonId()));
+			}
 		}
 		
 		if (obss != null) {
