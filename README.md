@@ -8,6 +8,3 @@ administrative functions that are not yet implemented in the new UI.
 maintain backwards compatibility.
 - The main idea behind this project is to move legacy UI functions into an OpenMRS module that these implementations can install
 until they are able to migrate away from it, since most of the implementations of OpenMRS around the world are running OpenMRS 1.9.
-
-- It is compulsory to run openmrs-module-legacyui against legacyui branch of openmrs-core
-that I have created to eventually remove legacyui.
