@@ -11,8 +11,10 @@ package org.openmrs.web.dwr;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.jupiter.api.Test;
@@ -204,5 +206,34 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(addedObs);
 		assertNotNull(addedObs.getValueCoded());
 		assertEquals(booleanConcept, addedObs.getValueCoded());
+	}
+	
+	/**
+	 * @see org.openmrs.web.dwr.DWRObsService#getObsByPatientConceptEncounter(String, String, String)
+	 */
+	@Test
+	@Verifies(value = "should return archived obs and set voided flag", method = "getObsByPatientConceptEncounter(String, String, String)")
+	public void getObsByPatientConceptEncounter_shouldIncludeArchivedObs() throws Exception {
+		DWRObsService dwrService = new DWRObsService();
+		
+		try {
+			Context.getAdministrationService().executeSQL(
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2026-01-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
+			Context.getAdministrationService().setGlobalProperty("obs.archive.last_processed_obs_id", "999");
+			
+			Vector<ObsListItem> items = dwrService.getObsByPatientConceptEncounter("2", "21", null);
+			
+			boolean foundArchived = false;
+			for (ObsListItem obsItem : items) {
+				if (obsItem.getObsId().equals(999)) {
+					foundArchived = true;
+					assertTrue(obsItem.getVoided());
+				}
+			}
+			
+			assertTrue(foundArchived);
+		} finally {
+			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 999;", false);
+		}
 	}
 }

@@ -314,8 +314,22 @@ public class EncounterFormController extends SimpleFormController {
 			
 			map.put("encounterRoles", es.getAllEncounterRoles(false));
 			map.put("forms", Context.getFormService().getAllForms());
+			
+			Map<Obs, List<Obs>> groupMembersMap = new HashMap<Obs, List<Obs>>();
+			
 			// loop over the encounter's observations to find the edited obs
 			for (Obs o : encounter.getAllObsIncludingArchived()) {
+				
+				Obs parent = o.getObsGroup();
+				if (parent != null) {
+					List<Obs> list = groupMembersMap.get(parent);
+					if (list == null) {
+						list = new ArrayList<Obs>();
+						groupMembersMap.put(parent, list);
+					}
+					list.add(o);
+					continue;
+				}
 				
 				// only edited obs has previous version
 				if (o.hasPreviousVersion()) {
@@ -328,22 +342,15 @@ public class EncounterFormController extends SimpleFormController {
 					ff = new FormField();
 				}
 				
-				// we only put the top-level obs in the obsMap.  Those would
-				// be the obs that don't have an obs grouper 
-				if (o.getObsGroup() == null) {
-					// populate the obs map with this formfield and obs
-					List<Obs> list = obsMapToReturn.get(ff);
-					if (list == null) {
-						list = new Vector<Obs>();
-						obsMapToReturn.put(ff, list);
-					}
-					list.add(o);
-				} else {
-					// this is not a top-level obs, just put the formField
-					// in a separate list and be done with it
-					otherFormFields.put(o, ff);
+				// populate the obs map with this formfield and obs
+				List<Obs> list = obsMapToReturn.get(ff);
+				if (list == null) {
+					list = new Vector<Obs>();
+					obsMapToReturn.put(ff, list);
 				}
+				list.add(o);
 			}
+			map.put("groupMembersMap", groupMembersMap);
 		}
 		
 		if (log.isDebugEnabled()) {

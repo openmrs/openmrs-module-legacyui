@@ -30,8 +30,10 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Person;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.ObsArchiveHelper;
+import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.security.RequirePrivilege;
@@ -93,6 +95,20 @@ public class DWRObsService {
 		}
 		
 		return obsList;
+	}
+
+	private ObsArchiveHelper getObsArchiveHelperSafely() {
+		try {
+			String lastProcessedId = Context.getAdministrationService()
+			        .getGlobalProperty(OpenmrsConstants.GP_OBS_ARCHIVE_LAST_PROCESSED_OBS_ID);
+			if (lastProcessedId != null && !lastProcessedId.trim().isEmpty()) {
+				return Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
+			}
+		}
+		catch (APIException e) {
+			// archive table may not exist yet or context not available, degrade gracefully
+		}
+		return null;
 	}
 	
 	/**
@@ -322,7 +338,7 @@ public class DWRObsService {
 			log.debug("Getting obss with patient and concept");
 			obss = new ArrayList<Obs>(Context.getObsService().getObservations(
 			    Collections.singletonList(p), null, Collections.singletonList(c), null, null, null, null, null, null, null, null, true));
-			ObsArchiveHelper archiveHelper = Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
+			ObsArchiveHelper archiveHelper = getObsArchiveHelperSafely();
 			if (archiveHelper != null) {
 				obss.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(p.getPersonId(), c.getConceptId()));
 			}
@@ -333,7 +349,7 @@ public class DWRObsService {
 			log.debug("Getting obss with just patient");
 			obss = new ArrayList<Obs>(Context.getObsService().getObservations(
 			    Collections.singletonList(p), null, null, null, null, null, null, null, null, null, null, true));
-			ObsArchiveHelper archiveHelper = Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
+			ObsArchiveHelper archiveHelper = getObsArchiveHelperSafely();
 			if (archiveHelper != null) {
 				obss.addAll(archiveHelper.getArchivedObsByPersonId(p.getPersonId()));
 			}
