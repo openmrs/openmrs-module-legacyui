@@ -295,11 +295,6 @@ public class EncounterFormController extends SimpleFormController {
 			obsMapToReturn = new TreeMap<FormField, List<Obs>>(new NumberingFormFieldComparator()); // use custom comparator
 		}
 		
-		// this maps the obs to form field objects for non top-level obs
-		// it is keyed on obs so that when looping over an exploded obsGroup
-		// the formfield can be fetched easily (in order to show the field numbers etc)
-		Map<Obs, FormField> otherFormFields = new HashMap<Obs, FormField>();
-		
 		if (Context.isAuthenticated()) {
 			EncounterService es = Context.getEncounterService();
 			FormService fs = Context.getFormService();
@@ -357,9 +352,6 @@ public class EncounterFormController extends SimpleFormController {
 			log.debug("setting obsMap in page context (size: " + obsMapToReturn.size() + ")");
 		}
 		map.put("obsMap", obsMapToReturn);
-		
-		map.put("otherFormFields", otherFormFields);
-		
 		map.put("locale", Context.getLocale());
 		map.put("editedObs", editedObs);
 		if (encounter.getPatient() != null) {
