@@ -16,6 +16,7 @@
 				<td colspan="5"><%-- this is the empty row to mimic the description row--%></td>
 			</tr>
 			<c:set var="obsList" value="${groupMembersMap != null && groupMembersMap[obs] != null ? groupMembersMap[obs] : obs.groupMembers}" scope="request"/>
+			<c:remove var="field" scope="request"/>
 			<c:set var="level" value="${level+1}" scope="request"/>
 			<c:import url="obsDisplay.jsp" />
 		</c:when>

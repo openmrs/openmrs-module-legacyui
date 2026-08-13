@@ -342,6 +342,7 @@ public class DWRObsService {
 			if (archiveHelper != null) {
 				obss.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(p.getPersonId(), c.getConceptId()));
 			}
+			sortObservations((java.util.List<Obs>) obss);
 		} else if (e != null) {
 			log.debug("Getting obss by encounter");
 			obss = e.getAllObsIncludingArchived();
@@ -353,6 +354,7 @@ public class DWRObsService {
 			if (archiveHelper != null) {
 				obss.addAll(archiveHelper.getArchivedObsByPersonId(p.getPersonId()));
 			}
+			sortObservations((java.util.List<Obs>) obss);
 		}
 		
 		if (obss != null) {
@@ -384,5 +386,18 @@ public class DWRObsService {
 		}
 		
 		return oItem;
+	}
+
+	private void sortObservations(java.util.List<Obs> obss) {
+		Collections.sort(obss, new java.util.Comparator<Obs>() {
+			@Override
+			public int compare(Obs o1, Obs o2) {
+				int result = OpenmrsUtil.compareWithNullAsEarliest(o2.getObsDatetime(), o1.getObsDatetime());
+				if (result == 0) {
+					return OpenmrsUtil.compareWithNullAsGreatest(o1.getObsId(), o2.getObsId());
+				}
+				return result;
+			}
+		});
 	}
 }

@@ -295,6 +295,7 @@ public class EncounterFormController extends SimpleFormController {
 			obsMapToReturn = new TreeMap<FormField, List<Obs>>(new NumberingFormFieldComparator()); // use custom comparator
 		}
 		
+
 		if (Context.isAuthenticated()) {
 			EncounterService es = Context.getEncounterService();
 			FormService fs = Context.getFormService();
@@ -320,9 +321,14 @@ public class EncounterFormController extends SimpleFormController {
 					List<Obs> list = groupMembersMap.get(parent);
 					if (list == null) {
 						list = new ArrayList<Obs>();
+						if (parent.hasGroupMembers()) {
+							list.addAll(parent.getGroupMembers(true));
+						}
 						groupMembersMap.put(parent, list);
 					}
-					list.add(o);
+					if (!list.contains(o)) {
+						list.add(o);
+					}
 					continue;
 				}
 				
@@ -349,6 +355,7 @@ public class EncounterFormController extends SimpleFormController {
 		}
 		
 		if (log.isDebugEnabled()) {
+			log.error("Total obs: " + encounter.getAllObsIncludingArchived().size());
 			log.debug("setting obsMap in page context (size: " + obsMapToReturn.size() + ")");
 		}
 		map.put("obsMap", obsMapToReturn);

@@ -216,6 +216,17 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 	public void getObsByPatientConceptEncounter_shouldIncludeArchivedObs() throws Exception {
 		DWRObsService dwrService = new DWRObsService();
 		
+		// Create and explicitly void a regular (live) observation to test includeVoidedObs=true
+		org.openmrs.api.ObsService obsService = Context.getObsService();
+		Obs liveObs = new Obs();
+		liveObs.setPerson(Context.getPersonService().getPerson(2));
+		liveObs.setConcept(Context.getConceptService().getConcept(21));
+		liveObs.setObsDatetime(new java.util.Date());
+		liveObs.setValueCoded(Context.getConceptService().getConcept(3)); // required for concept 21
+		obsService.saveObs(liveObs, "saving");
+		obsService.voidObs(liveObs, "testing");
+		Integer liveObsId = liveObs.getObsId();
+		
 		try {
 			Context.getAdministrationService().executeSQL(
 				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2026-01-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
@@ -224,14 +235,20 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 			Vector<ObsListItem> items = dwrService.getObsByPatientConceptEncounter("2", "21", null);
 			
 			boolean foundArchived = false;
+			boolean foundLiveVoided = false;
 			for (ObsListItem obsItem : items) {
 				if (obsItem.getObsId().equals(999)) {
 					foundArchived = true;
 					assertTrue(obsItem.getVoided());
 				}
+				if (obsItem.getObsId().equals(liveObsId)) {
+					foundLiveVoided = true;
+					assertTrue(obsItem.getVoided());
+				}
 			}
 			
-			assertTrue(foundArchived);
+			assertTrue(foundArchived, "Archived obs should be included");
+			assertTrue(foundLiveVoided, "Live but voided obs should be included");
 		} finally {
 			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 999;", false);
 		}
