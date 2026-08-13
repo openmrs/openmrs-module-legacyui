@@ -236,19 +236,25 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 			
 			boolean foundArchived = false;
 			boolean foundLiveVoided = false;
-			for (ObsListItem obsItem : items) {
+			int archivedIndex = -1;
+			int liveIndex = -1;
+			for (int i = 0; i < items.size(); i++) {
+				ObsListItem obsItem = items.get(i);
 				if (obsItem.getObsId().equals(999)) {
 					foundArchived = true;
+					archivedIndex = i;
 					assertTrue(obsItem.getVoided());
 				}
 				if (obsItem.getObsId().equals(liveObsId)) {
 					foundLiveVoided = true;
+					liveIndex = i;
 					assertTrue(obsItem.getVoided());
 				}
 			}
 			
 			assertTrue(foundArchived, "Archived obs should be included");
 			assertTrue(foundLiveVoided, "Live but voided obs should be included");
+			assertTrue(liveIndex < archivedIndex, "Live obs should come before archived obs");
 		} finally {
 			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 999;", false);
 		}

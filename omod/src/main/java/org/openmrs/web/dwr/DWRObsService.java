@@ -14,7 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -342,10 +344,11 @@ public class DWRObsService {
 			if (archiveHelper != null) {
 				obss.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(p.getPersonId(), c.getConceptId()));
 			}
-			sortObservations((java.util.List<Obs>) obss);
+			sortObservations((List<Obs>) obss);
 		} else if (e != null) {
 			log.debug("Getting obss by encounter");
-			obss = e.getAllObsIncludingArchived();
+			obss = new ArrayList<Obs>(e.getAllObsIncludingArchived());
+			sortObservations((List<Obs>) obss);
 		} else if (p != null) {
 			log.debug("Getting obss with just patient");
 			obss = new ArrayList<Obs>(Context.getObsService().getObservations(
@@ -354,7 +357,7 @@ public class DWRObsService {
 			if (archiveHelper != null) {
 				obss.addAll(archiveHelper.getArchivedObsByPersonId(p.getPersonId()));
 			}
-			sortObservations((java.util.List<Obs>) obss);
+			sortObservations((List<Obs>) obss);
 		}
 		
 		if (obss != null) {
@@ -388,8 +391,8 @@ public class DWRObsService {
 		return oItem;
 	}
 
-	private void sortObservations(java.util.List<Obs> obss) {
-		Collections.sort(obss, new java.util.Comparator<Obs>() {
+	private void sortObservations(List<Obs> obss) {
+		Collections.sort(obss, new Comparator<Obs>() {
 			@Override
 			public int compare(Obs o1, Obs o2) {
 				int result = OpenmrsUtil.compareWithNullAsEarliest(o2.getObsDatetime(), o1.getObsDatetime());

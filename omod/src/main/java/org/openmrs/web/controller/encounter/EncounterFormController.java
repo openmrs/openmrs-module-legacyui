@@ -355,7 +355,6 @@ public class EncounterFormController extends SimpleFormController {
 		}
 		
 		if (log.isDebugEnabled()) {
-			log.error("Total obs: " + encounter.getAllObsIncludingArchived().size());
 			log.debug("setting obsMap in page context (size: " + obsMapToReturn.size() + ")");
 		}
 		map.put("obsMap", obsMapToReturn);
