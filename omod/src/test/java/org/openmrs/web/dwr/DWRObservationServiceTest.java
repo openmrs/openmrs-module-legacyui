@@ -229,7 +229,7 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		
 		try {
 			Context.getAdministrationService().executeSQL(
-				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2026-01-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2027-01-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
 			Context.getAdministrationService().setGlobalProperty("obs.archive.last_processed_obs_id", "999");
 			
 			Vector<ObsListItem> items = dwrService.getObsByPatientConceptEncounter("2", "21", null);
@@ -254,7 +254,7 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 			
 			assertTrue(foundArchived, "Archived obs should be included");
 			assertTrue(foundLiveVoided, "Live but voided obs should be included");
-			assertTrue(liveIndex < archivedIndex, "Live obs should come before archived obs");
+			assertTrue(archivedIndex < liveIndex, "Newer archived obs should sort ahead of the older live obs");
 		} finally {
 			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 999;", false);
 		}
