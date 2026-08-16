@@ -221,7 +221,7 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		Obs liveObs = new Obs();
 		liveObs.setPerson(Context.getPersonService().getPerson(2));
 		liveObs.setConcept(Context.getConceptService().getConcept(21));
-		liveObs.setObsDatetime(new java.util.Date());
+		liveObs.setObsDatetime(new java.text.SimpleDateFormat("yyyy-MM-dd").parse("2008-08-01"));
 		liveObs.setValueCoded(Context.getConceptService().getConcept(3)); // required for concept 21
 		obsService.saveObs(liveObs, "saving");
 		obsService.voidObs(liveObs, "testing");
@@ -229,8 +229,7 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		
 		try {
 			Context.getAdministrationService().executeSQL(
-				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2027-01-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
-			Context.getAdministrationService().setGlobalProperty("obs.archive.last_processed_obs_id", "999");
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2008-09-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
 			
 			Vector<ObsListItem> items = dwrService.getObsByPatientConceptEncounter("2", "21", null);
 			

@@ -79,7 +79,6 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 			Context.getAdministrationService().executeSQL(
 			    "INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status, obs_group_id) VALUES (999, 2, 21, 3, '2026-01-01', 1, 'uuid-999', 1, '2026-01-01', 'FINAL', 998)",
 			    false);
-			Context.getAdministrationService().setGlobalProperty("obs.archive.last_processed_obs_id", "999");
 			
 			EncounterFormController controller = new EncounterFormController();
 			MockHttpServletRequest request = new MockHttpServletRequest();

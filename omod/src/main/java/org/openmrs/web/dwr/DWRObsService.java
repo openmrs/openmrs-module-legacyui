@@ -101,14 +101,10 @@ public class DWRObsService {
 
 	private ObsArchiveHelper getObsArchiveHelperSafely() {
 		try {
-			String lastProcessedId = Context.getAdministrationService()
-			        .getGlobalProperty(OpenmrsConstants.GP_OBS_ARCHIVE_LAST_PROCESSED_OBS_ID);
-			if (lastProcessedId != null && !lastProcessedId.trim().isEmpty()) {
-				return Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
-			}
+			return Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
 		}
 		catch (APIException e) {
-			// archive table may not exist yet or context not available, degrade gracefully
+			// bean not registered on this core, degrade gracefully
 		}
 		return null;
 	}
