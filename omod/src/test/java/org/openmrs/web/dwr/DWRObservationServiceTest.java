@@ -230,6 +230,8 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		try {
 			Context.getAdministrationService().executeSQL(
 				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2008-09-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
+			Context.getRegisteredComponent("obsArchiveHelper", org.openmrs.api.impl.ObsArchiveHelper.class)
+			        .markArchiveHasData();
 			
 			Vector<ObsListItem> items = dwrService.getObsByPatientConceptEncounter("2", "21", null);
 			

@@ -35,7 +35,6 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.ObsArchiveHelper;
-import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.security.RequirePrivilege;
@@ -330,7 +329,7 @@ public class DWRObsService {
 			e = Context.getEncounterService().getEncounter(eId);
 		}
 		
-		Collection<Obs> obss = null;
+		List<Obs> obss = null;
 		
 		if (p != null && c != null) {
 			log.debug("Getting obss with patient and concept");
@@ -340,11 +339,11 @@ public class DWRObsService {
 			if (archiveHelper != null) {
 				obss.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(p.getPersonId(), c.getConceptId()));
 			}
-			sortObservations((List<Obs>) obss);
+			sortObservations(obss);
 		} else if (e != null) {
 			log.debug("Getting obss by encounter");
 			obss = new ArrayList<Obs>(e.getAllObsIncludingArchived());
-			sortObservations((List<Obs>) obss);
+			sortObservations(obss);
 		} else if (p != null) {
 			log.debug("Getting obss with just patient");
 			obss = new ArrayList<Obs>(Context.getObsService().getObservations(
@@ -353,7 +352,7 @@ public class DWRObsService {
 			if (archiveHelper != null) {
 				obss.addAll(archiveHelper.getArchivedObsByPersonId(p.getPersonId()));
 			}
-			sortObservations((List<Obs>) obss);
+			sortObservations(obss);
 		}
 		
 		if (obss != null) {
