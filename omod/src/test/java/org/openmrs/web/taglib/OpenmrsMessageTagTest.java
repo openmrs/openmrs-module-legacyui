@@ -245,6 +245,41 @@ public class OpenmrsMessageTagTest extends BaseModuleWebContextSensitiveTest {
 	 * @see OpenmrsMessageTag#doEndTag()
 	 */
 	@Test
+	@Verifies(value = "write text attribute if no code specified and tag locale differs from context locale", method = "doEndTag()")
+	public void doEndTag_shouldWriteTextAttributeIfNoCodeSpecifiedAndTagLocaleDiffersFromContextLocale() throws Exception {
+		String expectedOutput = "Clinique Bon Sauveur";
+		openmrsMessageTag.setText(expectedOutput);
+		openmrsMessageTag.setLocale("uk");
+		
+		checkDoEndTagEvaluation(expectedOutput);
+	}
+	
+	/**
+	 * @see OpenmrsMessageTag#doEndTag()
+	 */
+	@Test
+	@Verifies(value = "write body content if no code specified and tag locale differs from context locale", method = "doEndTag()")
+	public void doEndTag_shouldWriteBodyContentIfNoCodeSpecifiedAndTagLocaleDiffersFromContextLocale() throws Exception {
+		String expectedOutput = "Clinique Bon Sauveur";
+		openmrsMessageTag.setBodyContent(new MockBodyContent(expectedOutput, new MockHttpServletResponse()));
+		openmrsMessageTag.setLocale("uk");
+		
+		checkDoEndTagEvaluation(expectedOutput);
+	}
+	
+	/**
+	 * @see OpenmrsMessageTag#doEndTag()
+	 */
+	@Test
+	@Verifies(value = "write an empty message if nothing can be resolved", method = "doEndTag()")
+	public void doEndTag_shouldWriteAnEmptyMessageIfNothingCanBeResolved() throws Exception {
+		checkDoEndTagEvaluation("");
+	}
+	
+	/**
+	 * @see OpenmrsMessageTag#doEndTag()
+	 */
+	@Test
 	@Verifies(value = "ignore fallbacks if tag locale differs from context locale", method = "doEndTag()")
 	public void doEndTag_shouldIgnoreFallbacksIfTagLocaleDiffersFromContextLocale() throws Exception {
 		String expectedOutput = "test.wrong.code";

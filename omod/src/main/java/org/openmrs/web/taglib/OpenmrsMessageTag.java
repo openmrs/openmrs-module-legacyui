@@ -39,11 +39,13 @@ import org.springframework.web.util.TagUtils;
  * addition) this tag uses its body text when the code cannot be resolved. If the body value also is
  * not specified, the value of the text attribute is used. If there is no message in the bundle and
  * no text attribute value or tag body text, then the message code is displayed, if it is set;
- * otherwise null. If both text attribute and body text are present (shouldn't happen, but could by
- * mistake), then this tag uses the body text before checking the text attribute. With this tag user
- * can define default text for a locale other than the system default by using locale attribute. If
- * locale attribute is not specified, then the system default locale (e.g., "en") will be used. HTML
- * escaping is also supported by this tag.
+ * otherwise an empty string. If both text attribute and body text are present (shouldn't happen,
+ * but could by mistake), then this tag uses the body text before checking the text attribute. With
+ * this tag user can define default text for a locale other than the system default by using locale
+ * attribute. If locale attribute is not specified, then the system default locale (e.g., "en") will
+ * be used. Note that the locale attribute only applies to fallbacks of a message code; when no code
+ * is given, the text attribute or the tag body is the message itself and is always written out.
+ * HTML escaping is also supported by this tag.
  * </p>
  * <p>
  * This tag also supports customization of messages writing behavior. To change its default
@@ -192,8 +194,12 @@ public class OpenmrsMessageTag extends OpenmrsHtmlEscapingAwareTag {
 	@Override
 	protected int doEndTagInternal() throws JspException, IOException {
 		try {
-			// Resolve the unescaped message.
+			// Resolve the unescaped message. Nothing resolvable leaves us with an empty message, but
+			// never with null, as the escaping utilities below reject null input.
 			String msg = resolveMessage();
+			if (msg == null) {
+				msg = "";
+			}
 			
 			// HTML and/or JavaScript escape, if demanded.
 			msg = isHtmlEscape() ? HtmlUtils.htmlEscape(msg) : msg;
@@ -242,8 +248,12 @@ public class OpenmrsMessageTag extends OpenmrsHtmlEscapingAwareTag {
 		String resolvedCode = this.code;
 		String bodyText = null;
 		String resolvedText = null;
-		// if locale specified with tag attribute is the same as context locale
-		if (OpenmrsUtil.nullSafeEquals(this.locale, Context.getLocale().getLanguage())) {
+		// The locale attribute only qualifies the text/body as a *fallback* for a message code, so it
+		// is only meaningful when a code was given. When no code is set, the text attribute (or the tag
+		// body) is the message itself and has to be used whatever locale the user is viewing in,
+		// otherwise nothing at all would be resolved.
+		if (!StringUtils.hasText(resolvedCode)
+		        || OpenmrsUtil.nullSafeEquals(this.locale, Context.getLocale().getLanguage())) {
 			// we need to evaluate fallback values in this case
 			resolvedText = this.text;
 			if (getBodyContent() != null) {
