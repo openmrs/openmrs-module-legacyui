@@ -1,5 +1,5 @@
 # openmrs-module-legacyui
-[![Build Status](https://travis-ci.org/openmrs/openmrs-module-legacyui.svg?branch=master)](https://travis-ci.org/openmrs/openmrs-module-legacyui) [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-module-legacyui/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-module-legacyui?branch=master)
+[![Build Status](https://github.com/openmrs/openmrs-module-legacyui/actions/workflows/build.yml/badge.svg)](https://github.com/openmrs/openmrs-module-legacyui/actions/workflows/build.yml)
 
 - The legacy user interface for OpenMRS Platform 2.x is chiefly comprised of administrative functions and the patient dashboard. 
 - A new and more contemporary UI has been introduced via a UI framework and the legacy UI is kept around for 
