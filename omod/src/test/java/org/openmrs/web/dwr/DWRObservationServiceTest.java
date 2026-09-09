@@ -11,8 +11,10 @@ package org.openmrs.web.dwr;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.jupiter.api.Test;
@@ -204,5 +206,58 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(addedObs);
 		assertNotNull(addedObs.getValueCoded());
 		assertEquals(booleanConcept, addedObs.getValueCoded());
+	}
+	
+	/**
+	 * @see org.openmrs.web.dwr.DWRObsService#getObsByPatientConceptEncounter(String, String, String)
+	 */
+	@Test
+	@Verifies(value = "should return archived obs and set voided flag", method = "getObsByPatientConceptEncounter(String, String, String)")
+	public void getObsByPatientConceptEncounter_shouldIncludeArchivedObs() throws Exception {
+		DWRObsService dwrService = new DWRObsService();
+		
+		// Create and explicitly void a regular (live) observation to test includeVoidedObs=true
+		org.openmrs.api.ObsService obsService = Context.getObsService();
+		Obs liveObs = new Obs();
+		liveObs.setPerson(Context.getPersonService().getPerson(2));
+		liveObs.setConcept(Context.getConceptService().getConcept(21));
+		liveObs.setObsDatetime(new java.text.SimpleDateFormat("yyyy-MM-dd").parse("2008-08-01"));
+		liveObs.setValueCoded(Context.getConceptService().getConcept(3)); // required for concept 21
+		obsService.saveObs(liveObs, "saving");
+		obsService.voidObs(liveObs, "testing");
+		Integer liveObsId = liveObs.getObsId();
+		
+		try {
+			Context.getAdministrationService().executeSQL(
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2008-09-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
+			Context.getRegisteredComponent("obsArchiveHelper", org.openmrs.api.impl.ObsArchiveHelper.class)
+			        .markArchiveHasData();
+			
+			Vector<ObsListItem> items = dwrService.getObsByPatientConceptEncounter("2", "21", null);
+			
+			boolean foundArchived = false;
+			boolean foundLiveVoided = false;
+			int archivedIndex = -1;
+			int liveIndex = -1;
+			for (int i = 0; i < items.size(); i++) {
+				ObsListItem obsItem = items.get(i);
+				if (obsItem.getObsId().equals(999)) {
+					foundArchived = true;
+					archivedIndex = i;
+					assertTrue(obsItem.getVoided());
+				}
+				if (obsItem.getObsId().equals(liveObsId)) {
+					foundLiveVoided = true;
+					liveIndex = i;
+					assertTrue(obsItem.getVoided());
+				}
+			}
+			
+			assertTrue(foundArchived, "Archived obs should be included");
+			assertTrue(foundLiveVoided, "Live but voided obs should be included");
+			assertTrue(archivedIndex < liveIndex, "Newer archived obs should sort ahead of the older live obs");
+		} finally {
+			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 999;", false);
+		}
 	}
 }
