@@ -155,6 +155,7 @@
 						<target>${javaCompilerVersion}</target>
 						<source>${javaCompilerVersion}</source>
                         <encoding>${project.build.sourceEncoding}</encoding>
+						<parameters>true</parameters>
 					</configuration>
 				</plugin>
                 <plugin>
