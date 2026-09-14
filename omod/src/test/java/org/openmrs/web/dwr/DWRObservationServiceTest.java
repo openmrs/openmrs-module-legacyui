@@ -208,6 +208,30 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		assertEquals(booleanConcept, addedObs.getValueCoded());
 	}
 	
+	private void assertObsOrderAndVoided(Vector<ObsListItem> items, Integer newerArchivedId, Integer olderLiveId) {
+		boolean foundArchived = false;
+		boolean foundLiveVoided = false;
+		int archivedIndex = -1;
+		int liveIndex = -1;
+		for (int i = 0; i < items.size(); i++) {
+			ObsListItem obsItem = items.get(i);
+			if (obsItem.getObsId().equals(newerArchivedId)) {
+				foundArchived = true;
+				archivedIndex = i;
+				assertTrue(obsItem.getVoided());
+			}
+			if (obsItem.getObsId().equals(olderLiveId)) {
+				foundLiveVoided = true;
+				liveIndex = i;
+				assertTrue(obsItem.getVoided());
+			}
+		}
+		
+		assertTrue(foundArchived, "Archived obs should be included");
+		assertTrue(foundLiveVoided, "Live but voided obs should be included");
+		assertTrue(archivedIndex < liveIndex, "Newer archived obs should sort ahead of the older live obs");
+	}
+	
 	/**
 	 * @see org.openmrs.web.dwr.DWRObsService#getObsByPatientConceptEncounter(String, String, String)
 	 */
@@ -221,6 +245,7 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		Obs liveObs = new Obs();
 		liveObs.setPerson(Context.getPersonService().getPerson(2));
 		liveObs.setConcept(Context.getConceptService().getConcept(21));
+		liveObs.setEncounter(Context.getEncounterService().getEncounter(3));
 		liveObs.setObsDatetime(new java.text.SimpleDateFormat("yyyy-MM-dd").parse("2008-08-01"));
 		liveObs.setValueCoded(Context.getConceptService().getConcept(3)); // required for concept 21
 		obsService.saveObs(liveObs, "saving");
@@ -229,33 +254,19 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		
 		try {
 			Context.getAdministrationService().executeSQL(
-				"INSERT INTO obs_archive (obs_id, person_id, concept_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, '2008-09-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, 3, '2008-09-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
 			Context.getRegisteredComponent("obsArchiveHelper", org.openmrs.api.impl.ObsArchiveHelper.class)
 			        .markArchiveHasData();
 			
-			Vector<ObsListItem> items = dwrService.getObsByPatientConceptEncounter("2", "21", null);
+			// Test branch: person + concept
+			assertObsOrderAndVoided(dwrService.getObsByPatientConceptEncounter("2", "21", null), 999, liveObsId);
 			
-			boolean foundArchived = false;
-			boolean foundLiveVoided = false;
-			int archivedIndex = -1;
-			int liveIndex = -1;
-			for (int i = 0; i < items.size(); i++) {
-				ObsListItem obsItem = items.get(i);
-				if (obsItem.getObsId().equals(999)) {
-					foundArchived = true;
-					archivedIndex = i;
-					assertTrue(obsItem.getVoided());
-				}
-				if (obsItem.getObsId().equals(liveObsId)) {
-					foundLiveVoided = true;
-					liveIndex = i;
-					assertTrue(obsItem.getVoided());
-				}
-			}
+			// Test branch: person only
+			assertObsOrderAndVoided(dwrService.getObsByPatientConceptEncounter("2", null, null), 999, liveObsId);
 			
-			assertTrue(foundArchived, "Archived obs should be included");
-			assertTrue(foundLiveVoided, "Live but voided obs should be included");
-			assertTrue(archivedIndex < liveIndex, "Newer archived obs should sort ahead of the older live obs");
+			// Test branch: encounter only
+			assertObsOrderAndVoided(dwrService.getObsByPatientConceptEncounter(null, null, "3"), 999, liveObsId);
+			
 		} finally {
 			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 999;", false);
 		}

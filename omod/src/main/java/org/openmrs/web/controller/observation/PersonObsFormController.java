@@ -20,8 +20,10 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Person;
+import org.openmrs.api.APIException;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.impl.ObsArchiveHelper;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.openmrs.web.security.RequirePrivilege;
@@ -52,8 +54,21 @@ public class PersonObsFormController extends SimpleFormController {
 		}
 		
 		ObsService os = Context.getObsService();
-		List<Obs> ret = os.getObservations(Collections.singletonList(person), null, concepts, null, null, null, null, null,
-		    null, null, null, true);
+		List<Obs> ret = new java.util.ArrayList<Obs>(os.getObservations(Collections.singletonList(person), null, concepts, null, null, null, null, null,
+		    null, null, null, true));
+		
+		try {
+			ObsArchiveHelper archiveHelper = Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
+			if (concept != null) {
+				ret.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(person.getPersonId(), concept.getConceptId()));
+			} else {
+				ret.addAll(archiveHelper.getArchivedObsByPersonId(person.getPersonId()));
+			}
+		}
+		catch (APIException e) {
+			// bean not registered on this core, degrade gracefully
+		}
+		
 		Collections.sort(ret, new Comparator<Obs>() {
 			
 			public int compare(Obs left, Obs right) {
