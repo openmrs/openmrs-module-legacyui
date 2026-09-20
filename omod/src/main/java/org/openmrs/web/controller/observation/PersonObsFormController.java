@@ -57,16 +57,18 @@ public class PersonObsFormController extends SimpleFormController {
 		List<Obs> ret = new java.util.ArrayList<Obs>(os.getObservations(Collections.singletonList(person), null, concepts, null, null, null, null, null,
 		    null, null, null, true));
 		
-		try {
-			ObsArchiveHelper archiveHelper = Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
-			if (concept != null) {
-				ret.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(person.getPersonId(), concept.getConceptId()));
-			} else {
-				ret.addAll(archiveHelper.getArchivedObsByPersonId(person.getPersonId()));
+		if (person != null) {
+			try {
+				ObsArchiveHelper archiveHelper = Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
+				if (concept != null) {
+					ret.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(person.getPersonId(), concept.getConceptId()));
+				} else {
+					ret.addAll(archiveHelper.getArchivedObsByPersonId(person.getPersonId()));
+				}
 			}
-		}
-		catch (APIException e) {
-			// bean not registered on this core, degrade gracefully
+			catch (APIException e) {
+				// bean not registered on this core, degrade gracefully
+			}
 		}
 		
 		Collections.sort(ret, new Comparator<Obs>() {
