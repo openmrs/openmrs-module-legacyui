@@ -5,10 +5,12 @@
 <%@page import="org.apache.commons.logging.Log"%>
 <%@page import="org.openmrs.api.context.Context"%>
 <%@page import="org.apache.commons.logging.LogFactory"%>
+<%@page import="org.springframework.security.authorization.AuthorizationDeniedException"%>
 
 <%
 	if (ContextAuthenticationException.class.equals(exception.getClass())
-	        || APIAuthenticationException.class.equals(exception.getClass())) {
+	        || APIAuthenticationException.class.equals(exception.getClass())
+	        || AuthorizationDeniedException.class.equals(exception.getClass())) {
 		
 		Log log = LogFactory.getLog(this.getClass().getName());
 		if (Context.getAuthenticatedUser() != null) {
