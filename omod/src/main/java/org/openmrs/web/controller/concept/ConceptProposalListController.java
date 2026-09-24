@@ -52,7 +52,7 @@ public class ConceptProposalListController extends SimpleFormController {
 		if (Context.isAuthenticated()) {
 			ConceptService cs = Context.getConceptService();
 			log.debug("tmp value: " + request.getParameter("includeCompleted"));
-			boolean b = new Boolean(request.getParameter("includeCompleted"));
+			boolean b = Boolean.parseBoolean(request.getParameter("includeCompleted"));
 			log.debug("b value: " + b);
 			cpList = cs.getAllConceptProposals(b);
 		}
@@ -67,7 +67,7 @@ public class ConceptProposalListController extends SimpleFormController {
 			origText.put(cp.getOriginalText(), matchingProposals);
 		}
 		
-		boolean asc = new Boolean("asc".equals(request.getParameter("sortOrder")));
+		boolean asc = "asc".equals(request.getParameter("sortOrder"));
 		String sortOn = request.getParameter("sortOn");
 		if (sortOn == null) {
 			sortOn = "occurences";
