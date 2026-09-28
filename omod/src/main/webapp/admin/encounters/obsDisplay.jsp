@@ -7,7 +7,7 @@
 
 <c:forEach var="obs" items="${obsList}">
 	<c:choose>
-		<c:when test="${obs.obsGrouping}">
+		<c:when test="${obs.obsGrouping || (groupMembersMap != null && groupMembersMap[obs] != null)}">
 			<tr class="<c:if test="${obs.voided}">voided </c:if>obsGroupHeader">
 				<td>${field.fieldNumber}<c:if test="${field.fieldPart != null && field.fieldPart != ''}">.${field.fieldPart}</c:if></td>
 				<td colspan="4" style="padding-left: ${padding}"><c:out value="${field.field.concept.name.name}" /></td>
@@ -15,8 +15,8 @@
 			<tr class="<c:if test="${obs.voided}">voided </c:if>">
 				<td colspan="5"><%-- this is the empty row to mimic the description row--%></td>
 			</tr>
-			<c:set var="obsList" value="${obs.groupMembers}" scope="request"/>
-			<c:set var="field" value="${otherFormFields[groupMember]}" scope="request"/>
+			<c:set var="obsList" value="${groupMembersMap != null && groupMembersMap[obs] != null ? groupMembersMap[obs] : obs.groupMembers}" scope="request"/>
+			<c:remove var="field" scope="request"/>
 			<c:set var="level" value="${level+1}" scope="request"/>
 			<c:import url="obsDisplay.jsp" />
 		</c:when>
