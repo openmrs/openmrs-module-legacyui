@@ -9,6 +9,7 @@
  */
 package org.openmrs.web.controller.observation;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class PersonObsFormControllerTest extends BaseModuleWebContextSensitiveTe
 		try {
 			Context.getAdministrationService().executeSQL(
 				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (994, 2, 21, 3, '2008-09-01', 1, 'archive-uuid-2', 1, '2026-01-01', 'FINAL')", false);
+			Context.getAdministrationService().executeSQL(
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (993, 2, 5089, 3, '2008-09-01', 1, 'archive-uuid-3', 1, '2026-01-01', 'FINAL')", false);
 			Context.getRegisteredComponent("obsArchiveHelper", org.openmrs.api.impl.ObsArchiveHelper.class)
 			        .markArchiveHasData();
 			
@@ -55,15 +58,15 @@ public class PersonObsFormControllerTest extends BaseModuleWebContextSensitiveTe
 			
 			boolean foundArchived2 = false;
 			for (Obs obs : obsList2) {
+				assertNotEquals(993, obs.getObsId().intValue(), "archived obs of another concept returned for concept 21");
 				if (obs.getObsId().equals(994)) {
 					foundArchived2 = true;
-					break;
 				}
 			}
 			assertTrue(foundArchived2, "Archived obs should be included when searching by person and concept");
 			
 		} finally {
-			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 994;", false);
+			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id IN (993, 994);", false);
 		}
 	}
 }

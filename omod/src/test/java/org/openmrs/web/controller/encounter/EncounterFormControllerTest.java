@@ -99,13 +99,11 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 			if (obsMap != null) {
 				for (List<Obs> list : obsMap.values()) {
 					for (Obs o : list) {
+						Assertions.assertNotEquals(999, o.getObsId().intValue(), "archived group member rendered as a top-level row");
 						if (o.getObsId().equals(998)) {
 							parent = o;
-							break;
 						}
 					}
-					if (parent != null)
-						break;
 				}
 			}
 			
@@ -159,13 +157,11 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 			if (obsMap != null) {
 				for (List<Obs> list : obsMap.values()) {
 					for (Obs o : list) {
+						Assertions.assertNotEquals(996, o.getObsId().intValue(), "group member rendered as a top-level row");
 						if (o.getObsId().equals(997)) {
 							parent = o;
-							break;
 						}
 					}
-					if (parent != null)
-						break;
 				}
 			}
 			

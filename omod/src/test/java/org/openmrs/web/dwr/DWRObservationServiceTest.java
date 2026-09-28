@@ -10,6 +10,7 @@
 package org.openmrs.web.dwr;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -255,11 +256,17 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		try {
 			Context.getAdministrationService().executeSQL(
 				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, 3, '2008-09-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
+			Context.getAdministrationService().executeSQL(
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (998, 2, 5089, 3, '2008-09-01', 1, 'archive-uuid-4', 1, '2026-01-01', 'FINAL')", false);
 			Context.getRegisteredComponent("obsArchiveHelper", org.openmrs.api.impl.ObsArchiveHelper.class)
 			        .markArchiveHasData();
 			
 			// Test branch: person + concept
-			assertObsOrderAndVoided(dwrService.getObsByPatientConceptEncounter("2", "21", null), 999, liveObsId);
+			Vector<ObsListItem> items1 = dwrService.getObsByPatientConceptEncounter("2", "21", null);
+			for (ObsListItem obsItem : items1) {
+				assertNotEquals(998, obsItem.getObsId().intValue(), "archived obs of another concept returned for concept 21");
+			}
+			assertObsOrderAndVoided(items1, 999, liveObsId);
 			
 			// Test branch: person only
 			assertObsOrderAndVoided(dwrService.getObsByPatientConceptEncounter("2", null, null), 999, liveObsId);
@@ -268,7 +275,7 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 			assertObsOrderAndVoided(dwrService.getObsByPatientConceptEncounter(null, null, "3"), 999, liveObsId);
 			
 		} finally {
-			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 999;", false);
+			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id IN (998, 999);", false);
 		}
 	}
 }
