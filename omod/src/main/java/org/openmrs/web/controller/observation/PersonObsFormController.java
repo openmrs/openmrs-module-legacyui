@@ -9,6 +9,7 @@
  */
 package org.openmrs.web.controller.observation;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -54,7 +55,7 @@ public class PersonObsFormController extends SimpleFormController {
 		}
 		
 		ObsService os = Context.getObsService();
-		List<Obs> ret = new java.util.ArrayList<Obs>(os.getObservations(Collections.singletonList(person), null, concepts, null, null, null, null, null,
+		List<Obs> ret = new ArrayList<Obs>(os.getObservations(Collections.singletonList(person), null, concepts, null, null, null, null, null,
 		    null, null, null, true));
 		
 		if (person != null) {

@@ -58,13 +58,8 @@ function refreshObsTable(obss) {
 			dwr.util.addRows(obsTableToRefresh, obss, obsCellFuncs, {
 				rowCreator:function(options) {
 				    var tr = document.createElement("tr");
-				    if (options.rowNum % 2)
-				        tr.className = "oddRow";
-				    else
-				        tr.className = "evenRow";
-				        
 				    if (options.rowData && options.rowData.voided) {
-				        tr.className += " voided";
+				        tr.className = "voided";
 				    }
 				    return tr;
 				},
