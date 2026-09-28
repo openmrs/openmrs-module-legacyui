@@ -9,6 +9,8 @@
  */
 package org.openmrs.web.taglib;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.test.SkipBaseSetup;
@@ -21,10 +23,27 @@ import static org.hamcrest.core.Is.is;
 
 import jakarta.servlet.jsp.tagext.Tag;
 
+import java.sql.SQLException;
+
 /**
  * Tests for the {@link PrivilegeTag} taglib controller.
  */
 public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
+	
+	@BeforeEach
+	public void setUpUsersAndRoles() throws SQLException {
+		initializeInMemoryDatabase();
+		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
+		// RolePrivilegeCache loads roles on a daemon thread with its own session, which can't reliably
+		// see this test's uncommitted rows, so commit them (tearDownUsersAndRoles deletes them again).
+		getConnection().commit();
+	}
+	
+	@AfterEach
+	public void tearDownUsersAndRoles() {
+		Context.logout();
+		deleteAllData();
+	}
 	
 	/**
 	 * @verifies include body for user with the privilege
@@ -32,10 +51,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldIncludeBodyForUserWithThePrivilege() throws Exception {
+	public void doStartTag_shouldIncludeBodyForUserWithThePrivilege() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("dataclerk1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -43,8 +60,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setPrivilege("View Patients");
 		
 		assertThat(tag.doStartTag(), is(Tag.EVAL_BODY_INCLUDE));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -53,10 +68,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldSkipBodyForUserWithoutThePrivilege() throws Exception {
+	public void doStartTag_shouldSkipBodyForUserWithoutThePrivilege() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -64,8 +77,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setPrivilege("Manage Patients");
 		
 		assertThat(tag.doStartTag(), is(Tag.SKIP_BODY));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -74,10 +85,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldSkipBodyForUserWithThePrivilegeIfInverseIsTrue() throws Exception {
+	public void doStartTag_shouldSkipBodyForUserWithThePrivilegeIfInverseIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("dataclerk1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -86,8 +95,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setInverse("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.SKIP_BODY));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -96,10 +103,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldIncludeBodyForUserWithAnyOfThePrivileges() throws Exception {
+	public void doStartTag_shouldIncludeBodyForUserWithAnyOfThePrivileges() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -107,8 +112,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setPrivilege("View Patients,Edit Patients,Manage Patients");
 		
 		assertThat(tag.doStartTag(), is(Tag.EVAL_BODY_INCLUDE));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -117,10 +120,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldSkipBodyForUserWithAnyOfThePrivilegesIfInverseIsTrue() throws Exception {
+	public void doStartTag_shouldSkipBodyForUserWithAnyOfThePrivilegesIfInverseIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -129,8 +130,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setInverse("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.SKIP_BODY));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -139,10 +138,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldIncludeBodyForUserWithAllOfThePrivilegesIfHasAllIsTrue() throws Exception {
+	public void doStartTag_shouldIncludeBodyForUserWithAllOfThePrivilegesIfHasAllIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("dataclerk1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -151,8 +148,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setHasAll("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.EVAL_BODY_INCLUDE));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -161,10 +156,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldSkipBodyForUserWithNotAllOfThePrivilegesIfHasAllIsTrue() throws Exception {
+	public void doStartTag_shouldSkipBodyForUserWithNotAllOfThePrivilegesIfHasAllIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -173,8 +166,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setHasAll("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.SKIP_BODY));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -183,10 +174,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldSkipBodyForUserWithAllOfThePrivilegesIfHasAllIsTrueAndInverseIsTrue() throws Exception {
+	public void doStartTag_shouldSkipBodyForUserWithAllOfThePrivilegesIfHasAllIsTrueAndInverseIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("dataclerk1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -196,8 +185,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setInverse("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.SKIP_BODY));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -206,10 +193,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldIncludeBodyForUserWithoutThePrivilegeIfInverseIsTrue() throws Exception {
+	public void doStartTag_shouldIncludeBodyForUserWithoutThePrivilegeIfInverseIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -218,8 +203,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setInverse("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.EVAL_BODY_INCLUDE));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -228,10 +211,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldSkipBodyForUserWithoutAnyOfThePrivileges() throws Exception {
+	public void doStartTag_shouldSkipBodyForUserWithoutAnyOfThePrivileges() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -239,8 +220,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setPrivilege("Edit Patients,Manage Patients");
 		
 		assertThat(tag.doStartTag(), is(Tag.SKIP_BODY));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -249,10 +228,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldIncludeBodyForUserWithoutAnyOfThePrivilegesIfInverseIsTrue() throws Exception {
+	public void doStartTag_shouldIncludeBodyForUserWithoutAnyOfThePrivilegesIfInverseIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -261,8 +238,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setInverse("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.EVAL_BODY_INCLUDE));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -271,10 +246,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldSkipBodyForUserWithoutAnyOfThePrivilegesIfHasAllIsTrue() throws Exception {
+	public void doStartTag_shouldSkipBodyForUserWithoutAnyOfThePrivilegesIfHasAllIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -283,8 +256,6 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setHasAll("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.SKIP_BODY));
-		
-		Context.logout();
 	}
 	
 	/**
@@ -294,11 +265,8 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 	 */
 	@Test
 	@SkipBaseSetup
-	public void doStartTag_shouldIncludeBodyForUserWithoutAnyOfThePrivilegesIfHasAllIsTrueAndInverseIsTrue()
-	        throws Exception {
+	public void doStartTag_shouldIncludeBodyForUserWithoutAnyOfThePrivilegesIfHasAllIsTrueAndInverseIsTrue() {
 		
-		initializeInMemoryDatabase();
-		executeDataSet("org/openmrs/web/taglib/include/PrivilegeTagTest.xml");
 		Context.authenticate("clinician1", "test");
 		
 		PrivilegeTag tag = new PrivilegeTag();
@@ -308,7 +276,5 @@ public class PrivilegeTagTest extends BaseModuleWebContextSensitiveTest {
 		tag.setInverse("true");
 		
 		assertThat(tag.doStartTag(), is(Tag.EVAL_BODY_INCLUDE));
-		
-		Context.logout();
 	}
 }

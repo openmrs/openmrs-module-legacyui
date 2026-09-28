@@ -12,6 +12,8 @@ package org.openmrs.web.controller.hl7;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.hl7.HL7Source;
@@ -49,6 +51,28 @@ public class HL7SourceFormControllerTest extends BaseModuleWebContextSensitiveTe
 	private HandlerMapping legacyUiUrlMapping;
 
 	/**
+	 * Loads the limited users and the "HL7 Reader" role and commits them. Core resolves role
+	 * privileges in a daemon thread that opens its own session, which can't reliably see rows left
+	 * uncommitted in the test transaction. Without the commit hl7reader can end up with no
+	 * privileges, and the read-only tests then pass for the wrong reason: the request fails at
+	 * {@code getHL7Source} before the data binder dirties anything, so a missing interceptor goes
+	 * unnoticed.
+	 */
+	@BeforeEach
+	public void setUp() throws Exception {
+		executeDataSet(LIMITED_USER_DATASET);
+		getConnection().commit();
+	}
+
+	/**
+	 * Removes the committed test data so it does not leak into other test classes.
+	 */
+	@AfterEach
+	public void tearDown() {
+		deleteAllData();
+	}
+
+	/**
 	 * Dispatches the request through {@link #legacyUiUrlMapping} so that any
 	 * interceptors registered on the mapping (in particular,
 	 * {@code AuthorizationHandlerInterceptor}) actually run before the handler.
@@ -76,8 +100,6 @@ public class HL7SourceFormControllerTest extends BaseModuleWebContextSensitiveTe
 	 */
 	@Test
 	public void onSubmit_shouldRejectUnprivilegedUserAttemptingToSaveHL7Source() throws Exception {
-		executeDataSet(LIMITED_USER_DATASET);
-
 		HL7Source originalSource = Context.getHL7Service().getHL7Source(EXISTING_HL7_SOURCE_ID);
 		assertNotNull(originalSource, "standardTestDataset should provide hl7_source #1");
 		String originalName = originalSource.getName();
@@ -123,8 +145,6 @@ public class HL7SourceFormControllerTest extends BaseModuleWebContextSensitiveTe
 	 */
 	@Test
 	public void onSubmit_shouldRejectUserWithReadOnlyHL7PrivilegeAttemptingToSave() throws Exception {
-		executeDataSet(LIMITED_USER_DATASET);
-
 		HL7Source originalSource = Context.getHL7Service().getHL7Source(EXISTING_HL7_SOURCE_ID);
 		assertNotNull(originalSource, "standardTestDataset should provide hl7_source #1");
 		final String originalName = originalSource.getName();
@@ -178,8 +198,6 @@ public class HL7SourceFormControllerTest extends BaseModuleWebContextSensitiveTe
 	 */
 	@Test
 	public void onSubmit_shouldRejectReadOnlyUserEvenWhenSessionIsExplicitlyFlushed() throws Exception {
-		executeDataSet(LIMITED_USER_DATASET);
-
 		HL7Source originalSource = Context.getHL7Service().getHL7Source(EXISTING_HL7_SOURCE_ID);
 		assertNotNull(originalSource, "standardTestDataset should provide hl7_source #1");
 		final String originalName = originalSource.getName();
@@ -220,8 +238,6 @@ public class HL7SourceFormControllerTest extends BaseModuleWebContextSensitiveTe
 	 */
 	@Test
 	public void onSubmit_shouldRejectUnprivilegedUserAttemptingToPurgeHL7Source() throws Exception {
-		executeDataSet(LIMITED_USER_DATASET);
-
 		HL7Source originalSource = Context.getHL7Service().getHL7Source(EXISTING_HL7_SOURCE_ID);
 		assertNotNull(originalSource, "standardTestDataset should provide hl7_source #1");
 
