@@ -40,6 +40,11 @@ public class ForEachAlertTag extends LoopTagSupport {
 		
 		alerts = null;
 		
+		// alerts are addressed to users, so there are none to show before someone logs in
+		if (!Context.isAuthenticated()) {
+			return;
+		}
+		
 		try {
 			AlertService as = Context.getAlertService();
 			if (user == null) {
