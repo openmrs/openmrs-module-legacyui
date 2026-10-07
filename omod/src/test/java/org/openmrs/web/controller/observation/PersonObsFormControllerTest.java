@@ -17,6 +17,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.impl.ObsArchiveHelper;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -31,7 +32,7 @@ public class PersonObsFormControllerTest extends BaseModuleWebContextSensitiveTe
 				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (994, 2, 21, 3, '2008-09-01', 1, 'archive-uuid-2', 1, '2026-01-01', 'FINAL')", false);
 			Context.getAdministrationService().executeSQL(
 				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (993, 2, 5089, 3, '2008-09-01', 1, 'archive-uuid-3', 1, '2026-01-01', 'FINAL')", false);
-			Context.getRegisteredComponent("obsArchiveHelper", org.openmrs.api.impl.ObsArchiveHelper.class)
+			Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class)
 			        .markArchiveHasData();
 			
 			// Test branch: person only

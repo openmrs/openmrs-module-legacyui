@@ -22,7 +22,10 @@ import org.springframework.validation.BindException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import org.openmrs.FormField;
 import org.openmrs.Obs;
+import org.openmrs.api.impl.ObsArchiveHelper;
 
 public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTest {
 	
@@ -79,7 +82,7 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 			Context.getAdministrationService().executeSQL(
 			    "INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status, obs_group_id) VALUES (999, 2, 21, 3, '2026-01-01', 1, 'uuid-999', 1, '2026-01-01', 'FINAL', 998)",
 			    false);
-			Context.getRegisteredComponent("obsArchiveHelper", org.openmrs.api.impl.ObsArchiveHelper.class)
+			Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class)
 			        .markArchiveHasData();
 			
 			EncounterFormController controller = new EncounterFormController();
@@ -92,7 +95,7 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 			Map<Obs, List<Obs>> groupMembersMap = (Map<Obs, List<Obs>>) map.get("groupMembersMap");
 			
 			@SuppressWarnings("unchecked")
-			java.util.SortedMap<org.openmrs.FormField, List<Obs>> obsMap = (java.util.SortedMap<org.openmrs.FormField, List<Obs>>) map
+			SortedMap<FormField, List<Obs>> obsMap = (SortedMap<FormField, List<Obs>>) map
 			        .get("obsMap");
 			
 			Obs parent = null;
@@ -150,7 +153,7 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 			Map<Obs, List<Obs>> groupMembersMap = (Map<Obs, List<Obs>>) map.get("groupMembersMap");
 			
 			@SuppressWarnings("unchecked")
-			java.util.SortedMap<org.openmrs.FormField, List<Obs>> obsMap = (java.util.SortedMap<org.openmrs.FormField, List<Obs>>) map
+			SortedMap<FormField, List<Obs>> obsMap = (SortedMap<FormField, List<Obs>>) map
 			        .get("obsMap");
 			
 			Obs parent = null;
@@ -182,6 +185,29 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 		finally {
 			Context.getAdministrationService().executeSQL("DELETE FROM obs WHERE obs_id = 996", false);
 			Context.getAdministrationService().executeSQL("DELETE FROM obs WHERE obs_id = 997", false);
+		}
+	}
+	
+	@Test
+	public void referenceData_shouldMarkObsAsEditedWhenItsPreviousVersionIsArchived() throws Exception {
+		executeDataSet(ENC_INITIAL_DATA_XML);
+		// 995 is the superseded version the sweep moved to obs_archive, 994 the live obs that replaced it
+		try {
+			Context.getAdministrationService().executeSQL(
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (995, 2, 21, 3, '2026-01-01', 1, 'uuid-995', 1, '2026-01-01', 'FINAL')", false);
+			Context.getAdministrationService().executeSQL(
+				"INSERT INTO obs (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status, previous_version) VALUES (994, 2, 21, 3, '2026-01-01', 0, 'uuid-994', 1, '2026-01-02', 'FINAL', 995)", false);
+			
+			Encounter encounter = Context.getEncounterService().getEncounter(3);
+			Map<String, Object> map = new EncounterFormController().referenceData(new MockHttpServletRequest(), encounter, new BindException(encounter, "encounter"));
+			
+			@SuppressWarnings("unchecked")
+			List<Integer> editedObs = (List<Integer>) map.get("editedObs");
+			
+			Assertions.assertTrue(editedObs.contains(994), "obs whose previous version was archived lost its edited marker");
+		} finally {
+			Context.getAdministrationService().executeSQL("DELETE FROM obs WHERE obs_id = 994", false);
+			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id = 995", false);
 		}
 	}
 }

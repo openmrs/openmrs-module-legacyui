@@ -333,7 +333,7 @@ public class EncounterFormController extends SimpleFormController {
 				}
 				
 				// only edited obs has previous version
-				if (o.hasPreviousVersion()) {
+				if (o.getPreviousVersionId() != null) {
 					editedObs.add(o.getObsId());
 				}
 				

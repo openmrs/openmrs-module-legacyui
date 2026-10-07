@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -26,6 +27,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.impl.ObsArchiveHelper;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
@@ -242,12 +244,12 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		DWRObsService dwrService = new DWRObsService();
 		
 		// Create and explicitly void a regular (live) observation to test includeVoidedObs=true
-		org.openmrs.api.ObsService obsService = Context.getObsService();
+		ObsService obsService = Context.getObsService();
 		Obs liveObs = new Obs();
 		liveObs.setPerson(Context.getPersonService().getPerson(2));
 		liveObs.setConcept(Context.getConceptService().getConcept(21));
 		liveObs.setEncounter(Context.getEncounterService().getEncounter(3));
-		liveObs.setObsDatetime(new java.text.SimpleDateFormat("yyyy-MM-dd").parse("2008-08-01"));
+		liveObs.setObsDatetime(new SimpleDateFormat("yyyy-MM-dd").parse("2008-08-01"));
 		liveObs.setValueCoded(Context.getConceptService().getConcept(3)); // required for concept 21
 		obsService.saveObs(liveObs, "saving");
 		obsService.voidObs(liveObs, "testing");
@@ -258,7 +260,7 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, 3, '2008-09-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
 			Context.getAdministrationService().executeSQL(
 				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (998, 2, 5089, 3, '2008-09-01', 1, 'archive-uuid-4', 1, '2026-01-01', 'FINAL')", false);
-			Context.getRegisteredComponent("obsArchiveHelper", org.openmrs.api.impl.ObsArchiveHelper.class)
+			Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class)
 			        .markArchiveHasData();
 			
 			// Test branch: person + concept
