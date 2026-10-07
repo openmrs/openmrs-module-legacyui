@@ -10,9 +10,13 @@
 package org.openmrs.web.dwr;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.jupiter.api.Test;
@@ -23,6 +27,7 @@ import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.impl.ObsArchiveHelper;
 import org.openmrs.test.Verifies;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 
@@ -204,5 +209,75 @@ public class DWRObservationServiceTest extends BaseModuleWebContextSensitiveTest
 		assertNotNull(addedObs);
 		assertNotNull(addedObs.getValueCoded());
 		assertEquals(booleanConcept, addedObs.getValueCoded());
+	}
+	
+	private void assertObsOrderAndVoided(Vector<ObsListItem> items, Integer newerArchivedId, Integer olderLiveId) {
+		boolean foundArchived = false;
+		boolean foundLiveVoided = false;
+		int archivedIndex = -1;
+		int liveIndex = -1;
+		for (int i = 0; i < items.size(); i++) {
+			ObsListItem obsItem = items.get(i);
+			if (obsItem.getObsId().equals(newerArchivedId)) {
+				foundArchived = true;
+				archivedIndex = i;
+				assertTrue(obsItem.getVoided());
+			}
+			if (obsItem.getObsId().equals(olderLiveId)) {
+				foundLiveVoided = true;
+				liveIndex = i;
+				assertTrue(obsItem.getVoided());
+			}
+		}
+		
+		assertTrue(foundArchived, "Archived obs should be included");
+		assertTrue(foundLiveVoided, "Live but voided obs should be included");
+		assertTrue(archivedIndex < liveIndex, "Newer archived obs should sort ahead of the older live obs");
+	}
+	
+	/**
+	 * @see org.openmrs.web.dwr.DWRObsService#getObsByPatientConceptEncounter(String, String, String)
+	 */
+	@Test
+	@Verifies(value = "should return archived obs and set voided flag", method = "getObsByPatientConceptEncounter(String, String, String)")
+	public void getObsByPatientConceptEncounter_shouldIncludeArchivedObs() throws Exception {
+		DWRObsService dwrService = new DWRObsService();
+		
+		// Create and explicitly void a regular (live) observation to test includeVoidedObs=true
+		ObsService obsService = Context.getObsService();
+		Obs liveObs = new Obs();
+		liveObs.setPerson(Context.getPersonService().getPerson(2));
+		liveObs.setConcept(Context.getConceptService().getConcept(21));
+		liveObs.setEncounter(Context.getEncounterService().getEncounter(3));
+		liveObs.setObsDatetime(new SimpleDateFormat("yyyy-MM-dd").parse("2008-08-01"));
+		liveObs.setValueCoded(Context.getConceptService().getConcept(3)); // required for concept 21
+		obsService.saveObs(liveObs, "saving");
+		obsService.voidObs(liveObs, "testing");
+		Integer liveObsId = liveObs.getObsId();
+		
+		try {
+			Context.getAdministrationService().executeSQL(
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (999, 2, 21, 3, '2008-09-01', 1, 'archive-uuid-1', 1, '2026-01-01', 'FINAL')", false);
+			Context.getAdministrationService().executeSQL(
+				"INSERT INTO obs_archive (obs_id, person_id, concept_id, encounter_id, obs_datetime, voided, uuid, creator, date_created, status) VALUES (998, 2, 5089, 3, '2008-09-01', 1, 'archive-uuid-4', 1, '2026-01-01', 'FINAL')", false);
+			Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class)
+			        .markArchiveHasData();
+			
+			// Test branch: person + concept
+			Vector<ObsListItem> items1 = dwrService.getObsByPatientConceptEncounter("2", "21", null);
+			for (ObsListItem obsItem : items1) {
+				assertNotEquals(998, obsItem.getObsId().intValue(), "archived obs of another concept returned for concept 21");
+			}
+			assertObsOrderAndVoided(items1, 999, liveObsId);
+			
+			// Test branch: person only
+			assertObsOrderAndVoided(dwrService.getObsByPatientConceptEncounter("2", null, null), 999, liveObsId);
+			
+			// Test branch: encounter only
+			assertObsOrderAndVoided(dwrService.getObsByPatientConceptEncounter(null, null, "3"), 999, liveObsId);
+			
+		} finally {
+			Context.getAdministrationService().executeSQL("DELETE FROM obs_archive WHERE obs_id IN (998, 999);", false);
+		}
 	}
 }
