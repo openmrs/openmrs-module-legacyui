@@ -20,6 +20,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.WebUtils;
 
 import static org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload.isMultipartContent;
 
@@ -31,7 +32,13 @@ public class XSSFilter implements Filter {
 		
 		if (!"GET".equalsIgnoreCase(((HttpServletRequest) request).getMethod())) {
 			if (isMultipartContent((HttpServletRequest) request)) {
-				request = new XSSMultipartRequestWrapper((MultipartHttpServletRequest) request);
+				// Another filter may have wrapped the multipart request, as Spring Security's firewall does
+				MultipartHttpServletRequest multipartRequest = WebUtils.getNativeRequest(request,
+				    MultipartHttpServletRequest.class);
+				if (multipartRequest == null) {
+					throw new ServletException("A multipart request reached XSSFilter without being resolved");
+				}
+				request = new XSSMultipartRequestWrapper((HttpServletRequest) request, multipartRequest);
 			} else {
 				request = new XSSRequestWrapper((HttpServletRequest) request);
 			}

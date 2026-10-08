@@ -11,14 +11,19 @@ package org.openmrs.web.xss;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
@@ -46,5 +51,41 @@ public class XSSFilterTest {
 		assertSame(file, wrapped.getFileMap().get("file"));
 		assertEquals("file", wrapped.getFileNames().next());
 		assertEquals("&lt;script&gt;alert(1)&lt;/script&gt;", wrapped.getParameter("fileCaption"));
+	}
+	
+	@Test
+	public void doFilter_shouldWrapMultipartRequestsThatAnotherFilterHasWrapped() throws Exception {
+		MockMultipartHttpServletRequest multipartRequest = new MockMultipartHttpServletRequest();
+		MockMultipartFile file = new MockMultipartFile("file", "photo.png", "image/png", new byte[] { 1, 2, 3 });
+		multipartRequest.addFile(file);
+		multipartRequest.addParameter("fileCaption", "<script>alert(1)</script>");
+		// Spring Security's firewall passes every request on in a wrapper like this, which is not multipart
+		HttpServletRequest wrappedByAnotherFilter = new HttpServletRequestWrapper(multipartRequest) {
+			
+			@Override
+			public String getHeader(String name) {
+				return "X-Outer".equals(name) ? "outer" : super.getHeader(name);
+			}
+		};
+		
+		AtomicReference<ServletRequest> passedOn = new AtomicReference<>();
+		FilterChain chain = (req, res) -> passedOn.set(req);
+		
+		new XSSFilter().doFilter(wrappedByAnotherFilter, new MockHttpServletResponse(), chain);
+		
+		MultipartHttpServletRequest wrapped = (MultipartHttpServletRequest) passedOn.get();
+		assertSame(file, wrapped.getFile("file"));
+		assertSame(file, wrapped.getFileMap().get("file"));
+		assertEquals("&lt;script&gt;alert(1)&lt;/script&gt;", wrapped.getParameter("fileCaption"));
+		assertEquals("outer", wrapped.getHeader("X-Outer"));
+	}
+	
+	@Test
+	public void doFilter_shouldFailWhenAMultipartRequestWasNotResolved() {
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/upload");
+		request.setContentType("multipart/form-data; boundary=x");
+		
+		assertThrows(ServletException.class,
+		    () -> new XSSFilter().doFilter(request, new MockHttpServletResponse(), (req, res) -> {}));
 	}
 }
