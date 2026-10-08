@@ -8,9 +8,9 @@
 	root cause exception to see if it is an authentication related exception and handle it appropriately.
 --%>
 <%
-if (exception.getCause() != null && (ContextAuthenticationException.class.equals(exception.getCause().getClass())
-		        || APIAuthenticationException.class.equals(exception.getCause().getClass())
-		        || AuthorizationDeniedException.class.equals(exception.getCause().getClass()))) {
+if (exception.getCause() != null && (exception.getCause() instanceof AccessDeniedException
+		        || ContextAuthenticationException.class.equals(exception.getCause().getClass())
+		        || APIAuthenticationException.class.equals(exception.getCause().getClass()))) {
 	//convert it back to the actual exception that was thrown
 	exception = exception.getCause();
 %>
