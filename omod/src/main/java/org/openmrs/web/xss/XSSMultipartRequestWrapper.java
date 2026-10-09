@@ -10,16 +10,30 @@
 package org.openmrs.web.xss;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
 public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletRequest {
 	
-	public XSSMultipartRequestWrapper(DefaultMultipartHttpServletRequest request) {
+	private final MultipartHttpServletRequest multipartRequest;
+	
+	/**
+	 * @param request the request to pass on, which another filter may have wrapped around the
+	 *            multipart request
+	 * @param multipartRequest the multipart request, which holds the files
+	 */
+	public XSSMultipartRequestWrapper(HttpServletRequest request, MultipartHttpServletRequest multipartRequest) {
 		super(request);
+		this.multipartRequest = multipartRequest;
 	}
 	
 	@Override
@@ -51,18 +65,13 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 	}
 	
 	@Override
-	public DefaultMultipartHttpServletRequest getRequest() {
-		return (DefaultMultipartHttpServletRequest) super.getRequest();
-	}
-	
-	@Override
 	public MultipartFile getFile(String name) {
-		return getRequest().getFile(name);
+		return multipartRequest.getFile(name);
 	}
 	
 	@Override
 	public MultiValueMap<String, MultipartFile> getMultiFileMap() {
-		return getRequest().getMultiFileMap();
+		return multipartRequest.getMultiFileMap();
 	}
 	
 	@Override
@@ -72,6 +81,26 @@ public class XSSMultipartRequestWrapper extends DefaultMultipartHttpServletReque
 	
 	@Override
 	public List<MultipartFile> getFiles(String name) {
-		return getRequest().getFiles(name);
+		return multipartRequest.getFiles(name);
+	}
+	
+	@Override
+	public Map<String, MultipartFile> getFileMap() {
+		return multipartRequest.getFileMap();
+	}
+	
+	@Override
+	public Iterator<String> getFileNames() {
+		return multipartRequest.getFileNames();
+	}
+	
+	@Override
+	public String getMultipartContentType(String paramOrFileName) {
+		return multipartRequest.getMultipartContentType(paramOrFileName);
+	}
+	
+	@Override
+	public HttpHeaders getMultipartHeaders(String paramOrFileName) {
+		return multipartRequest.getMultipartHeaders(paramOrFileName);
 	}
 }
