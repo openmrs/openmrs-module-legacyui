@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicReference;
 
 import jakarta.servlet.FilterChain;
@@ -23,10 +24,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
+import org.springframework.mock.web.MockPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -38,6 +41,9 @@ public class XSSFilterTest {
 		MockMultipartFile file = new MockMultipartFile("file", "photo.png", "image/png", new byte[] { 1, 2, 3 });
 		request.addFile(file);
 		request.addParameter("fileCaption", "<script>alert(1)</script>");
+		MockPart metadata = new MockPart("metadata", "{}".getBytes(StandardCharsets.UTF_8));
+		metadata.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+		request.addPart(metadata);
 		
 		AtomicReference<ServletRequest> passedOn = new AtomicReference<>();
 		FilterChain chain = (req, res) -> passedOn.set(req);
@@ -51,6 +57,9 @@ public class XSSFilterTest {
 		assertSame(file, wrapped.getFileMap().get("file"));
 		assertEquals("file", wrapped.getFileNames().next());
 		assertEquals("&lt;script&gt;alert(1)&lt;/script&gt;", wrapped.getParameter("fileCaption"));
+		assertEquals("application/json", wrapped.getMultipartContentType("metadata"));
+		assertEquals(MediaType.APPLICATION_JSON, wrapped.getMultipartHeaders("metadata").getContentType());
+		assertEquals("metadata", wrapped.getMultipartHeaders("metadata").getContentDisposition().getName());
 	}
 	
 	@Test
