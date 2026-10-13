@@ -55,6 +55,8 @@ public class XSSFilterTest {
 		MultipartFile wrappedFile = wrapped.getFile("file");
 		assertSame(file, wrappedFile);
 		assertSame(file, wrapped.getFileMap().get("file"));
+		assertSame(file, wrapped.getFiles("file").get(0));
+		assertSame(file, wrapped.getMultiFileMap().getFirst("file"));
 		assertEquals("file", wrapped.getFileNames().next());
 		assertEquals("&lt;script&gt;alert(1)&lt;/script&gt;", wrapped.getParameter("fileCaption"));
 		assertEquals("application/json", wrapped.getMultipartContentType("metadata"));
