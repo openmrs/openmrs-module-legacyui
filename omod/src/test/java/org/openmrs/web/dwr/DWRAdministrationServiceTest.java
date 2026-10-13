@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.api.context.Context;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
-import org.springframework.security.access.AccessDeniedException;
 
 /**
  * Verifies the authorization story for {@link DWRAdministrationService}. Both
@@ -55,8 +55,8 @@ public class DWRAdministrationServiceTest extends BaseModuleWebContextSensitiveT
 		try {
 			value = dwr.getGlobalProperty("locale.allowed.list");
 		}
-		catch (AccessDeniedException expected) {
-			// service-layer @Authorized rejected it on Platform 3.0+ (an AccessDeniedException since TRUNK-6799)
+		catch (APIAuthenticationException expected) {
+			// service-layer @Authorized rejected it on Platform 3.0+
 		}
 
 		assertEquals(null, value,
@@ -88,7 +88,7 @@ public class DWRAdministrationServiceTest extends BaseModuleWebContextSensitiveT
 		try {
 			dwr.setGlobalProperty("locale.allowed.list", "TAMPERED-VIA-DWR");
 		}
-		catch (AccessDeniedException expected) {
+		catch (APIAuthenticationException expected) {
 			// good — service-layer @Authorized rejected it
 		}
 
