@@ -77,6 +77,11 @@ public class XSSFilterTest {
 			public String getHeader(String name) {
 				return "X-Outer".equals(name) ? "outer" : super.getHeader(name);
 			}
+			
+			@Override
+			public String getParameter(String name) {
+				return "outer".equals(name) ? "<b>outer</b>" : super.getParameter(name);
+			}
 		};
 		
 		AtomicReference<ServletRequest> passedOn = new AtomicReference<>();
@@ -89,6 +94,7 @@ public class XSSFilterTest {
 		assertSame(file, wrapped.getFileMap().get("file"));
 		assertEquals("&lt;script&gt;alert(1)&lt;/script&gt;", wrapped.getParameter("fileCaption"));
 		assertEquals("outer", wrapped.getHeader("X-Outer"));
+		assertEquals("&lt;b&gt;outer&lt;/b&gt;", wrapped.getParameter("outer"));
 	}
 	
 	@Test
