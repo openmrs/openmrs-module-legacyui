@@ -12,6 +12,7 @@ package org.openmrs.web.controller.program;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openmrs.api.context.Context;
@@ -19,19 +20,31 @@ import org.openmrs.test.Verifies;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
 
 /**
- * Tests the {@link ProgramFormController} class.
+ * Tests the {@link ProgramFormController} class. The tests run outside a transaction, so each save
+ * commits in its own transaction, as it does in a request. In a read-write test transaction, the
+ * query in the form's validator flushes the new workflows before onSubmit runs, so the tests would
+ * pass even when the save failed.
  */
 public class ProgramFormControllerTest extends BaseModuleWebContextSensitiveTest {
+	
+	/**
+	 * Removes the committed test data so it does not leak into other test classes.
+	 */
+	@AfterEach
+	public void tearDown() {
+		deleteAllData();
+	}
 	
 	/**
 	 * @see ProgramFormController#onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)
 	 */
 	@Test
-	@Transactional(readOnly = true)
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	@Verifies(value = "should save workflows with program", method = "onSubmit(HttpServletRequest,HttpServletResponse,Object,BindException)")
 	public void onSubmit_shouldSaveWorkflowsWithProgram() throws Exception {
 		
@@ -45,6 +58,8 @@ public class ProgramFormControllerTest extends BaseModuleWebContextSensitiveTest
 		ProgramFormController controller = (ProgramFormController) applicationContext.getBean("programForm");
 		controller.handleRequest(request, new MockHttpServletResponse());
 		
+		Context.clearSession();
+		
 		Assertions.assertNotSame(0, Context.getProgramWorkflowService().getProgram(3).getAllWorkflows().size());
 		Assertions.assertEquals(1, Context.getProgramWorkflowService().getProgram(3).getAllWorkflows().size());
 	}
@@ -54,7 +69,7 @@ public class ProgramFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 * @verifies edit existing workflows within programs
 	 */
 	@Test
-	@Transactional
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public void onSubmit_shouldEditExistingWorkflowsWithinPrograms() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "");
 		request.setParameter("programId", "3");
@@ -72,6 +87,8 @@ public class ProgramFormControllerTest extends BaseModuleWebContextSensitiveTest
 		request.setParameter("allWorkflows", ":5"); // set one workflow on this program
 		
 		controller.handleRequest(request, new MockHttpServletResponse());
+		
+		Context.clearSession();
 		
 		Assertions.assertEquals(1, Context.getProgramWorkflowService().getProgram(3).getWorkflows().size());
 		Assertions.assertEquals(5, Context.getProgramWorkflowService().getProgram(3).getWorkflows().iterator().next()
