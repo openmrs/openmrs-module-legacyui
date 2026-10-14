@@ -54,7 +54,7 @@ public class ProgramFormControllerTest extends BaseModuleWebContextSensitiveTest
 	 * @verifies edit existing workflows within programs
 	 */
 	@Test
-	@Transactional(readOnly = true)
+	@Transactional
 	public void onSubmit_shouldEditExistingWorkflowsWithinPrograms() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "");
 		request.setParameter("programId", "3");
