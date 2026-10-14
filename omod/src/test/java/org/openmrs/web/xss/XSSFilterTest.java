@@ -9,12 +9,16 @@
  */
 package org.openmrs.web.xss;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicReference;
 
 import jakarta.servlet.FilterChain;
@@ -82,6 +86,16 @@ public class XSSFilterTest {
 			public String getParameter(String name) {
 				return "outer".equals(name) ? "<b>outer</b>" : super.getParameter(name);
 			}
+			
+			@Override
+			public String[] getParameterValues(String name) {
+				return "outer".equals(name) ? new String[] { "<b>outer</b>" } : super.getParameterValues(name);
+			}
+			
+			@Override
+			public Enumeration<String> getParameterNames() {
+				return Collections.enumeration(Arrays.asList("fileCaption", "outer"));
+			}
 		};
 		
 		AtomicReference<ServletRequest> passedOn = new AtomicReference<>();
@@ -95,6 +109,8 @@ public class XSSFilterTest {
 		assertEquals("&lt;script&gt;alert(1)&lt;/script&gt;", wrapped.getParameter("fileCaption"));
 		assertEquals("outer", wrapped.getHeader("X-Outer"));
 		assertEquals("&lt;b&gt;outer&lt;/b&gt;", wrapped.getParameter("outer"));
+		assertArrayEquals(new String[] { "&lt;b&gt;outer&lt;/b&gt;" }, wrapped.getParameterValues("outer"));
+		assertEquals(Arrays.asList("fileCaption", "outer"), Collections.list(wrapped.getParameterNames()));
 	}
 	
 	@Test
