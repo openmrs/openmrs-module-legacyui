@@ -1,0 +1,124 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+ * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+ *
+ * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+ * graphic logo is a trademark of OpenMRS Inc.
+ */
+package org.openmrs.web.xss;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.concurrent.atomic.AtomicReference;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
+import org.springframework.mock.web.MockPart;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+public class XSSFilterTest {
+	
+	@Test
+	public void doFilter_shouldWrapMultipartRequestsThatAreNotDefaultMultipartRequests() throws Exception {
+		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+		MockMultipartFile file = new MockMultipartFile("file", "photo.png", "image/png", new byte[] { 1, 2, 3 });
+		request.addFile(file);
+		request.addParameter("fileCaption", "<script>alert(1)</script>");
+		MockPart metadata = new MockPart("metadata", "{}".getBytes(StandardCharsets.UTF_8));
+		metadata.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+		request.addPart(metadata);
+		
+		AtomicReference<ServletRequest> passedOn = new AtomicReference<>();
+		FilterChain chain = (req, res) -> passedOn.set(req);
+		
+		new XSSFilter().doFilter(request, new MockHttpServletResponse(), chain);
+		
+		assertTrue(passedOn.get() instanceof XSSMultipartRequestWrapper);
+		MultipartHttpServletRequest wrapped = (MultipartHttpServletRequest) passedOn.get();
+		MultipartFile wrappedFile = wrapped.getFile("file");
+		assertSame(file, wrappedFile);
+		assertSame(file, wrapped.getFileMap().get("file"));
+		assertSame(file, wrapped.getFiles("file").get(0));
+		assertSame(file, wrapped.getMultiFileMap().getFirst("file"));
+		assertEquals("file", wrapped.getFileNames().next());
+		assertEquals("&lt;script&gt;alert(1)&lt;/script&gt;", wrapped.getParameter("fileCaption"));
+		assertEquals("application/json", wrapped.getMultipartContentType("metadata"));
+		assertEquals(MediaType.APPLICATION_JSON, wrapped.getMultipartHeaders("metadata").getContentType());
+		assertEquals("metadata", wrapped.getMultipartHeaders("metadata").getContentDisposition().getName());
+	}
+	
+	@Test
+	public void doFilter_shouldWrapMultipartRequestsThatAnotherFilterHasWrapped() throws Exception {
+		MockMultipartHttpServletRequest multipartRequest = new MockMultipartHttpServletRequest();
+		MockMultipartFile file = new MockMultipartFile("file", "photo.png", "image/png", new byte[] { 1, 2, 3 });
+		multipartRequest.addFile(file);
+		multipartRequest.addParameter("fileCaption", "<script>alert(1)</script>");
+		// Spring Security's firewall passes every request on in a wrapper like this, which is not multipart
+		HttpServletRequest wrappedByAnotherFilter = new HttpServletRequestWrapper(multipartRequest) {
+			
+			@Override
+			public String getHeader(String name) {
+				return "X-Outer".equals(name) ? "outer" : super.getHeader(name);
+			}
+			
+			@Override
+			public String getParameter(String name) {
+				return "outer".equals(name) ? "<b>outer</b>" : super.getParameter(name);
+			}
+			
+			@Override
+			public String[] getParameterValues(String name) {
+				return "outer".equals(name) ? new String[] { "<b>outer</b>" } : super.getParameterValues(name);
+			}
+			
+			@Override
+			public Enumeration<String> getParameterNames() {
+				return Collections.enumeration(Arrays.asList("fileCaption", "outer"));
+			}
+		};
+		
+		AtomicReference<ServletRequest> passedOn = new AtomicReference<>();
+		FilterChain chain = (req, res) -> passedOn.set(req);
+		
+		new XSSFilter().doFilter(wrappedByAnotherFilter, new MockHttpServletResponse(), chain);
+		
+		MultipartHttpServletRequest wrapped = (MultipartHttpServletRequest) passedOn.get();
+		assertSame(file, wrapped.getFile("file"));
+		assertSame(file, wrapped.getFileMap().get("file"));
+		assertEquals("&lt;script&gt;alert(1)&lt;/script&gt;", wrapped.getParameter("fileCaption"));
+		assertEquals("outer", wrapped.getHeader("X-Outer"));
+		assertEquals("&lt;b&gt;outer&lt;/b&gt;", wrapped.getParameter("outer"));
+		assertArrayEquals(new String[] { "&lt;b&gt;outer&lt;/b&gt;" }, wrapped.getParameterValues("outer"));
+		assertEquals(Arrays.asList("fileCaption", "outer"), Collections.list(wrapped.getParameterNames()));
+	}
+	
+	@Test
+	public void doFilter_shouldFailWhenAMultipartRequestWasNotResolved() {
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/upload");
+		request.setContentType("multipart/form-data; boundary=x");
+		
+		assertThrows(ServletException.class,
+		    () -> new XSSFilter().doFilter(request, new MockHttpServletResponse(), (req, res) -> {}));
+	}
+}
