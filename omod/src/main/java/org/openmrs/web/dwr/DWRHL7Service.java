@@ -18,6 +18,7 @@ import org.openmrs.hl7.Hl7InArchivesMigrateThread;
 import org.openmrs.hl7.Hl7InArchivesMigrateThread.Status;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.security.RequirePrivilege;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  * DWR archive migration methods. The methods in here are used in the webapp to start and stop the
@@ -56,7 +57,8 @@ public class DWRHL7Service {
 			hl7MigrationThread.start();
 			return new Object[] { true };
 		}
-		catch (APIAuthenticationException e) {
+		// see DWRPatientService for why both types
+		catch (AccessDeniedException | APIAuthenticationException e) {
 			return new Object[] { false,
 			        Context.getMessageSourceService().getMessage("Hl7InArchive.migrate.authentication.fail") };
 		}

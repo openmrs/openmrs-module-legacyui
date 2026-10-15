@@ -5,9 +5,18 @@
 <%@page import="org.apache.commons.logging.Log"%>
 <%@page import="org.openmrs.api.context.Context"%>
 <%@page import="org.apache.commons.logging.LogFactory"%>
+<%@page import="org.springframework.security.access.AccessDeniedException"%>
 
+<%--
+	AccessDeniedException by instanceof, not by exact class: core 3.0.0 denies with
+	AuthorizationDeniedException (a subclass) today, and its deprecation of
+	APIAuthenticationException tells modules to throw a plain AccessDeniedException, so matching the
+	subclass alone would miss every method that follows that note. The two APIException types stay
+	exact, as they were.
+--%>
 <%
-	if (ContextAuthenticationException.class.equals(exception.getClass())
+	if (exception instanceof AccessDeniedException
+	        || ContextAuthenticationException.class.equals(exception.getClass())
 	        || APIAuthenticationException.class.equals(exception.getClass())) {
 		
 		Log log = LogFactory.getLog(this.getClass().getName());
