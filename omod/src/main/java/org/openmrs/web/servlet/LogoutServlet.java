@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Servlet called by the logout link in the webapp. This will call Context.logout() and then make
@@ -41,8 +42,16 @@ public class LogoutServlet extends HttpServlet {
 		
 		HttpSession httpSession = request.getSession();
 		
-		String redirect = StringUtils.stripStart(
-		    StringUtils.trimToEmpty(Context.getAdministrationService().getGlobalProperty(GP_LOGOUT_REDIRECT_URL)), "/");
+		String redirect;
+		try {
+			Context.addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+			redirect = Context.getAdministrationService().getGlobalProperty(GP_LOGOUT_REDIRECT_URL);
+		}
+		finally {
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+		}
+		// a leading backslash would let a browser read the Location as a protocol-relative URL
+		redirect = StringUtils.stripStart(StringUtils.trimToEmpty(redirect), "/\\");
 		
 		Context.logout();
 		

@@ -44,4 +44,21 @@ public class LogoutServletTest extends BaseModuleWebContextSensitiveTest {
 		Assertions.assertEquals("/somecontextpath/spa/login", logout());
 		Assertions.assertFalse(Context.isAuthenticated());
 	}
+	
+	@Test
+	public void shouldRedirectToTheLogoutRedirectUrlWhenTheSessionIsNotAuthenticated() throws Exception {
+		Context.getAdministrationService().saveGlobalProperty(
+		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, "spa/login"));
+		Context.logout();
+		
+		Assertions.assertEquals("/somecontextpath/spa/login", logout());
+	}
+	
+	@Test
+	public void shouldStripLeadingBackslashesFromTheLogoutRedirectUrl() throws Exception {
+		Context.getAdministrationService().saveGlobalProperty(
+		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, "\\\\evil.example/x"));
+		
+		Assertions.assertEquals("/somecontextpath/evil.example/x", logout());
+	}
 }
