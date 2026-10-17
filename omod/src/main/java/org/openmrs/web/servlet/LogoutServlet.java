@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
 
 /**
@@ -30,8 +31,6 @@ import org.openmrs.util.PrivilegeConstants;
 public class LogoutServlet extends HttpServlet {
 	
 	public static final long serialVersionUID = 123423L;
-	
-	public static final String GP_LOGOUT_REDIRECT_URL = "legacyui.logoutRedirectUrl";
 	
 	/**
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest,
@@ -45,14 +44,16 @@ public class LogoutServlet extends HttpServlet {
 		String redirect;
 		try {
 			Context.addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
-			redirect = Context.getAdministrationService().getGlobalProperty(GP_LOGOUT_REDIRECT_URL);
+			redirect = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GP_LOGIN_URL);
 		}
 		finally {
 			Context.removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
 		}
 		redirect = StringUtils.stripStart(StringUtils.trimToEmpty(redirect), "/");
 		// a browser reads \ as / and deletes tabs, so either could make "/" + redirect a protocol-relative URL
-		if (redirect.chars().anyMatch(c -> c == '\\' || Character.isISOControl(c))) {
+		// core's default login.url is the legacy login page, which index.htm already shows
+		if (redirect.equals(OpenmrsConstants.LOGIN_URL)
+		        || redirect.chars().anyMatch(c -> c == '\\' || Character.isISOControl(c))) {
 			redirect = "";
 		}
 		

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -35,41 +36,50 @@ public class LogoutServletTest extends BaseModuleWebContextSensitiveTest {
 	}
 	
 	@Test
-	public void shouldRedirectToIndexWhenNoLogoutRedirectUrlIsSet() throws Exception {
+	public void shouldRedirectToIndexWhenNoLoginUrlIsSet() throws Exception {
 		Assertions.assertEquals("/somecontextpath/index.htm?noredirect=true", logout());
 		Assertions.assertFalse(Context.isAuthenticated());
 	}
 	
 	@Test
-	public void shouldRedirectToTheLogoutRedirectUrl() throws Exception {
+	public void shouldRedirectToIndexWhenTheLoginUrlIsCoresDefault() throws Exception {
 		Context.getAdministrationService().saveGlobalProperty(
-		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, " /spa/login "));
+		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, OpenmrsConstants.LOGIN_URL));
+		
+		Assertions.assertEquals("/somecontextpath/index.htm?noredirect=true", logout());
+		Assertions.assertFalse(Context.isAuthenticated());
+	}
+	
+	@Test
+	public void shouldRedirectToTheLoginUrl() throws Exception {
+		Context.getAdministrationService().saveGlobalProperty(
+		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, " /spa/login "));
 		
 		Assertions.assertEquals("/somecontextpath/spa/login", logout());
 		Assertions.assertFalse(Context.isAuthenticated());
 	}
 	
 	@Test
-	public void shouldRedirectToTheLogoutRedirectUrlWhenTheSessionIsNotAuthenticated() throws Exception {
+	public void shouldRedirectToTheLoginUrlWhenTheSessionIsNotAuthenticated() throws Exception {
 		Context.getAdministrationService().saveGlobalProperty(
-		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, "spa/login"));
+		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, "spa/login"));
 		Context.logout();
 		
 		Assertions.assertEquals("/somecontextpath/spa/login", logout());
 	}
 	
 	@Test
-	public void shouldRedirectToIndexWhenTheLogoutRedirectUrlContainsABackslash() throws Exception {
+	public void shouldRedirectToIndexWhenTheLoginUrlContainsABackslash() throws Exception {
 		Context.getAdministrationService().saveGlobalProperty(
-		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, "/\\/evil.example/x"));
+		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, "/\\/evil.example/x"));
 		
 		Assertions.assertEquals("/index.htm?noredirect=true", logout(""));
 	}
 	
 	@Test
-	public void shouldRedirectToIndexWhenTheLogoutRedirectUrlContainsAControlCharacter() throws Exception {
+	public void shouldRedirectToIndexWhenTheLoginUrlContainsAControlCharacter() throws Exception {
 		Context.getAdministrationService().saveGlobalProperty(
-		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, "/\t/evil.example/x"));
+		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, "/\t/evil.example/x"));
 		
 		Assertions.assertEquals("/index.htm?noredirect=true", logout(""));
 	}

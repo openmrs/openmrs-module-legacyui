@@ -409,13 +409,6 @@
 			Allows one to limit the number of encounters shown on the form entry tab of the patient dashboard specifically
 		</description>
 	</globalProperty>
-	<globalProperty>
-		<property>legacyui.logoutRedirectUrl</property>
-		<defaultValue></defaultValue>
-		<description>
-			Where logging out sends the user, as a path after the webapp's context path, for example spa/login. Leading slashes are removed. Blank, or a value containing a backslash or a control character, sends the user to index.htm
-		</description>
-	</globalProperty>
 
 </module>
 
