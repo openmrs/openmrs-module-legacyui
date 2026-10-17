@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.context.Context;
 
 /**
@@ -29,6 +30,8 @@ public class LogoutServlet extends HttpServlet {
 	
 	public static final long serialVersionUID = 123423L;
 	
+	public static final String GP_LOGOUT_REDIRECT_URL = "legacyui.logoutRedirectUrl";
+	
 	/**
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse)
@@ -38,9 +41,13 @@ public class LogoutServlet extends HttpServlet {
 		
 		HttpSession httpSession = request.getSession();
 		
+		String redirect = StringUtils.stripStart(
+		    StringUtils.trimToEmpty(Context.getAdministrationService().getGlobalProperty(GP_LOGOUT_REDIRECT_URL)), "/");
+		
 		Context.logout();
 		
-		response.sendRedirect(request.getContextPath() + "/index.htm?noredirect=true");
+		response.sendRedirect(request.getContextPath() + "/"
+		        + (redirect.isEmpty() ? "index.htm?noredirect=true" : redirect));
 		
 		// clears attributes and makes sure that no one can access this session
 		httpSession.invalidate();
