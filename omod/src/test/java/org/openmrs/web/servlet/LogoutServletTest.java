@@ -23,8 +23,12 @@ import org.springframework.mock.web.MockHttpServletResponse;
 public class LogoutServletTest extends BaseModuleWebContextSensitiveTest {
 	
 	private String logout() throws Exception {
+		return logout("/somecontextpath");
+	}
+	
+	private String logout(String contextPath) throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/ms/logout");
-		request.setContextPath("/somecontextpath");
+		request.setContextPath(contextPath);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		new LogoutServlet().service(request, response);
 		return response.getRedirectedUrl();
@@ -55,10 +59,18 @@ public class LogoutServletTest extends BaseModuleWebContextSensitiveTest {
 	}
 	
 	@Test
-	public void shouldStripLeadingBackslashesFromTheLogoutRedirectUrl() throws Exception {
+	public void shouldRedirectToIndexWhenTheLogoutRedirectUrlContainsABackslash() throws Exception {
 		Context.getAdministrationService().saveGlobalProperty(
-		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, "\\\\evil.example/x"));
+		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, "/\\/evil.example/x"));
 		
-		Assertions.assertEquals("/somecontextpath/evil.example/x", logout());
+		Assertions.assertEquals("/index.htm?noredirect=true", logout(""));
+	}
+	
+	@Test
+	public void shouldRedirectToIndexWhenTheLogoutRedirectUrlContainsAControlCharacter() throws Exception {
+		Context.getAdministrationService().saveGlobalProperty(
+		    new GlobalProperty(LogoutServlet.GP_LOGOUT_REDIRECT_URL, "/\t/evil.example/x"));
+		
+		Assertions.assertEquals("/index.htm?noredirect=true", logout(""));
 	}
 }

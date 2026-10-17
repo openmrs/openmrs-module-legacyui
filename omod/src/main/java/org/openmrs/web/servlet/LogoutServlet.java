@@ -50,8 +50,11 @@ public class LogoutServlet extends HttpServlet {
 		finally {
 			Context.removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
 		}
-		// a leading backslash would let a browser read the Location as a protocol-relative URL
-		redirect = StringUtils.stripStart(StringUtils.trimToEmpty(redirect), "/\\");
+		redirect = StringUtils.stripStart(StringUtils.trimToEmpty(redirect), "/");
+		// a browser reads \ as / and deletes tabs, so either could make "/" + redirect a protocol-relative URL
+		if (redirect.chars().anyMatch(c -> c == '\\' || Character.isISOControl(c))) {
+			redirect = "";
+		}
 		
 		Context.logout();
 		
