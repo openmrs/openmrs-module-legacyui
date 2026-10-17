@@ -60,6 +60,14 @@ public class LogoutServletTest extends BaseModuleWebContextSensitiveTest {
 	}
 	
 	@Test
+	public void shouldStripEveryLeadingSlashFromTheLoginUrl() throws Exception {
+		Context.getAdministrationService().saveGlobalProperty(
+		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, "//evil.example/x"));
+		
+		Assertions.assertEquals("/evil.example/x", logout(""));
+	}
+	
+	@Test
 	public void shouldRedirectToTheLoginUrlWhenTheSessionIsNotAuthenticated() throws Exception {
 		Context.getAdministrationService().saveGlobalProperty(
 		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, "spa/login"));

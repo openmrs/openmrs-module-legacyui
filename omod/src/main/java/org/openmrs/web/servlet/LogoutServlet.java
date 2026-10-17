@@ -50,9 +50,9 @@ public class LogoutServlet extends HttpServlet {
 			Context.removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
 		}
 		redirect = StringUtils.stripStart(StringUtils.trimToEmpty(redirect), "/");
-		// a browser reads \ as / and deletes tabs, so either could make "/" + redirect a protocol-relative URL
 		// core's default login.url is the legacy login page, which index.htm already shows
 		if (redirect.equals(OpenmrsConstants.LOGIN_URL)
+		        // a browser reads \ as / and deletes tabs, so either could make "/" + redirect a protocol-relative URL
 		        || redirect.chars().anyMatch(c -> c == '\\' || Character.isISOControl(c))) {
 			redirect = "";
 		}
