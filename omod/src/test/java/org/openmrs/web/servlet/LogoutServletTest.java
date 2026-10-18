@@ -11,6 +11,8 @@ package org.openmrs.web.servlet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.AdministrationService;
@@ -20,6 +22,7 @@ import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
 
 /**
  * Tests the {@link LogoutServlet}
@@ -87,10 +90,11 @@ public class LogoutServletTest extends BaseModuleWebContextSensitiveTest {
 		Assertions.assertEquals("/index.htm?noredirect=true", logout(""));
 	}
 	
-	@Test
-	public void shouldRedirectToIndexWhenTheLoginUrlContainsAControlCharacter() throws Exception {
+	@ParameterizedTest
+	@ValueSource(strings = { "\t", "\n", "\r" })
+	public void shouldRedirectToIndexWhenTheLoginUrlContainsAControlCharacter(String controlCharacter) throws Exception {
 		Context.getAdministrationService().saveGlobalProperty(
-		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, "/\t/evil.example/x"));
+		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, "/" + controlCharacter + "/evil.example/x"));
 		
 		Assertions.assertEquals("/index.htm?noredirect=true", logout(""));
 	}
@@ -102,12 +106,17 @@ public class LogoutServletTest extends BaseModuleWebContextSensitiveTest {
 		Mockito.when(failingAdminService.getGlobalProperty(OpenmrsConstants.GP_LOGIN_URL)).thenThrow(
 		    new RuntimeException("db down"));
 		ServiceContext.getInstance().setAdministrationService(failingAdminService);
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/ms/logout");
+		MockHttpSession session = new MockHttpSession();
+		request.setSession(session);
 		try {
-			Assertions.assertThrows(RuntimeException.class, this::logout);
+			Assertions.assertThrows(RuntimeException.class,
+			    () -> new LogoutServlet().service(request, new MockHttpServletResponse()));
 		}
 		finally {
 			ServiceContext.getInstance().setAdministrationService(adminService);
 		}
 		Assertions.assertFalse(Context.isAuthenticated());
+		Assertions.assertTrue(session.isInvalid());
 	}
 }

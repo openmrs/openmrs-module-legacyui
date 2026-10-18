@@ -43,6 +43,9 @@ public class LogoutServlet extends HttpServlet {
 		
 		Context.logout();
 		
+		// clears attributes and makes sure that no one can access this session
+		httpSession.invalidate();
+		
 		String redirect;
 		try {
 			Context.addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
@@ -61,9 +64,6 @@ public class LogoutServlet extends HttpServlet {
 		
 		response.sendRedirect(request.getContextPath() + "/"
 		        + (redirect.isEmpty() ? "index.htm?noredirect=true" : redirect));
-		
-		// clears attributes and makes sure that no one can access this session
-		httpSession.invalidate();
 	}
 	
 }
