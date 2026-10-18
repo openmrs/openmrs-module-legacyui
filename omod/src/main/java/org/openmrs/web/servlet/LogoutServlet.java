@@ -41,6 +41,8 @@ public class LogoutServlet extends HttpServlet {
 		
 		HttpSession httpSession = request.getSession();
 		
+		Context.logout();
+		
 		String redirect;
 		try {
 			Context.addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
@@ -56,8 +58,6 @@ public class LogoutServlet extends HttpServlet {
 		        || redirect.chars().anyMatch(c -> c == '\\' || Character.isISOControl(c))) {
 			redirect = "";
 		}
-		
-		Context.logout();
 		
 		response.sendRedirect(request.getContextPath() + "/"
 		        + (redirect.isEmpty() ? "index.htm?noredirect=true" : redirect));

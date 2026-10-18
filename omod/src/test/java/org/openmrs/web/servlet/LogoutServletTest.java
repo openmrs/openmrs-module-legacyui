@@ -11,8 +11,11 @@ package org.openmrs.web.servlet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.openmrs.GlobalProperty;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.context.ServiceContext;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.test.jupiter.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -90,5 +93,21 @@ public class LogoutServletTest extends BaseModuleWebContextSensitiveTest {
 		    new GlobalProperty(OpenmrsConstants.GP_LOGIN_URL, "/\t/evil.example/x"));
 		
 		Assertions.assertEquals("/index.htm?noredirect=true", logout(""));
+	}
+	
+	@Test
+	public void shouldLogOutWhenReadingTheLoginUrlFails() throws Exception {
+		AdministrationService adminService = Context.getAdministrationService();
+		AdministrationService failingAdminService = Mockito.mock(AdministrationService.class);
+		Mockito.when(failingAdminService.getGlobalProperty(OpenmrsConstants.GP_LOGIN_URL)).thenThrow(
+		    new RuntimeException("db down"));
+		ServiceContext.getInstance().setAdministrationService(failingAdminService);
+		try {
+			Assertions.assertThrows(RuntimeException.class, this::logout);
+		}
+		finally {
+			ServiceContext.getInstance().setAdministrationService(adminService);
+		}
+		Assertions.assertFalse(Context.isAuthenticated());
 	}
 }
