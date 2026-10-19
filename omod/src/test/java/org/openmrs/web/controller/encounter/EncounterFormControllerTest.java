@@ -229,6 +229,108 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 	}
 
 	/**
+	 * @see EncounterFormController#referenceData(javax.servlet.http.HttpServletRequest, Object,
+	 *      org.springframework.validation.Errors)
+	 */
+	@Test
+	public void referenceData_shouldIncludeAProviderWithDuplicateRecordsVoidedWithTheEncounterOnce() throws Exception {
+		Encounter encounter = addDuplicateEncounterProvider(Context.getEncounterService().getEncounter(3));
+		encounter = voidEncounterAndProviders(encounter);
+
+		EncounterFormController controller = new EncounterFormController();
+		Map<String, Object> map = controller.referenceData(new MockHttpServletRequest(), encounter, new BindException(
+		        encounter, "encounter"));
+
+		Map<EncounterRole, Set<Provider>> providersByRoles = (Map<EncounterRole, Set<Provider>>) map
+		        .get("providersByRoles");
+		EncounterRole role = Context.getEncounterService().getEncounterRole(1);
+		Assert.assertEquals(1, providersByRoles.size());
+		Assert.assertEquals(1, providersByRoles.get(role).size());
+		Assert.assertTrue(providersByRoles.get(role).contains(Context.getProviderService().getProvider(1)));
+	}
+
+	/**
+	 * @see EncounterFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void processFormSubmission_shouldNotRestoreARemovedProviderWithDuplicateRecordsVoidedWithTheEncounter()
+	        throws Exception {
+		Provider otherProvider = createOtherProvider();
+		Encounter encounter = addDuplicateEncounterProvider(Context.getEncounterService().getEncounter(3));
+		encounter = voidEncounterAndProviders(encounter);
+		encounter.setVoided(false);
+
+		submitEncounterForm(encounter, otherProvider);
+
+		encounter = Context.getEncounterService().getEncounter(3);
+		Assert.assertFalse(encounter.getVoided());
+		Set<Provider> providers = encounter.getProvidersByRole(Context.getEncounterService().getEncounterRole(1));
+		Assert.assertEquals(1, providers.size());
+		Assert.assertTrue(providers.contains(otherProvider));
+		Assert.assertEquals(1, encounter.getActiveEncounterProviders().size());
+	}
+
+	/**
+	 * @see EncounterFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void processFormSubmission_shouldRestoreOnlyOneOfDuplicateRecordsVoidedWithTheEncounter() throws Exception {
+		Encounter encounter = addDuplicateEncounterProvider(Context.getEncounterService().getEncounter(3));
+		encounter = voidEncounterAndProviders(encounter);
+		encounter.setVoided(false);
+
+		submitEncounterForm(encounter, Context.getProviderService().getProvider(1));
+
+		encounter = Context.getEncounterService().getEncounter(3);
+		Assert.assertFalse(encounter.getVoided());
+		Assert.assertEquals(2, encounter.getEncounterProviders().size());
+		Assert.assertEquals(1, encounter.getActiveEncounterProviders().size());
+	}
+
+	/**
+	 * @see EncounterFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void processFormSubmission_shouldNotRestoreARemovedProviderThatWasReaddedWhileTheEncounterWasVoided()
+	        throws Exception {
+		Provider otherProvider = createOtherProvider();
+		Encounter encounter = readdProviderWhileVoided(voidEncounterAndProviders(Context.getEncounterService()
+		        .getEncounter(3)));
+		encounter.setVoided(false);
+
+		submitEncounterForm(encounter, otherProvider);
+
+		encounter = Context.getEncounterService().getEncounter(3);
+		Assert.assertFalse(encounter.getVoided());
+		Set<Provider> providers = encounter.getProvidersByRole(Context.getEncounterService().getEncounterRole(1));
+		Assert.assertEquals(1, providers.size());
+		Assert.assertTrue(providers.contains(otherProvider));
+		Assert.assertEquals(1, encounter.getActiveEncounterProviders().size());
+	}
+
+	/**
+	 * @see EncounterFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void processFormSubmission_shouldNotDuplicateAProviderThatWasReaddedWhileTheEncounterWasVoided()
+	        throws Exception {
+		Encounter encounter = readdProviderWhileVoided(voidEncounterAndProviders(Context.getEncounterService()
+		        .getEncounter(3)));
+		encounter.setVoided(false);
+
+		submitEncounterForm(encounter, Context.getProviderService().getProvider(1));
+
+		encounter = Context.getEncounterService().getEncounter(3);
+		Assert.assertFalse(encounter.getVoided());
+		Assert.assertEquals(2, encounter.getEncounterProviders().size());
+		Assert.assertEquals(1, encounter.getActiveEncounterProviders().size());
+	}
+
+	/**
 	 * @see EncounterFormController#onSubmit(javax.servlet.http.HttpServletRequest,
 	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
 	 */
@@ -309,9 +411,17 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 	 * database afterwards
 	 */
 	private void submitEncounterForm(Encounter encounter) throws Exception {
+		submitEncounterForm(encounter, Context.getProviderService().getProvider(1));
+	}
+
+	/**
+	 * Submits the encounter form for the given encounter, posting its patient and the given provider with
+	 * role 1, then flushes and clears the session
+	 */
+	private void submitEncounterForm(Encounter encounter, Provider provider) throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setParameter("patientId", encounter.getPatient().getPatientId().toString());
-		request.setParameter("providerIds", "1");
+		request.setParameter("providerIds", provider.getProviderId().toString());
 		request.setParameter("encounterRoleIds", "1");
 		BindException errors = new BindException(encounter, "encounter");
 
@@ -346,13 +456,52 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 		return encounter;
 	}
 
+	private Provider createOtherProvider() {
+		Provider otherProvider = new Provider();
+		otherProvider.setPerson(Context.getPersonService().getPerson(2));
+		otherProvider.setIdentifier("other");
+		return Context.getProviderService().saveProvider(otherProvider);
+	}
+
 	/**
-	 * Voids the encounter and, as core does from 2.8.x/3.x, its encounter providers along with it
+	 * Adds a second record for the encounter's provider with role 1, as the duplicate-provider bug did
+	 */
+	private Encounter addDuplicateEncounterProvider(Encounter encounter) {
+		EncounterProvider duplicate = new EncounterProvider();
+		duplicate.setEncounter(encounter);
+		duplicate.setEncounterRole(Context.getEncounterService().getEncounterRole(1));
+		duplicate.setProvider(Context.getProviderService().getProvider(1));
+		encounter.getEncounterProviders().add(duplicate);
+		Context.getEncounterService().saveEncounter(encounter);
+		Context.flushSession();
+		Assert.assertEquals(2, encounter.getActiveEncounterProviders().size());
+		return encounter;
+	}
+
+	/**
+	 * Adds the provider with role 1 back to the voided encounter as a new active record, as the form did
+	 * before it showed the providers voided along with the encounter
+	 */
+	private Encounter readdProviderWhileVoided(Encounter encounter) {
+		encounter.addProvider(Context.getEncounterService().getEncounterRole(1), Context.getProviderService()
+		        .getProvider(1));
+		Context.getEncounterService().saveEncounter(encounter);
+		Context.flushSession();
+		Assert.assertEquals(1, encounter.getActiveEncounterProviders().size());
+		Assert.assertEquals(2, encounter.getEncounterProviders().size());
+		return encounter;
+	}
+
+	/**
+	 * Voids the encounter and, as core does from 2.8.x/3.x, its encounter providers along with it. The void
+	 * date is moved an hour back so that a provider removed later in the test never gets the same void date.
 	 */
 	private Encounter voidEncounterAndProviders(Encounter encounter) {
 		Context.getEncounterService().voidEncounter(encounter, "testing");
+		Date dateVoided = encounter.getDateVoided();
+		encounter.setDateVoided(new Date(dateVoided.getTime() - 60 * 60 * 1000));
 		for (EncounterProvider encounterProvider : encounter.getEncounterProviders()) {
-			if (!encounterProvider.getVoided()) {
+			if (!encounterProvider.getVoided() || dateVoided.equals(encounterProvider.getDateVoided())) {
 				encounterProvider.setVoided(true);
 				encounterProvider.setVoidedBy(encounter.getVoidedBy());
 				encounterProvider.setDateVoided(encounter.getDateVoided());

@@ -164,11 +164,20 @@ public class EncounterFormController extends SimpleFormController {
 							}
 						}
 					}
-					//a removed provider that was voided along with the encounter gets its own void date so that
-					//unvoiding the encounter does not restore it
+					//unvoiding the encounter restores the providers voided along with it, so only one record for
+					//each unremoved provider without an active record is left with the encounter's void date, the
+					//others get their own void date so that a removed provider does not come back and a kept one
+					//is not duplicated
+					List<String> restoredRoleAndProviders = new ArrayList<String>();
 					for (EncounterProvider encounterProvider : voidedWithEncounter) {
-						if (!unremovedRoleAndProviders.contains(encounterProvider.getEncounterRole().getEncounterRoleId()
-						        + "-" + encounterProvider.getProvider().getProviderId())) {
+						String roleAndProvider = encounterProvider.getEncounterRole().getEncounterRoleId() + "-"
+						        + encounterProvider.getProvider().getProviderId();
+						if (unremovedRoleAndProviders.contains(roleAndProvider)
+						        && !restoredRoleAndProviders.contains(roleAndProvider)
+						        && !encounter.getProvidersByRole(encounterProvider.getEncounterRole()).contains(
+						            encounterProvider.getProvider())) {
+							restoredRoleAndProviders.add(roleAndProvider);
+						} else {
 							encounterProvider.setDateVoided(new Date());
 							encounterProvider.setVoidedBy(Context.getAuthenticatedUser());
 						}
@@ -397,7 +406,9 @@ public class EncounterFormController extends SimpleFormController {
 
 	/**
 	 * Gets the encounter providers that were voided along with the given encounter, i.e. those with the
-	 * same void date as the encounter, which are the ones core restores when the encounter is unvoided
+	 * same void date as the encounter, which are the ones core restores when the encounter is unvoided. All
+	 * of them are returned, including duplicate records and records for providers that also have an active
+	 * record, since core restores each of them.
 	 *
 	 * @param encounter the encounter
 	 * @return the encounter providers voided with the encounter
@@ -411,10 +422,7 @@ public class EncounterFormController extends SimpleFormController {
 		}
 		for (EncounterProvider encounterProvider : encounter.getEncounterProviders()) {
 			if (encounterProvider.getVoided() && encounterProvider.getDateVoided() != null
-			        && encounterProvider.getDateVoided().getTime() == dateVoided.getTime()
-			        && findEncounterProvider(ret, encounterProvider.getEncounterRole(), encounterProvider.getProvider()) == null
-			        && !encounter.getProvidersByRole(encounterProvider.getEncounterRole()).contains(
-			            encounterProvider.getProvider())) {
+			        && encounterProvider.getDateVoided().getTime() == dateVoided.getTime()) {
 				ret.add(encounterProvider);
 			}
 		}
