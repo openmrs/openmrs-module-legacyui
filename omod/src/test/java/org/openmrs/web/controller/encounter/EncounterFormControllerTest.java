@@ -24,6 +24,7 @@ import org.openmrs.web.test.BaseWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.validation.BindException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -148,6 +149,97 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 		Assert.assertTrue(providers.contains(otherProvider));
 	}
 	
+	/**
+	 * @see EncounterFormController#referenceData(javax.servlet.http.HttpServletRequest, Object,
+	 *      org.springframework.validation.Errors)
+	 */
+	@Test
+	public void referenceData_shouldOnlyIncludeActiveProvidersIfTheyWereNotVoidedWithTheEncounter() throws Exception {
+		Encounter encounter = voidEncounterWithoutProviders(Context.getEncounterService().getEncounter(3));
+		Assert.assertEquals(1, encounter.getActiveEncounterProviders().size());
+
+		EncounterFormController controller = new EncounterFormController();
+		Map<String, Object> map = controller.referenceData(new MockHttpServletRequest(), encounter, new BindException(
+		        encounter, "encounter"));
+
+		Map<EncounterRole, Set<Provider>> providersByRoles = (Map<EncounterRole, Set<Provider>>) map
+		        .get("providersByRoles");
+		EncounterRole role = Context.getEncounterService().getEncounterRole(1);
+		Assert.assertEquals(1, providersByRoles.size());
+		Assert.assertEquals(1, providersByRoles.get(role).size());
+		Assert.assertTrue(providersByRoles.get(role).contains(Context.getProviderService().getProvider(1)));
+	}
+
+	/**
+	 * @see EncounterFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void processFormSubmission_shouldKeepProvidersNotVoidedWithTheEncounterWithoutDuplicatingThem()
+	        throws Exception {
+		Encounter encounter = voidEncounterWithoutProviders(Context.getEncounterService().getEncounter(3));
+		encounter.setVoided(false);
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setParameter("patientId", encounter.getPatient().getPatientId().toString());
+		request.setParameter("providerIds", "1");
+		request.setParameter("encounterRoleIds", "1");
+		BindException errors = new BindException(encounter, "encounter");
+
+		EncounterFormController controller = new EncounterFormController();
+		controller.processFormSubmission(request, new MockHttpServletResponse(), encounter, errors);
+		Assert.assertFalse(errors.hasErrors());
+		controller.onSubmit(request, new MockHttpServletResponse(), encounter, errors);
+
+		Assert.assertFalse(encounter.getVoided());
+		Assert.assertEquals(1, encounter.getEncounterProviders().size());
+		Assert.assertEquals(1, encounter.getActiveEncounterProviders().size());
+	}
+
+	/**
+	 * @see EncounterFormController#processFormSubmission(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void processFormSubmission_shouldVoidARemovedProviderThatWasNotVoidedWithTheEncounter() throws Exception {
+		Provider otherProvider = new Provider();
+		otherProvider.setPerson(Context.getPersonService().getPerson(2));
+		otherProvider.setIdentifier("other");
+		Context.getProviderService().saveProvider(otherProvider);
+		Encounter encounter = voidEncounterWithoutProviders(Context.getEncounterService().getEncounter(3));
+		encounter.setVoided(false);
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setParameter("patientId", encounter.getPatient().getPatientId().toString());
+		request.setParameter("providerIds", otherProvider.getProviderId().toString());
+		request.setParameter("encounterRoleIds", "1");
+		BindException errors = new BindException(encounter, "encounter");
+
+		EncounterFormController controller = new EncounterFormController();
+		controller.processFormSubmission(request, new MockHttpServletResponse(), encounter, errors);
+		Assert.assertFalse(errors.hasErrors());
+		controller.onSubmit(request, new MockHttpServletResponse(), encounter, errors);
+
+		Assert.assertFalse(encounter.getVoided());
+		Set<Provider> providers = encounter.getProvidersByRole(Context.getEncounterService().getEncounterRole(1));
+		Assert.assertEquals(1, providers.size());
+		Assert.assertTrue(providers.contains(otherProvider));
+	}
+
+	/**
+	 * Voids the encounter but not its encounter providers, as core does before 2.8.x/3.x. The void fields are
+	 * set directly so that the providers stay active whatever core version the tests run against.
+	 */
+	private Encounter voidEncounterWithoutProviders(Encounter encounter) {
+		encounter.setVoided(true);
+		encounter.setVoidedBy(Context.getAuthenticatedUser());
+		encounter.setDateVoided(new Date());
+		encounter.setVoidReason("testing");
+		Context.getEncounterService().saveEncounter(encounter);
+		Context.flushSession();
+		return encounter;
+	}
+
 	/**
 	 * Voids the encounter and, as core does from 2.8.x/3.x, its encounter providers along with it
 	 */
