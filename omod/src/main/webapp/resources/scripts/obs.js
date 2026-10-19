@@ -56,6 +56,13 @@ function refreshObsTable(obss) {
 		dwr.util.removeAllRows(obsTableToRefresh);
 		if ( obss && obss.length > 0 ) {
 			dwr.util.addRows(obsTableToRefresh, obss, obsCellFuncs, {
+				rowCreator:function(options) {
+				    var tr = document.createElement("tr");
+				    if (options.rowData && options.rowData.voided) {
+				        tr.className = "voided";
+				    }
+				    return tr;
+				},
 				cellCreator:function(options) {
 				    var td = document.createElement("td");
 				    return td;

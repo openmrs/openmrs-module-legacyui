@@ -11,8 +11,12 @@ package org.openmrs.web.dwr;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -28,7 +32,9 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Person;
 import org.openmrs.api.AdministrationService;
+import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.impl.ObsArchiveHelper;
 import org.openmrs.util.OpenmrsUtil;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.security.RequirePrivilege;
@@ -90,6 +96,16 @@ public class DWRObsService {
 		}
 		
 		return obsList;
+	}
+
+	private ObsArchiveHelper getObsArchiveHelperSafely() {
+		try {
+			return Context.getRegisteredComponent("obsArchiveHelper", ObsArchiveHelper.class);
+		}
+		catch (APIException e) {
+			// bean not registered on this core, degrade gracefully
+		}
+		return null;
 	}
 	
 	/**
@@ -313,17 +329,30 @@ public class DWRObsService {
 			e = Context.getEncounterService().getEncounter(eId);
 		}
 		
-		Collection<Obs> obss = null;
+		List<Obs> obss = null;
 		
 		if (p != null && c != null) {
 			log.debug("Getting obss with patient and concept");
-			obss = Context.getObsService().getObservationsByPersonAndConcept(p, c);
+			obss = new ArrayList<Obs>(Context.getObsService().getObservations(
+			    Collections.singletonList(p), null, Collections.singletonList(c), null, null, null, null, null, null, null, null, true));
+			ObsArchiveHelper archiveHelper = getObsArchiveHelperSafely();
+			if (archiveHelper != null) {
+				obss.addAll(archiveHelper.getArchivedObsByPersonIdAndConceptId(p.getPersonId(), c.getConceptId()));
+			}
+			sortObservations(obss);
 		} else if (e != null) {
 			log.debug("Getting obss by encounter");
-			obss = e.getAllObs();
+			obss = new ArrayList<Obs>(e.getAllObsIncludingArchived());
+			sortObservations(obss);
 		} else if (p != null) {
 			log.debug("Getting obss with just patient");
-			obss = Context.getObsService().getObservationsByPerson(p);
+			obss = new ArrayList<Obs>(Context.getObsService().getObservations(
+			    Collections.singletonList(p), null, null, null, null, null, null, null, null, null, null, true));
+			ObsArchiveHelper archiveHelper = getObsArchiveHelperSafely();
+			if (archiveHelper != null) {
+				obss.addAll(archiveHelper.getArchivedObsByPersonId(p.getPersonId()));
+			}
+			sortObservations(obss);
 		}
 		
 		if (obss != null) {
@@ -355,5 +384,18 @@ public class DWRObsService {
 		}
 		
 		return oItem;
+	}
+
+	private void sortObservations(List<Obs> obss) {
+		Collections.sort(obss, new Comparator<Obs>() {
+			@Override
+			public int compare(Obs o1, Obs o2) {
+				int result = OpenmrsUtil.compareWithNullAsEarliest(o2.getObsDatetime(), o1.getObsDatetime());
+				if (result == 0) {
+					return OpenmrsUtil.compareWithNullAsGreatest(o1.getObsId(), o2.getObsId());
+				}
+				return result;
+			}
+		});
 	}
 }
