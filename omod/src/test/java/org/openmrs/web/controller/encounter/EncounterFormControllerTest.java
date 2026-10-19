@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterProvider;
 import org.openmrs.EncounterRole;
+	import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
@@ -25,6 +26,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.validation.BindException;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -224,6 +226,110 @@ public class EncounterFormControllerTest extends BaseModuleWebContextSensitiveTe
 		Set<Provider> providers = encounter.getProvidersByRole(Context.getEncounterService().getEncounterRole(1));
 		Assert.assertEquals(1, providers.size());
 		Assert.assertTrue(providers.contains(otherProvider));
+	}
+
+	/**
+	 * @see EncounterFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void onSubmit_shouldVoidTheObsOfAVoidedEncounterWithoutDuplicatingThem() throws Exception {
+		Set<Integer> obsIds = getObsIds(Context.getEncounterService().getEncounter(3));
+		Assert.assertEquals(2, obsIds.size());
+
+		Encounter encounter = Context.getEncounterService().getEncounter(3);
+		encounter.setVoided(true);
+		encounter.setVoidReason("testing");
+		submitEncounterForm(encounter);
+
+		encounter = Context.getEncounterService().getEncounter(3);
+		Assert.assertTrue(encounter.getVoided());
+		Assert.assertEquals(obsIds, getObsIds(encounter));
+		for (Obs obs : encounter.getAllObs(true)) {
+			Assert.assertTrue(obs.getVoided());
+		}
+	}
+
+	/**
+	 * @see EncounterFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void onSubmit_shouldRestoreTheObsOfAnUnvoidedEncounterWithoutDuplicatingThem() throws Exception {
+		Set<Integer> obsIds = getObsIds(Context.getEncounterService().getEncounter(3));
+		Assert.assertEquals(2, obsIds.size());
+
+		Encounter encounter = Context.getEncounterService().getEncounter(3);
+		encounter.setVoided(true);
+		encounter.setVoidReason("testing");
+		submitEncounterForm(encounter);
+
+		encounter = Context.getEncounterService().getEncounter(3);
+		encounter.setVoided(false);
+		submitEncounterForm(encounter);
+
+		encounter = Context.getEncounterService().getEncounter(3);
+		Assert.assertFalse(encounter.getVoided());
+		Assert.assertEquals(obsIds, getObsIds(encounter));
+		for (Obs obs : encounter.getAllObs(true)) {
+			Assert.assertFalse(obs.getVoided());
+		}
+		Assert.assertEquals(1, encounter.getEncounterProviders().size());
+		Assert.assertEquals(1, encounter.getActiveEncounterProviders().size());
+	}
+
+	/**
+	 * @see EncounterFormController#onSubmit(javax.servlet.http.HttpServletRequest,
+	 *      javax.servlet.http.HttpServletResponse, Object, org.springframework.validation.BindException)
+	 */
+	@Test
+	public void onSubmit_shouldRestoreTheObsOfAnEncounterVoidedWithItsProvidersWithoutDuplicatingThem()
+	        throws Exception {
+		Set<Integer> obsIds = getObsIds(Context.getEncounterService().getEncounter(3));
+		Assert.assertEquals(2, obsIds.size());
+
+		voidEncounterAndProviders(Context.getEncounterService().getEncounter(3));
+		Context.clearSession();
+
+		Encounter encounter = Context.getEncounterService().getEncounter(3);
+		encounter.setVoided(false);
+		submitEncounterForm(encounter);
+
+		encounter = Context.getEncounterService().getEncounter(3);
+		Assert.assertFalse(encounter.getVoided());
+		Assert.assertEquals(obsIds, getObsIds(encounter));
+		for (Obs obs : encounter.getAllObs(true)) {
+			Assert.assertFalse(obs.getVoided());
+		}
+	}
+
+	/**
+	 * Submits the encounter form for the given encounter, posting its patient and the provider with role 1
+	 * as the form does, then flushes and clears the session so that the encounter is reloaded from the
+	 * database afterwards
+	 */
+	private void submitEncounterForm(Encounter encounter) throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setParameter("patientId", encounter.getPatient().getPatientId().toString());
+		request.setParameter("providerIds", "1");
+		request.setParameter("encounterRoleIds", "1");
+		BindException errors = new BindException(encounter, "encounter");
+
+		EncounterFormController controller = new EncounterFormController();
+		controller.processFormSubmission(request, new MockHttpServletResponse(), encounter, errors);
+		Assert.assertFalse(errors.hasErrors());
+		controller.onSubmit(request, new MockHttpServletResponse(), encounter, errors);
+		Assert.assertFalse(errors.hasErrors());
+		Context.flushSession();
+		Context.clearSession();
+	}
+
+	private Set<Integer> getObsIds(Encounter encounter) {
+		Set<Integer> obsIds = new HashSet<Integer>();
+		for (Obs obs : encounter.getAllObs(true)) {
+			obsIds.add(obs.getObsId());
+		}
+		return obsIds;
 	}
 
 	/**
