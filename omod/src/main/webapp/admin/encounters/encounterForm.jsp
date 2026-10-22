@@ -18,7 +18,7 @@
 <openmrs:htmlInclude file="/dwr/interface/DWRProviderService.js" />
 
 <script type="text/javascript">
-	var providersCount = ${fn:length(encounter.providersByRoles)};
+	var providersCount = ${fn:length(providersByRoles)};
 	var numberOfClonedElements = 0;
 
 	var encounterPatientId = null;
@@ -136,7 +136,7 @@
 	}
 	
 	function addProvider(providerObj){
-		var index = ${fn:length(encounter.providersByRoles)}+numberOfClonedElements;
+		var index = ${fn:length(providersByRoles)}+numberOfClonedElements;
 		var providerTemplateRow = document.getElementById("addNewProviderTemplate");
 		var newRow = providerTemplateRow.cloneNode(true);
 		newRow.id = '';
@@ -454,7 +454,7 @@
 			<th><openmrs:message code="Provider.identifier"/></th>
 			<th></th>
 		</tr>
-		<c:forEach items="${encounter.providersByRoles}" var="providerRole">
+		<c:forEach items="${providersByRoles}" var="providerRole">
 			<c:forEach items="${providerRole.value}" var="provider">
 				<tr>
 					<td><c:out value="${providerRole.key.name}"/>
