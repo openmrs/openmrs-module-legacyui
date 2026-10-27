@@ -42,13 +42,19 @@ import org.openmrs.module.legacyui.GeneralUtils;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 public class PortletController implements Controller {
 	
+	private static final String JSP_VIEW_RESOLVER = "jspViewResolver";
+
 	protected Log log = LogFactory.getLog(this.getClass());
-	
+
 	/**
 	 * This method produces a model containing the following mappings:
 	 * 
@@ -413,8 +419,35 @@ public class PortletController implements Controller {
 			log.debug(portletPath + " took " + (System.currentTimeMillis() - timeAtStart) + " ms");
 		}
 		
+		View portletView = resolvePortletJsp(request, portletPath);
+		if (portletView != null) {
+			return new ModelAndView(portletView, "model", model);
+		}
 		return new ModelAndView(portletPath, "model", model);
-		
+
+	}
+
+	/**
+	 * A portlet is always an HTML fragment included into a JSP page, so its view must not go through
+	 * core's ContentNegotiatingViewResolver: that picks a view from the Accept header and treats a
+	 * wildcard Accept as application/json, rendering the model (with its Hibernate object graph) as
+	 * JSON or XML into the page instead of the portlet.
+	 *
+	 * @return the JSP view from core's jspViewResolver, or null if that resolver is not available
+	 */
+	private View resolvePortletJsp(HttpServletRequest request, String portletPath) {
+		WebApplicationContext wac = RequestContextUtils.findWebApplicationContext(request);
+		if (wac == null || !wac.containsBean(JSP_VIEW_RESOLVER)) {
+			return null;
+		}
+		try {
+			return wac.getBean(JSP_VIEW_RESOLVER, ViewResolver.class).resolveViewName(portletPath,
+			    RequestContextUtils.getLocale(request));
+		}
+		catch (Exception e) {
+			log.warn("Unable to resolve the JSP for portlet " + portletPath, e);
+			return null;
+		}
 	}
 	
 	/**
