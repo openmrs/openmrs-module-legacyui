@@ -27,7 +27,6 @@ import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAddress;
-import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.api.APIException;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.DuplicateIdentifierException;
@@ -47,6 +46,7 @@ import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebUtil;
 import org.openmrs.web.security.RequirePrivilege;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  * DWR patient methods. The methods in here are used in the webapp to get data from the database via
@@ -115,7 +115,8 @@ public class DWRPatientService implements GlobalPropertyListener {
 		try {
 			patients = ps.getPatients(searchValue, includeVoided, start, length);
 		}
-		catch (APIAuthenticationException e) {
+		// as of core 3.0.0 both @Authorized and @PreAuthorize deny with an AccessDeniedException
+		catch (AccessDeniedException e) {
 			patientList.add(Context.getMessageSourceService().getMessage("Patient.search.error") + " - " + e.getMessage());
 			return patientList;
 		}

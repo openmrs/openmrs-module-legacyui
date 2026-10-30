@@ -12,7 +12,10 @@ package org.openmrs.web.controller.encounter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterProvider;
 import org.openmrs.EncounterRole;
 import org.openmrs.EncounterType;
 import org.openmrs.Form;
@@ -128,6 +132,7 @@ public class EncounterFormController extends SimpleFormController {
 				
 				ProviderService ps = Context.getProviderService();
 				EncounterService es = Context.getEncounterService();
+				Set<EncounterProvider> voidedWithEncounter = getEncounterProvidersVoidedWithEncounter(encounter);
 				if (providerIdsArray != null && roleIdsArray != null) {
 					//list to store role provider mappings to be used below to detect removed providers
 					List<String> unremovedRoleAndProviders = new ArrayList<String>();
@@ -139,6 +144,10 @@ public class EncounterFormController extends SimpleFormController {
 							//if this is an existing provider, don't create a new one to avoid losing existing
 							//details like dateCreated, creator, uuid etc in the encounter_provider table
 							if (encounter.getProvidersByRole(encounterRole).contains(provider)) {
+								continue;
+							}
+							//providers voided along with the encounter are restored when it is unvoided
+							if (findEncounterProvider(voidedWithEncounter, encounterRole, provider) != null) {
 								continue;
 							}
 							
@@ -153,6 +162,24 @@ public class EncounterFormController extends SimpleFormController {
 							        + p.getProviderId())) {
 								encounter.removeProvider(entry.getKey(), p);
 							}
+						}
+					}
+					//unvoiding the encounter restores the providers voided along with it, so only one record for
+					//each unremoved provider without an active record is left with the encounter's void date, the
+					//others get their own void date so that a removed provider does not come back and a kept one
+					//is not duplicated
+					List<String> restoredRoleAndProviders = new ArrayList<String>();
+					for (EncounterProvider encounterProvider : voidedWithEncounter) {
+						String roleAndProvider = encounterProvider.getEncounterRole().getEncounterRoleId() + "-"
+						        + encounterProvider.getProvider().getProviderId();
+						if (unremovedRoleAndProviders.contains(roleAndProvider)
+						        && !restoredRoleAndProviders.contains(roleAndProvider)
+						        && !encounter.getProvidersByRole(encounterProvider.getEncounterRole()).contains(
+						            encounterProvider.getProvider())) {
+							restoredRoleAndProviders.add(roleAndProvider);
+						} else {
+							encounterProvider.setDateVoided(new Date());
+							encounterProvider.setVoidedBy(Context.getAuthenticatedUser());
 						}
 					}
 				}
@@ -358,8 +385,57 @@ public class EncounterFormController extends SimpleFormController {
 		if (encounter.getPatient() != null) {
 			map.put("patientVisits", Context.getVisitService().getVisitsByPatient(encounter.getPatient()));
 		}
-		
+
+		// show the providers that were voided along with the encounter so that they are posted back and an
+		// unvoided encounter keeps its providers
+		Map<EncounterRole, Set<Provider>> providersByRoles = new LinkedHashMap<EncounterRole, Set<Provider>>(
+		        encounter.getProvidersByRoles());
+		for (EncounterProvider encounterProvider : getEncounterProvidersVoidedWithEncounter(encounter)) {
+			Set<Provider> providers = new LinkedHashSet<Provider>();
+			if (providersByRoles.containsKey(encounterProvider.getEncounterRole())) {
+				providers.addAll(providersByRoles.get(encounterProvider.getEncounterRole()));
+			}
+			providers.add(encounterProvider.getProvider());
+			providersByRoles.put(encounterProvider.getEncounterRole(), providers);
+		}
+		map.put("providersByRoles", providersByRoles);
+
 		return map;
+	}
+
+	/**
+	 * Gets the encounter providers that were voided along with the given encounter, i.e. those with the
+	 * same void date as the encounter, which are the ones core restores when the encounter is unvoided. All
+	 * of them are returned, including duplicate records and records for providers that also have an active
+	 * record, since core restores each of them.
+	 *
+	 * @param encounter the encounter
+	 * @return the encounter providers voided with the encounter
+	 */
+	private Set<EncounterProvider> getEncounterProvidersVoidedWithEncounter(Encounter encounter) {
+		Set<EncounterProvider> ret = new LinkedHashSet<EncounterProvider>();
+		// the voided flag may already be unticked on the bound encounter, so go by the void date
+		Date dateVoided = encounter.getDateVoided();
+		if (dateVoided == null || encounter.getEncounterProviders() == null) {
+			return ret;
+		}
+		for (EncounterProvider encounterProvider : encounter.getEncounterProviders()) {
+			if (encounterProvider.getVoided() && encounterProvider.getDateVoided() != null
+			        && encounterProvider.getDateVoided().getTime() == dateVoided.getTime()) {
+				ret.add(encounterProvider);
+			}
+		}
+		return ret;
+	}
+
+	private EncounterProvider findEncounterProvider(Set<EncounterProvider> encounterProviders, EncounterRole role,
+	        Provider provider) {
+		for (EncounterProvider encounterProvider : encounterProviders) {
+			if (encounterProvider.getEncounterRole().equals(role) && encounterProvider.getProvider().equals(provider)) {
+				return encounterProvider;
+			}
+		}
+		return null;
 	}
 	
 	/**
