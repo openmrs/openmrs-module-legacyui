@@ -13,14 +13,14 @@
 (function( jQuery ) {
 
 jQuery.ui.autocomplete.prototype.options.autoSelect = true;
-jQuery( ".ui-autocomplete-input" ).live( "blur", function( event ) {
-var autocomplete = jQuery( this ).data( "autocomplete" );
-if ( !autocomplete.options.autoSelect || autocomplete.selectedItem ) { return; }
+jQuery( document ).on( "blur", ".ui-autocomplete-input", function( event ) {
+var autocomplete = jQuery( this ).data( "ui-autocomplete" );
+if ( !autocomplete || !autocomplete.options.autoSelect || autocomplete.selectedItem ) { return; }
 
 var matcher = new RegExp( "^" + jQuery.ui.autocomplete.escapeRegex( jQuery(this).val() ) + "$", "i" );
 /*alert("value: " + jQuery(this).val() + " matcher: ");*/
 autocomplete.widget().children( ".ui-menu-item" ).each(function() {
-var item = jQuery( this ).data( "item.autocomplete" );
+var item = jQuery( this ).data( "ui-autocomplete-item" );
 /*alert("matched? " + matcher.test(item.value) + " item.value: " + item.value);*/
 if ( matcher.test( item.label ) || matcher.test( item.value ) || matcher.test( item ) ) {
 autocomplete.selectedItem = item;

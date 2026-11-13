@@ -532,6 +532,15 @@ function AutoComplete(id, callback, opts) {
  	
  	jq.autocomplete(opts);
 
+ 	var widget = jq.data("ui-autocomplete");
+ 	if (widget) {
+ 		widget._renderItem = function(ul, item) {
+ 			return jQuery("<li>")
+ 				.append(jQuery("<a>").html(item.label))
+ 				.appendTo(ul);
+ 		};
+ 	}
+
     //Add the placeholder text to the Search field
     if(opts.placeholder){
         //The value should not contain line feeds or carriage returns.
@@ -595,8 +604,12 @@ function removeNode(node){
 function addAutoComplete(displayNameInputId, formFieldId, searchFunction, valueField, placeHolderText, callBack){
 	new AutoComplete(displayNameInputId, searchFunction,  {
 		select: function(event, ui) {
+			if (!ui.item.object) {
+				event.preventDefault();
+				return;
+			}
 			jquerySelectEscaped(formFieldId).val(ui.item.object[valueField]);
-			if (ui.item.object && callBack) {
+			if (callBack) {
 				// only call the callback if we got a true selection, not a click on an error field
 				callBack(ui.item.object);
 			}
