@@ -20,7 +20,10 @@
 <br/>
 
 <%
-    UserContext userContext = (UserContext) session.getAttribute(WebConstants.OPENMRS_USER_CONTEXT_HTTPSESSION_ATTR);
+    // Core's SimpleMappingExceptionResolver forwards here inside the failed request, while the UserContext
+    // OpenmrsSecurityContextFilter put on the thread is still there; an ERROR dispatch would not have it.
+    // Read it from Context: with session.distributed=true the live UserContext is never stored in the session.
+    UserContext userContext = Context.isAuthenticated() ? Context.getUserContext() : null;
     if (userContext != null && userContext.getAuthenticatedUser() != null) {
 %>
 
@@ -110,10 +113,6 @@
 <br/>
 <div id="stackTrace">
     <%
-            // check to see if the current user is authenticated
-            // this logic copied from the OpenmrsFilter because this
-            // page isn't passed through that filter like all other pages
-
             if (exception != null) {
                 if (userContext != null && userContext.getAuthenticatedUser() != null) {
                     java.lang.StackTraceElement[] elements;
