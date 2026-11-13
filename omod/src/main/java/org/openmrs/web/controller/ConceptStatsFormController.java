@@ -182,7 +182,7 @@ public class ConceptStatsFormController extends SimpleFormController {
 							timeSeries.addOrUpdate(day, value);
 						}
 						
-						Double size = new Double(numericAnswers.size());
+						Double size = Double.valueOf(numericAnswers.size());
 						Double mean = total / size;
 						
 						map.put("size", numericAnswers.size());
