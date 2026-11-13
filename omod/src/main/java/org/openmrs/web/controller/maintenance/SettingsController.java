@@ -27,7 +27,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.customdatatype.CustomDatatype;
 import org.openmrs.customdatatype.CustomDatatypeHandler;
 import org.openmrs.customdatatype.CustomDatatypeUtil;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.logging.OpenmrsLoggingUtil;
 import org.openmrs.web.WebConstants;
 import org.openmrs.web.attribute.WebAttributeUtil;
 import org.springframework.stereotype.Controller;
@@ -114,9 +114,9 @@ public class SettingsController {
 			}
 			// TODO: move this to a GlobalPropertyListener
 			// refresh log level from global property(ies)
-			OpenmrsUtil.applyLogLevels();
+			OpenmrsLoggingUtil.applyLogLevels();
 			
-			OpenmrsUtil.setupLogAppenders();
+			OpenmrsLoggingUtil.reloadLoggingConfiguration();
 		}
 		return SETTINGS_VIEW_PATH;
 	}

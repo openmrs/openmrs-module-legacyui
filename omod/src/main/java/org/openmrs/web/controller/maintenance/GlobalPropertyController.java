@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.util.OpenmrsUtil;
+import org.openmrs.logging.OpenmrsLoggingUtil;
 import org.openmrs.web.WebConstants;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -118,9 +118,9 @@ public class GlobalPropertyController extends SimpleFormController {
 					httpSession.setAttribute(WebConstants.OPENMRS_MSG_ATTR, "GlobalProperty.saved");
 					
 					// refresh log level from global property(ies)
-					OpenmrsUtil.applyLogLevels();
+					OpenmrsLoggingUtil.applyLogLevels();
 					
-					OpenmrsUtil.setupLogAppenders();
+					OpenmrsLoggingUtil.reloadLoggingConfiguration();
 				}
 				catch (Exception e) {
 					log.error("Error saving properties", e);
