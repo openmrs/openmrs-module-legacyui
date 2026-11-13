@@ -17,7 +17,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.context.Context;
+import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.PrivilegeConstants;
 
 /**
  * Servlet called by the logout link in the webapp. This will call Context.logout() and then make
@@ -40,10 +43,27 @@ public class LogoutServlet extends HttpServlet {
 		
 		Context.logout();
 		
-		response.sendRedirect(request.getContextPath() + "/index.htm?noredirect=true");
-		
 		// clears attributes and makes sure that no one can access this session
 		httpSession.invalidate();
+		
+		String redirect;
+		try {
+			Context.addProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+			redirect = Context.getAdministrationService().getGlobalProperty(OpenmrsConstants.GP_LOGIN_URL);
+		}
+		finally {
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_GLOBAL_PROPERTIES);
+		}
+		redirect = StringUtils.stripStart(StringUtils.trimToEmpty(redirect), "/");
+		// core's default login.url is the legacy login page, which index.htm already shows
+		if (redirect.equals(OpenmrsConstants.LOGIN_URL)
+		        // a browser reads \ as / and deletes tabs, so either could make "/" + redirect a protocol-relative URL
+		        || redirect.chars().anyMatch(c -> c == '\\' || Character.isISOControl(c))) {
+			redirect = "";
+		}
+		
+		response.sendRedirect(request.getContextPath() + "/"
+		        + (redirect.isEmpty() ? "index.htm?noredirect=true" : redirect));
 	}
 	
 }
