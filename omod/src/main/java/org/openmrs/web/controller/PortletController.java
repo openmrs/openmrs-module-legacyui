@@ -43,12 +43,13 @@ import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.Controller;
 
 public class PortletController implements Controller {
 	
 	protected Log log = LogFactory.getLog(this.getClass());
-	
+
 	/**
 	 * This method produces a model containing the following mappings:
 	 * 
@@ -413,10 +414,14 @@ public class PortletController implements Controller {
 			log.debug(portletPath + " took " + (System.currentTimeMillis() - timeAtStart) + " ms");
 		}
 		
+		View portletView = IncludedJspViewResolver.resolveJsp(request, portletPath);
+		if (portletView != null) {
+			return new ModelAndView(portletView, "model", model);
+		}
 		return new ModelAndView(portletPath, "model", model);
-		
+
 	}
-	
+
 	/**
 	 * Subclasses should override this to put more data into the model. This will be called AFTER
 	 * handleRequest has put mappings in the model as described in its javadoc. Note that context

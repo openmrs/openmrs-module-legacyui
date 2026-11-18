@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.Controller;
 
 public class FieldGenController implements Controller {
@@ -77,6 +78,10 @@ public class FieldGenController implements Controller {
 			request.removeAttribute("org.openmrs.fieldGen.parameterMap");
 		}
 		
+		View fieldGenView = IncludedJspViewResolver.resolveJsp(request, fieldGenPath);
+		if (fieldGenView != null) {
+			return new ModelAndView(fieldGenView, "model", model);
+		}
 		return new ModelAndView(fieldGenPath, "model", model);
 		
 	}

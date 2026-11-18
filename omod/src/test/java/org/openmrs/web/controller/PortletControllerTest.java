@@ -22,7 +22,12 @@ import org.openmrs.web.WebConstants;
 import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.context.support.StaticWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 /**
  * Tests methods on the {@link PortletController} class
@@ -37,18 +42,57 @@ public class PortletControllerTest extends BaseModuleWebContextSensitiveTest {
 	 * @throws Exception
 	 */
 	private Map<String, Object> getModelFromController(Integer patientId) throws Exception {
+		ModelAndView modelAndView = new PortletController().handleRequest(createPortletRequest(patientId),
+		    new MockHttpServletResponse());
+
+		return (Map<String, Object>) modelAndView.getModel().get("model");
+	}
+
+	private MockHttpServletRequest createPortletRequest(Integer patientId) {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "");
-		HttpServletResponse response = new MockHttpServletResponse();
-		
 		request.setAttribute(WebConstants.INIT_REQ_UNIQUE_ID, "1");
 		request.getSession().setAttribute(WebConstants.OPENMRS_PORTLET_LAST_REQ_ID, "0");
-		request.setAttribute("javax.servlet.include.servlet_path", "testPortlet");
+		request.setAttribute("javax.servlet.include.servlet_path", "/portlets/testPortlet.portlet");
 		request.setAttribute("org.openmrs.portlet.parameters", new HashMap());
 		request.setAttribute("org.openmrs.portlet.patientId", patientId);
-		
-		ModelAndView modelAndView = new PortletController().handleRequest(request, response);
-		
-		return (Map<String, Object>) modelAndView.getModel().get("model");
+		return request;
+	}
+
+	/**
+	 * @see PortletController#handleRequest(HttpServletRequest,HttpServletResponse)
+	 */
+	@Test
+	public void handleRequest_shouldResolveThePortletJspRegardlessOfTheAcceptHeader() throws Exception {
+		InternalResourceViewResolver jspViewResolver = new InternalResourceViewResolver();
+		jspViewResolver.setViewClass(JstlView.class);
+		jspViewResolver.setPrefix("/WEB-INF/view/");
+		jspViewResolver.setSuffix(".jsp");
+		StaticWebApplicationContext wac = new StaticWebApplicationContext();
+		wac.setServletContext(new MockServletContext());
+		wac.getBeanFactory().registerSingleton("jspViewResolver", jspViewResolver);
+		wac.refresh();
+		jspViewResolver.setApplicationContext(wac);
+
+		MockHttpServletRequest request = createPortletRequest(7);
+		request.addHeader("Accept", "*/*");
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
+
+		ModelAndView modelAndView = new PortletController().handleRequest(request, new MockHttpServletResponse());
+
+		Assert.assertTrue(modelAndView.getView() instanceof JstlView);
+		// the double slash is what core's jspViewResolver has always built from a portlet path
+		Assert.assertEquals("/WEB-INF/view//portlets/testPortlet.jsp", ((JstlView) modelAndView.getView()).getUrl());
+	}
+
+	/**
+	 * @see PortletController#handleRequest(HttpServletRequest,HttpServletResponse)
+	 */
+	@Test
+	public void handleRequest_shouldFallBackToTheViewNameWithoutAJspViewResolver() throws Exception {
+		ModelAndView modelAndView = new PortletController().handleRequest(createPortletRequest(7),
+		    new MockHttpServletResponse());
+
+		Assert.assertEquals("/portlets/testPortlet", modelAndView.getViewName());
 	}
 	
 	/**
