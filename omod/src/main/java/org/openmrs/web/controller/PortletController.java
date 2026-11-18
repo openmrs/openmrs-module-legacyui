@@ -42,17 +42,12 @@ import org.openmrs.module.legacyui.GeneralUtils;
 import org.openmrs.util.PrivilegeConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.mvc.Controller;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 public class PortletController implements Controller {
 	
-	private static final String JSP_VIEW_RESOLVER = "jspViewResolver";
-
 	protected Log log = LogFactory.getLog(this.getClass());
 
 	/**
@@ -419,7 +414,7 @@ public class PortletController implements Controller {
 			log.debug(portletPath + " took " + (System.currentTimeMillis() - timeAtStart) + " ms");
 		}
 		
-		View portletView = resolvePortletJsp(request, portletPath);
+		View portletView = IncludedJspViewResolver.resolveJsp(request, portletPath);
 		if (portletView != null) {
 			return new ModelAndView(portletView, "model", model);
 		}
@@ -427,29 +422,6 @@ public class PortletController implements Controller {
 
 	}
 
-	/**
-	 * A portlet is always an HTML fragment included into a JSP page, so its view must not go through
-	 * core's ContentNegotiatingViewResolver: that picks a view from the Accept header and treats a
-	 * wildcard Accept as application/json, rendering the model (with its Hibernate object graph) as
-	 * JSON or XML into the page instead of the portlet.
-	 *
-	 * @return the JSP view from core's jspViewResolver, or null if that resolver is not available
-	 */
-	private View resolvePortletJsp(HttpServletRequest request, String portletPath) {
-		WebApplicationContext wac = RequestContextUtils.findWebApplicationContext(request);
-		if (wac == null || !wac.containsBean(JSP_VIEW_RESOLVER)) {
-			return null;
-		}
-		try {
-			return wac.getBean(JSP_VIEW_RESOLVER, ViewResolver.class).resolveViewName(portletPath,
-			    RequestContextUtils.getLocale(request));
-		}
-		catch (Exception e) {
-			log.warn("Unable to resolve the JSP for portlet " + portletPath, e);
-			return null;
-		}
-	}
-	
 	/**
 	 * Subclasses should override this to put more data into the model. This will be called AFTER
 	 * handleRequest has put mappings in the model as described in its javadoc. Note that context
