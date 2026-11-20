@@ -19,7 +19,13 @@ import org.openmrs.web.user.CurrentUsers;
 /**
  * Handles events of session life cycle. <br>
  * <br>
- * This is set by the web.xml class
+ * Registered both as a servlet container listener (in {@link WebComponentRegistrar}, for the default
+ * non-distributed session mode) and as a Spring bean (in {@code webModuleApplicationContext.xml},
+ * so Spring Session's {@code SessionEventHttpSessionListenerAdapter} can notify it when a distributed
+ * session is destroyed - the container never fires {@code sessionDestroyed} for Spring Session's
+ * sessions).
+ *
+ * @since 3.0.0
  */
 public class SessionListener implements HttpSessionListener {
 	
