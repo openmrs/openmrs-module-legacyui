@@ -123,26 +123,38 @@ public class CurrentUsers {
 	 * @param httpSession
 	 */
 	public static void removeSessionFromList(HttpSession httpSession) {
+		if (httpSession == null || httpSession.getId() == null) {
+			return;
+		}
 		Map<String, CopyOnWriteArrayList<HttpSession>> currentUsers = getCurrentUsers(httpSession);
+		String targetId = httpSession.getId();
 		String username = getUsernameForSessionUser(httpSession, currentUsers);
 		if (username != null) {
 			CopyOnWriteArrayList<HttpSession> sessions = currentUsers.get(username);
-			sessions.remove(httpSession);
-			log.debug("Removed session: {}. Remaining sessions: {}", httpSession, sessions.size());
-			if (sessions.size() == 0) {
+			sessions.removeIf(session -> session == null || targetId.equals(session.getId()));
+			log.debug("Removed session with id: {}. Remaining sessions: {}", targetId, sessions.size());
+			if (sessions.isEmpty()) {
 				currentUsers.remove(username);
 				log.debug("Removed user: {} from Current Users", username);
-				return;
 			}
 		}
 	}
 	
 	private static String getUsernameForSessionUser(HttpSession httpSession,
 	        Map<String, CopyOnWriteArrayList<HttpSession>> currentUsers) {
+		if (httpSession == null || httpSession.getId() == null) {
+			return null;
+		}
+		String targetId = httpSession.getId();
 		for (Map.Entry<String, CopyOnWriteArrayList<HttpSession>> entry : currentUsers.entrySet()) {
 			List<HttpSession> sessions = entry.getValue();
-			if (sessions != null && sessions.contains(httpSession)) {
-				return entry.getKey();
+			if (sessions == null) {
+				continue;
+			}
+			for (HttpSession session : sessions) {
+				if (session != null && targetId.equals(session.getId())) {
+					return entry.getKey();
+				}
 			}
 		}
 		return null;

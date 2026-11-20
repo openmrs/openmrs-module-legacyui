@@ -17,9 +17,16 @@
 
 	<!-- Add here beans related to the web context -->
 
-
-
-
+	<!--
+		Registered as a Spring bean (in addition to the container listener registered in
+		WebComponentRegistrar) so that Spring Session's SessionEventHttpSessionListenerAdapter
+		can notify it when a distributed session is destroyed: with session.distributed=true the
+		servlet container never fires sessionDestroyed for Spring Session's sessions, so without
+		this bean "Logged In Users" would keep every login until the application restarts.
+		In the default (non-distributed) mode the adapter does not exist, so this bean is inert and
+		the container listener above handles session ends as before.
+	-->
+	<bean id="sessionListener" class="org.openmrs.web.SessionListener" />
     <bean id="legacyUiUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="interceptors">
 			<list>
